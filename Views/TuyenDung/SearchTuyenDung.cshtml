@@ -1,0 +1,450 @@
+@{ Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "SearchTuyenDung";
+
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+
+    int skip = ViewBag.Skip;
+
+
+
+    var listdata = ViewBag.TuyenDung;
+    var listSkip = ViewBag.TuyenDungSkip;
+    var tinh = ViewBag.DMTinh;
+    var huyen = ViewBag.DMHuyen;
+    var doanhNghiep = ViewBag.DoanhNghiep;
+    var vitri = ViewBag.ViTriCongViec;
+    var vitricongviec = "";
+    var vanbang = ViewBag.VanBang;
+    var tglamviec = ViewBag.TGLamViec;
+    var nganhnghe = ViewBag.DMNganhNghe;
+    var linhvuc = ViewBag.DMLinhVuc;
+    var banner = ViewBag.Banner;
+
+}
+
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div class="search-bar position-relative overflow-hidden mb-3">
+                    <form action="/TuyenDung/SearchTuyenDung">
+                        <div class="container">
+                            <div class="search-inner">
+                                <div class="row row-5 align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="form-group position-relative mb-0 noidung">
+                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề công việc, doanh nghiệp..." value="" id="searchStr" name="searchStr">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row row-5 align-items-center">
+                                            <div class="col-md-5">
+                                                <div class="form-group position-relative mb-0 nganhnghe">
+                                                    <select class="form-control select2 vieclam-select2 rounded-0 transition-03 select2-hidden-accessible nganhnghes" multiple="" name="searchNN" id="searchNN" data-placeholder="Lọc theo ngành nghề" size="1" tabindex="-1">
+
+                                                        @{
+                                                            foreach (var item in nganhnghe)
+                                                            {
+                                                                <option class="option-items size-085rem" value="@item.Id">
+                                                                    @item.TenNganhNghe
+                                                                </option>
+                                                            }
+                                                        }
+
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group position-relative mb-0 diadiem">
+                                                    <select class="form-control select2 vieclam-select2 rounded-0 transition-03 select2-hidden-accessible tinhs" name="searchDD" multiple="" id="searchDD" data-placeholder="Lọc theo địa điểm" size="1" tabindex="-1" aria-hidden="true">
+
+                                                        @{
+                                                            foreach (var item in huyen)
+                                                            {
+                                                                if (item.TinhId == "80")
+                                                                {
+                                                                    <option class="option-items size-085rem" value="@item.Id">
+                                                                        @item.TenHuyen
+                                                                    </option>
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group position-relative mb-0">
+                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03" id="tdsubmit">
+                                                        <i class="fal fa-search hidden-small"></i>Tìm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="main-content" class="wrapperUngVien ">
+                    <div class="">
+                        <div class="row row-10">
+                            <div class="col-sm-12" id="div-renderUv">
+                                <div class="search-results-title">
+                                    <p class="fw-500">Tìm kiếm @ViewBag.Searchstring @ViewBag.SNN  @ViewBag.SDD   có @ViewBag.Count kết quả</p>
+                                </div>
+                                <div class="row row-5" id="listUngVien">
+
+                                    @{
+
+                                        foreach (var item in listSkip)
+                                        {
+                                            <div class="col-md-6">
+                                                <div class="ungVienItem">
+                                                    <div class="ungVienAvatar">
+                                                        <div class="ungVienAvatar-inner">
+
+                                                            <a href="/TuyenDung/Detail?tdID=@item.Id" title="@item.TenCongViec" class="boxItemBackground lazy tdAjax" data-type="uv" data-id="6043" style="display: flex; background-image: url(/Content/Assets/images/noimage.jpg);"></a>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="ungVienContent d-flex flex-column">
+                                                        <div class="ungVienJob">
+
+                                                            <a href="/TuyenDung/Detail?tdID=@item.Id" class="size-095rem  pl-1 text-ellipsis vertical-middle tdAjax" title="" data-toggle="tooltip" data-type="uv" data-id="6043" data-original-title=" @item.TenCongViec">
+                                                                <i class="fal fa-link w-18"></i>
+                                                                @item.TenCongViec
+                                                            </a>
+
+
+                                                        </div>
+                                                        <div class="ungVienName">
+
+                                                            <a href="/TuyenDung/Detail?tdID=@item.Id" class="size-09rem pl-1 text-ellipsis vertical-middle tdAjax" title="" data-toggle="tooltip" data-type="uv" data-id="6043" data-original-title="@item.DoanhNghiep.TenDoanhNghiep">
+                                                                <i class="fal fa-building"></i>
+                                                                @item.DoanhNghiep.TenDoanhNghiep
+
+                                                            </a>
+
+                                                        </div>
+                                                        <div class="ungVienInfo size-09rem">
+                                                            <div class="row row-5">
+                                                                <div class="col-md-6">
+
+                                                                    <div class="ungVienInfoItem pl-1 text-ellipsis d-inline-block" title="" data-toggle="tooltip" data-original-title="@item.SoLuong">
+                                                                        <i class="fal fa-user-plus"></i>
+                                                                        @item.SoLuong
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="ungVienInfoItem pl-1 text-ellipsis d-inline-block" title="" data-toggle="tooltip" data-original-title="Kinh nghiệm  @item.KinhNghiem">
+                                                                        <i class="fal fa-star"></i>
+                                                                        @item.KinhNghiem
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="ungVienInfoItem pl-1 text-ellipsis d-inline-block" title="" data-toggle="tooltip" data-original-title="Mức lương @item.MucLuong.TenMucLuong">
+                                                                        <i class="fal fa-usd-circle"></i>
+                                                                        @item.MucLuong.TenMucLuong
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    @{
+                                                                        if (item.HanNop != null)
+                                                                        {
+                                                                            var date = item.HanNop.ToString().Split(' ');
+                                                                            var time = date[0];
+                                                                            <div class="ungVienInfoItem pl-1 text-ellipsis d-inline-block" title="" data-toggle="tooltip" data-original-title="Hạn nộp @time">
+                                                                                <i class="fal fa-clock"></i>
+                                                                                @time
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="ungVienInfoItem pl-1 text-ellipsis d-inline-block" title="" data-toggle="tooltip" data-original-title="Hạn nộp chưa xác định">
+                                                                                <i class="fal fa-clock"></i>
+                                                                                Chưa xác định
+                                                                            </div>
+                                                                        }
+
+
+                                                                    }
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+
+                                </div>
+                                <div class="row row-5 justify-content-center" id="phanTrangUngVien">
+                                    <nav class="pagination-wrapper d-flex justify-content-center mt-4">
+                                        <ul class="pagination">
+                                            @{
+                                                if (CurrentPage > 1 & PageCount > 1)
+                                                {
+
+                                                    <li data-page="1" class="page page-item"> <a class="page-link" href="/TuyenDung/SearchTuyenDung?searchStr=@ViewBag.Searchstring&searchNN=@ViewBag.NN&searchDD=@ViewBag.DD&pCount=@skip&pPage=1">&lt;&lt;</a></li>
+                                                }
+
+                                                for (int i = 1; i <= PageCount; i++)
+                                                {
+                                                    if (i == pPage)
+                                                    {
+
+                                                        <li data-page="@i" class="page page-item active"><a class="page-link">@i</a></li>
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <li data-page="@i" class="page page-item "><a class="page-link" href="/TuyenDung/SearchTuyenDung?searchStr=@ViewBag.Searchstring&searchNN=@ViewBag.NN&searchDD=@ViewBag.DD&pCount=@skip&pPage=@i">@i</a></li>
+                                                    }
+                                                }
+                                                if (PageCount > 1 & CurrentPage < PageCount)
+                                                {
+
+
+                                                    <li data-page="@PageCount" class="page page-item"> <a class="page-link" href="/TuyenDung/SearchTuyenDung?searchStr=@ViewBag.Searchstring&searchNN=@ViewBag.NN&searchDD=@ViewBag.DD&pCount=@skip&pPage=@PageCount">&gt;&gt;</a></li>
+                                                }
+
+                                            }
+
+
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="page-search my-3">
+                        <div class="">
+                            <div class="row row-10">
+                                <div class="col-md-12">
+                                    <div class="search-inner bg-white border" id="searchAjax">
+
+                                        <div id="kqSearch">
+                                            @{
+
+                                                foreach (var item in listSkip)
+                                                {
+                                                    <div class="search-item p-3">
+                                                        <div class="row row-10">
+                                                            <div class="col-md-2">
+                                                                <div class="search-avatar mx-auto">
+                                                                    <a href="/TuyenDung/Detail?tdID=@item.Id" class="boxItemBackground lazy" style="background-image: url(/Content/Assets/images/noimage.jpg)"></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                <div class="search-content">
+                                                                    <div class="search-name  is-vip d-flex align-items-center justify-content-start mb-1">
+                                                                        <a href="/TuyenDung/Detail?tdID=@item.Id" class="size-09rem fw-700 tdAjax text-ellipsis" data-id="27235" data-type="td" title="" data-toggle="tooltip" data-original-title="@item.TenCongViec">
+                                                                            @item.TenCongViec
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="search-address">
+
+                                                                        <a href="/TuyenDung/Detail?tdID=@item.Id" data-toggle="tooltip" title="" class="size-09rem text-uppercase text-gray d-inline-block text-ellipsis" data-original-title="@item.DoanhNghiep.TenDoanhNghiep">@item.DoanhNghiep.TenDoanhNghiep</a>
+
+
+                                                                    </div>
+                                                                    <div class="search-desc size-085rem">
+                                                                        <div class="row row-10">
+                                                                            <div class="col-md-9">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-5">
+
+                                                                                        @{
+
+                                                                                            if (item.GioiTinhId == 1)
+                                                                                            {
+                                                                                                <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Giới tính yêu cầu">
+                                                                                                    <i class="fal fa-venus-mars blue-color w-18"></i>
+                                                                                                    @item.GioiTinh.TenGioiTinh
+                                                                                                </div>
+                                                                                            }
+                                                                                            if (item.GioiTinhId == 2)
+                                                                                            {
+                                                                                                <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Giới tính yêu cầu">
+                                                                                                    <i class="fal fa-venus-mars blue-color w-18"></i>
+                                                                                                    @item.GioiTinh.TenGioiTinh
+                                                                                                </div>
+                                                                                            }
+                                                                                            if (item.GioiTinhId == null)
+                                                                                            {
+                                                                                                <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Giới tính yêu cầu">
+                                                                                                    <i class="fal fa-venus-mars blue-color w-18"></i>
+                                                                                                    Cả Nam và Nữ
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+
+                                                                                    </div>
+                                                                                    <div class="col-md-7">
+
+                                                                                        <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Địa điểm làm việc: Cần Thơ">
+                                                                                            <i class="fal fa-map-marker-alt blue-color w-18"></i>
+                                                                                            @item.NoiLamViec
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                @{
+                                                                                    if (item.HanNop != null)
+                                                                                    {
+                                                                                        var date = item.HanNop.ToString().Split(' ');
+                                                                                        var time = date[0];
+                                                                                        <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Hạn nộp: @time">
+                                                                                            <i class="fal fa-clock blue-color w-18"></i>
+                                                                                            @time
+                                                                                        </div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="search-desc-item text-ellipsis" data-toggle="tooltip" title="" data-original-title="Hạn nộp: Chưa xác định">
+                                                                                            <i class="fal fa-clock blue-color w-18"></i>
+                                                                                            Chưa Xác Định
+                                                                                        </div>
+                                                                                    }
+
+                                                                                }
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            }
+
+                                        </div>
+                                        <div id="div-pagination">
+                                            <nav class="pagination-wrapper d-flex justify-content-center mt-4">
+                                                <ul class="pagination">
+                                                    @{
+                                                        if (CurrentPage > 1 & PageCount > 1)
+                                                        {
+
+                                                            <li data-page="1" class="page page-item"> <a class="page-link" href="/TuyenDung?pCount=@skip&pPage=1"></a></li>
+                                                        }
+
+                                                        for (int i = 1; i <= PageCount; i++)
+                                                        {
+                                                            if (i == pPage)
+                                                            {
+
+                                                                <li data-page="@i" class="page page-item active"><a class="page-link">@i</a></li>
+
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <li data-page="@i" class="page page-item "><a class="page-link" href="/TuyenDung?pCount=@skip&pPage=@i">@i</a></li>
+                                                            }
+                                                        }
+                                                        if (PageCount > 1 & CurrentPage < PageCount)
+                                                        {
+
+
+                                                            <li data-page="@PageCount" class="page page-item"> <a class="page-link" href="/TuyenDung?pCount=@skip&pPage=@PageCount">>></a></li>
+                                                        }
+
+                                                    }
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="nav-contentPane right">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div class="banner-qc-all">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+                                                <div class="banner-qc">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img class="qc-banner" src="~/images/@hinh" />
+                                                    </a>
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.nganhnghes').select2({
+            maximumSelectionLength: 1
+        });
+    });
+    $(document).ready(function () {
+        $('.tinhs').select2({
+            maximumSelectionLength: 1
+        });
+    });
+</script>

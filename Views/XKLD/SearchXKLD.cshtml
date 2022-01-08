@@ -1,0 +1,331 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "XKLD";
+
+    var xkld = ViewBag.XKLDskip;
+    var loaihinh = ViewBag.LoaiHinh;
+    var banner = ViewBag.Banner;
+    var video = ViewBag.Video;
+
+    
+
+    int num = 0;
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    int pSkip = ViewBag.Skip;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane daotaonew left">
+                <div id="dnn_ContentPane" class="contentPane">
+                    <div class="DnnModule DnnModule-ExchangeJob DnnModule-542">
+                        <a name="542"></a>
+                        <div id="dnn_ctr542_ContentPane">
+                            <!-- Start_Module_542 -->
+                            <div id="dnn_ctr542_ModuleContent" class="DNNModuleContent ModExchangeJobC">
+                                <div id="dnn_ctr542_ViewExchangeJob_ctl00_UpdatePanel1">
+
+                                </div>
+                                <div class="Invisible">
+
+                                    <div id="tabs">
+
+                                        <div class="search-bar position-relative overflow-hidden mb-3">
+                                            <form action="/XKLD/SearchXKLD">
+                                                <div class="container">
+                                                    <div class="search-inner">
+                                                        <div class="row row-5 align-items-center">
+                                                           
+                                                                    <div class="col-md-10">
+                                                                        <div class="form-group position-relative mb-0 noidung">
+                                                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề, nội dung tìm kiếm" value="" id="searchStr" name="searchStr">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="row row-5 align-items-center">
+
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group position-relative mb-0">
+                                                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                        <i class="fal fa-search"></i>Tìm
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                                
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="spec-boxitem ">
+
+                                            @{
+                                                
+                                                    @for (int i = 0; i < xkld.Count; i++)
+                                                    {
+                                                        <div class="HNews fixh">
+                                                            <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl00$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_0" value="381">
+                                                            <div class="TitleNews2 left fixw">
+                                                                <div class="thumb-image">
+                                                                    @{
+                                                                        var hinhanh = xkld[i].HinhAnh.ToString().Split('[', ']', '"');
+                                                                        var hinh = hinhanh[2];
+
+
+                                                                    }
+                                                                    <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_0" href="/XKLD/XKLDDetail?dtID=@xkld[i].Id&newsCatId=@xkld[i].ChuyenMucId&searchString=@ViewBag.SearchSrting"> <img class="hnewsImage" src="~/images/@hinh"></a>
+                                                                </div>
+                                                                <div class="news-title-list">
+                                                                    <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_0" href="/XKLD/XKLDDetail?dtID=@xkld[i].Id&newsCatId=@xkld[i].ChuyenMucId&searchString=@ViewBag.SearchSrting">@xkld[i].TieuDe</a>
+
+                                                                </div>
+                                                                <div class="news-summary">
+                                                                    <span>
+                                                                        @Html.Raw(xkld[i].TomTat)
+                                                                    </span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                
+                                               
+                                            }
+
+
+
+
+                                        </div>
+
+
+
+
+                                        <div style="margin-top: 15px;">
+                                            <table class="PagingTable">
+                                                <tbody>
+                                                    <tr>
+                                                        <td align="left" style="width: 1%;" class="Normal"></td>
+                                                        <td align="right" style="width: 99%;" class="Normal">
+                                                            <div class="PagingContainer">
+                                                                <ul>
+
+                                                                    @{
+                                                                        if (CurrentPage > 1 & PageCount > 1)
+                                                                        {
+                                                                            <li>
+                                                                                <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class=" PagingActive" href="/XKLD/SearchXKLD?pCount=@pSkip&pPage=1">&lt;&lt;</a>
+                                                                            </li>
+
+
+                                                                        }
+
+                                                                        for (int i = 1; i <= PageCount; i++)
+                                                                        {
+                                                                            if (i == pPage)
+                                                                            {
+                                                                                <li class="aspNetDisabled">
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_1" class="aspNetDisabled PagingActive">@i</a>
+                                                                                </li>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_2" class="PagingActive" href="/XKLD/SearchXKLD?pCount=@pSkip&pPage=@i">@i</a>
+                                                                                </li>
+
+                                                                            }
+                                                                        }
+                                                                        if (PageCount > 1 & CurrentPage < PageCount)
+                                                                        {
+
+                                                                            <li>
+                                                                                <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_8" class="PagingActive" href="/XKLD/SearchXKLD?pCount=@pSkip&pPage=@PageCount">&gt;&gt;</a>
+                                                                            </li>
+
+                                                                        }
+
+                                                                    }
+
+
+
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
+                                    <script type="text/javascript" language="JavaScript">
+
+                                        var ids = new Array('a1', 'a2', 'a3');
+
+                                        function switchid(id, obj) {
+                                            hideallids();
+                                            showdiv(id);
+                                            $("#a1a").removeClass('HeadTextSelected');
+                                            $("#a2a").removeClass('HeadTextSelected');
+                                            $("#a3a").removeClass('HeadTextSelected');
+                                            $(obj).addClass('HeadTextSelected');
+                                        }
+
+                                        function hideallids() {
+                                            //loop through the array and hide each element by id
+                                            for (var i = 0; i < ids.length; i++) {
+                                                hidediv(ids[i]);
+                                            }
+                                        }
+
+                                        function hidediv(id) {
+                                            //safe function to hide an element with a specified id
+                                            if (document.getElementById) { // DOM3 = IE5, NS6
+                                                document.getElementById(id).style.display = 'none';
+                                            }
+                                            else {
+                                                if (document.layers) { // Netscape 4
+                                                    document.id.display = 'none';
+                                                }
+                                                else { // IE 4
+                                                    document.all.id.style.display = 'none';
+                                                }
+                                            }
+                                        }
+
+                                        function showdiv(id) {
+                                            //safe function to show an element with a specified id
+
+                                            if (document.getElementById) { // DOM3 = IE5, NS6
+                                                document.getElementById(id).style.display = 'block';
+                                            }
+                                            else {
+                                                if (document.layers) { // Netscape 4
+                                                    document.id.display = 'block';
+                                                }
+                                                else { // IE 4
+                                                    document.all.id.style.display = 'block';
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                    <div class="clear">
+                                    </div>
+                                </div>
+
+
+                            </div><!-- End_Module_542 -->
+                        </div>
+                    </div>
+                    <div class="DnnModule DnnModule-DNN_HTML DnnModule-605">
+                        <a name="605"></a>
+                        <div class="dnnPEMContNotitle">
+                            <div id="dnn_ctr605_ContentPane" class="dnnPEMContNotitleBody">
+                                <!-- Start_Module_605 -->
+                                <div id="dnn_ctr605_ModuleContent" class="DNNModuleContent ModDNNHTMLC">
+                                    <div id="dnn_ctr605_HtmlModule_lblContent" class="Normal">
+
+                                    </div>
+
+                                </div><!-- End_Module_605 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane right">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <div class="video-part">
+                                    @{
+                                        if (video.Count > 0)
+                                        {
+                                            <div class="video-title">
+                                                <p>Video</p>
+                                            </div>
+                                        }
+                                    }
+                                    @{
+                                        foreach (var item in video)
+                                        {
+                                            <iframe class="video-box" src="@item.Video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                        }
+                                    }
+                                    @*<iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div class="banner-qc-all">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+                                                <div class="banner-qc">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img class="qc-banner" src="~/images/@hinh" />
+                                                    </a>
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear">
+        </div>
+    </div>
+</div>
+

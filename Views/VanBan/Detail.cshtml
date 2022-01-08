@@ -1,0 +1,247 @@
+
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "VanBanDetail";
+
+    var vanban = ViewBag.VanBan;
+    int num = 0;
+
+
+    var loaivb = ViewBag.LoaiVB;
+    var linhvuc = ViewBag.LinhVuc;
+
+}
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-Document DnnModule-537">
+                        <a name="537"></a>
+                        <div id="dnn_ctr537_ContentPane">
+                            <!-- Start_Module_537 -->
+                            <div id="dnn_ctr537_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                <input type="hidden" name="dnn$ctr537$ViewDocument$ctl00$hdfDocument" id="dnn_ctr537_ViewDocument_ctl00_hdfDocument" value="103">
+                                <div class="Invisible">
+                                    <div class="container-box spec-increbox">
+                                        @{
+                                            if (vanban == null)
+                                            {
+                                                <div class="box-head">
+                                                    <ul class="tabul">
+                                                        <li class="tabli">
+                                                            <a class="tablink tabSelected">
+                                                                <span style="margin-left :30px;margin-top:20px" class="shadow-text" id="dnn_ctr8091_Main_VanBan_lblTitle">Không tìm thấy trang</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="box-head">
+                                                    <ul class="tabul">
+                                                        <li class="tabli">
+                                                            <a class="tablink tabSelected">
+                                                                <span class="tabOut"><span style="color: #44444B;" class="shadow-text" id="dnn_ctr8091_Main_VanBan_lblTitle">Văn bản pháp quy</span></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="spec-boxitem">
+                                                    <style type="text/css">
+                                                        .style1 {
+                                                            width: 162px;
+                                                        }
+
+                                                        .SubHead {
+                                                            color: #003366;
+                                                        }
+                                                    </style>
+                                                    <table width="100%;" border="0px" style="line-height: 200%; font-size: 9pt; border-style: dotted; border-color: Blue;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td align="center" colspan="2">
+                                                                    <span style="font-size: 9pt;" class="SubHead" id="dnn_ctr8091_Main_VanBan_ctl00_lbTrichYeu">
+                                                                        Công văn số @vanban.SoKyHieu
+                                                                    </span>
+                                                                   
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    Số văn bản:
+                                                                </td>
+                                                                <td>
+                                                                    @vanban.SoKyHieu
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    Trích yếu:
+                                                                </td>
+                                                                <td>
+                                                                    @vanban.TrichYeu
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    Loại văn bản:
+                                                                </td>
+                                                                <td>
+                                                                    @{
+                                                                        for (int i = 0; i < loaivb.Count; i++)
+                                                                        {
+                                                                            if (loaivb[i].Id == vanban.LoaiVanBanId)
+                                                                            {
+                                                                                @loaivb[i].TenLoaiVanBan
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    Cơ quan ban hành:
+                                                                </td>
+                                                                <td>
+                                                                    @vanban.CoQuanBanHanh
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    Ngày tháng năm ban hành:
+                                                                </td>
+                                                                <td>
+                                                                    @vanban.NgayThang
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td class="SubHead" colspan="2">
+                                                                    Nội dung
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <div id="dnn_ctr8091_Main_VanBan_ctl00_divNoidung">
+                                                                        @{
+                                                                            var slipt = vanban.VanBan.ToString().Split('[', ']', ',');
+                                                                            var slipt1 = slipt[1].ToString().Split('"');
+                                                                            @*@slipt1[1]*@
+                                                                        }
+
+                                                                        <iframe src="~/uploads/@slipt1[1]" style="width: 100%;height: 500px;border: none;"></iframe>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="style1">
+                                                                    <a id="dnn_ctr537_ViewDocument_ctl00_hplDownload" href="@vanban.VanBan"> Tải tài liệu</a>
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                        }
+
+
+                                    </div>
+                                </div>
+
+
+                            </div><!-- End_Module_537 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane left">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <!-- Start_Module_535 -->
+                                <div id="dnn_ctr535_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                    <input type="hidden" name="dnn$ctr535$ViewDocument$ctl00$hdfDocument" id="dnn_ctr535_ViewDocument_ctl00_hdfDocument" value="103">
+                                    <div class="cat-pane">
+                                        <div class="cat-title">
+                                            <span class="icon-news-top">
+                                                <a href="">
+                                                    LĨNH VỰC
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="cat-item" id="dnn_MenuCatalog">
+                                            <div class="Invisible">
+                                                <div class="self-catalog">
+                                                    <ul>
+                                                        @{
+                                                            for (int i = 0; i < linhvuc.Count; i++)
+                                                            {
+                                                                <li id="@i">
+                                                                    <a id="dnn_ctr535_ViewDocument_ctl00_rptCate_hplName_0" href="/VanBan/ListVanBan?lvID=@linhvuc[i].Id">@linhvuc[i].TenLinhVuc</a>
+                                                                </li>
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    $('#li' + '-1').attr('style', 'font-weight:bold')
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="news-conner">
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- End_Module_535 -->
+                            </div>
+                        </div>
+                        @*<div class="DnnModule DnnModule-HomeViectimnguoi DnnModule-539">
+                    <a name="539"></a>
+                    <div id="dnn_ctr539_ContentPane">
+                        <!-- Start_Module_539 -->
+                        <div id="dnn_ctr539_ModuleContent" class="DNNModuleContent ModHomeViectimnguoiC">
+                            <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfJobBoardID" id="dnn_ctr539_MainHome_ctl00_hdfJobBoardID" value="112">
+                            <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfResume" id="dnn_ctr539_MainHome_ctl00_hdfResume" value="112">
+                            <div class="Invisible">
+                                <div class="box-tk">
+
+                                    <div class="tkcontent">
+                                        <a id="dnn_ctr539_MainHome_ctl00_hplJobBoard" class="item-stistic" href="">
+                                            <span class="itemtxt">
+                                                <b>
+                                                    90386
+                                                </b> Việc làm đang
+                                                tuyển dụng
+                                            </span> <span class="itemarrow"></span>
+                                        </a>
+                                        <br>
+                                        <a id="dnn_ctr539_MainHome_ctl00_hplResume" class="item-stistic" href="">
+                                            <span class="itemtxt"><b>125776</b> Hồ sơ ứng viên</span>
+                                            <span class="itemarrow"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- End_Module_539 -->
+                    </div>
+                </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>

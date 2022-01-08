@@ -1,0 +1,19 @@
+.el-button + .el-button {
+    margin-left: 5px!important;
+}
+.el-dialog__header {
+    background: #348cd4!important;
+    padding: 10px 20px 10px!important;
+}
+.el-dialog__title {
+    color: #fff!important;
+}
+.el-dialog__headerbtn{
+    top:11px!important
+}
+.el-dialog__headerbtn .el-dialog__close {
+    color: #fff !important;
+}
+.el-dialog__headerbtn .el-dialog__close:hover {
+    color: #ccc!important;
+}

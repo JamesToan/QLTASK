@@ -1,0 +1,262 @@
+.nav>li>a {
+    color: #FFF;
+}
+
+.navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar {
+    margin-bottom: 0px;
+    min-height: 40px;
+}
+
+.navbar-brand {
+    color: #FFF;
+    height: 40px;
+}
+
+.navbar-brand:hover {
+    color: #eee;
+}
+
+.navbar-toggle {
+    border-color: #FFF;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #eee;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+body .nav>li>a:focus,
+body .nav>li>a:hover {
+    background-color: transparent;
+}
+
+body .nav .open>a,
+body .nav .open>a:focus,
+body .nav .open>a:hover {
+    background-color: transparent;
+    border-color: none;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    margin-bottom: 0px;
+    padding: 3px 15px;
+}
+
+.breadcrumb>li+li:before {
+    content: "\f105";
+    font: normal normal normal 14px/1 FontAwesome;
+}
+
+.btn {
+    line-height: 14px;
+    padding: 3px 12px;
+}
+
+.form-control {
+    height: 22px;
+    padding: 2px 12px;
+}
+
+.input-group-addon {
+    padding: 2px 12px;
+}
+
+.form-horizontal .control-label {
+    padding-top: 1px;
+}
+
+.row {
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    margin-top: 2px;
+}
+
+label {
+    margin-bottom: 1px;
+}
+
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.form-horizontal .form-group {
+    margin-right: -2px;
+    margin-left: -2px;
+}
+
+.form-control-static {
+    padding-top: 1px;
+    padding-bottom: 0px;
+    min-height: 21px;
+}
+
+.form-control-feedback {
+    height: 22px;
+    line-height: 22px;
+}
+
+.carousel-container img {
+    margin: auto;
+}
+
+.carousel-container .item .row a {
+    display: block;
+    background: #FFF;
+    border-radius: 10px;
+}
+
+.page-header {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #FFF;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    line-height: 24px;
+    padding: 5px;
+    background: #5FB4EA;
+    border-radius: 4px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.table {
+    margin-bottom: 0px;
+}
+
+@media screen and (max-width: 768px) {
+    .dropdown-submenu>.dropdown-menu {
+        display: block;
+        padding-left: 20px;
+    }
+    .dropdown-menu>li>a {
+        color: #eee;
+    }
+    .dropdown-menu>li>a:focus,
+    .dropdown-menu>li>a:hover {
+        color: #aaa;
+        background-color: transparent;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .navbar-brand {
+        text-indent: -1000px;
+        /*background: url(/Assets/images/icons/home.png) no-repeat center center;*/
+    }
+    .dropdown-submenu>.dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -6px;
+        margin-left: -1px;
+    }
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+    .dropdown-submenu>a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+    }
+    .more .dropdown-submenu>a:after {
+        margin-left: -10px;
+        float: left;
+        border-width: 5px 5px 5px 0px;
+        border-right-color: #ccc;
+    }
+    .dropdown-submenu:hover>a:after {
+        border-left-color: #fff;
+    }
+    .dropdown-submenu.pull-left {
+        float: none;
+    }
+    .dropdown-submenu.pull-left>.dropdown-menu {
+        left: -100%;
+        margin-left: 10px;
+    }
+}
+
+@media screen and (min-width: 979px) {
+    ul.nav li.dropdown:hover>ul.dropdown-menu {
+        display: block;
+        background: #42BAF0;
+    }
+    ul.nav li.dropdown>.dropdown-menu>li>a {
+        color: #FFF;
+    }
+    ul.nav li.dropdown>.dropdown-menu>li:hover>a {
+        color: #42BAF0;
+    }
+}

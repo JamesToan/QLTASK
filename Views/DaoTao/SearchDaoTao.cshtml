@@ -1,0 +1,354 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "SearchTinTuc";
+
+    int num = 0;
+
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+
+    var bantin = ViewBag.NewsBanTin;
+    var tintuc = ViewBag.TinTuc;
+    var chuyenmuc = ViewBag.ChuyenMuc;
+    var skip = ViewBag.Skip;
+    var tenkhoahoc = ViewBag.TenKhoaHoc;
+    var banner = ViewBag.Banner;
+    var video = ViewBag.Video;
+    var searchString = ViewBag.SearchString;
+}
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-VietNews DnnModule-704">
+                        <a name="704"></a>
+                        <div id="dnn_ctr704_ContentPane">
+                            <!-- Start_Module_704 -->
+                            <div id="dnn_ctr704_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfCate" id="dnn_ctr704_ViewVietNews_ctl00_hdfCate" value="7">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfSettings" id="dnn_ctr704_ViewVietNews_ctl00_hdfSettings" value="114">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfPageAdmin" id="dnn_ctr704_ViewVietNews_ctl00_hdfPageAdmin" value="114">
+                                <div class="Invisible">
+
+                                    <div class="container-box spec-increbox">
+
+                                        <div class="search-bar position-relative overflow-hidden mb-3">
+                                            @*@using (Html.BeginForm("SearchDaoTao", "DaoTao", FormMethod.Post))
+                                            {
+                                                <div class="container">
+                                                    <div class="search-inner">
+                                                        <div class="row row-5 align-items-center">
+                                                            <div class="col-md-10">
+                                                                <div class="form-group position-relative mb-0 noidung">
+                                                                    <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề" value="" id="searchString" name="searchString">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="row row-5 align-items-center">
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group position-relative mb-0">
+                                                                            <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                <i class="fal fa-search"></i>Tìm
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }*@
+                                            <form action="/DaoTao/SearchDaoTao">
+                                                <div class="container">
+                                                    <div class="search-inner">
+                                                        <div class="row row-5 align-items-center">
+
+                                                            <div class="col-md-10">
+                                                                <div class="form-group position-relative mb-0 noidung">
+                                                                    <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề, nội dung tìm kiếm" value="" id="searchString" name="searchString">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="row row-5 align-items-center">
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group position-relative mb-0">
+                                                                            <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                <i class="fal fa-search"></i>Tìm
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            @*@using (Html.BeginForm("DangKyHN", "DaoTao", FormMethod.Post))
+                                            {
+                                                <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+                                                    <div class="modal-dialog modal-dialog-centered">
+
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h4 class="modal-title">ĐĂNG KÝ</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="row form-group form-area">
+                                                                    <div class="col-sm-2 form-title">
+                                                                        Khóa học:
+                                                                    </div>
+                                                                    <div class="col-sm-10">
+                                                                        <select class="question-select selectFilter" style="border-radius:0px;" name="tenkhoahoc" id="tenkhoahoc" size="1" tabindex="-1">
+                                                                            <option value="-1">Chọn khóa học</option>
+                                                                            @{
+                                                                                for (int i = 0; i < tenkhoahoc.Count; i++)
+                                                                                {
+                                                                                    <option value="@tenkhoahoc[i]" class="childAttr">@tenkhoahoc[i]</option>
+                                                                                }
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row form-group form-area">
+                                                                    <div class="col-sm-2 form-title">
+                                                                        Họ tên:
+                                                                    </div>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control rounded-0 transition-03" placeholder="Họ tên" value="" id="hoten" name="hoten">
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row form-group form-area">
+                                                                    <div class="col-sm-2 form-title">
+                                                                        Điện thoại:
+                                                                    </div>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" class="form-control rounded-0 transition-03" placeholder="Số điện thoại" value="" id="phone" name="phone">
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row form-group form-area">
+                                                                    <div class="col-sm-2 form-title">
+                                                                        Email:
+                                                                    </div>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="email" class="form-control rounded-0 transition-03" placeholder="Email" value="" id="email" name="email">
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="clearfix">
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" id="dtsubmit" class="btn btn-default">Gửi</button>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            }*@
+                                        </div>
+
+                                        <div class="spec-boxitem">
+                                            @{
+                                               
+                                                    @for (int i = 0; i < tintuc.Count; i++)
+                                                    {
+                                                        <div class="HNews fixh">
+                                                            <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl00$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_0" value="381">
+                                                            <div class="TitleNews2 left fixw">
+                                                                <div class="thumb-image">
+                                                                    @{
+                                                                        var hinhanh = tintuc[i].HinhAnh.ToString().Split('[', ']', '"');
+                                                                        var hinh = hinhanh[2];
+
+
+                                                                    }
+                                                                    <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_0" href="/DaoTao/DaoTaoDetail?dtID=@tintuc[i].Id&newsCatId=@tintuc[i].ChuyenMucId&searchStr=@ViewBag.SearchStr"> <img alt="Chưa có ảnh" class="hnewsImage" src="~/images/@hinh"></a>
+                                                                </div>
+                                                                <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_0" href="/DaoTao/DaoTaoDetail?dtID=@tintuc[i].Id&newsCatId=@tintuc[i].ChuyenMucId&searchStr=@ViewBag.SearchStr">@tintuc[i].TieuDe</a>
+                                                                <div class="news-summary">
+                                                                    <span>
+                                                                        @tintuc[i].TomTat
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        }
+                                            }
+
+
+
+                                            <div class="pagingBox">
+                                                <table class="PagingTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left" style="width: 1%;" class="Normal"></td>
+                                                            <td align="right" style="width: 99%;" class="Normal">
+                                                                <div class="PagingContainer">
+                                                                    <ul>
+
+                                                                        @{
+                                                                            if (CurrentPage > 1 & PageCount > 1)
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class="aspNetDisabled PagingActive" href="/BanTin/SearchTinTuc?pCount=4&pPage=1">&lt;&lt;</a>
+                                                                                </li>
+
+
+                                                                            }
+
+                                                                            for (int i = 1; i <= PageCount; i++)
+                                                                            {
+                                                                                if (i == pPage)
+                                                                                {
+                                                                                    <li class="aspNetDisabled">
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_1" class="aspNetDisabled PagingActive">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li>
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_2" class="PagingActive" href="/BanTin/SearchTinTuc?pCount=4&pPage=@i">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                            }
+                                                                            if (PageCount > 1 & CurrentPage < PageCount)
+                                                                            {
+
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_8" class="PagingActive" href="/BanTin/SearchTinTuc?pCount=4&pPage=@PageCount">&gt;&gt;</a>
+                                                                                </li>
+
+                                                                            }
+
+                                                                        }
+
+
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfPage" id="dnn_ctr704_ViewVietNews_ctl00_hdfPage" value="1">
+                                </div>
+
+
+                            </div><!-- End_Module_704 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane right">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <div class="video-part">
+                                    @{
+                                        if (video.Count > 0)
+                                        {
+                                            <div class="video-title">
+                                                <p>Video</p>
+                                            </div>
+                                        }
+                                    }
+                                    @{
+                                        foreach (var item in video)
+                                        {
+                                            <iframe class="video-box" src="@item.Video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                        }
+                                    }
+                                    @*<iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div class="banner-qc-all">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+                                                <div class="banner-qc">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img class="qc-banner" src="~/images/@hinh" />
+                                                    </a>
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>

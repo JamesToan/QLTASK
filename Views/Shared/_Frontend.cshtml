@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<head id="Head">
+    <title>
+        Việc làm Long An
+    </title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="text/javascript" http-equiv="Content-Script-Type" />
+    <meta content="text/css" http-equiv="Content-Style-Type" />
+    <meta id="MetaCopyright" name="COPYRIGHT" content="Copyright 2021 by DotNetNuke Corporation" />
+    <meta id="MetaAuthor" name="AUTHOR" content="Việc làm Hồ Chí Minh" />
+    <meta name="RESOURCE-TYPE" content="DOCUMENT" />
+    <meta name="DISTRIBUTION" content="GLOBAL" />
+    <meta id="MetaRobots" name="ROBOTS" content="INDEX, FOLLOW" />
+    <meta name="REVISIT-AFTER" content="1 DAYS" />
+    <meta name="RATING" content="GENERAL" />
+    <meta http-equiv="PAGE-ENTER" content="RevealTrans(Duration=0,Transition=1)" />
+    <style id="StylePlaceholder" type="text/css"></style>
+    <link href="~/Content/Portals/_default/default.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/DesktopModules/VietNews/module.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Portals/_default/Skins/vieclamNew/skin.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Portals/_default/Containers/HCM/container.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Portals/_default/Containers/DarkKnightMobile/container.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Portals/0/portal.css?cdv=37" type="text/css" rel="stylesheet" />
+    <link href="~/Content/Portals/_default/Skins/vieclamNew//DNNStandard/StandardMenu.css?cdv=37" type="text/css" rel="stylesheet" />
+    <script src="~/Content/Resources/Shared/Scripts/jquery/jquery.min.js?cdv=37" type="text/javascript"></script>
+    <script src="~/Content/Resources/Shared/Scripts/jquery/jquery-ui.min.js?cdv=37" type="text/javascript"></script>
+    <script src="https://use.fontawesome.com/d7760681f1.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    @*<link href="/Content/Portals/_default/Telerik.Web.UI.WebResource.axd" type="text/css" rel="stylesheet">*@
+    <link href="" rel="canonical" />
+    <link type="text/css" rel="stylesheet" href="~/Content/DesktopModules/SpeedyTouchFlexi2/flexslider.css" />
+    <style type="text/css"></style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
+</head>
+
+<body id="Body">
+
+
+
+
+    <script src="~/Content/js/dnncore.js?cdv=37" type="text/javascript"></script>
+    <script src="~/Content/js/dnn.modalpopup.js?cdv=37" type="text/javascript"></script>
+    <script src="~/Content/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js?cdv=37" type="text/javascript"></script>
+    <script src="~/Content/Portals/_default/Skins/vieclamNew/jquery.cycle.min.js?cdv=37" type="text/javascript"></script>
+    <script src="~/Content/Portals/_default/Skins/vieclamNew//DNNStandard/StandardMenu.js?cdv=37" type="text/javascript"></script>
+    @*<script type="text/javascript">
+            //<![CDATA[
+            var theForm = document.forms['form1'];
+            if (!theForm) {
+                theForm = document.form1;
+            }
+            function __doPostBack(eventTarget, eventArgument) {
+                if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+                    theForm.__EVENTTARGET.value = eventTarget;
+                    theForm.__EVENTARGUMENT.value = eventArgument;
+                    theForm.submit();
+                }
+            }
+            //]]>
+        </script>*@
+    @{
+        @using Microsoft.AspNetCore.Http;
+        @using coreWeb.Controllers;
+        var name = Context.Session.GetString("UserName");
+        int? roleid = Context.Session.GetInt32("RoleId");
+        int? userid = Context.Session.GetInt32("UserId");
+    }
+    <div id="DNN6" class="Home">
+        <div id="main-page">
+            <div class="page_container" id="page-container">
+                <div id="head-logo">
+                    <div class="bar-banner">
+                        <a id="dnn_dnnLogo_hypLogo" title="" href="/">
+                            <img src="~/Content/Portals/_default/Skins/vieclamNew/Images/logovlla.png" id="dnn_dnn_dnnLogo_imgLogo" style="border-width: 0px;" />
+                        </a>
+                    </div>
+                    @{
+                        if (name != null && name != "")
+                        {
+                            <div id="head-menu" >
+                                <div class="outer-center">
+                                    @await Html.PartialAsync("~/Views/ModMenu/_TopMenu.cshtml")
+                                    @*<div class="menu-top inner-center">
+                                            <ul>
+                                                <li class="i-first"><a href="">Cổng thông tin việc làm TP. HCM </a></li>
+                                                <li class="login">
+                                                    <a id="dnn_dnnUser_registerLink" title="Đăng ký" class="SkinObject" href="http://www.vieclamhcm.net/trangchu/dangky/tabid/99/Default.aspx?returnurl=http%3a%2f%2fwww.vieclamhcm.net%2ftrangchu.aspx">Đăng ký</a>
+                                                    <!--close registerGroup-->
+                                                </li>
+                                                <li class="login">
+                                                    <a id="dnn_dnnLogin_loginLink" title="Đăng nhập" class="LoginLink" href="/Job/Login">Đăng nhập</a>
+                                                    <!--close loginGroup-->
+                                                </li>
+                                                <li class="i-last"><a href="">Liên hệ</a> </li>
+                                            </ul>
+                                        </div>*@
+                                </div>
+                            </div>
+                        }
+                        else if (name == "" || name == null)
+                        {
+                            <div id="head-menu">
+                                <div class="outer-center">
+                                    @await Html.PartialAsync("~/Views/ModMenu/_TopMenu.cshtml")
+                                    @*<div class="menu-top inner-center">
+                                            <ul>
+                                                <li class="i-first"><a href="">Cổng thông tin việc làm TP. HCM </a></li>
+                                                <li class="login">
+                                                    <a id="dnn_dnnUser_registerLink" title="Đăng ký" class="SkinObject" href="http://www.vieclamhcm.net/trangchu/dangky/tabid/99/Default.aspx?returnurl=http%3a%2f%2fwww.vieclamhcm.net%2ftrangchu.aspx">Đăng ký</a>
+                                                    <!--close registerGroup-->
+                                                </li>
+                                                <li class="login">
+                                                    <a id="dnn_dnnLogin_loginLink" title="Đăng nhập" class="LoginLink" href="/Job/Login">Đăng nhập</a>
+                                                    <!--close loginGroup-->
+                                                </li>
+                                                <li class="i-last"><a href="">Liên hệ</a> </li>
+                                            </ul>
+                                        </div>*@
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="nav">
+                <div class="page_container" id="page-container">
+                    <div class="logo_home">
+                        <a href="/" class="home-menu">
+                            <i class="fa fa-home"></i>Trang chủ
+                        </a>
+                        <a class="mobile-bars" href="javascript:void(0);" onclick="toggleMenu()" style="display:none;"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <div class="menu" id="main-menu">
+                        <!-- DDRmenu v02.00.01 - DNNStandard template -->
+                        <!--SEO NOINDEX-->
+                        @*@await Html.PartialAsync("~/Views/ModMenu/_Mainmenu.cshtml")*@
+                        @await Component.InvokeAsync("Menu")
+                        @*<div id="dnnMenu">
+            <ul class="topLevel">
+
+                <li class="item first selected">
+
+                    <a href="http://www.vieclamhcm.net/trangchu.aspx">
+                        <div>Trang chủ</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/covid19.aspx">
+                        <div>CoVid-19</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/gioithieu.aspx">
+                        <div>Giới thiệu</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/viectimnguoi.aspx">
+                        <div>Việc t&#236;m người</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/nguoitimviec.aspx">
+                        <div>Người t&#236;m việc</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/thutuchanhchinh.aspx">
+                        <div>Thủ tục H&#224;nh ch&#237;nh</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/vanban.aspx">
+                        <div>Văn bản</div>
+                    </a>
+
+                </li>
+
+                <li class="item">
+
+                    <a href="http://www.vieclamhcm.net/download.aspx">
+                        <div>Download</div>
+                    </a>
+
+                </li>
+
+                <li class="item last">
+
+                    <a href="http://www.vieclamhcm.net/sanvieclam.aspx">
+                        <div>S&#224;n việc l&#224;m</div>
+                    </a>
+
+                </li>
+
+            </ul>
+        </div>*@
+                        <!--END SEO-->
+
+
+
+                    </div>
+                </div>
+            </div>
+            @RenderBody()
+            <div class="Footer ">
+                <div class="footer-top ">
+                    <div class="page_container">
+                        <div id="dnn_ADVANTAGE " class="DNNEmptyPane ">
+                        </div>
+                    </div>
+                </div>
+                <div class="Info ">
+                    <div class="page_container">
+                        @*@await Html.PartialAsync("~/Views/ModContent/_Footer.cshtml")*@
+                        @*@Html.Action("BannerHome", "ModBanner")*@
+                        @*@{
+            await Html.RenderPartialAsync("~/Views/ModContent/_Footer.cshtml");
+        }*@
+                        @*<partial name="~/Views/ModContent/_Footer.cshtml" />*@
+                        @await Component.InvokeAsync("Footer")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear ">
+        </div>
+
+    </div>
+
+    <div title="Click To Top" style="position:fixed; bottom: 36px; right: 16px; cursor: pointer; z-index: 100003;" id="topcontrol">
+        <a onclick="topFunction()" id="myBtn" title="Go to top">
+            <img src="~/Content/Portals/_default/Skins/vieclamNew/Images/totop.png" style="width: 21px; height: 21px " />
+        </a>
+    </div>
+
+</body>
+
+
+
+
+</html>
+<script>
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 50px from the top of the document, show the button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+<script>
+    function toggleMenu() {
+        var x = $("#main-menu ");
+        if (x.hasClass("show")) {
+            x.removeClass("show");
+        } else {
+            x.addClass("show ");
+        }
+    }
+    $(document).ready(function () {
+
+        //$(function () {
+        // scroll body to 0px on click
+        $('.scrollup').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 400);
+            return false;
+        });
+        //});
+
+    });
+    $("#menu-head-menu li").click(function () {
+        $(this).find("ul").slideToggle();
+    });
+</script>
+
+
+@*<script type="text/javascript" src="~/Content/Resources/Shared/scripts/initWidgets.js "></script>*@
+<!-- Global site tag (gtag.js) - Google Analytics -->
+@*<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y34V8GBCB3"></script>*@
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-Y34V8GBCB3');
+</script>

@@ -1,0 +1,219 @@
+#dnnMenu {
+    height: 39px;
+}
+
+#dnnMenu .topLevel {
+    height: 39px;
+    position: relative;
+}
+
+#dnnMenu .topLevel li {
+    float: left;
+    list-style-type: none;
+    position: relative;
+}
+
+#dnnMenu .topLevel li a {
+    display: block;
+    color: #fff;
+    font-size: 13px;
+    height: 41px;
+    line-height: 38px;
+    text-decoration: initial;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+#dnnMenu .topLevel li.hover a,
+#dnnMenu .topLevel li a:hover {
+    text-decoration: none;
+}
+
+#dnnMenu .topLevel li a div {
+    display: block;
+    line-height: 41px;
+    padding: 0px 12px;
+}
+
+#dnnMenu .topLevel li.hover a div,
+#dnnMenu .topLevel li a:hover div {
+    /*margin:0px;*/
+}
+
+#dnnMenu .subLevel {
+    display: none;
+    position: absolute;
+    width: auto;
+    margin: 0;
+    padding: 0 0px 15px;
+    z-index: 1210;
+    background: #f7f6f6;
+    box-shadow: 1px 1px #f1f1f1;
+}
+
+#dnnMenu .topLevel li.hover .subLevel {
+    display: block;
+    white-space: nowrap;
+}
+
+#dnnMenu .subLevel ul {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 1200;
+}
+
+#dnnMenu .subLevel li {
+    float: none;
+    clear: both;
+    width: auto;
+}
+
+#dnnMenu .subLevel li {
+    margin-bottom: -.55em;
+}
+
+#dnnMenu .subLevel li.item a div img {
+    margin-right: .5em;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+#dnnMenu .subLevel li.item a div span {
+    color: #1e3676;
+}
+
+#dnnMenu .subLevel li.item a:hover div {
+    color: #c11820;
+}
+
+#dnnMenu .subLevelRight {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -6px;
+    width: auto;
+    margin: 0 0 0 -3px;
+}
+
+#dnnMenu .subLevel li.first>.subLevelRight {
+    top: 8px;
+}
+
+#dnnMenu .subLevel li.first.last>.subLevelRight {
+    top: 2px;
+}
+
+#dnnMenu .subLevel li.hover>.subLevelRight {
+    display: block;
+}
+
+#dnnMenu .subLevel li.first>.subLevelRight li.first>.subLevelRight {
+    top: 0px;
+}
+
+#dnnMenu .subLevelRight ul {
+    display: block;
+}
+
+#dnnMenu .subLevelRight ul li {
+    position: relative;
+}
+
+#dnnMenu .subLevelRight ul li a {
+    display: block;
+}
+
+#dnnMenu .subLevelRight ul li a div {
+    display: block;
+    white-space: nowrap;
+}
+
+#dnnMenu .subLevelRight ul li.first>a {
+    background: url(images/PanelBGTR.png) no-repeat right 0;
+}
+
+#dnnMenu .subLevelRight ul li.first>a div {
+    background: url(images/PanelBGTL.png) no-repeat 0 0;
+    line-height: 24px;
+    padding: 6px 0 0 15px;
+}
+
+#dnnMenu .subLevelRight ul li.first.last>a div {
+    background: url(images/PanelBGNL.png) no-repeat 0 bottom;
+    padding: 6px 0 0 15px;
+}
+
+#dnnMenu .topLevel li.first a {
+    /*background:url(images/icon_home.png) no-repeat 0 50%;*/
+}
+
+#dnnMenu .topLevel li.first a div {
+    /*display:none;*/
+}
+
+#dnnMenu .topLevel>li.last a {
+    background: #89C737 !important;
+}
+
+#dnnMenu .topLevel>li.last {
+    width: 142px;
+    float: right;
+    text-align: center;
+    background: none;
+}
+
+#dnnMenu .topLevel li.selected a {
+    background: #0D84BE;
+    color: #FFFFFF;
+    display: block;
+    /*float: left;*/
+    font-size: 13px;
+    /*height: 41px !important ;*/
+    line-height: 41px;
+    padding: 0 15px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+@media (max-width:700px){
+    .dropdown-content{
+        position:relative;
+    }
+
+        .dropdown-content li {
+            background-color: #f1f1f1;
+        }
+
+    .icon-show {
+        /*float:right;*/
+        font-size: 16px;
+        padding-top: 30%;
+    }
+    #dnnMenu .topLevel li a div {
+        display: -webkit-box;
+    }
+    .menu-tabs {
+        margin-left: 0px ;
+
+    }
+    menu-tabs-title{
+        padding-left:0px;
+    }
+    .icon-menunew {
+        padding-left: 10px !important;
+    }
+}
+@media (min-width: 701px){
+
+    .icon-show{
+        display: none !important;
+    }
+
+}
+.menu-tabs{
+    margin-left: 0px ;
+    margin-right:0px ;
+}
+
+

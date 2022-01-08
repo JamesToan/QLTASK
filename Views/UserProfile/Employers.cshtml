@@ -1,0 +1,495 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Microsoft.AspNetCore.Http;
+@using coreWeb.Controllers;
+@{
+    Layout = "~/Views/Shared/_Layoutprofile.cshtml";
+    ViewData["Title"] = "UserInfo";
+
+    int roleID = ViewBag.Role;
+   
+   
+    var vitri = ViewBag.ViTriCongViec;
+    var vanbang = ViewBag.VanBang;
+    var tglamviec = ViewBag.TGLamViec;
+    var nganhnghe = ViewBag.DMNganhNghe;
+    var linhvuc = ViewBag.DMLinhVuc;
+    var tinh = ViewBag.DMTinh;
+    var huyen = ViewBag.DMHuyen;
+    var tinhoc = ViewBag.TinHoc;
+    var ngoaingu = ViewBag.NgoaiNgu;
+    var doanhnghiep = ViewBag.DoanhNghiep;
+    var tuyendung = ViewBag.TuyenDung;
+    var user = ViewBag.User;
+    var tinhdn = ViewBag.Tinh;
+    var huyendn = ViewBag.Huyen;
+    var loaihinh = ViewBag.LoaiHinh;
+    var nganhkinhte = ViewBag.NganhKT;
+    var kcn = ViewBag.KCN;
+    var name = Context.Session.GetString("UserName");
+    int? roleid = Context.Session.GetInt32("RoleId");
+    int? userid = Context.Session.GetInt32("UserId");
+    int? ngldid = Context.Session.GetInt32("NLDID");
+
+}
+<link href="~/Content/Assets/vendor/styles/bundle.css" rel="stylesheet" />
+@*<script src="~/Content/Assets/vendor/scripts/bundle.js" type="text/javascript"></script>*@
+<link rel="stylesheet" type="text/css" href="~/Content/Assets/ungvien/css/capnhathoso.css">
+<link rel="stylesheet" type="text/css" href="~/Content/Assets/vendor/dropzone/dropzone.css">
+<script src="~/Content/Assets/vendor/lib/Sortable.js"></script>
+<script src="~/Content/Assets/vendor/dropzone/dropzone.js"></script>
+@*<script src="~/Content/Assets/ungvien/js/capnhathoso.js"></script>*@
+
+
+<body class="themeCustom">
+    <script src="~/Content/Assets/vendor/jquery/dist/jquery.js"></script>
+    <script src="~/Content/Assets/vendor/sweetalert/lib/sweet-alert.min.js"></script>
+    <script src="~/Content/Assets/vendor/jquery/function.js"></script>
+
+
+    <style>
+        .grecaptcha-badge {
+            display: none !important;
+        }
+    </style>
+    <div class="app layout-fixed-header">
+        <!-- sidebar panel -->
+        <div class="sidebar-panel offscreen-left">
+            <div class="brand">
+                <!-- logo -->
+                <div class="brand-logo">
+                    <div class="imgLogoNtd" id="imgLogoNtd">
+                      
+                        <img src="~/Content/Assets/images/noimage.jpg">
+                        @*<div>
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <input class="fileAvatar" type="file" id="fileAvatar" accept="image/x-png,image/gif,image/jpeg">*@
+                    </div>
+                    <div class="brand-name">
+                        @user.FullName
+                    </div>
+                    @{
+                        @using (Html.BeginForm("Logout", "Home", FormMethod.Post))
+                        {
+
+                            <button class="" type="submit">
+                                <i class="fas fa-sign-out"></i>
+                                <span>Đăng xuất</span>
+                            </button>
+                        }
+                    }
+                </div>
+
+                <!-- /logo -->
+                <!-- toggle small sidebar menu -->
+                <a href="javascript:;" class="hidden-lg hidden-md hidden-sm toggle-sidebar hidden-xs hamburger-icon v3" data-toggle="layout-small-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+                <!-- /toggle small sidebar menu -->
+            </div>
+            <!-- main navigation -->
+            <nav role="navigation" style="top: 265px" class="ps-container active open" data-ps-id="5df482b8-8b4a-5bbd-6466-4939bc5152c2">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Quản lý chung</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/UserProfile/ChangePasswordEmployer">
+                            <i class="fas fa-unlock-alt"></i>
+                            <span>Đổi mật khẩu</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div>
+            </nav>
+            <!-- /main navigation -->
+        </div>
+        <!-- /sidebar panel -->
+        <!-- content panel -->
+        <div class="main-panel">
+            <!-- top header -->
+            <header class="header navbar">
+                <div class="brand visible-xs">
+                    <!-- toggle offscreen menu -->
+                    <div class="toggle-offscreen">
+                        <a href="#" class="hamburger-icon visible-xs" data-toggle="offscreen" data-move="ltr">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
+                    </div>
+                    <!-- /toggle offscreen menu -->
+                    <!-- logo -->
+                    <!--                <div class="brand-logo">-->
+                    <!--                    <img src="images/logo-dark.png" height="15" alt="">-->
+                    <!--                </div>-->
+                    <!-- /logo -->
+                    <!-- /toggle chat sidebar small screen-->
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="menu-support">
+                        <img class="hidden-xs" src="">
+                        <div>
+                            Hỗ trợ, tư vấn dành cho ứng viên.
+                            <br>
+                            <i class="fal fa-phone-alt"></i> <a href="tel: ">(0272) 3871 711 - 3635 223</a>
+                            <i class="fal fa-envelope" style="margin-left: 10px"></i> <a href="mailto:vieclam@vieclamlongan.vn">vieclam@vieclamlongan.vn</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="menu-ntd">
+                        <a href="/">
+                            <i class="fal fa-home-alt"></i>
+                            <br>
+                            Trang chủ
+                        </a>
+                    </li>
+
+                    <li class="menu-ntd">
+                        <a href="/UserProfile/HSTDCreateView">
+                            <i class="fal fa-id-card"></i>
+                            <br>
+                            Tạo hồ sơ tuyển dụng
+                        </a>
+                    </li>
+
+                    <li class="menu-ntd">
+                        <a href="/UserProfile/EditDoanhNghiep">
+                            <i class="fal fa-id-card"></i>
+                            <br>
+                            Cập nhật hồ sơ doanh nghiệp
+                        </a>
+                    </li>
+
+
+
+
+                    @*<li class="menu-ntd">
+                            <a href="/TuyenDung">
+                                <i class="fal fa-briefcase"></i>
+                                <br>
+                                Danh sách việc làm
+                            </a>
+                        </li>*@
+                    @*<li class="menu-ntd">
+                            <a href="/UserProfile/EditProfileEmployees?userId=@userid&roleId=@roleid">
+                                <i class="fal fa-clipboard-user"></i>
+                                <br>
+                                Cập nhật hồ sơ
+                            </a>
+                        </li>*@
+                    @*<li class="menu-ntd">
+                            <a href="javascript:void(0)" class="preview-cv">
+                                <i class="fal fa-user-check"></i>
+                                <br>
+                                Xem hồ sơ
+                            </a>
+                        </li>*@
+
+                </ul>
+            </header>
+            <!-- /top header -->
+            <style>
+                .alert {
+                    margin-bottom: 10px;
+                }
+            </style>
+            <!-- main area -->
+            <div class="main-content">
+
+                <div class="wrapAvatar">
+                    <div class="wrapAvatar-image imgLogoNtd">
+                        @{
+                            if (doanhnghiep.Logo == null)
+                            {
+                                <img src="~/Content/Assets/doanhnghiep/img/imgcompany.png">
+                            }
+                            else
+                            {
+                                var hinhanh = doanhnghiep.Logo.ToString().Split('[', ']', '"');
+                                var hinh = hinhanh[2];
+                                <img src="@hinh">
+                            }
+                        }
+
+                        @*<span>
+            <i class="fas fa-camera"></i>
+        </span>
+        <input type="file" class="fileAvatar" accept="image/x-png,image/gif,image/jpeg">*@
+                    </div>
+                    <div class="wrapAvatar-content">
+                        <div class="wrapAvatar-content_name">
+                            @doanhnghiep.TenDoanhNghiep
+                        </div>
+                        @*<div class="wrapAvatar-content_text">
+
+                                @{
+                                    if (tuyendung != null)
+                                    {
+                                        @tuyendung.TenCongViec
+                                    }
+
+                                }
+                            </div>*@
+
+                    </div>
+                </div>
+                <div class="panel info" id="info-canhan">
+                    <div class="panel-heading" data-toggle="panel-collapse">
+                        <i class="fas fa-check-circle" style="color: #0099cc; margin-right:5px;"></i>THÔNG TIN DOANH NGHIỆP
+                        <i class="fas fa-caret-down pull-right"></i>
+                    </div>
+                    <div class="panel-body collapse" style="display: block;">
+                        <div id="divInfo">
+                            <p>
+                                <b>Tên doanh nghiệp:</b> @doanhnghiep.TenDoanhNghiep
+                            </p>
+                            <p>
+                                <b>Số điện thoại:</b>
+                                @{
+                                    if (doanhnghiep.SoDienThoai != null)
+                                    {
+                                        @doanhnghiep.SoDienThoai
+                                    }
+                                }
+
+                            </p>
+                            <p>
+                                <b>Email:</b>
+                                @{
+                                    if (doanhnghiep.Email != null)
+                                    {
+                                        @doanhnghiep.Email
+                                    }
+                                }
+
+                            </p>
+                            <p>
+                                <b>Mã số thuế:</b>
+                                @{
+                                    if (doanhnghiep.MaSoThue != null)
+                                    {
+                                        @doanhnghiep.MaSoThue
+                                    }
+                                }
+                            </p>
+                            <p>
+                                <b>Địa chỉ:</b>
+                                @{
+                                    if (huyendn != null && tinhdn != null)
+                                    {
+                                        @doanhnghiep.DiaChi <span>- @huyendn.TenHuyen -</span> @tinhdn.TenTinh
+                                    }
+                                    else if (huyendn == null && tinhdn != null)
+                                    {
+                                        @doanhnghiep.DiaChi <span>- @tinhdn.TenTinh</span>
+                                    }
+                                }
+
+                            </p>
+                            <p>
+                                <b>Tổng số lao động:</b>
+                                @{
+                                    if (doanhnghiep.TongSoLaoDong != null)
+                                    {
+                                        @doanhnghiep.TongSoLaoDong
+                                    }
+                                }
+                            </p>
+                            <p>
+                                <b>Năm hoạt động :</b>
+                                @doanhnghiep.NamHoatDong
+
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="panel info" id="info-canhan">
+                    <div class="panel-heading" data-toggle="panel-collapse">
+                        <i class="fas fa-check-circle" style="color: #0099cc; margin-right:5px;"></i>LĨNH VỰC KINH DOANH
+                        <i class="fas fa-caret-down pull-right"></i>
+                    </div>
+                    <div class="panel-body collapse" style="display: block;">
+                        <div id="divInfo">
+                            <p>
+                                <b>Kinh doanh: </b>
+
+                                @doanhnghiep.KinhDoanhSanXuat
+                            </p>
+
+                            <p>
+                                <b>Loại hình: </b>
+                                @loaihinh.TenLoaiHinh
+                            </p>
+                            <p>
+                                <b>Nghành kinh tế: </b>
+                                @{
+                                    if (nganhkinhte != null)
+                                    {
+                                        @nganhkinhte.TenNganhKinhTe
+                                    }
+                                }
+
+
+                            </p>
+                            <p>
+                                <b>Khu cụm công nghiệp:</b>
+
+                                @kcn.TenKhuCumCN
+                            </p>
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                @*<div class="panel info" id="info-canhan">
+                        <div class="panel-heading" data-toggle="panel-collapse">
+                            <i class="fas fa-check-circle" style="color: #0099cc; margin-right:5px; "></i>HỒ SƠ TUYỂN DỤNG
+                            <i class="panel-icon-chevron pull-right"></i>
+                        </div>
+
+
+                    </div>*@
+                <div class="panel bangcap" id="bangcap">
+                    <div class="panel-heading" data-toggle="panel-collapse">
+                        <i class="fas fa-check-circle" style="color: #0099cc; margin-right:5px;"></i>HỒ SƠ TUYỂN DỤNG
+                        <i class="fas fa-caret-down  pull-right"></i>
+                    </div>
+                    <div class="panel-body collapse" style="display: block;">
+
+                        <div class="row">
+                            <div id="divTD">
+                                @{
+                                    if (tuyendung != null)
+                                    {
+                                        foreach (var item in tuyendung)
+                                        {
+                                            <div class="col-sm-6 mb10">
+                                                <div class="itemTD">
+                                                    <input type="hidden" name="key[]" value="0">
+                                                    <div class="handle">
+                                                        <i class="far fa-arrows-alt"></i>
+                                                    </div>
+                                                    <div class="toolBoxTD">
+                                                        <a href="/UserProfile/HSTDEditView?hstdid=@item.Id">
+                                                            <button class="btn btn-primary btn-block btn-xs btnTrinhDo" type="button" data-id="0">
+                                                                <i class="far fa-edit"></i>
+                                                            </button>
+                                                        </a>
+
+                                                        @*<button class="btn btn-danger btn-block btn-xs btnDelTrinhDo" type="button" data-id="0">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>*@
+                                                    </div>
+                                                    <div class="mb5" style="font-weight: 500">
+                                                        @item.TenCongViec
+
+                                                    </div>
+                                                    <div class="mb5">
+                                                        @{
+                                                            foreach (var item2 in vitri)
+                                                            {
+                                                                if (item2.Id == item.ViTriCongViecId)
+                                                                {
+                                                                    @item2.TenViTriCongViec
+                                                                }
+                                                            }
+
+                                                        }
+
+                                                    </div>
+                                                    <div class="mb5">
+                                                        @{
+                                                            if (item.XacThuc == true)
+                                                            {
+                                                                <span style="color:green">Đã phê duyệt</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span  style="color:red">Chưa phê duyệt</span>
+                                                            }
+                                                        }
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-6 mb10">
+                                            <div class="itemTD">
+                                                <input type="hidden" name="key[]" value="0">
+                                                <div class="handle">
+                                                    <i class="far fa-arrows-alt"></i>
+                                                </div>
+                                                <div class="toolBoxTD">
+
+                                                    <button class="btn btn-primary btn-block btn-xs btnTrinhDo" type="button" data-id="0">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+
+
+                                                    <button class="btn btn-danger btn-block btn-xs btnDelTrinhDo" type="button" data-id="0">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /main area -->
+        </div>
+        <!-- /content panel -->
+
+        <footer class="content-footer hidden-xs">
+            <nav class="footer-left">
+                <ul class="nav">
+                    <li>
+                        <a href="javascript:;">
+                            Copyright <i class="fa fa-copyright"></i> <span>VNPT Long An | https://shop.vnptlongan.vn/ </span>
+                            2021
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+        <!-- /bottom footer -->
+    </div>
+
+    <script type="text/javascript" src="~/Content/Assets/ungvien/js/bundle.js"></script>
+    <script type="text/javascript" src="~/Content/Assets/ungvien/js/capnhathoso.js"></script>
+
+
+    <div id="rememberry__extension__root" style="all: unset;"></div>
+</body>

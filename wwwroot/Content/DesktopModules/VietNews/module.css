@@ -1,0 +1,486 @@
+.main-board {
+    padding: 0px 0 0;
+    clear: both;
+    overflow: hidden;
+    background: #E7EBF2;
+}
+
+.main-board-inner {
+    float: left;
+    width: 100%;
+}
+
+.wrap-search {
+    background: none repeat scroll 0 0 #F6F7F9;
+    border: 1px solid #C4CDE0;
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+}
+
+.leftcol {
+    width: 150px;
+}
+
+.maincol {
+    padding: 0px;
+    vertical-align: top;
+}
+
+.none {
+    background: transparent;
+}
+
+.MainArea {
+    border: 1px solid #ccc !important;
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.MainArea .dnnForm {
+    background: #fff;
+}
+
+.button_action {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    height: 35px;
+    margin-bottom: 10px;
+    padding: 5px 20px;
+    position: relative;
+}
+
+.button_action p {
+    height: 35px;
+    padding: 5px 0;
+}
+
+.button_action .page {
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+
+.ordersearch {
+    margin-top: 10px;
+}
+
+.ddllocationfilter {
+    margin-right: 15px;
+    margin-left: 5px;
+}
+
+.ddlpaging {
+    margin-right: 15px;
+    margin-left: 5px;
+}
+
+.txtsearch {
+    margin-right: 15px !important;
+    min-width: 200px !important;
+    width: 200px !important;
+}
+
+.ddlfields {
+    margin-right: 15px !important;
+}
+
+.ac-title {
+    border-bottom: 1px solid #AAAAAA;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.msgError {
+    display: block;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.rblHorizontal {
+    width: 200px;
+}
+
+.rblHorizontal label {
+    width: auto;
+}
+
+.dnnGrid th {
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 10px;
+}
+
+.fl {
+    float: left;
+}
+
+.panelshow {
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+div.scroll {
+    overflow: auto;
+    padding: 8px 0px;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.h250 {
+    height: 250px;
+}
+
+.h100 {
+    min-height: 100px;
+}
+
+.selectedRow {
+    background: #fff;
+}
+
+.area_content {
+    height: 200px;
+    min-width: 60% !important;
+}
+
+.selected {
+    /*background: #FCEDBD !important;*/
+}
+
+.header-bg {
+    background: #F3F3F3;
+}
+
+.cursorpoint {
+    cursor: pointer;
+}
+
+/*Modified Style UX */
+
+.dnnGrid2 {
+    background: #DDDDFF;
+}
+
+.dnnGrid2 tr {
+    background: #fff;
+}
+
+.dnnGrid td {
+    padding: 7px 5px;
+}
+
+.dnnGrid td a {
+    cursor: pointer;
+    color: #5A94CE;
+}
+
+.dnnGrid td a:hover {
+    cursor: pointer;
+    color: #DA3535;
+    text-decoration: none;
+}
+
+.dnnGrid th {
+    border-bottom: 1px solid #DFE8F5;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.ControlPanel,
+.PagingTable {
+    background-color: #FFFFFF;
+    border: none;
+    border-top: 1px solid #EFEFFF;
+    width: 100%;
+}
+
+.dnnForm fieldset {
+    border: medium none;
+    display: block;
+    margin: 0;
+    padding: 0.5em 0;
+    text-align: left;
+}
+
+.mrl20 {
+    margin-left: 20px;
+}
+
+.fl {
+    float: left;
+}
+
+.w92 {
+    width: 92%;
+}
+
+h3.mr3 {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.p-relative {
+    position: relative;
+}
+
+.w50p {
+    width: 50%;
+}
+
+.info-right {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+ul.dnnActions li a,
+a.dnnPrimaryAction,
+a.dnnPrimaryAction:link,
+a.dnnPrimaryAction:visited,
+a.dnnSecondaryAction,
+a.dnnSecondaryAction:link,
+a.dnnSecondaryAction:visited {
+    line-height: 2.4;
+    padding: 0 1.2em;
+}
+
+.dnnFormItem input,
+.dnnFormItem .dnnFormInput {
+    height: 1.1em;
+}
+
+.auto-w {
+    width: auto !important;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.pd-l30 {
+    padding-left: 30px !important;
+}
+
+.w20-pc {
+    padding-right: 25px;
+    width: 17% !important;
+}
+
+.w100 {
+    width: 100px !important;
+    float: left;
+}
+
+.tblForm tr td {
+    padding: 2px 0;
+}
+
+.RadUpload .ruInputs li {
+    list-style: none outside none;
+    margin: 0 0 5px;
+}
+
+.w30 {
+    width: 30px;
+}
+
+.f11 {
+    font-size: 10px;
+    font-weight: normal !important;
+}
+
+.customerExsist {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: medium none #AAAAAA;
+    font-size: 10px;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+.w210 {
+    width: 210px !important;
+}
+
+.linkattach {
+    float: left;
+    display: inline-block;
+}
+
+a:link,
+a:visited,
+a:active {
+    color: #273077;
+    text-decoration: none;
+}
+
+.linkattach {
+    background: url("../../images/pdf.gif") no-repeat scroll 1px 2px transparent;
+    display: inline-block;
+    float: left;
+    padding-left: 25px;
+    padding-top: 1px;
+}
+
+#orderdetails_view {
+    background: none repeat scroll 0 0 #EEEEED;
+    border: 6px solid #46A3D3;
+    display: none;
+    height: 200px;
+    position: absolute;
+    width: 900px;
+    z-index: 500;
+    overflow: auto;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.leftmenu {
+    margin-bottom: 10px;
+    vertical-align: top;
+    background: #E7EBF2;
+}
+
+ul.ul-leftmenu h3 {
+    padding: 0px;
+}
+
+ul.ul-leftmenu {
+    padding-left: 5px !important;
+}
+
+ul.ul-leftmenu li {
+    background: none repeat scroll 0 0 #E7EBF2;
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+.ul-leftmenu li a {
+    color: #627AAD;
+    cursor: pointer;
+    display: block;
+    font-size: 12px;
+    padding: 45px 5px 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ul-leftmenu li a.selected {
+    color: #FF4D4D;
+    font-weight: bold;
+}
+
+.ul-leftmenu li a.customer-mrg {
+    background: url(images/icon_customer.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.customer-add {
+    background: url(images/icon_customer_add.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.order-mrg {
+    background: url(images/icon_order.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.order-add {
+    background: url(images/icon_order_add.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.contract-mrg {
+    background: url(images/icon_contract.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.contract-add {
+    background: url(images/icon_contract_add.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.clearcache {
+    background: url(images/Recycle_Bin_Empty.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.cate {
+    background: url(images/folder.png) no-repeat center 0 !important;
+}
+
+.ul-leftmenu li a.art {
+    background: url(images/File_edit.png) no-repeat center 0 !important;
+}
+
+.wrap-search .dnnForm {
+    background: #F6F7F9;
+}
+
+.mh50 {
+    min-height: 50px !important;
+}
+
+.Loading {
+    width: 100%;
+    height: 100%;
+    background: url(../../images/loading.gif) no-repeat center center #CCC;
+    opacity: 0.8;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 900;
+}
+
+.listresult {}
+
+.listresult span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.enablefalse {
+    border: solid 1px #ccc;
+    background: #fff;
+}
+
+.rblIsDebtResolved label {
+    width: 10% !important;
+}
+
+.dnnFormItem .dnnTooltip {
+    width: 33% !important;
+}
+
+.Loading {
+    width: 100%;
+    height: 100%;
+    background: url(../../images/loading.gif) no-repeat center center #CCC;
+    opacity: 0.8;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 900;
+}
+
+.dnnFormItem .checkbox {
+    float: left;
+    padding-right: 20px;
+}
+
+.title {
+    width: 100px;
+}
+
+.MainArea1 {
+    background: none repeat scroll 0 0 #FFFFFF;
+    width: 70%;
+    text-align: center;
+    border: 1px solid #CCCCCC !important;
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: 20px;
+}
+
+.h130 {
+    height: 130px;
+}

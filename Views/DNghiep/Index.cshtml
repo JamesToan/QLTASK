@@ -1,0 +1,421 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Microsoft.AspNetCore.Http;
+@using coreWeb.Controllers;
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "Doanh Nghiep";
+    var doanhnghiep = ViewBag.DoanhNghiep;
+    var cauhinh = ViewBag.CauHinh;
+    var loaihinh = ViewBag.LoaiHinh;
+    var nkt = ViewBag.NKT;
+    var tuyendung = ViewBag.TuyenDung;
+    var datuyendung = ViewBag.DaTuyenDung;
+    int? userid = Context.Session.GetInt32("UserId");
+}
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<link href="~/Content/Assets/doanhnghiep/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/doanhnghiep/js/bundle.js" type="text/javascript"></script>
+<div class="page-company my-3">
+    <div class="page_container">
+        <div class="company-header">
+            <div class="company-banner">
+                <div class="backdrop" style="background-image: url('/Content/Assets/doanhnghiep/img/bannerDefault.png')">
+                </div>
+                <a href="javascript:void(0)" style="background-image: url('/Content/Assets/doanhnghiep/img/bannerDefault.png')"></a>
+            </div>
+            <div class="company-info bg-white p-3 mb-3 border border-top-0 border-bottom-radius">
+                <div class="row row-10 align-items-center">
+                    <div class="col-md-2">
+                        <div class="company-info-inner company-style--new d-flex align-items-start">
+                            <div class="company-avatar">
+                                @{
+                                    if (doanhnghiep.Logo == null)
+                                    {
+                                        <a class="lazy fancybox" href="~/Content/Assets/doanhnghiep/img/imgcompany.png" style="background-image: url('/Content/Assets/doanhnghiep/img/imgcompany.png')"></a>
+
+                                    }
+                                    else
+                                    {
+                                        var hinhanh = doanhnghiep.Logo.ToString().Split('[', ']', '"');
+                                        var hinh = hinhanh[2];
+                                        <a data-fancybox="logo" href="@hinh" style="background-image: url('@hinh')"></a>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="company-info-inner company-style--new d-flex align-items-start">
+                                    <div class="company-content">
+                                        <div class="company-info-top">
+                                            <div class="company-name text-uppercase fw-700 h4 mb-1">
+                                                @doanhnghiep.TenDoanhNghiep
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-9">
+                                <div class="company-info-inner company-style--new d-flex align-items-start">
+                                    <div class="company-content">
+                                        <div class="company-address">
+                                            @{
+                                                if (cauhinh.GiaTri == "0" && userid == 0 || cauhinh.GiaTri == "0" && userid == null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-map-marker-check blue-color"></i>
+                                                        Địa chỉ: Thông tin ẩn
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    if (doanhnghiep.DiaChi != null )
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-map-marker-check blue-color"></i>
+                                                            Địa chỉ:
+                                                        </span> @doanhnghiep.DiaChi
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-map-marker-check blue-color"></i>
+                                                            Địa chỉ: Chưa cập nhật
+                                                        </span>
+                                                    }
+
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="company-mst">
+                                            @{
+                                                if (cauhinh.GiaTri == "0" && userid == 0 || cauhinh.GiaTri == "0" && userid == null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-credit-card-front blue-color"></i>
+                                                        Mã số thuế: Thông tin ẩn
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    if (doanhnghiep.MaSoThue != null)
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-credit-card-front blue-color"></i>
+                                                            Mã số thuế:
+                                                        </span>@doanhnghiep.MaSoThue
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-credit-card-front blue-color"></i>
+                                                            Mã số thuế: Chưa cập nhật
+                                                        </span>
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+                                        <div class="company-phone">
+                                            @{
+                                                if (cauhinh.GiaTri == "0" && userid == 0 || cauhinh.GiaTri == "0" && userid == null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-phone-alt blue-color"></i>
+                                                        Số điện thoại: Thông tin ẩn
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    if (doanhnghiep.SoDienThoai != null)
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-phone-alt blue-color"></i>
+                                                            Số điện thoại:
+                                                        </span> @doanhnghiep.SoDienThoai
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-phone-alt blue-color"></i>
+                                                            Số điện thoại: Chưa cập nhật
+                                                        </span>
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+                                        <div class="company-website">
+                                            @{
+                                                if (doanhnghiep.Website != null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-globe blue-color"></i>
+                                                        Website:
+                                                    </span>
+                                                    <a href="javascript:void(0)" rel="nofollow">@doanhnghiep.Website</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-globe blue-color"></i>
+                                                        Website:
+                                                    </span>
+                                                    <a href="javascript:void(0)" rel="nofollow">Chưa cập nhật</a>
+                                                }
+
+                                            }
+                                        </div>
+                                        <div class="company-quimo">
+                                            @{
+                                                if (cauhinh.GiaTri == "0" && userid == 0 || cauhinh.GiaTri == "0" && userid == null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-credit-card-front blue-color"></i>
+                                                        Qui mô công ty: Thông tin ẩn
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    if (doanhnghiep.MaSoThue != null)
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-credit-card-front blue-color"></i>
+                                                            Qui mô công ty:
+                                                        </span>@doanhnghiep.TongSoLaoDong
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="mr-1">
+                                                            <i class="fas fa-credit-card-front blue-color"></i>
+                                                            Qui mô công ty: Chưa cập nhật
+                                                        </span>
+                                                    }
+
+                                                }
+                                            }
+                                        </div>
+                                        <div class="company-loaihinh">
+                                            @{
+                                                if (doanhnghiep.LoaiHinhId != null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-gavel blue-color"></i>
+                                                        Loại hình hoạt động:
+                                                    </span> @loaihinh.TenLoaiHinh
+                                                }
+                                                else
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-gavel blue-color"></i>
+                                                        Loại hình hoạt động: Chưa cập nhật
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="company-linhvuc">
+                                            @{
+                                                if (doanhnghiep.NganhKinhTeId != null)
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-briefcase blue-color"></i>
+                                                        Lĩnh vực hoạt động:
+                                                    </span> @nkt.TenNganhKinhTe
+                                                }
+                                                else
+                                                {
+                                                    <span class="mr-1">
+                                                        <i class="fas fa-briefcase blue-color"></i>
+                                                        Lĩnh vực hoạt động: Chưa cập nhật
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    <!-- trạng thái uy tín là 2 (Đã xác thực) hoặc 3 (Uy tín) thì có logo xác thực -->
+                                    @{
+                                        if (doanhnghiep.XacThuc == true)
+                                        {
+                                            <img src="~/Content/Assets/doanhnghiep/img/daxacthuc.png" class="img-xacthuc" alt="Đã xác thực">
+                                        }
+
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="company-body">
+            <div class="row row-10">
+                <div class="col-md-12">
+                    <div class="company-job p-3 bg-white border mb-3">
+                        <div class="heading-style"><span>Việc làm đang tuyển dụng</span></div>
+                        <div class="company-job-list">
+                            @{
+
+                                foreach (var item in tuyendung)
+                                {
+                                    <div class="list-item">
+                                        <div class="list-item-content">
+                                            <div class="row row-10">
+                                                <div class="col-md-9">
+                                                    <div class="list-item-name">
+                                                        <a href="/TuyenDung/Detail?tdID=@item.Id" class="size-095rem fw-700  text-ellipsis d-inline-block tdAjax" data-type="td" data-id="27529" title="" data-toggle="tooltip" data-original-title="@item.TenCongViec">
+                                                            @item.TenCongViec
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-item-address d-none">
+                                                        <a href="" class="size-09rem text-uppercase text-gray d-inline-block my-2">
+                                                            @doanhnghiep.TenDoanhNghiep
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-item-desc size-095rem mt-2">
+                                                        <div class="row row-10">
+                                                            <div class="col-md-4">
+                                                                <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Mức lương: @item.MucLuong.TenMucLuong">
+                                                                    <i class="fal fa-usd-circle blue-color size-095rem"></i>
+                                                                    @item.MucLuong.TenMucLuong
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                @{
+                                                                    if (item.HanNop != null)
+                                                                    {
+                                                                        var hannopdate = item.HanNop.ToString().Split(' ');
+                                                                        var hannop = hannopdate[0];
+
+                                                                        <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Hạn nộp:  @hannop">
+                                                                            <i class="fal fa-clock blue-color size-095rem"></i>
+                                                                            @hannop
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Hạn nộp:  ">
+                                                                            <i class="fal fa-clock blue-color size-095rem"></i>
+
+                                                                        </div>
+                                                                    }
+
+                                                                }
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Địa điểm làm việc: @item.NoiLamViec">
+                                                                    <i class="fal fa-map-marker-alt blue-color size-095rem"></i>
+                                                                    @item.NoiLamViec
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*<div class="col-md-3">
+                                                        <div class="list-item-apply text-right">
+                                                            <a class="btn button-theme button-basic rounded-0 callNopHoSo" data-id="27529" data-diachi="162 Phạm Ngũ Lão, P. An Hòa, Q. Ninh Kiều, TPCT" data-hinhthuc-nophs="1" data-dknhs="1">
+                                                                <i class="far fa-paper-plane mr-1"></i>
+                                                                Ứng tuyển ngay
+                                                            </a>
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row row-10">
+                <div class="col-md-12">
+                    <div class="company-job p-3 bg-white border mb-3">
+                        <div class="heading-style"><span>Việc làm đã tuyển dụng</span></div>
+                        <div class="company-job-list">
+                            @{
+
+                                foreach (var item in datuyendung)
+                                {
+                                    <div class="list-item">
+                                        <div class="list-item-content">
+                                            <div class="row row-10">
+                                                <div class="col-md-9">
+                                                    <div class="list-item-name">
+                                                        <a href="/TuyenDung/Detail?tdID=@item.Id" class="size-095rem fw-700  text-ellipsis d-inline-block tdAjax" data-type="td" data-id="27529" title="" data-toggle="tooltip" data-original-title="@item.TenCongViec">
+                                                            @item.TenCongViec
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-item-address d-none">
+                                                        <a href="" class="size-09rem text-uppercase text-gray d-inline-block my-2">
+                                                            @doanhnghiep.TenDoanhNghiep
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-item-desc size-095rem mt-2">
+                                                        <div class="row row-10">
+                                                            <div class="col-md-4">
+                                                                <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Mức lương: @item.MucLuong.TenMucLuong">
+                                                                    <i class="fal fa-usd-circle blue-color size-095rem"></i>
+                                                                    @item.MucLuong.TenMucLuong
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                @{
+                                                                    if (item.HanNop != null)
+                                                                    {
+                                                                        var hannopdate = item.HanNop.ToString().Split(' ');
+                                                                        var hannop = hannopdate[0];
+
+                                                                        <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Hạn nộp:  @hannop">
+                                                                            <i class="fal fa-clock blue-color size-095rem"></i>
+                                                                            @hannop
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Hạn nộp:  ">
+                                                                            <i class="fal fa-clock blue-color size-095rem"></i>
+
+                                                                        </div>
+                                                                    }
+
+                                                                }
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="list-item-desc-item text-ellipsis vertical-middle" data-toggle="tooltip" title="" data-original-title="Địa điểm làm việc: @item.NoiLamViec">
+                                                                    <i class="fal fa-map-marker-alt blue-color size-095rem"></i>
+                                                                    @item.NoiLamViec
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

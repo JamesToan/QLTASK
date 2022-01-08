@@ -1,0 +1,162 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>coreWeb</AssemblyName>
+    <RootNamespace>coreWeb</RootNamespace>
+	<!--
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	-->
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Auto.Rest.API" Version="2.3.229" />
+    <PackageReference Include="EPPlus" Version="5.7.3" />
+    <PackageReference Include="FreeSpire.Office" Version="4.3.1" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MoreLinq.Source.MoreEnumerable.DistinctBy" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SendGrid" Version="9.25.0" />
+    <PackageReference Include="SendGrid.CSharp.HTTP.Client" Version="3.4.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Files not to show in IDE -->
+    <None Remove="yarn.lock" />
+
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Content Remove="ClientApp\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\dist\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\videos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\Content\Assets\css\less\alerts.less" />
+    <None Include="wwwroot\Content\Assets\css\less\badges.less" />
+    <None Include="wwwroot\Content\Assets\css\less\breadcrumbs.less" />
+    <None Include="wwwroot\Content\Assets\css\less\button-groups.less" />
+    <None Include="wwwroot\Content\Assets\css\less\buttons.less" />
+    <None Include="wwwroot\Content\Assets\css\less\carousel.less" />
+    <None Include="wwwroot\Content\Assets\css\less\close.less" />
+    <None Include="wwwroot\Content\Assets\css\less\code.less" />
+    <None Include="wwwroot\Content\Assets\css\less\component-animations.less" />
+    <None Include="wwwroot\Content\Assets\css\less\dropdowns.less" />
+    <None Include="wwwroot\Content\Assets\css\less\forms.less" />
+    <None Include="wwwroot\Content\Assets\css\less\glyphicons.less" />
+    <None Include="wwwroot\Content\Assets\css\less\grid.less" />
+    <None Include="wwwroot\Content\Assets\css\less\input-groups.less" />
+    <None Include="wwwroot\Content\Assets\css\less\jumbotron.less" />
+    <None Include="wwwroot\Content\Assets\css\less\labels.less" />
+    <None Include="wwwroot\Content\Assets\css\less\list-group.less" />
+    <None Include="wwwroot\Content\Assets\css\less\media.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\alerts.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\background-variant.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\border-radius.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\buttons.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\center-block.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\clearfix.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\forms.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\gradients.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\grid-framework.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\grid.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\hide-text.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\image.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\labels.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\list-group.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\nav-divider.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\nav-vertical-align.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\opacity.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\pagination.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\panels.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\progress-bar.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\reset-filter.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\reset-text.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\responsive-visibility.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\tab-focus.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\table-row.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\text-emphasis.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\text-overflow.less" />
+    <None Include="wwwroot\Content\Assets\css\less\mixins\vendor-prefixes.less" />
+    <None Include="wwwroot\Content\Assets\css\less\modals.less" />
+    <None Include="wwwroot\Content\Assets\css\less\navbar.less" />
+    <None Include="wwwroot\Content\Assets\css\less\navs.less" />
+    <None Include="wwwroot\Content\Assets\css\less\normalize.less" />
+    <None Include="wwwroot\Content\Assets\css\less\pager.less" />
+    <None Include="wwwroot\Content\Assets\css\less\pagination.less" />
+    <None Include="wwwroot\Content\Assets\css\less\panels.less" />
+    <None Include="wwwroot\Content\Assets\css\less\popovers.less" />
+    <None Include="wwwroot\Content\Assets\css\less\print.less" />
+    <None Include="wwwroot\Content\Assets\css\less\progress-bars.less" />
+    <None Include="wwwroot\Content\Assets\css\less\responsive-embed.less" />
+    <None Include="wwwroot\Content\Assets\css\less\responsive-utilities.less" />
+    <None Include="wwwroot\Content\Assets\css\less\scaffolding.less" />
+    <None Include="wwwroot\Content\Assets\css\less\tables.less" />
+    <None Include="wwwroot\Content\Assets\css\less\thumbnails.less" />
+    <None Include="wwwroot\Content\Assets\css\less\tooltip.less" />
+    <None Include="wwwroot\Content\Assets\css\less\type.less" />
+    <None Include="wwwroot\Content\Assets\css\less\utilities.less" />
+    <None Include="wwwroot\Content\Assets\css\less\wells.less" />
+    <None Include="wwwroot\Content\Assets\js\bootstrap.min.js" />
+    <None Include="wwwroot\Content\Assets\js\jquery-3.1.1.min.js" />
+    <None Include="wwwroot\Content\Assets\ungvien\js\capnhathoso.js" />
+    <None Include="wwwroot\Content\Assets\vendor\dropzone\dropzone.js" />
+    <None Include="wwwroot\Content\Assets\vendor\fonts\fa-light-300.woff2" />
+    <None Include="wwwroot\Content\Assets\vendor\fonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\Content\Assets\vendor\fonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\Content\Assets\vendor\jquery\dist\jquery.js" />
+    <None Include="wwwroot\Content\Assets\vendor\lib\Sortable.js" />
+    <None Include="wwwroot\Content\Assets\vendor\scripts\bundle.js" />
+    <None Include="wwwroot\Content\Assets\vendor\sweetalert\lib\sweet-alert.min.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\chosen.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\developr.scroll.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\jquery.cookie.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\jquery.jgrowl.min.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\jquery.tipsy.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\jquery.tooltip.js" />
+    <None Include="wwwroot\Content\DesktopModules\Enterprise\HomeControls\js\owl.carousel.min.js" />
+    <None Include="wwwroot\Content\DesktopModules\SpeedyTouchFlexi2\jquery.flexslider-min.js" />
+    <None Include="wwwroot\Content\js\dnn.modalpopup.js" />
+    <None Include="wwwroot\Content\js\dnncore.js" />
+    <None Include="wwwroot\Content\Portals\0\Banner\cntx.gi" />
+    <None Include="wwwroot\Content\Portals\_default\Skins\vieclamNew\DNNStandard\StandardMenu.js" />
+    <None Include="wwwroot\Content\Portals\_default\Skins\vieclamNew\jquery.cycle.min.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\DotNetNukeAjaxShared.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\initWidgets.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery-ui.min.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.hoverIntent.min.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.min.js" />
+    <None Include="wwwroot\Content\Resources\Shared\Scripts\widgets.js" />
+    <None Include="wwwroot\dist\logo.png" />
+  </ItemGroup>
+
+  <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="node -e &quot;console.log('NPM Installing dependencies...')&quot;" />
+    <Exec Command="npm install --ignore-scripts" />
+    <Exec Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>

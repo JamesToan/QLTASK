@@ -1,0 +1,207 @@
+@{ Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "Detail";
+
+    var data = ViewBag.Content;
+    var searchStr = ViewBag.Searchstring;
+    var listnew = ViewBag.NewsBanTin;
+    var banner = ViewBag.Banner;
+    var chuyenmuc = ViewBag.ChuyenMuc;
+}
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-VietNews DnnModule-696">
+                        <a name="696"></a>
+                        <div id="dnn_ctr696_ContentPane">
+                            <!-- Start_Module_696 -->
+                            <div id="dnn_ctr696_ModuleContent" class="DNNModuleContent ModVietNewsC">
+
+                                <div class="Invisible">
+                                    <div id="dnn_ctr8055_ContentPane">
+                                        <!-- Start_Module_8055 -->
+                                        <div class="DNNModuleContent ModTintứcsiteĐịaPhươngC" id="dnn_ctr8055_ModuleContent">
+                                            @{
+                                                if (data == null)
+                                                {
+                                                    <div class="container-box spec-increbox box-news-detail">
+                                                        <div class="spec-boxitem">
+                                                            <div style="display: inline-block; width: 100%;">
+                                                                <div class="SubHead">
+                                                                    <p style="margin-left :30px;margin-top:20px"> Không tìm thấy trang</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="container-box spec-increbox box-news-detail">
+
+                                                        <div class="spec-boxitem">
+                                                            <div style="display: inline-block; width: 100%;">
+                                                                <div class="SubHead">
+                                                                    <div class="row backbutton">
+                                                                        <div class="col-md-11">
+                                                                            <h4 class="news-title">
+                                                                                @data.TieuDe
+                                                                            </h4>
+                                                                        </div>
+                                                                        @{
+                                                                            if (searchStr == null)
+                                                                            {
+                                                                                <div class="col-md-1">
+                                                                                    <button class="back_button" onclick="window.history.back()">
+                                                                                        <i class="fa fa-arrow-left"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                                <div class="col-md-1">
+                                                                                    @using (Html.BeginForm("SearchTinTuc", "BanTin", new { searchString = searchStr }, FormMethod.Post))
+                                                                                    {
+                                                                                        <button class="back_button" type="submit">
+                                                                                            <i class="fa fa-arrow-left"></i>
+                                                                                        </button>
+                                                                                    }
+
+                                                                                </div>
+                                                                            }
+                                                                        }
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="DateTime">
+                                                                    @*<span class="NewsDateUpdate">Ngày cập nhật:</span>*@
+
+                                                                    <span class="HotNews_date">
+                                                                        @{
+                                                                            var splitdate = data.NgayTao.ToString().Split(" ");
+                                                                            var splittime = splitdate[1].ToString().Split(":");
+
+
+                                                                        }
+                                                                        <i class="fal fa-clock"> </i>
+                                                                        @splitdate[0] - @splittime[0]:@splittime[1] @splitdate[2]
+                                                                    </span>
+                                                                </div>
+                                                                <div class="lbSummary" style="display: block;">
+                                                                    <span class="NewsDetail_summary">
+                                                                        @Html.Raw(data.TomTat)
+                                                                    </span>
+                                                                </div>
+                                                                <div style="display: block;">
+                                                                    <div class="NewsDetail_content">
+                                                                        @Html.Raw(data.NoiDung)
+
+                                                                    </div>
+                                                                    <div class="author">
+                                                                        @{
+                                                                            if (data.TacGia != null)
+                                                                            {
+                                                                                @data.TacGia
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                                <div style="clear: both;">
+                                                                </div>
+                                                            </div>
+                                                            <div style="clear: both;">
+                                                            </div>
+
+
+
+                                                            <div>
+                                                                <h4 class="blockinLine">
+                                                                    <span class="text">Tin khác</span>
+                                                                </h4>
+                                                                <ul class="related-items">
+                                                                    @for (int i = 0; i < listnew.Count; i++)
+                                                                    {
+                                                                        if (listnew[i].ChuyenMucId == data.ChuyenMucId && listnew[i].Id != data.Id)
+                                                                        {
+
+                                                                            <li>
+                                                                                <a id="dnn_ctr696_ViewVietNews_ctl00_rptNews_hplTitle_@i" title="@listnew[i].TieuDe" class="link_news_other2" href="/BanTin/Detail?nId=@listnew[i].Id">@listnew[i].TieuDe</a>
+                                                                            </li>
+                                                                        }
+
+                                                                    }
+
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+
+                                        </div>
+                                        <!-- End_Module_8055 -->
+                                    </div>
+                                </div>
+                                <input type="hidden" name="dnn$ctr696$ViewVietNews$ctl00$hdfSettings" id="dnn_ctr696_ViewVietNews_ctl00_hdfSettings" value="111">
+                                <input type="hidden" name="dnn$ctr696$ViewVietNews$ctl00$hdftagsSetting" id="dnn_ctr696_ViewVietNews_ctl00_hdftagsSetting" value="111">
+
+
+
+                            </div><!-- End_Module_696 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane right">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div class="banner-qc-all">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+                                                <div class="banner-qc">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img class="qc-banner" src="~/images/@hinh" />
+                                                    </a>
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>
+@*<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>*@

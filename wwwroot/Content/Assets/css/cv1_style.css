@@ -1,0 +1,378 @@
+#cvContent {
+    background: #fff;
+    width: 100%;
+}
+
+#cvContent .fa, #cvContent .fab, #cvContent .fad, #cvContent .fal, #cvContent .far, #cvContent .fas {
+    font-family: "Font Awesome 5 Pro" !important;
+}
+
+#cvContent section {
+    padding: 5px 15px;
+}
+
+#cvContent section.divInfo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
+    line-height: 25px;
+    padding-top: 15px;
+}
+
+#cvContent .divInfo > .divPicture {
+    position: relative;
+    z-index: 9;
+    width: 100%;
+}
+
+#cvContent .dlTable {
+    display: table;
+}
+
+#cvContent .infoPicture {
+    display: table-cell;
+    width: 145px;
+    position: relative;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+#cvContent .infoPicture > div {
+    background-color: #fff;
+    float: left;
+    width: 145px;
+    height: 145px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    /*cursor: pointer;*/
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+#cvContent .divInfoHalf {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 105px;
+    width: 100%;
+    background-color: var(--cvtheme-color);
+    z-index: 1;
+}
+
+#cvContent .infoBasic {
+    width: 100%;
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 13px;
+}
+
+#cvContent .infoBasic .divTen {
+    font-size: 22px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #fff;
+    padding-top: 13px;
+}
+
+#cvContent .infoBasic .cvTitle {
+    font-size: 17px;
+    font-weight: 300;
+    color: #f5f5f5;
+    margin: auto;
+    padding: 0 0 25px 0;
+    text-transform: capitalize;
+}
+
+#cvContent .infoBasic i {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
+    display: inline-block;
+    color: var(--cvtheme-color);
+    /*text-align: center;*/
+    padding-left: 1px;
+    border-radius: 50%;
+    line-height: 26px;
+    font-size: 14px;
+}
+
+#cvContent .infoBasic p {
+    margin-bottom: 0;
+}
+
+#cvContent .infoBasic .badge-info {
+    background: var(--cvtheme-color);
+}
+
+#cvContent section .title-section {
+    margin-top: 0;
+    position: relative;
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 10px;
+}
+
+#cvContent section i.fas.fa-check-circle {
+    color: var(--cvtheme-color) !important;
+    width: 15px;
+    height: 14px;
+    border-radius: 50%;
+    position: relative;
+    text-align: center;
+    line-height: 16px;
+    top: -1px;
+}
+
+#cvContent section .title-section span {
+    background: #fff;
+    padding-right: 10px;
+    z-index: 2;
+    position: relative;
+    font-size: 17px;
+    display: inline-block;
+}
+
+#cvContent section .title-section i {
+    width: 34px;
+    height: 34px;
+    background: var(--cvtheme-color);
+    color: #fff;
+    display: inline-block;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
+    padding-left: 1px;
+    font-size: 16px;
+}
+
+#cvContent section b {
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+}
+
+#cvContent section .title-section:before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: 0;
+    height: 4px;
+    background-color: #f1f1f1;
+    width: 100%;
+}
+
+#cvContent section .skill {
+    clear: both;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#cvContent section .skill span {
+    background: #fff;
+    padding-right: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+#cvContent section .skill div {
+    background: #fff;
+    padding-left: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+#cvContent section .skill:before {
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 12px;
+    width: 100%;
+    border-top: 1px dashed #b8b8b8;
+}
+
+#cvContent .rating {
+    display: inline-block;
+    float: right;
+}
+
+#cvContent .rating > span {
+    display: inline-block;
+    position: relative;
+    font-size: 13px;
+    width: 18px;
+    cursor: pointer;
+}
+
+#cvContent .rating > span.fas {
+    color: #f79834;
+}
+
+#cvContent table.table-noBorder td,
+#cvContent table.table-noBorder th {
+    border: 0 !important;
+}
+
+table.table-center td,
+table.table-center th {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+#cvContent section .timeline {
+    border-left: 3px solid #f1f1f1;
+    padding-left: 14px;
+    position: relative;
+    margin-left: 15px;
+    padding-top: 20px;
+}
+
+#cvContent section .timeline .item {
+    display: table;
+    width: 100%;
+}
+
+#cvContent section .timeline .item .itemTime {
+    color: var(--cvtheme-color);
+    /*line-height: 18px;*/
+    position: relative;
+    top: 0;
+     width: 10%; 
+    display: table-cell;
+}
+
+#cvContent section .timeline .item .itemTime:before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: -21px;
+    background-color: var(--cvtheme-color);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+#cvContent section .timeline .item .itemInfo {
+    /* width: 87%; */
+    padding-left: 10px;
+    line-height: 7mm;
+    display: table-cell;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+}
+
+#cvContent section .timeline .item .itemInfo2 {
+    line-height: 18px;
+    position: relative;
+    top: 0;
+    width: 100%;
+    display: table-cell;
+}
+
+#cvContent section .timeline .item .itemInfo2:before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: -21px;
+    background-color: var(--cvtheme-color);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+#cvContent section .timeline .item .itemInfo p {
+    margin-bottom: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+#cvContent section p {
+    margin-bottom: 0.5rem;
+}
+
+#cvContent .divProfile .infoHoSo .badge {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 400;
+    display: inline-block;
+    padding: 2px 5px 3px;
+    background: var(--cvtheme-color);
+}
+
+#cvContent section p.subtitle ~ p.subtitle {
+    margin-top: 20px;
+}
+
+#cvContent section .cv-image {
+    position: relative;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 4px solid #E9E9ED;
+}
+
+#cvContent section .cv-image:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+@media (max-width:770px) and (min-width:640px){
+    #cvContent .infoBasic .divTen{
+        font-size:18px;
+        padding-top:10px;
+    }
+
+    #cvContent .infoBasic .cvTitle{
+        font-size:15px;
+    }
+    #cvContent .infoPicture > div {
+        width: 115px;
+        height: 115px;
+    }
+}
+
+
+@media (max-width:470px) and (min-width:350px) {
+    #cvContent .infoBasic .divTen {
+        font-size: 14px;
+        padding-top: 0px;
+    }
+
+    #cvContent .infoBasic .cvTitle {
+        font-size: 11px;
+    }
+}
+@media (max-width:349px) and (min-width:250px) {
+    #cvContent .infoBasic .divTen {
+        font-size: 11px;
+        padding-top: 0px;
+    }
+
+    #cvContent .infoBasic .cvTitle {
+        font-size: 8px;
+    }
+
+    #cvContent .infoPicture > div{
+        width:105px;
+        height:105px;
+    }
+}

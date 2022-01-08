@@ -1,0 +1,670 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Microsoft.AspNetCore.Http;
+@using coreWeb.Controllers;
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    int? userid = Context.Session.GetInt32("UserId");
+    int? roleid = Context.Session.GetInt32("RoleId");
+    int? ngldid = Context.Session.GetInt32("NLDID");
+
+    var sanvl = ViewBag.SanVL;
+    var sanvldn = ViewBag.SanVLDN;
+    var sanvlld = ViewBag.SanVLLD;
+    var sodoanhnghiep = ViewBag.SoDoanhNghiep;
+    var doanhnghiep = ViewBag.DoanhNghiep;
+    var mucluong = ViewBag.MucLuong;
+    var vitri = ViewBag.ViTriCV;
+    var gioitinh = ViewBag.GioiTinh;
+    var tinh = ViewBag.Tinh;
+    var huyen = ViewBag.Huyen;
+    var xa = ViewBag.Xa;
+    var songld = ViewBag.SNLD;
+    var nguoild = ViewBag.NguoiLD;
+    var timviec = ViewBag.TimViec;
+    <script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+    <link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+}
+
+
+<div class="body-view view-news">
+    <div id="page-container">
+
+        <div id="dnn_ContentPane" class="contentPane">
+            <div class="DnnModule DnnModule-ExchangeJob DnnModule-542">
+                <a name="542"></a>
+                <div id="dnn_ctr542_ContentPane">
+                    <!-- Start_Module_542 -->
+                    <div id="dnn_ctr542_ModuleContent" class="DNNModuleContent ModExchangeJobC">
+                        <input type="hidden" name="dnn$ctr542$ViewExchangeJob$ctl00$hdfID" id="dnn_ctr542_ViewExchangeJob_ctl00_hdfID" value="2471">
+                        <div class="Invisible">
+                            <div id="divEditPhienGiaoDich">
+                                <div class="left exchange-info-left">
+                                    <div class="box-PhienName" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD00_Panel1">
+                                        <div class="phienname-title">
+                                            <span id="dnn_ctr542_ViewExchangeJob_ctl00_lblName">@sanvl.TenSanViecLam</span>
+                                        </div>
+                                        <div class="phienname-location">
+                                            <span id="dnn_ctr542_ViewExchangeJob_ctl00_lblLocation">@sanvl.NoiToChuc</span>
+                                        </div>
+                                    </div>
+                                    <div style="overflow: hidden;">
+                                        <div class="lienhe" id="lienhe">
+
+                                            <div class="icon_contact phone">
+                                                Điện thoại: 084 287 1711
+                                            </div>
+                                            
+                                            <div class="icon_contact mail">
+                                                <strong>Email:</strong>
+                                                <a title=" " href="mailto:vieclam@vieclamlongan.vn">
+                                                    vieclam@vieclamlongan.vn
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="left  exchange-info-right">
+                                    <div class="exchange-info-right-inner">
+                                        <div class="vsmobang">
+                                            
+                                            <div class="mobang-info">
+                                                <ul>
+                                                    <li class="mobang-start">
+                                                        <span class="label">Bắt đầu: </span>
+                                                        <span class="value">
+                                                            <span id="dnn_ctr542_ViewExchangeJob_ctl00_lblStartDate">
+                                                                @{
+                                                                    var datetime1 = sanvl.NgayBatDau.ToString().Split(" ");
+                                                                    var date1 = datetime1[0];
+                                                                    var time1 = datetime1[1].ToString().Split(":");
+                                                                    var hour1 = time1[0];
+                                                                    var minutes1 = time1[1];
+                                                                }
+                                                                @hour1:@minutes1  @date1
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                    <li class="mobang-end">
+                                                        <span class="label">Kết thúc: </span>
+                                                        <span class="value">
+                                                            <span id="dnn_ctr542_ViewExchangeJob_ctl00_lblEndDate">
+                                                                @{
+                                                                    var datetime2 = sanvl.NgayKetThuc.ToString().Split(" ");
+                                                                    var date2 = datetime2[0];
+                                                                    var time2 = datetime2[1].ToString().Split(":");
+                                                                    var hour2 = time2[0];
+                                                                    var minutes2 = time2[1];
+                                                                }
+                                                                @hour2:@minutes2  @date2
+                                                            </span>
+                                                        </span>
+                                                    </li>
+                                                    @*<li class="mobang-hotline">
+                                                            <span class="label">Hotline: </span>
+                                                            <span class="value"><span id="dnn_ctr542_ViewExchangeJob_ctl00_lblHotline">(028) 4287 1711</span></span>
+                                                        </li>*@
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <a id="dnn_ctr542_ViewExchangeJob_ctl00_btnJoinNow" class="aspNetDisabled btnThamGiaSan">Đã phê duyệt</a>
+                                    </div>
+                                </div>
+                                <div class="clear">
+                                </div>
+                            </div>
+                            <div id="tabs">
+                                <div style="margin-top: 25px;" class="HeadSearch">
+                                    <a href="javascript:switchid('a1','#a1a');" class="HeadTextSelected" id="a1a" style="margin-right: 5px;">
+                                        Doanh nghiệp&nbsp;
+                                        <span class="header_number">
+                                            @ViewBag.SoDoanhNhiep
+                                        </span>
+                                    </a>
+                                    <a href="javascript:switchid('a2','#a2a');" id="a2a" class="" style="margin-right: 5px;">
+                                        Việc làm tuyển dụng
+                                        <span class="header_number">
+                                            @ViewBag.SoHSTD
+                                        </span>
+                                    </a>
+                                    <a href="javascript:switchid('a3','#a3a');" id="a3a" class="" style="margin-right: 5px;">
+                                        Người tìm việc tham gia
+                                        <span class="header_number">
+                                            @ViewBag.SoNLD
+                                        </span>
+                                    </a>
+                                   
+                                </div>
+                                <div class="ContentSearch">
+                                    <div style="background: #fff;">
+                                        <div style="text-align: center; display: block;" id="a1">
+                                            <div style="width: 100%;" class="nav-main nav-noborder">
+                                                <div class="nav-top ">
+                                                    
+                                                    <div id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD01_pnlDoanhNghiepThamGia">
+                                                        @*<table width="100%" cellspacing="0" cellpadding="0" style="display: none; border-bottom: 1px solid #CCCCCC;
+                                    border-top: 1px solid #CCCCCC;">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td width="700" nowrap="">
+                                                                        
+                                                                    </td>
+                                                                    <td style="display: none;">
+                                                                        <a href="javascript:__doPostBack('dnn$ctr13787$DanhSachBanTuyenDung$ctlDSBTD01$btnRefressDuLieu','')" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD01_btnRefressDuLieu">Refress</a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="submit" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD01_btnApprovalDN" value="Duyệt doanh nghiệp" name="dnn$ctr13787$DanhSachBanTuyenDung$ctlDSBTD01$btnApprovalDN">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="submit" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD01_btnDeleteDN" value="Xóa doanh nghiệp" name="dnn$ctr13787$DanhSachBanTuyenDung$ctlDSBTD01$btnDeleteDN">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>*@
+
+                                                        <div class="box-SVL">
+
+                                                            @{
+
+                                                                for (int i = 0; i < sodoanhnghiep.Count; i++)
+                                                                {
+
+                                                                    <div class="SVL_item">
+                                                                        <div class="SVL_item_inner">
+                                                                            <table width="100%" cellspacing="0" style="margin:0px;">
+                                                                                <tbody>
+
+                                                                                    <tr>
+                                                                                        <td colspan="2">
+                                                                                            <input type="hidden" name="dnn$ctr542$ViewExchangeJob$ctl00$rptCompany$ctl00$hdfCompanyID" id="dnn_ctr542_ViewExchangeJob_ctl00_rptCompany_hdfCompanyID_0" value="340475">
+                                                                                            <div data-value="Những tuyển dụng của doanh nghiệp" class="svl_doanhnghiep parentLink">
+                                                                                                <a id="dnn_ctr542_ViewExchangeJob_ctl00_rptCompany_hplDetail_0" class="tooltip" href="">
+                                                                                                    <div style="height: 40px; overflow: hidden;">
+                                                                                                        @{
+                                                                                                            for (int k = 0; k < doanhnghiep.Count; k++)
+                                                                                                            {
+                                                                                                                if (sodoanhnghiep[i] == doanhnghiep[k].Id)
+                                                                                                                {
+                                                                                                                    @doanhnghiep[k].TenDoanhNghiep
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        @*@sanvldn[i].DoanhNghiep.TenDoanhNghiep*@
+                                                                                                    </div>
+                                                                                                    <div style="margin-top: 10px">
+                                                                                                        <img id="dnn_ctr542_ViewExchangeJob_ctl00_rptCompany_imgThumbnail_0" src="~/Content/Portals/0/images/logobl.png" style="height:80px;width:100px;">
+                                                                                                    </div>
+
+                                                                                                </a>
+
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="2">
+                                                                                            <table width="100%">
+                                                                                                <tbody>
+                                                                                                    <tr>
+                                                                                                        <td class="v-middle v-left">
+                                                                                                            <div class="svl_ungvien">
+                                                                                                                Ứng viên:
+
+
+                                                                                                                @{
+                                                                                                                    List<string> unique = new List<string>();
+                                                                                                                    int num = 0;
+                                                                                                                    foreach (var item in sanvlld)
+                                                                                                                    {
+                                                                                                                        if (sodoanhnghiep[i] == item.DoanhNghiepId)
+                                                                                                                        {
+                                                                                                                            if (!unique.Contains(item.NguoiLaoDongId.ToString()))
+                                                                                                                            {
+                                                                                                                                unique.Add(item.NguoiLaoDongId.ToString());
+                                                                                                                                num += 1;
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                @num
+                                                                                                            </div>
+                                                                                                        </td>
+                                                                                                        <td class="right"></td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                }
+                                                            }
+
+
+                                                        </div>
+                                                        <table width="100%" id="Table1" class="paging">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="width: 640px; height: 40px;" class="v-middle">
+                                                                        @*<table class="SVL-Paging">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td align="left" style="width: 1%;" class="Normal"></td>
+                                                                                    <td align="right" style="width: 99%;" class="Normal">
+                                                                                        <div class="PagingContainer">
+                                                                                            <ul>
+
+                                                                                                <li>
+                                                                                                    <a id="dnn_ctr542_ViewExchangeJob_ctl00_rptPagerCompany_lnkPage_0" class="aspNetDisabled PagingActive">Trang đầu</a>
+                                                                                                </li>
+
+                                                                                                <li>
+                                                                                                    <a id="dnn_ctr542_ViewExchangeJob_ctl00_rptPagerCompany_lnkPage_1" class="aspNetDisabled PagingActive">[1]</a>
+                                                                                                </li>
+
+                                                                                                <li>
+                                                                                                    <a id="dnn_ctr542_ViewExchangeJob_ctl00_rptPagerCompany_lnkPage_2" class="aspNetDisabled PagingActive">Trang cuối</a>
+                                                                                                </li>
+
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>*@
+                                                                    </td>
+                                                                    <td style="display: none;">
+                                                                        <a href="javascript:__doPostBack('dnn$ctr13787$DanhSachBanTuyenDung$ctlDSBTD02$btnRefressDuLieu','')" id="A5">Refress</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript">
+                                                function addFav(args) {
+                                                    var u = $(args);
+                                                    var _id = u.attr('data-value');
+
+                                                    var valuecookie = $.cookie(_id);
+                                                    //alert(valuecookie);
+
+                                                    if (valuecookie != 'true') {
+                                                        $.cookie(_id, "true", { expires: 1 });
+                                                        u.attr('src', "/images/sao.png");
+                                                    }
+                                                    else {
+                                                        $.cookie(_id, null);
+                                                        u.attr('src', "/images/saoout.png");
+                                                    }
+                                                }
+
+                                                $(document).ready(function () {
+
+                                                    $("#btnTatCa").fadeOut(0);
+                                                    //$("#btnTatCa").css("display","none");
+
+                                                    $.each($('.addfav'), function (index, value) {
+                                                        var _attr = $(this).attr('data-value');
+                                                        var valuecookie = $.cookie(_attr);
+                                                        if (valuecookie == 'true') {
+                                                            //$.cookie(_attr, null);
+                                                            $(this).attr('src', "/images/sao.png");
+                                                        }
+                                                    });
+                                                });
+
+
+                                                $("#btnQuanTam").click(function () {
+                                                    $.each($('.addfav'), function (index, value) {
+                                                        var _attr = $(this).attr('data-value');
+                                                        var valuecookie = $.cookie(_attr);
+                                                        if (valuecookie == 'true') {
+                                                            $(this).attr('src', "/images/sao.png");
+                                                        }
+                                                        else {
+                                                            $(this).parents(".SVL_item").fadeOut(500);
+                                                        }
+                                                    });
+                                                    $(this).fadeOut(0);
+                                                    $("#btnTatCa").fadeIn(500);
+                                                });
+
+                                                $("#btnTatCa").click(function () {
+                                                    $.each($('.addfav'), function (index, value) {
+                                                        $(this).parents(".SVL_item").fadeIn(500);
+                                                    });
+                                                    $(this).fadeOut(0);
+                                                    $("#btnQuanTam").fadeIn(500);
+                                                });
+
+                                            </script>
+                                        </div>
+                                        <div style="display: none; text-align: center;" id="a2">
+                                            <div class="nav-main nav-noborder tuyendung-panel">
+                                                <div class="nav-top ">
+                                                    <div class="table-nav-top">
+
+                                                    </div>
+                                                </div>
+                                                <table border="0" style="width: 98%; border-collapse: collapse; margin:10px;" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD02_drgRecruitment" rules="all">
+                                                    <tbody>
+                                                        <tr class="svl_header">
+                                                            <th style="width: 5%;" scope="col">
+                                                                STT
+                                                            </th>
+                                                            <th style="width: 40%;" scope="col">
+                                                                Tuyển dụng/Doanh Nghiệp
+                                                            </th>
+                                                            <th style="width: 9%;" scope="col" class="v-center">
+                                                                Số lượng
+                                                            </th>
+                                                            <th style="width: 20%;" scope="col" class="v-center">
+                                                                Chức danh
+                                                            </th>
+                                                            <th style="width: 17%;" scope="col" class="v-center">
+                                                                Mức lương
+                                                            </th>
+                                                            
+                                                        </tr>
+                                                        @{
+                                                            for (int i = 0; i < sanvldn.Count; i++)
+                                                            {
+                                                                <tr class="svl_row">
+                                                                    <td>
+                                                                        @i
+                                                                    </td>
+                                                                    <td align="left">
+                                                                        <div style="font-weight: bold;">
+                                                                            @sanvldn[i].HoSoTuyenDung.TenCongViec
+                                                                        </div>
+                                                                        <div>
+                                                                            @sanvldn[i].DoanhNghiep.TenDoanhNghiep
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="v-center">
+                                                                        @sanvldn[i].HoSoTuyenDung.SoLuong
+                                                                    </td>
+                                                                    <td class="v-center">
+                                                                        @{
+                                                                            foreach (var item in vitri)
+                                                                            {
+                                                                                if (item.Id == @sanvldn[i].HoSoTuyenDung.ViTriCongViecId)
+                                                                                {
+                                                                                    @item.TenViTriCongViec
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        @*Nhân viên/Công nhân*@
+                                                                    </td>
+                                                                    <td class="v-center">
+                                                                        @{
+                                                                            foreach (var item in mucluong)
+                                                                            {
+                                                                                if (item.Id == @sanvldn[i].HoSoTuyenDung.MucLuongId)
+                                                                                {
+                                                                                    @item.TenMucLuong
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        @*Thỏa thuận*@
+                                                                    </td>
+                                                                    
+                                                                </tr>
+                                                            }
+                                                        }
+
+
+                                                    </tbody>
+                                                </table>
+
+                                                <div id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD02_pnlDoanhNghiepThamGia">
+                                                    <table id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD02_tablePaging">
+                                                        <tbody style="border:none">
+                                                            <tr style="border:none">
+                                                                <td style="width: 640px; height: 40px;" class="v-middle">
+                                                                    <table class="SVL-Paging">
+                                                                        <tbody style="border:none">
+                                                                            <tr style="border:none">
+                                                                                <td align="left" style="width: 1%;" class="Normal"></td>
+                                                                                <td align="right" style="width: 99%;" class="Normal">
+                                                                                    <nav class="pagination-wrapper d-flex  ">
+                                                                                        <ul class="pagination">
+                                                                                            <li data-page="1" class="page page-item active"><a class="page-link">1</a></li>
+
+                                                                                        </ul>
+                                                                                    </nav>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                                <td style="display: none;">
+                                                                    <a href="javascript:__doPostBack('dnn$ctr13787$DanhSachBanTuyenDung$ctlDSBTD02$btnRefressDuLieu','')" id="dnn_ctr13787_DanhSachBanTuyenDung_ctlDSBTD02_btnRefressDuLieu">Refress</a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="display: none; text-align: center;" id="a3">
+                                            <div style="width: 100%;" class="nav-main nav-noborder">
+                                                <div class="nav-top ">
+                                                    <div id="Div1">
+                                                        <div>
+                                                            <table cellspacing="0" border="0" style="width: 98%; border-collapse: collapse; margin:10px;" id="Table3" rules="all">
+                                                                <tbody>
+                                                                    <tr class="svl_header">
+                                                                        <th style="width: 5%;" scope="col">
+                                                                            STT
+                                                                        </th>
+                                                                        <th style="width: 18%;" scope="col" class="v-left">
+                                                                            Tên ứng viên
+                                                                        </th>
+                                                                        <th style="width: 8%;" scope="col">
+                                                                            Ngày sinh
+                                                                        </th>
+                                                                        <th style="width: 8%;" scope="col">
+                                                                            Giới tính
+                                                                        </th>
+                                                                        <th style="width: 15%;" scope="col">
+                                                                            Công việc mong muốn
+                                                                        </th>
+                                                                        <th style="width: 38%;" scope="col">
+                                                                            Địa chỉ chi tiết
+                                                                        </th>
+                                                                        @*<th style="width: 8%;" scope="col" class="v-center">
+                        Kết quả
+                    </th>*@
+                                                                    </tr>
+                                                                    @{
+                                                                        foreach (var item4 in songld)
+                                                                        {
+                                                                            for (int i = 0; i < nguoild.Count; i++)
+                                                                            {
+                                                                                if (nguoild[i].Id == item4)
+                                                                                {
+                                                                                    <tr class="svl_row">
+                                                                                        <td class="v-middle v-center">
+                                                                                            @i
+                                                                                        </td>
+                                                                                        <td class="v-middle ">
+                                                                                            
+                                                                                            @nguoild[i].HoTen
+                                                                                        </td>
+                                                                                        <td class="v-middle">
+                                                                                            @{
+                                                                                                var date = nguoild[i].NgaySinh.ToString().Split(" ");
+                                                                                                @date[0]
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="v-middle">
+                                                                                            @{
+
+                                                                                                foreach (var item1 in gioitinh)
+                                                                                                {
+                                                                                                    if (nguoild[i].GioiTinhId == item1.Id)
+                                                                                                    {
+                                                                                                        @item1.TenGioiTinh
+                                                                                                    }
+                                                                                                }
+
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="v-middle">
+                                                                                            @{
+
+                                                                                                foreach (var item2 in timviec)
+                                                                                                {
+                                                                                                    if (item2.NguoiLaoDongId == nguoild[i].Id)
+                                                                                                    {
+                                                                                                        @item2.TenCongViec
+                                                                                                    }
+
+                                                                                                }
+
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td class="v-middle">
+                                                                                            @{
+
+                                                                                                @nguoild[i].DiaChi <span>-</span>
+                                                                                                foreach (var item3 in xa)
+                                                                                                {
+                                                                                                    if (nguoild[i].DiaChiXaId == item3.Id)
+                                                                                                    {
+                                                                                                        @item3.TenXa <span>-</span>
+                                                                                                    }
+                                                                                                }
+                                                                                                foreach (var item2 in huyen)
+                                                                                                {
+                                                                                                    if (nguoild[i].DiaChiHuyenId == item2.Id)
+                                                                                                    {
+                                                                                                        @item2.TenHuyen <span>-</span>
+                                                                                                    }
+                                                                                                }
+
+                                                                                                foreach (var item1 in tinh)
+                                                                                                {
+                                                                                                    if (nguoild[i].DiaChiTinhId == item1.Id)
+                                                                                                    {
+                                                                                                        @item1.TenTinh
+                                                                                                    }
+                                                                                                }
+
+
+
+                                                                                            }
+                                                                                        </td>
+
+                                                                                    </tr>
+                                                                                }
+
+                                                                            }
+
+                                                                        }
+
+
+                                                                    }
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript" language="JavaScript">
+
+                                var ids = new Array('a1', 'a2', 'a3');
+
+                                function switchid(id, obj) {
+                                    hideallids();
+                                    showdiv(id);
+                                    $("#a1a").removeClass('HeadTextSelected');
+                                    $("#a2a").removeClass('HeadTextSelected');
+                                    $("#a3a").removeClass('HeadTextSelected');
+                                    
+                                    $(obj).addClass('HeadTextSelected');
+                                }
+
+                                function hideallids() {
+                                    //loop through the array and hide each element by id
+                                    for (var i = 0; i < ids.length; i++) {
+                                        hidediv(ids[i]);
+                                    }
+                                }
+
+                                function hidediv(id) {
+                                    //safe function to hide an element with a specified id
+                                    if (document.getElementById) { // DOM3 = IE5, NS6
+                                        document.getElementById(id).style.display = 'none';
+                                    }
+                                    else {
+                                        if (document.layers) { // Netscape 4
+                                            document.id.display = 'none';
+                                        }
+                                        else { // IE 4
+                                            document.all.id.style.display = 'none';
+                                        }
+                                    }
+                                }
+
+                                function showdiv(id) {
+                                    //safe function to show an element with a specified id
+
+                                    if (document.getElementById) { // DOM3 = IE5, NS6
+                                        document.getElementById(id).style.display = 'block';
+                                    }
+                                    else {
+                                        if (document.layers) { // Netscape 4
+                                            document.id.display = 'block';
+                                        }
+                                        else { // IE 4
+                                            document.all.id.style.display = 'block';
+                                        }
+                                    }
+                                }
+                            </script>
+                            <div class="clear">
+                            </div>
+                        </div>
+                        <div id="dnn_ctr542_ViewExchangeJob_ctl00_UpdatePanel1">
+
+                        </div>
+
+
+                    </div><!-- End_Module_542 -->
+                </div>
+            </div>
+            <div class="DnnModule DnnModule-DNN_HTML DnnModule-605">
+                <a name="605"></a>
+                <div class="dnnPEMContNotitle">
+                    <div id="dnn_ctr605_ContentPane" class="dnnPEMContNotitleBody">
+                        <!-- Start_Module_605 --><div id="dnn_ctr605_ModuleContent" class="DNNModuleContent ModDNNHTMLC">
+                            <div id="dnn_ctr605_HtmlModule_lblContent" class="Normal">
+
+                            </div>
+
+                        </div><!-- End_Module_605 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>

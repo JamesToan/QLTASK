@@ -1,0 +1,13 @@
+// Here you can add other styles
+.c-icon:not(.c-icon-c-s):not(.c-icon-custom-size) {
+    width: 1rem;
+    height: 1rem;
+    font-size: 1rem;
+}
+
+.c-icon {
+    display: inline-block;
+    color: inherit;
+    text-align: center;
+    fill: currentColor;
+}

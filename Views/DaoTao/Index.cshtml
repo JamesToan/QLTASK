@@ -1,0 +1,562 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "DaoTaoNghe";
+
+    var tindaotao = ViewBag.TinDaoTao;
+    var tindaotaoskip = ViewBag.TinDaoTaoSkip;
+
+    var newscatid = ViewBag.NewCatID;
+
+    var coso = ViewBag.CoSoDaoTao;
+    var vanbang = ViewBag.VanBang;
+    var loaihinh = ViewBag.LoaiHinh;
+    var vbhdan = ViewBag.VBHD;
+    var daotao = ViewBag.DaoTao;
+    var tenkhoahoc = ViewBag.TenKhoaHoc;
+    var tgdt = ViewBag.ThoiGianDT;
+    var banner = ViewBag.Banner;
+    var video = ViewBag.Video;
+
+    int num = 0;
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    int pSkip = ViewBag.Skip;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane daotaonew left">
+                <div id="dnn_ContentPane" class="contentPane">
+                    <div class="DnnModule DnnModule-ExchangeJob DnnModule-542">
+                        <a name="542"></a>
+                        <div id="dnn_ctr542_ContentPane">
+                            <!-- Start_Module_542 -->
+                            <div id="dnn_ctr542_ModuleContent" class="DNNModuleContent ModExchangeJobC">
+                                <div id="dnn_ctr542_ViewExchangeJob_ctl00_UpdatePanel1">
+
+                                </div>
+                                <div class="Invisible">
+
+                                    <div id="tabs">
+                                        @*<div style="margin-top: 25px;" class="HeadSearch">
+            <a href="javascript:switchid('a1','#a1a');" class="HeadTextSelected" id="a1a" style="margin-right: 5px;">Danh Sách Khóa Học</a>
+
+        </div>*@
+                                        <div class="search-bar position-relative overflow-hidden mb-3">
+                                            @*@using (Html.BeginForm("SearchDaoTao", "DaoTao", FormMethod.Post))
+            {
+                <div class="container">
+                    <div class="search-inner">
+                        <div class="row row-5 align-items-center">
+                            @{
+                                if (newscatid == 2)
+                                {
+                                    <div class="col-md-10">
+                                        <div class="form-group position-relative mb-0 noidung">
+                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề" value="" id="searchString" name="searchString">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="row row-5 align-items-center">
+
+                                            <div class="col-md-12">
+                                                <div class="form-group position-relative mb-0">
+                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                        <i class="fal fa-search"></i>Tìm
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-8">
+                                        <div class="form-group position-relative mb-0 noidung">
+                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề" value="" id="searchString" name="searchString">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row row-5 align-items-center">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group position-relative mb-0">
+                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                        <i class="fal fa-search"></i>Tìm
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6">
+                                                <div class="form-group position-relative mb-0 question">
+                                                    <button type="button" class="form-control rounded-0 text1 btn bg-blue transition-03  " data-toggle="modal" data-target="#myModal">
+                                                        <i class="fal fa-money-check-edit"></i><span> Đăng Ký</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+            }*@
+                                            <form action="/DaoTao/SearchDaoTao">
+                                                <div class="container">
+                                                    <div class="search-inner">
+                                                        <div class="row row-5 align-items-center">
+                                                            @{
+                                                                if (newscatid == 2)
+                                                                {
+                                                                    <div class="col-md-10">
+                                                                        <div class="form-group position-relative mb-0 noidung">
+                                                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề, nội dung tìm kiếm" value="" id="searchString" name="searchString">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="row row-5 align-items-center">
+
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group position-relative mb-0">
+                                                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                        <i class="fal fa-search"></i>Tìm
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group position-relative mb-0 noidung">
+                                                                            <input type="text" class="form-control rounded-0 transition-03" placeholder="Tiêu đề, nội dung tìm kiếm" value="" id="searchString" name="searchString">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="row row-5 align-items-center">
+
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group position-relative mb-0">
+                                                                                    <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                        <i class="fal fa-search"></i>Tìm
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group position-relative mb-0 question">
+                                                                                    <button type="button" class="form-control rounded-0 text1 btn bg-blue transition-03  " data-toggle="modal" data-target="#myModal">
+                                                                                        <i class="fal fa-money-check-edit"></i><span> Đăng Ký</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        @using (Html.BeginForm("DangKyHN", "DaoTao", FormMethod.Post))
+                                        {
+                                            <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+                                                <div class="modal-dialog modal-dialog-centered">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">ĐĂNG KÝ</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Khóa học:<span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <select class="question-select " style="border-radius:0px;" name="tenkhoahoc" id="tenkhoahoc" required>
+                                                                        <option value="">Chọn khóa học</option>
+                                                                        @{
+                                                                            for (int i = 0; i < tenkhoahoc.Count; i++)
+                                                                            {
+                                                                                <option value="@tenkhoahoc[i]" class="childAttr">@tenkhoahoc[i]</option>
+                                                                            }
+                                                                        }
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Họ tên:<span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control  transition-03" placeholder="Họ tên" value="" id="hoten" name="hoten" required>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Điện thoại: <span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control transition-03" placeholder="Số điện thoại" value="" id="phone" name="phone" required>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Email:
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="email" class="form-control transition-03" placeholder="Email" value="" id="email" name="email">
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix">
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" id="dtsubmit" class="btn btn-default">Gửi</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                        <div class="spec-boxitem ">
+
+                                            @for (int i = 0; i < tindaotaoskip.Count; i++)
+                                            {
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl00$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_0" value="381">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            @{
+                                                                var hinhanh = tindaotaoskip[i].HinhAnh.ToString().Split('[', ']', '"');
+                                                                var hinh = hinhanh[2];
+
+
+                                                            }
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_0" href="/DaoTao/DaoTaoDetail?dtID=@tindaotaoskip[i].Id&newsCatId=@newscatid"> <img class="hnewsImage" src="~/images/@hinh"></a>
+                                                        </div>
+                                                        <div class="news-title-list">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_0" href="/DaoTao/DaoTaoDetail?dtID=@tindaotaoskip[i].Id&newsCatId=@newscatid">@tindaotaoskip[i].TieuDe</a>
+
+                                                        </div>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                                @Html.Raw(tindaotaoskip[i].TomTat)
+                                                            </span>
+                                                        </div>
+                                                        @*<div class="news-sub">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <span class="big-type">
+                                                                    Thời gian đào tạo
+                                                                </span>
+                                                                <br />
+                                                                <span>
+                                                                 <i class="fal fa-clock"></i>  @daotaoskip[i].ThoiGianDaoTao
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-md-5">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                    </div>
+                                                </div>
+                                            }
+
+
+
+                                        </div>
+
+
+                                        <div style="margin-top: 15px;">
+                                            <table class="PagingTable">
+                                                <tbody>
+                                                    <tr>
+                                                        <td align="left" style="width: 1%;" class="Normal"></td>
+                                                        <td align="right" style="width: 99%;" class="Normal">
+                                                            <div class="PagingContainer">
+                                                                <ul>
+
+                                                                    @{
+                                                                        if (CurrentPage > 1 & PageCount > 1)
+                                                                        {
+                                                                            <li>
+                                                                                <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class=" PagingActive" href="/DaoTao?pCount=@pSkip&pPage=1&newsCatId=@newscatid">&lt;&lt;</a>
+                                                                            </li>
+
+
+                                                                        }
+
+                                                                        for (int i = 1; i <= PageCount; i++)
+                                                                        {
+                                                                            if (i == pPage)
+                                                                            {
+                                                                                <li class="aspNetDisabled">
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_1" class="aspNetDisabled PagingActive">@i</a>
+                                                                                </li>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_2" class="PagingActive" href="/DaoTao?pCount=@pSkip&pPage=@i&newsCatId=@newscatid">@i</a>
+                                                                                </li>
+
+                                                                            }
+                                                                        }
+                                                                        if (PageCount > 1 & CurrentPage < PageCount)
+                                                                        {
+
+                                                                            <li>
+                                                                                <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_8" class="PagingActive" href="/DaoTao?pCount=@pSkip&pPage=@PageCount&newsCatId=@newscatid">&gt;&gt;</a>
+                                                                            </li>
+
+                                                                        }
+
+                                                                    }
+
+
+
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
+                                    <script type="text/javascript" language="JavaScript">
+
+                                        var ids = new Array('a1', 'a2', 'a3');
+
+                                        function switchid(id, obj) {
+                                            hideallids();
+                                            showdiv(id);
+                                            $("#a1a").removeClass('HeadTextSelected');
+                                            $("#a2a").removeClass('HeadTextSelected');
+                                            $("#a3a").removeClass('HeadTextSelected');
+                                            $(obj).addClass('HeadTextSelected');
+                                        }
+
+                                        function hideallids() {
+                                            //loop through the array and hide each element by id
+                                            for (var i = 0; i < ids.length; i++) {
+                                                hidediv(ids[i]);
+                                            }
+                                        }
+
+                                        function hidediv(id) {
+                                            //safe function to hide an element with a specified id
+                                            if (document.getElementById) { // DOM3 = IE5, NS6
+                                                document.getElementById(id).style.display = 'none';
+                                            }
+                                            else {
+                                                if (document.layers) { // Netscape 4
+                                                    document.id.display = 'none';
+                                                }
+                                                else { // IE 4
+                                                    document.all.id.style.display = 'none';
+                                                }
+                                            }
+                                        }
+
+                                        function showdiv(id) {
+                                            //safe function to show an element with a specified id
+
+                                            if (document.getElementById) { // DOM3 = IE5, NS6
+                                                document.getElementById(id).style.display = 'block';
+                                            }
+                                            else {
+                                                if (document.layers) { // Netscape 4
+                                                    document.id.display = 'block';
+                                                }
+                                                else { // IE 4
+                                                    document.all.id.style.display = 'block';
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                    <div class="clear">
+                                    </div>
+                                </div>
+
+
+                            </div><!-- End_Module_542 -->
+                        </div>
+                    </div>
+                    <div class="DnnModule DnnModule-DNN_HTML DnnModule-605">
+                        <a name="605"></a>
+                        <div class="dnnPEMContNotitle">
+                            <div id="dnn_ctr605_ContentPane" class="dnnPEMContNotitleBody">
+                                <!-- Start_Module_605 -->
+                                <div id="dnn_ctr605_ModuleContent" class="DNNModuleContent ModDNNHTMLC">
+                                    <div id="dnn_ctr605_HtmlModule_lblContent" class="Normal">
+
+                                    </div>
+
+                                </div><!-- End_Module_605 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane right">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <div class="video-part">
+                                    @{
+                                        if (video.Count > 0)
+                                        {
+                                            <div class="video-title">
+                                                <p>Video</p>
+                                            </div>
+                                        }
+                                    }
+                                    @{
+                                        foreach (var item in video)
+                                        {
+                                            <iframe class="video-box" src="@item.Video" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ></iframe>
+
+                                        }
+                                    }
+                                    @*<iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="video-box" src="https://www.youtube.com/embed/E7AIp-HJ7IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>*@
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div class="banner-qc-all">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+                                                <div class="banner-qc">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img class="qc-banner" src="~/images/@hinh" />
+                                                    </a>
+
+                                                </div>
+                                            }
+
+                                        }
+
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+
+    </div>
+    
+</div>
+
+
+<script>
+
+        //var sel = document.getElementById("tenkhoahoc");
+        //var text = sel.options[sel.selectedIndex].text;
+
+        //jQuery("#dtsubmit").click(function () {
+
+        //    var vtenkhoahoc = text;
+        //    var vhoten = jQuery("#hoten").val();
+        //    var vphone = jQuery("#phone").val();
+        //    var vemail = jQuery("#email").val();
+
+
+        //    jQuery.ajax({
+        //        url: 'http://localhost:56178/DaoTao/DangKyHN',
+        //        type: 'post',
+        //        data: JSON.stringify({
+        //            'Tenkhoahoc': vtenkhoahoc,
+        //            'Hoten': vhoten,
+        //            'Phone': vphone,
+        //            'Email': vemail,
+
+
+        //        }),
+        //        contentType: 'application/json',
+        //        success: function (data) {
+        //            alert("Success");
+
+        //        },
+
+        //    });
+        //});
+
+
+    </script>

@@ -1,0 +1,212 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "HoiDapDetail";
+
+   
+    var hoidap = ViewBag.HoiDap;
+    
+    var user = ViewBag.User;
+    var linhvuc = ViewBag.LinhVuc;
+}
+
+<div class="body-view view-news">
+    <div id="page-container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-Document DnnModule-538">
+                        <div class="DnnModule DnnModule-VietNews DnnModule-696">
+                            <a name="696"></a>
+                            <div id="dnn_ctr696_ContentPane">
+                                <!-- Start_Module_696 -->
+                                <div id="dnn_ctr696_ModuleContent" class="DNNModuleContent ModVietNewsC">
+
+                                    <div class="Invisible">
+                                        <div id="dnn_ctr8055_ContentPane">
+                                            <!-- Start_Module_8055 -->
+                                            <div class="DNNModuleContent ModTintứcsiteĐịaPhươngC" id="dnn_ctr8055_ModuleContent">
+                                                <div class="container-box spec-increbox box-news-detail">
+                                                    <div class="box-head">
+                                                        <ul class="tabul">
+                                                            <li class="tabli">
+                                                                <a class="tablink tabSelected">
+                                                                    <span class="tabOut">
+                                                                        Hỏi Đáp
+                                                                    </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div onclick="window.history.back();" class="back-box-icon">
+                                                        Quay lại
+                                                    </div>
+                                                    <div class="spec-boxitem">
+                                                        <div style="display: inline-block; width: 100%;">
+                                                            <div class="SubHead">
+                                                                <h1 class="news-title">
+                                                                    @hoidap.TieuDe
+                                                                </h1>
+                                                            </div>
+                                                            <div class="lbSummary">
+                                                                <span class="NewsDetail_summary">Người hỏi:</span>
+                                                                <span class="HotNews_date">
+                                                                    @{
+                                                                        for (int i = 0; i < user.Count; i++)
+                                                                        {
+                                                                            if (user[i].Id == hoidap.NguoiHoiId)
+                                                                            {
+                                                                                @user[i].FullName
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div class="lbSummary" style="display: block;">
+                                                                <span class="NewsDetail_summary">
+                                                                    Lĩnh Vực:
+                                                                </span>
+                                                                @{
+                                                                    for (int i = 0; i < linhvuc.Count; i++)
+                                                                    {
+                                                                        if (linhvuc[i].Id == hoidap.LinhVucId)
+                                                                        {
+                                                                            @linhvuc[i].TenLinhVuc
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <div  style="display: block;">
+                                                                <span class="title-question">
+                                                                    Câu hỏi:
+                                                                </span>
+                                                                <div class="NewsDetail_content">
+                                                                    @hoidap.NoiDung
+
+                                                                </div>
+                                                            </div>
+                                                            <div style="display: block;margin-top:10px;">
+                                                                <span class="title-question">
+                                                                    Câu trả lời:
+                                                                </span>
+                                                                <div class="NewsDetail_content">
+                                                                    @hoidap.TraLoi
+
+                                                                </div>
+                                                            </div>
+                                                            <div style="clear: both;">
+                                                            </div>
+                                                        </div>
+                                                        <div style="clear: both;">
+                                                        </div>
+
+
+
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End_Module_8055 -->
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="dnn$ctr696$ViewVietNews$ctl00$hdfSettings" id="dnn_ctr696_ViewVietNews_ctl00_hdfSettings" value="111">
+                                    <input type="hidden" name="dnn$ctr696$ViewVietNews$ctl00$hdftagsSetting" id="dnn_ctr696_ViewVietNews_ctl00_hdftagsSetting" value="111">
+
+
+
+                                </div><!-- End_Module_696 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane left">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <!-- Start_Module_535 -->
+                                <div id="dnn_ctr535_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                    <input type="hidden" name="dnn$ctr535$ViewDocument$ctl00$hdfDocument" id="dnn_ctr535_ViewDocument_ctl00_hdfDocument" value="103">
+                                    <div class="cat-pane">
+                                        <div class="cat-title">
+                                            <span class="icon-news-top">
+                                                <a href=" ">
+                                                    Chuyên mục
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="cat-item" id="dnn_MenuCatalog">
+                                            <div class="Invisible">
+                                                <div class="self-catalog">
+                                                    <ul>
+                                                        @{
+                                                            for (int i = 0; i < linhvuc.Count; i++)
+                                                            {
+                                                                <li id="@i">
+                                                                    <a id="dnn_ctr703_ViewVietNews_ctl00_rptCate_hplName_0" href="/HoiDap/ListHoiDap?lvID=@linhvuc[i].Id">@linhvuc[i].TenLinhVuc</a>
+                                                                </li>
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    $('#li' + '-1').attr('style', 'font-weight:bold')
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="news-conner">
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- End_Module_535 -->
+                            </div>
+                        </div>
+                        <div class="DnnModule DnnModule-HomeViectimnguoi DnnModule-539">
+                            <a name="539"></a>
+                            <div id="dnn_ctr539_ContentPane">
+                                <!-- Start_Module_539 -->
+                                <div id="dnn_ctr539_ModuleContent" class="DNNModuleContent ModHomeViectimnguoiC">
+                                    <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfJobBoardID" id="dnn_ctr539_MainHome_ctl00_hdfJobBoardID" value="112">
+                                    <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfResume" id="dnn_ctr539_MainHome_ctl00_hdfResume" value="112">
+                                    <div class="Invisible">
+                                        <div class="box-tk">
+
+                                            <div class="tkcontent">
+                                                <a id="dnn_ctr539_MainHome_ctl00_hplJobBoard" class="item-stistic" href=" ">
+                                                    <span class="itemtxt">
+                                                        <b>
+                                                            90386
+                                                        </b> Việc làm đang
+                                                        tuyển dụng
+                                                    </span> <span class="itemarrow"></span>
+                                                </a>
+                                                <br>
+                                                <a id="dnn_ctr539_MainHome_ctl00_hplResume" class="item-stistic" href=" ">
+                                                    <span class="itemtxt"><b>125776</b> Hồ sơ ứng viên</span>
+                                                    <span class="itemarrow"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- End_Module_539 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>
+

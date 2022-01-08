@@ -1,0 +1,518 @@
+@{ Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    ViewData["Title"] = "Home";
+
+    var tuyendungc = ViewBag.TuyenDungCount;
+    var timviec = ViewBag.TimViecCount;
+    var cauhinh = ViewBag.CauHinh;
+    var thanhvien = ViewBag.ThanhVienCount;
+    var banner = ViewBag.NewBanner;
+    var footertext = ViewBag.FooterText;
+    var footerlink = ViewBag.FooterLink;
+}
+@using Microsoft.AspNetCore.Http;
+@using coreWeb.Controllers;
+<link href="~/Content/Assets/css/mainpage.css" rel="stylesheet" />
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+@{
+    var truycap = ViewBag.TruyCap;
+    var name = Context.Session.GetString("UserName");
+    int? roleid = Context.Session.GetInt32("RoleId");
+    int? userid = Context.Session.GetInt32("UserId");
+    int? ngldid = Context.Session.GetInt32("NLDID");
+    int? dndid = Context.Session.GetInt32("DNID");
+}
+
+@{
+    if (userid != 0 && roleid == 3)
+    {
+        <div class="top-funtions">
+            <div class="btn-group pull-right">
+                <button class="btn button-top-pf" onclick="myFunction1()">
+                    <i class="fa fa-user"></i>
+                    Quản lý tài khoản
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <div id="topDropdown" class="dropdown-content">
+                    <a href="">
+                        Xin chào <br />
+                        @Context.Session.GetString("FullName")
+                    </a>
+                    @{
+                        if (ngldid != 0)
+                        {
+                            <a href="/UserProfile/Employees">
+                                <i class="fa fa-edit"></i>
+                                Quản lý tài khoản
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/UserProfile/EmployeesCreate">
+                                <i class="fa fa-edit"></i>
+                                Quản lý tài khoản
+                            </a>
+                        }
+                    }
+
+                    <a href="@Url.Action("Logout", "Home")">
+                        <i class="fa fa-sign-out"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+    else if (userid != 0 && roleid == 4)
+    {
+        <div class="top-funtions">
+            <div class=" btn-group pull-right">
+                <button class="btn button-top-pf" onclick="myFunction1()">
+                    <i class="fa fa-user"></i>
+                    Quản lý tài khoản
+                    <i class="fa fa-caret-down"></i>
+                </button>
+
+                <div id="topDropdown" class="dropdown-content">
+                    <a href="">
+                        Xin chào <br />
+                        @Context.Session.GetString("FullName")
+                    </a>
+                    @{
+                        if (dndid != 0)
+                        {
+                            <a href="/UserProfile/Employers">
+                                <i class="fa fa-edit"></i>
+                                Quản lý tài khoản
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/UserProfile/EmployersCreate">
+                                <i class="fa fa-edit"></i>
+                                Quản lý tài khoản
+                            </a>
+                        }
+                    }
+
+                    <a href="@Url.Action("Logout", "Home")">
+                        <i class="fa fa-sign-out"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+    }
+    else if (name == "" || name == null)
+    {
+        <div class="top-funtions">
+            <div class="btn-group pull-right">
+
+                <a class="btn btn-default" href="/Home/Login">Đăng nhập</a>
+                <a class="btn btn-default" href="/Home/Register">Đăng ký</a>
+            </div>
+
+        </div>
+    }
+
+    <script>
+        function myFunction1() {
+            document.getElementById("topDropdown").classList.toggle("show1");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('.button-top-pf')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show1')) {
+                        openDropdown.classList.remove('show1');
+                    }
+                }
+            }
+        }
+    </script>
+}
+
+<div class="banner">
+
+    <img src="~/Content/Portals/_default/Skins/vieclamNew/Images/logovlla.png">
+</div>
+<div class="container">
+    <div class="slider-container">
+        <div id="dnn_Slider" class="box-slider">
+            <div class="DnnModule DnnModule-SpeedyTouchFlexi2 DnnModule-829">
+                <a name="829"></a>
+                <div class="dnnPEMContNotitle">
+                    <div id="dnn_ctr829_ContentPane" class="dnnPEMContNotitleBody">
+                        <!-- Start_Module_829 -->
+                        <div id="dnn_ctr829_ModuleContent" class="DNNModuleContent ModSpeedyTouchFlexi2C">
+
+
+                            <!-- start SpeedyApp TouchFlexi Slider slideshow -->
+
+                            <script type="text/javascript" src="~/Content/DesktopModules/SpeedyTouchFlexi2/jquery.flexslider-min.js"></script>
+
+
+                            <div id="SpeedyTouchFlexiContainer829" class="flex-container">
+                                <div id="SpeedyTouchFlexi829" class="flexslider">
+                                    <ul class="slides">
+                                        @{
+                                            foreach (var item in banner)
+                                            {
+                                                var hinhanh = item.HinhAnh.ToString().Split('[', ']', '"');
+                                                var hinh = hinhanh[2];
+
+                                                <li data-thumb="~/images/@hinh" class="flex-active-slide" style="width: 100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;">
+                                                    <a href="@item.Link" target="@item.Target">
+                                                        <img src="~/images/@hinh" draggable="false">
+                                                    </a>
+
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Close SpeedyApp TouchFlexi Slider  slideshow -->
+                            <script type="text/javascript" charset="utf-8">
+
+                                jQuery(window).load(function () {
+                                    jQuery('#SpeedyTouchFlexi829').flexslider({
+                                        animation: "fade",
+
+                                        direction: "horizontal",
+                                        reverse: false,
+                                        animationLoop: true,
+                                        startAt: 0,
+                                        slideshow: true,
+                                        slideshowSpeed: 2500,
+
+                                        animationSpeed: 2500,
+                                        pauseOnAction: true,
+                                        randomize: true,
+                                        pauseOnHover: true,
+                                        touch: true,
+                                        keyboard: false,
+                                        controlNav: false,
+                                        directionNav: false,
+
+                                        minItems: 3,
+                                        maxItems: 3,
+                                        smoothHeight: true,
+                                        move: 3,
+                                        itemMargin: 10,
+                                        before: function (slider) {
+                                            jQuery('.flexslider .slides > li').css({ 'width': jQuery('[SLIDERDIV]').width() });
+
+
+                                        }
+                                    });
+                                });
+
+                            </script>
+
+                        </div><!-- End_Module_829 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="bannerleft">
+
+    </div>*@
+@*<div class="bannerright">
+        <div>
+            <img class="qc-banner" src="~/Content/Assets/images/quangcao/CORONA.png" />
+        </div>
+        <div>
+            <img class="qc-banner" src="~/Content/Assets/images/quangcao/cho thue2.jpg" />
+        </div>
+        <div>
+            <img class="qc-banner" src="~/Content/Assets/images/quangcao/csdl_caulaodong.gif" />
+        </div>
+        <div >
+            <img class="qc-banner" src="~/Content/Assets/images/quangcao/totin.jpg" />
+        </div>
+    </div>*@
+
+<div class="container">
+
+
+
+    <div class="links-panel-container">
+
+        <div class="links-panel">
+            <div class="link-panel panel-1">
+                <div>
+                    <div class="title_box">
+                        <span class="title">
+                            THÔNG TIN BẠN ĐANG CẦN TÌM
+                        </span>
+
+                    </div>
+                    <ul class="links">
+                        <li>
+                            <a href="/BanTin" title="Thông tin - Tin tức">
+                                <i class="icon"></i>
+                                <span>Thông tin Tin tức</span>
+                            </a>
+                        </li>
+                        <li>
+
+                            <a href="/BHTN" title="Bảo hiểm thất nghiệp">
+                                <i class="icon"></i>
+                                <span>Bảo hiểm thất nghiệp</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="link-panel panel-2">
+                <div>
+                    <div class="title_box">
+                        <span class="title">
+                            BẠN ĐANG CẦN GÌ?
+                        </span>
+
+                    </div>
+                    <ul class="links">
+                        <li>
+                            <a href="/TimViec" title="Tìm kiếm lao động">
+                                <i class="icon"></i>
+                                <span>Tìm kiếm lao động</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/TuyenDung" title="Tìm kiếm công ty">
+                                <i class="icon"></i>
+                                <span>Tìm kiếm doanh nghiệp</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="link-panel panel-3">
+                <div>
+                    <div class="title_box">
+                        <span class="title">
+                            VIỆC LÀM BẠN ĐANG CẦN TÌM
+                        </span>
+
+                    </div>
+                    <ul class="links">
+                        <li>
+                            <a href="/SanVL" title="Sàn Việc Làm">
+                                <i class="icon"></i>
+                                <span>Sàn Việc Làm</span>
+                            </a>
+                        </li>
+                        <li>
+
+                            <a href="/XKLD" title="Việc làm ngoài nước">
+                                <i class="icon"></i>
+                                <span>Việc làm ngoài nước</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="link-panel panel-4">
+                <div>
+                    <div class="title_box">
+                        <span class="title">
+                            CHÚNG TÔI CÓ THỂ GIÚP GÌ CHO BẠN?
+                        </span>
+
+                    </div>
+                    <ul class="links">
+                        <li>
+                            <a href="/DaoTao" title="Cơ hội học nghề và kỹ năng">
+                                <i class="icon"></i>
+                                <span>Học nghề và kỹ năng</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/HoiDap" title="Chuyên mục hỏi đáp">
+                                <i class="icon"></i>
+                                <span>Chuyên mục hỏi đáp</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="footer">
+
+    <div class="footer-content">
+        <div class="page_container">
+            <div class="copyright">
+
+                @Html.Raw(footertext.NoiDung)
+                @*<p class="footer_title">TRUNG TÂM DỊCH VỤ VIỆC LÀM LONG AN</p>
+
+                <p style="text-align: left;">
+                    Địa chỉ: Số 78, Quốc lộ 1A, khu phố 6, thị trấn Bến Lức, huyện Bến Lức, tỉnh Long An<br>
+                    - Website:<a href="http://vieclamlongan.vn"> http://vieclamlongan.vn</a><br />
+                    - Email: <a href="mailto:vieclam@vieclamlongan.vn">vieclam@vieclamlongan.vn</a>
+                </p>
+                <p class=" ">
+                    Phòng Đào tạo - Giới thiệu việc làm: (0272) 3871 711 - 3635 223 <br />
+                    – Hotline/Zalo: 084 2871 711
+                </p>
+
+
+                <p class=" "> Phòng Bảo hiểm thất nghiệp: <span>(0272) 363 8633 - 3633 566</span></p>
+
+                <p class=" "> Phòng Hành chính – Tổng hợp: <span>(0272) 361 566</span></p>*@
+
+
+            </div>
+            <div class="website_link" style="text-align:center">
+                <p class="footer_title title1" style="font-weight:bold"> LIÊN KẾT</p>
+                @Html.Raw(footerlink.NoiDung)
+                @*<p>
+            <a href="https://www.longan.gov.vn/Pages/Default.aspx" target="_blank">Cổng thông tin điện tử tỉnh Long An</a>
+        </p>
+
+        <p>
+
+            <a href="https://dichvucong.gov.vn/p/home/dvc-trang-chu.htm" target="_blank">Cổng dịch vụ công Quốc gia</a>
+        </p>*@
+                @*<ul>
+            <li>
+                <a>
+                    Việc làm KCX-KCN
+                </a>
+            </li>
+            <li>
+                <a>
+                    Việc làm Thanh Niên
+                </a>
+            </li>
+        </ul>*@
+            </div>
+            <div class="website_statistic">
+                <p class="footer_title title1" style="font-weight:bold"> THỐNG KÊ</p>
+                <table cellspacing="0" cellpadding="4" width="100%">
+                    <tbody>
+                        <tr class="Normal">
+                            <td>
+                                <div id="dnn_ctr617_UsersOnline_pnlMembership">
+
+                                    <table cellspacing="0" cellpadding="0" border="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoGroup1.gif" id="dnn_ctr617_UsersOnline_imgMembership" height="14" alt="Thành viên" width="17" align="middle"></td>
+                                                <td class="NormalBold">
+                                                    <span id="dnn_ctr617_UsersOnline_MembershipLabel"><u>Số lượt truy cập:</u></span>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoOverall.gif" id="dnn_ctr617_UsersOnline_imgUserCount" height="14" alt="Số người dùng" width="17" align="middle"></td>
+                                                <td class="Normal">
+                                                    <span id="dnn_ctr617_UsersOnline_OverallLabel">Tổng :</span>
+                                                    <span id="dnn_ctr617_UsersOnline_lblUserCount" class="NormalBold">@truycap</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                <div id="dnn_ctr617_UsersOnline_pnlMembership">
+
+                                    <table cellspacing="0" cellpadding="0" border="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoGroup1.gif" id="dnn_ctr617_UsersOnline_imgMembership" height="14" alt="Thành viên" width="17" align="middle"></td>
+                                                <td class="NormalBold">
+                                                    <span id="dnn_ctr617_UsersOnline_MembershipLabel"><u>Thành viên:</u></span>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoOverall.gif" id="dnn_ctr617_UsersOnline_imgUserCount" height="14" alt="Số người dùng" width="17" align="middle"></td>
+                                                <td class="Normal">
+                                                    <span id="dnn_ctr617_UsersOnline_OverallLabel">Tổng :</span>
+                                                    <span id="dnn_ctr617_UsersOnline_lblUserCount" class="NormalBold">@thanhvien</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                <div id="dnn_ctr617_UsersOnline_pnlUsersOnline">
+
+                                    <table cellspacing="0" cellpadding="0" border="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoGroup2.gif" id="dnn_ctr617_UsersOnline_imgPeopleOnline" height="14" alt="Người online" width="17" align="middle"></td>
+                                                <td class="NormalBold">
+                                                    <span id="dnn_ctr617_UsersOnline_PeopleOnlineLabel"><u>Hồ sơ:</u></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoVisitors.gif" id="dnn_ctr617_UsersOnline_imgVisitors" height="14" alt="Khách" width="17" align="middle"></td>
+                                                <td class="Normal">
+                                                    <span id="dnn_ctr617_UsersOnline_VisitorsLabel">Tuyển dụng :</span>
+                                                    <span id="dnn_ctr617_UsersOnline_lblGuestCount" class="NormalBold">@tuyendungc</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoMembers.gif" id="dnn_ctr617_UsersOnline_imgMemberCount" height="14" alt="Thành viên" width="17" align="middle"></td>
+                                                <td class="Normal">
+                                                    <span id="dnn_ctr617_UsersOnline_MembersLabel">Tìm việc:</span>
+                                                    <span id="dnn_ctr617_UsersOnline_lblMemberCount" class="NormalBold">@timviec</span>
+                                                </td>
+                                            </tr>
+                                            @*<tr>
+                        <td align="center" width="25"><img src="~/Content/DesktopModules/UsersOnline/Images/uoTotal.gif" id="dnn_ctr617_UsersOnline_imgTotalCount" height="14" alt="Tổng" width="17" align="middle"></td>
+                        <td class="Normal">
+                            <span id="dnn_ctr617_UsersOnline_TotalLabel">Tổng :</span>
+                            <span id="dnn_ctr617_UsersOnline_lblTotalCount" class="NormalBold">207</span>
+                        </td>
+                    </tr>*@
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+

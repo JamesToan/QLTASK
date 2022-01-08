@@ -1,0 +1,39 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var listBanner = ViewBag.NewBanner;
+}
+<div id="dnn_ctr611_ModuleContent " class="DNNModuleContent ModDNNHTMLC ">
+    <div id="dnn_ctr611_HtmlModule_lblContent " class="Normal ">
+        <ul>
+            @*<li> <a href="/tintuc/tinchitiet/tabid/111/Id/679/THONG-BAO-TU-VAN-GIOI-THIEU-VIEC-LAM-TRUC-TUYEN.aspx "> <img alt=" " src="Content/Portals/0/Banner/tuvanGTVL.gif " /> </a> </li>
+        <li>
+            <a href="/viectimnguoi/tabid/93/View/ViewJobBoard/Id/146406/cong-nhan.aspx
+                                                                        "><img alt=" " src="Content/Portals/0/Banner/pepperl123.gif " /></a>
+        </li>
+        <li>
+            <a href="/viectimnguoi/tabid/93/View/ViewJobBoard/Id/146437/Cong-ty-TNHH-XD-MT-Arttek.aspx ">
+                <img alt=" " src="Content/Portals/0/Banner/Arttek.gif
+                                                                        " />
+            </a>
+        </li>
+        <li> <a href="/viectimnguoi/tabid/93/View/ViewJobBoard/Id/146496/Cong-ty-Cathay-Life-Viet-Nam.aspx "> <img alt=" " src="Content/Portals/0/Banner/cathay.gif " /> </a> </li>
+
+        <li> <img alt=" " src="Content/Portals/0/QuangCao/img.gif " /> </li>*@
+            @for (int i = 0; i < listBanner.Count; i++)
+            {
+                if (listBanner[i].ChuyenMucId == 8)
+                {
+                    <li>
+                        <a href="">
+                            <img alt=" " src="@listBanner[i].HinhAnh" />
+                        </a>
+                    </li>
+                }
+
+            }
+        </ul>
+    </div>
+
+</div>

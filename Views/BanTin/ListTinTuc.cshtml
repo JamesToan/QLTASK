@@ -1,0 +1,263 @@
+@{ Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "ListTinTuc";
+
+    int num = 0;
+
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+
+    var bantin = ViewBag.NewsBanTin;
+    var tintuc = ViewBag.TinTuc;
+    var chuyenmuc = ViewBag.ChuyenMuc;
+    var skip = ViewBag.Skip;
+
+}
+<div class="body-view view-news">
+    <div id="page-container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-VietNews DnnModule-704">
+                        <a name="704"></a>
+                        <div id="dnn_ctr704_ContentPane">
+                            <!-- Start_Module_704 -->
+                            <div id="dnn_ctr704_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfCate" id="dnn_ctr704_ViewVietNews_ctl00_hdfCate" value="7">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfSettings" id="dnn_ctr704_ViewVietNews_ctl00_hdfSettings" value="114">
+                                <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfPageAdmin" id="dnn_ctr704_ViewVietNews_ctl00_hdfPageAdmin" value="114">
+                                <div class="Invisible">
+
+                                    <div class="container-box spec-increbox">
+                                        <div class="box-head">
+                                            <ul class="tabul">
+                                                <li class="tabli">
+                                                    <a class="tablink tabSelected">
+                                                        <span class="tabOut">
+                                                            Bản Tin
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div onclick="window.history.back();" class="back-box-icon">
+                                            Quay lại
+                                        </div>
+                                        <div class="spec-boxitem">
+
+                                            @for (int i = 0; i < tintuc.Count; i++)
+                                            {
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl00$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_0" value="381">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_0" href="/BanTin/Detail?nId=@tintuc[i].Id"> <img alt="Chưa có ảnh" class="hnewsImage" src="@tintuc[i].HinhAnh"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_0" href="/BanTin/Detail?nId=@tintuc[i].Id">@tintuc[i].TieuDe</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            @*<div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl00$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_0" value="381">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_0" href=""> <img alt="Chưa có ảnh" class="hnewsImage" src="/Portals/Resource/20151216102052/logo.jpg"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_0" href="">GIẢI QUYẾT HƯỞNG TRỢ CẤP THẤT NGHIỆP</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl01$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_1" value="380">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_1" href=""> <img alt="Chưa có ảnh" class="hnewsImage" src="/Portals/Resource/201512169559/logo.jpg"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_1" href="">TIẾP TỤC HƯỞNG TRỢ CẤP THẤT NGHIỆP</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl02$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_2" value="379">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_2" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/379/GIAI-QUYET-HO-TRO-HOC-NGHE.aspx"> <img alt="Chưa có ảnh" class="hnewsImage" src="/Portals/Resource/2015121693437/logo.jpg"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_2" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/379/GIAI-QUYET-HO-TRO-HOC-NGHE.aspx">GIẢI QUYẾT HỖ TRỢ HỌC NGHỀ</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl03$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_3" value="376">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_3" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/376/CHUYEN-NOI-HUONG-TRO-CAP-THAT-NGHIEP-CHUYEN-DI.aspx"> <img alt="Chưa có ảnh" class="hnewsImage" src="/Portals/Resource/2015121417014/logo.jpg"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_3" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/376/CHUYEN-NOI-HUONG-TRO-CAP-THAT-NGHIEP-CHUYEN-DI.aspx">CHUYỂN NƠI HƯỞNG TRỢ CẤP THẤT NGHIỆP (CHUYỂN ĐI)</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="HNews fixh">
+                                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptNews$ctl04$hdfNews" id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hdfNews_4" value="104">
+                                                    <div class="TitleNews2 left fixw">
+                                                        <div class="thumb-image">
+                                                            <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplImg_4" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/104/CHUYEN-NOI-HUONG-TRO-CAP-THAT-NGHIEP-CHUYEN-DEN.aspx"> <img alt="Chưa có ảnh" class="hnewsImage" src="/Portals/Resource/201331882330/logo.jpg"></a>
+                                                        </div>
+                                                        <a id="dnn_ctr704_ViewVietNews_ctl00_rptNews_hplTitle_4" href="http://www.vieclamhcm.net/thutuchanhchinh/thutuchanhchinhchitiet/tabid/114/Id/104/CHUYEN-NOI-HUONG-TRO-CAP-THAT-NGHIEP-CHUYEN-DEN.aspx">CHUYỂN NƠI HƯỞNG TRỢ CẤP THẤT NGHIỆP (CHUYỂN ĐẾN)</a>
+                                                        <div class="news-summary">
+                                                            <span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+
+                                            <div class="pagingBox">
+                                                <table class="PagingTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left" style="width: 1%;" class="Normal"></td>
+                                                            <td align="right" style="width: 99%;" class="Normal">
+                                                                <div class="PagingContainer">
+                                                                    <ul>
+
+                                                                        @{
+                                                                            if (CurrentPage > 1 & PageCount > 1)
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class="aspNetDisabled PagingActive" href="/BanTin/ListTinTuc?cmID=@ViewBag.ChuyenMucID&pCount=@skip&pPage=1">Trang đầu</a>
+                                                                                </li>
+
+
+                                                                            }
+
+                                                                            for (int i = 1; i <= PageCount; i++)
+                                                                            {
+                                                                                if (i == pPage)
+                                                                                {
+                                                                                    <li class="aspNetDisabled">
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_1" class="aspNetDisabled PagingActive">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li>
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_2" class="PagingActive" href="/BanTin/ListTinTuc?cmID=@ViewBag.ChuyenMucID&pCount=@skip&pPage=@i">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                            }
+                                                                            if (PageCount > 1 & CurrentPage < PageCount)
+                                                                            {
+
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_8" class="PagingActive" href="/BanTin/ListTinTuc?cmID=@ViewBag.ChuyenMucID&pCount=@skip&pPage=@PageCount">Trang cuối</a>
+                                                                                </li>
+
+                                                                            }
+
+                                                                        }
+
+                                                                        @*<input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptPager$ctl00$hdfPage" id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hdfPage_0" value="1">
+                                                                            <li>
+                                                                                <a id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hplPage_0" class="aspNetDisabled PagingActive" commandargument="1">Trang đầu</a>
+                                                                            </li>
+
+                                                                            <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptPager$ctl01$hdfPage" id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hdfPage_1" value="1">
+                                                                            <li>
+                                                                                <a id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hplPage_1" class="aspNetDisabled PagingActive" commandargument="1">[1]</a>
+                                                                            </li>
+
+                                                                            <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$rptPager$ctl02$hdfPage" id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hdfPage_2" value="1">
+                                                                            <li>
+                                                                                <a id="dnn_ctr704_ViewVietNews_ctl00_rptPager_hplPage_2" class="aspNetDisabled PagingActive" commandargument="1">Trang cuối</a>
+                                                                            </li>*@
+
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="dnn$ctr704$ViewVietNews$ctl00$hdfPage" id="dnn_ctr704_ViewVietNews_ctl00_hdfPage" value="1">
+                                </div>
+
+
+                            </div><!-- End_Module_704 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane left">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-VietNews DnnModule-703">
+                            <a name="703"></a>
+                            <div id="dnn_ctr703_ContentPane">
+                                <!-- Start_Module_703 -->
+                                <div id="dnn_ctr703_ModuleContent" class="DNNModuleContent ModVietNewsC">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfPageCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfPageCate" value="100">
+                                    <input type="hidden" name="dnn$ctr703$ViewVietNews$ctl00$hdfCate" id="dnn_ctr703_ViewVietNews_ctl00_hdfCate" value="2">
+                                    <div>
+                                        <div>
+                                            <img class="qc-banner" src="~/Content/Assets/images/quangcao/CORONA.png" />
+                                        </div>
+                                        <div>
+                                            <img class="qc-banner" src="~/Content/Assets/images/quangcao/cho thue2.jpg" />
+                                        </div>
+                                        <div>
+                                            <img class="qc-banner" src="~/Content/Assets/images/quangcao/csdl_caulaodong.gif" />
+                                        </div>
+                                        <div>
+                                            <img class="qc-banner" src="~/Content/Assets/images/quangcao/totin.jpg" />
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- End_Module_703 -->
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>

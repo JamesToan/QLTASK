@@ -1,0 +1,211 @@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "About";
+
+    var about = ViewBag.About;
+}
+@*<link href="~/Content/Portals/_default/Skins/vieclamNew/css/bootstrap.scss.css" rel="stylesheet" />*@
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="quick-menu">
+            <div id="dnn_QickMenuPane" class="quick-menu-pane DNNEmptyPane"></div>
+        </div>
+        <div id="dnn_ContentPane" class="contentPane">
+            <div class="DnnModule DnnModule-DNN_HTML DnnModule-845">
+                <a name="845"></a>
+                <div class="dnnPEMContNotitle">
+                    <div id="dnn_ctr845_ContentPane" class="dnnPEMContNotitleBody">
+                        <!-- Start_Module_845 -->
+                        <div id="dnn_ctr845_ModuleContent" class="DNNModuleContent ModDNNHTMLC">
+                            <div id="dnn_ctr845_HtmlModule_lblContent" class="Normal">
+                                <div>
+                                    <div class="NewsDetail_content" style="text-align: justify;">
+
+                                        @Html.Raw(about.NoiDung)
+
+                                        @*<div class="SubHead">
+                                            <h2 class="news-title" style="text-align: center;margin-top:20px;">
+
+                                                ĐỊA CHỈ
+
+                                            </h2>
+
+                                        </div>
+
+                                       
+                                        <div  id="Chinhanh">
+                                            <div class="about_content">
+                                                <p>
+                                                    Trung tâm dịch vụ việc làm Long An là đơn vị sự nghiệp thuộc Sở Lao động – Thương binh và Xã hội Long An
+                                                    <br />
+                                                    - Địa chỉ: Số 78, QL1A, Kp6, TT Bến Lức, Bến Lức, Long An
+                                                    <br />
+                                                    - Điện thoại:
+                                                    <br />
+                                                    - Website: <a href="http://vieclamlongan.vn">http://vieclamlongan.vn</a>
+                                                    <br />
+                                                    - Email: <a class="link" href="mailto:vieclam@vieclamlongan.vn">vieclam@vieclamlongan.vn</a>
+                                                </p>
+
+                                            </div>
+
+
+                                            <div class="content-page rte">
+                                                <div class="ct_content_wrap page-mains">
+                                                    <section class="ct_blog_outer_wrap">
+                                                        <div class="row system-center">
+                                                            <div class="post col-md-3 col-sm-4" style="padding-left:0px; padding-right:0px;">
+                                                                <div class="showroom-list">
+
+                                                                    <div class="city_1 city-wrapper" style="display: block;">
+                                                                        <div class="nano has-scrollbar">
+                                                                            <div class="content">
+
+
+                                                                                <div class="showroom-item">
+                                                                                    <h2 class="title"><a class="tabs current" data-tab="map1" rel="map1">Trung tâm Dịch vụ việc làm Long An</a></h2>
+
+                                                                                    <p class="showroom-address"><i class="fa fa-map-marker"></i>Số 78, QL1A, Kp6, TT Bến Lức, Bến Lức, Long An</p>
+
+                                                                                   
+                                                                                </div>
+
+                                                                                <div class="showroom-item">
+                                                                                    <h2 class="title"><a class="tabs current" data-tab="map2" rel="map2">Chi nhánh Dịch vụ việc làm khu vực Tân An</a></h2>
+
+                                                                                    <p class="showroom-address"><i class="fa fa-map-marker"></i> Số 98, phường 2, Tp Tân An, Long An</p>
+
+                                                                                    
+                                                                                </div>
+                                                                                <div class="showroom-item">
+                                                                                    <h2 class="title"><a class="tabs current" data-tab="map3" rel="map3">Chi nhánh Dịch vụ việc làm khu vực Đức Hòa</a></h2>
+
+                                                                                    <p class="showroom-address"><i class="fa fa-map-marker"></i> Số 180A, đường 3/2, TT Hậu Nghĩa, Đức Hòa, Long An</p>
+
+                                                                                    
+                                                                                </div>
+                                                                                <div class="showroom-item">
+                                                                                    <h2 class="title"><a class="tabs current" data-tab="map4" rel="map4">Chi nhánh Dịch vụ việc làm khu vực Cần Giuộc</a></h2>
+
+                                                                                    <p class="showroom-address"><i class="fa fa-map-marker"></i> Số 96, Tỉnh lộ 835A, Kp Hòa Thuận 1, thị trấn Cần Giuộc, Cần Giuộc, Long An</p>
+
+                                                                                    
+                                                                                </div>
+                                                                                <div class="showroom-item">
+                                                                                    <h2 class="title"><a class="tabs current" data-tab="map5" rel="map5">Chi nhánh Dịch vụ việc làm khu vực Kiến Tường</a></h2>
+
+                                                                                    <p class="showroom-address"><i class="fa fa-map-marker"></i> Quốc lộ 62, phường 3, thị xã Kiến Tường, Long An</p>
+
+                                                                                    
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-8" style="padding-left:0px; padding-right:0px;">
+
+                                                                <div class="gllpMap current" id="map1"><iframe allowfullscreen="" frameborder="0" height="500" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.2594966048828!2d106.4815462147171!3d10.636937492416273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310acc7ccf5f6e11%3A0xb302e643a876d468!2zNzggUUwxQSwga2h1IHBo4buRIDYsIELhur9uIEzhu6ljLCBMb25nIEFuLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1635406466984!5m2!1svi!2s" style="border:0" width="100%"></iframe></div>
+                                                                <div class="gllpMap" id="map2"><iframe allowfullscreen="" frameborder="0" height="500" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2656.042169505673!2d106.40721904891629!3d10.539020745795213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310ab6265c1e4899%3A0x2658ec36f04f8f76!2zVHJ1bmcgdMOibSBnaeG7m2kgdGhp4buHdSB2aeG7h2MgbMOgbQ!5e0!3m2!1svi!2s!4v1635405718503!5m2!1svi!2s" style="border:0" width="100%"></iframe></div>
+                                                                <div class="gllpMap" id="map3"><iframe allowfullscreen="" frameborder="0" height="500" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1958.934402365428!2d106.39583499073765!3d10.897573882557595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310b29919d612cc7%3A0x13f27ea90d7fd31c!2zVHJ1bmcgdMOibSBE4buLY2ggduG7pSB2aeG7h2MgbMOgbSBMb25nIEFuIChDaGkgbmjDoW5oIEThu4tjaCB24bulIHZp4buHYyBsw6BtIGtodSB24buxYyDEkOG7qWMgSG_DoA!5e0!3m2!1svi!2sus!4v1635760368845!5m2!1svi!2sus" style="border:0" width="100%"></iframe></div>
+                                                                <div class="gllpMap" id="map4"><iframe allowfullscreen="" frameborder="0" height="500" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3810.052193143327!2d106.65762344360074!3d10.602991699515151!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317536c46ddbde8f%3A0x77422141a62a8cd8!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIE5naOG7gSBMb25nIEFuIC0gQ8ahIHPhu58gQ-G6p24gR2l14buZYw!5e0!3m2!1svi!2s!4v1635409235817!5m2!1svi!2s" style="border:0" width="100%"></iframe></div>
+                                                                <div class="gllpMap" id="map5"><iframe allowfullscreen="" frameborder="0" height="500" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.424866574424!2d105.92755791789835!3d10.778735476077603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310afaf9688cc24b%3A0xf5f6071d493e80a8!2zVHJ1bmcgdMOibSBk4buLY2ggduG7pSB2aeG7h2MgbMOgbSBMb25nIEFuIGNoaSBuaMOhbmggS2nhur9uIFTGsOG7nW5n!5e0!3m2!1svi!2s!4v1635409362674!5m2!1svi!2s" style="border:0" width="100%"></iframe></div>
+
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div><!-- End_Module_845 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //function openPage(pageName, elmnt) {
+    //    var i, tabcontent, tablinks;
+    //    tabcontent = document.getElementsByClassName("tabcontent");
+    //    for (i = 0; i < tabcontent.length; i++) {
+    //        tabcontent[i].style.display = "none";
+    //    }
+
+    //    document.getElementById(pageName).style.display = "block";
+
+    //}
+
+    //// Get the element with id="defaultOpen" and click on it
+    //document.getElementById("defaultOpen").click();
+
+    //var header = document.getElementById("nav-tabs");
+    //var btns = header.getElementsByClassName("btn");
+    //for (var i = 0; i < btns.length; i++) {
+    //    btns[i].addEventListener("click", function () {
+    //        var current = document.getElementsByClassName("active");
+    //        current[0].className = current[0].className.replace(" active", "");
+    //        this.className += " active";
+    //    });
+    //}
+    //var coll = document.getElementsByClassName("collapsible");
+    //var i;
+    //for (i = 0; i < coll.length; i++) {
+    //    coll[i].addEventListener("click", function () {
+    //        this.classList.toggle("active");
+    //        var content = this.nextElementSibling;
+    //        if (content.style.display === "block") {
+    //            content.style.display = "none";
+    //        } else {
+    //            content.style.display = "block";
+    //        }
+    //    });
+    //}
+
+    function showhide(id) {
+        if (document.getElementById) {
+            var divid = document.getElementById(id);
+            var divs = document.getElementsByClassName("gllpMap");
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.display = "none";
+            }
+            document.getElementById(id).style.display = "block";
+        }
+        return false;
+    }
+
+    $(".showroom-item h2.title a").click(function () {
+        $(".gllpMap").hide();
+        var activeTab = $(this).attr("rel");
+        $("#" + activeTab).fadeIn();
+        if ($(this).attr("rel") == "map1") {
+            $('.product-tab .tab-content').addClass('current');
+        }
+        if ($(this).attr("rel") == "map2") {
+            $('.product-tab .tab-content').addClass('current');
+        }
+        //if ($(this).attr("rel") == "tab-1") {
+        //    $('.product-tab .tab-content').addClass('current');
+        //}
+        $(".showroom-item h2.title a").removeClass("current");
+        $(this).addClass("current");
+
+
+    });
+
+</script>

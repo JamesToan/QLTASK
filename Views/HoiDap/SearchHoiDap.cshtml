@@ -1,0 +1,407 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "ListHoiDap";
+
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    int num = 0;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+    var skip = ViewBag.Skip;
+    var hoidap = ViewBag.HoiDap;
+    var hoidapskip = ViewBag.HoiDapSkip;
+    var user = ViewBag.User;
+    var linhvuc = ViewBag.LinhVuc;
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-Document DnnModule-538">
+                        <a name="538"></a>
+                        <div id="dnn_ctr538_ContentPane">
+                            <!-- Start_Module_538 -->
+                            <div id="dnn_ctr538_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$hdfDocumentDetail" id="dnn_ctr538_ViewDocument_ctl00_hdfDocumentDetail" value="112">
+                                <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$hdfPage" id="dnn_ctr538_ViewDocument_ctl00_hdfPage" value="1">
+                                <div class="Invisible">
+                                    <div class="container-box spec-increbox">
+                                        <div class="search-bar position-relative overflow-hidden mb-3">
+
+                                            <form action="/HoiDap/SearchHoiDap">
+                                                <div class="container">
+                                                    <div class="search-inner">
+                                                        <div class="row row-5 align-items-center">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative mb-0 noidung">
+                                                                    <input type="text" class="form-control rounded-0 transition-03" placeholder="Nội dung câu hỏi" value="" id="searchString" name="searchString">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="row row-5 align-items-center">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group position-relative mb-0 nganhnghe">
+                                                                            <select class="form-control select2 vieclam-select2 rounded-0 transition-03 select2-hidden-accessible" multiple="" name="lvID" id="lvID" data-placeholder="Lọc theo lĩnh vực" size="1" tabindex="-1">
+                                                                                @{
+                                                                                    foreach (var item in linhvuc)
+                                                                                    {
+                                                                                        <option class="option-items size-085rem" value="@item.Id">
+                                                                                            @item.TenLinhVuc
+                                                                                        </option>
+                                                                                    }
+                                                                                }
+
+                                                                            </select>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group position-relative mb-0">
+                                                                            <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                <i class="fal fa-search"></i>Tìm
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group position-relative mb-0 question">
+                                                                            <button type="button" class="form-control rounded-0 btn bg-blue transition-03  " data-toggle="modal" data-target="#myModal">
+                                                                                <i class="fal fa-comments"></i>Đặt câu hỏi
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        @using (Html.BeginForm("DatCauHoi", "HoiDap", FormMethod.Post))
+                                        {
+                                            
+                                            <!-- Modal-->
+                                            <div class="modal fade" id="myModal" role="dialog" data-backdrop="false">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <!-- Modal content-->
+
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">ĐẶT CÂU HỎI</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Họ tên: <span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-input" id="HoTen" name="HoTen" placeholder="Nhập họ tên" required>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Điện thoại: <span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-input" id="Phone" name="Phone" placeholder="Nhập số điện thoại" required>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Email:
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-input" id="Email" name="Email" placeholder="Nhập email">
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Lĩnh vực:
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <select class="question-select" id="LinhVuc" name="LinhVuc">
+                                                                        <option selected="selected" value="-2">Chọn lĩnh vực</option>
+                                                                        @{
+                                                                            for (int i = 0; i < linhvuc.Count; i++)
+                                                                            {
+                                                                                <option value="@linhvuc[i].Id" class="childAttr">@linhvuc[i].TenLinhVuc</option>
+                                                                            }
+                                                                        }
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row form-group form-area">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Tiêu đề: <span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-input" id="TieuDe" name="TieuDe" placeholder="Nhập tiêu đề" required>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row form-group form-area1" style="clear:both">
+                                                                <div class="col-sm-2 form-title">
+                                                                    Nội dung: <span class="required">(*)</span>
+                                                                </div>
+                                                                <div class="col-sm-10">
+                                                                    <textarea type="text" class="form-input" rows="5" id="NoiDung" name="NoiDung" cols="50" placeholder="Nhập nội dung" required></textarea>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="clearfix">
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" id="questionsubmit" class="btn btn-default">Gửi</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="spec-boxitem document-search">
+                                            <div class="result-search">
+                                                @*<div class="VBPQ_Header">
+                    <h3>Chuyên mục hỏi đáp</h3>
+                </div>*@
+
+                                                @{
+                                                    foreach (var item in hoidapskip)
+                                                    {
+                                                        <div class="row question-list">
+                                                            <div class="name fz-15">
+                                                                <span class="fw-700">Người hỏi: </span>
+                                                                @item.HoTen
+                                                                @*@{
+                                    for (int i = 0; i < user.Count; i++)
+                                    {
+                                        if (item.NguoiHoiId == user[i].Id)
+                                        {
+                                            @user[i].FullName
+                                        }
+                                    }
+                                }*@
+                                                            </div>
+
+                                                            <div class="date fz-15">
+                                                                <span class="fw-700">
+                                                                    Ngày hỏi:
+                                                                </span>
+                                                                @{
+                                                                    if (item.NgayHoi != null)
+                                                                    {
+                                                                        var datehoi = item.NgayHoi.ToString().Split(' ');
+                                                                        var date = datehoi[0];
+                                                                        @date
+                                                                    }
+
+                                                                }
+                                                            </div>
+                                                            <div class="linhvuc fz-15">
+                                                                <span class="fw-700"> Lĩnh vực: </span>
+                                                                @{
+                                                                    for (int i = 0; i < linhvuc.Count; i++)
+                                                                    {
+                                                                        if (item.LinhVucId == linhvuc[i].Id)
+                                                                        {
+                                                                            @linhvuc[i].TenLinhVuc
+                                                                        }
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <div class="cauhoi fz-15">
+                                                                @Html.Raw(item.NoiDung)
+                                                            </div>
+                                                            <div class="fz-15 answer">
+                                                                <button class="collapsible cursor-default toggle" type="button" onclick="togglediv(@item.Id)" data-toggle="content-answer">
+                                                                    Xem câu trả lời
+                                                                </button>
+                                                                <div class="content-answer  in TableBody" id="@item.Id">
+                                                                    <div class="fw-500">
+                                                                        @Html.Raw(item.TraLoi)
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    }
+
+                                                }
+
+
+                                            </div>
+                                            <div style="margin-top: 15px;">
+                                                <table class="PagingTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left" style="width: 1%;" class="Normal"></td>
+                                                            <td align="right" style="width: 99%;" class="Normal">
+                                                                <div class="PagingContainer">
+                                                                    <ul>
+
+                                                                        @{
+                                                                            if (CurrentPage > 1 & PageCount > 1)
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class=" PagingActive" href="/HoiDap/SearchHoiDap?lvID=@ViewBag.LinhVucId&searchString=@ViewBag.Searchstring&pCount=@skip&pPage=1">Trang đầu</a>
+                                                                                </li>
+                                                                            }
+
+                                                                            for (int i = 1; i <= PageCount; i++)
+                                                                            {
+                                                                                if (i == pPage)
+                                                                                {
+
+                                                                                    <li class="aspNetDisabled">
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_@i" class="aspNetDisabled PagingActive">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li>
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_@i" class="PagingActive" href="/HoiDap/SearchHoiDap?lvID=@ViewBag.LinhVucId&searchString=@ViewBag.Searchstring&pCount=@skip&pPage=@i">@i</a>
+                                                                                    </li>
+                                                                                }
+                                                                            }
+                                                                            if (PageCount > 1 & CurrentPage < PageCount)
+                                                                            {
+
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_@PageCount" class="PagingActive" href="/HoiDap/SearchHoiDap?lvID=@ViewBag.LinhVucId&searchString=@ViewBag.Searchstring&pCount=@skip&pPage=@PageCount">Trang cuối</a>
+                                                                                </li>
+                                                                            }
+
+                                                                        }
+
+
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div><!-- End_Module_538 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane left">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <!-- Start_Module_535 -->
+                                <div id="dnn_ctr535_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                    <input type="hidden" name="dnn$ctr535$ViewDocument$ctl00$hdfDocument" id="dnn_ctr535_ViewDocument_ctl00_hdfDocument" value="103">
+                                    <div class="cat-pane">
+                                        <div class="cat-title">
+                                            <span class="icon-news-top">
+                                                <a href=" ">
+                                                    Chuyên mục
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="cat-item" id="dnn_MenuCatalog">
+                                            <div class="Invisible">
+                                                <div class="self-catalog">
+                                                    <ul>
+                                                        @{
+                                                            for (int i = 0; i < linhvuc.Count; i++)
+                                                            {
+                                                                <li id="@i">
+                                                                    <a id="dnn_ctr703_ViewVietNews_ctl00_rptCate_hplName_0" href="/HoiDap/ListHoiDap?lvID=@linhvuc[i].Id">@linhvuc[i].TenLinhVuc</a>
+                                                                </li>
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    $('#li' + '-1').attr('style', 'font-weight:bold')
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="news-conner">
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- End_Module_535 -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var coll = document.getElementsByClassName("collapse");
+
+
+    function togglediv(id) {
+
+        var div = document.getElementById(id);
+
+        document.querySelectorAll(".TableBody.active").forEach(function (elem) {
+            if (elem !== div) elem.classList.remove("active");
+        });
+
+        // toggle the class to the section that was clicked.
+        div.classList.toggle("active");
+
+    }
+
+</script>

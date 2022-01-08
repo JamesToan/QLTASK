@@ -1,0 +1,514 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Microsoft.AspNetCore.Http;
+@using coreWeb.Controllers;
+@{
+    Layout = "~/Views/Shared/_Layoutprofile.cshtml";
+    ViewData["Title"] = "UserInfo";
+
+    int roleID = ViewBag.Role;
+    var user = ViewBag.User;
+    var timviec = ViewBag.TimViec;
+    var ngld = ViewBag.NLD;
+    var vitri = ViewBag.ViTriCongViec;
+    var vanbang = ViewBag.VanBang;
+    var nganhnghe = ViewBag.DMNganhNghe;
+
+    var tinhoc = ViewBag.TinHoc;
+    var ngoaingu = ViewBag.NgoaiNgu;
+    var mucluong = ViewBag.MucLuong;
+    var vanhoa = ViewBag.VanHoa;
+    var tinhng = ViewBag.Tinh;
+    var huyenng = ViewBag.Huyen;
+    //var xang = ViewBag.Xa;
+
+
+}
+@{
+    var name = Context.Session.GetString("UserName");
+    int? roleid = Context.Session.GetInt32("RoleId");
+    int? userid = Context.Session.GetInt32("UserId");
+}
+<link href="~/Content/Assets/vendor/styles/bundle.css" rel="stylesheet" />
+
+<link rel="stylesheet" type="text/css" href="~/Content/Assets/ungvien/css/capnhathoso.css">
+<link rel="stylesheet" type="text/css" href="~/Content/Assets/vendor/dropzone/dropzone.css">
+<script src="~/Content/Assets/vendor/lib/Sortable.js"></script>
+<script src="~/Content/Assets/vendor/dropzone/dropzone.js"></script>
+
+
+
+<body class="themeCustom">
+    <script src="~/Content/Assets/vendor/jquery/dist/jquery.js"></script>
+    <script src="~/Content/Assets/vendor/sweetalert/lib/sweet-alert.min.js"></script>
+
+
+
+    <style>
+        .grecaptcha-badge {
+            display: none !important;
+        }
+    </style>
+    <div class="app layout-fixed-header">
+        <!-- sidebar panel -->
+        <div class="sidebar-panel offscreen-left">
+            <div class="brand">
+                <!-- logo -->
+                <div class="brand-logo">
+                    <div class="imgLogoNtd" id="imgLogoNtd">
+                        <img src="~/Content/Assets/images/noimage.jpg">
+                        @*<div>
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <input class="fileAvatar" type="file" id="fileAvatar" accept="image/x-png,image/gif,image/jpeg">*@
+                    </div>
+                    <div class="brand-name">
+                        @ngld.HoTen
+                    </div>
+                    @{
+                        @using (Html.BeginForm("Logout", "Home", FormMethod.Post))
+                        {
+
+                            <button class="" type="submit">
+                                <i class="fas fa-sign-out"></i>
+                                <span>Đăng xuất</span>
+                            </button>
+                        }
+                    }
+                </div>
+
+                <!-- /logo -->
+                <!-- toggle small sidebar menu -->
+                <a href="javascript:;" class="hidden-lg hidden-md hidden-sm toggle-sidebar hidden-xs hamburger-icon v3" data-toggle="layout-small-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+                <!-- /toggle small sidebar menu -->
+            </div>
+            <!-- main navigation -->
+            <nav role="navigation" style="top: 265px" class="ps-container active open" data-ps-id="5df482b8-8b4a-5bbd-6466-4939bc5152c2">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="/UserProfile/Employees">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Quản lý chung</span>
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a href="/UserProfile/ChangePasswordEmployees">
+                            <i class="fas fa-unlock-alt"></i>
+                            <span>Đổi mật khẩu</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 0px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div>
+            </nav>
+            <!-- /main navigation -->
+        </div>
+        <!-- /sidebar panel -->
+        <!-- content panel -->
+        <div class="main-panel">
+            <!-- top header -->
+            <header class="header navbar">
+                <div class="brand visible-xs">
+                    <!-- toggle offscreen menu -->
+                    <div class="toggle-offscreen">
+                        <a href="#" class="hamburger-icon visible-xs" data-toggle="offscreen" data-move="ltr">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
+                    </div>
+
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="menu-support">
+                        <img class="hidden-xs" src="">
+                        <div>
+                            Hỗ trợ, tư vấn dành cho ứng viên.
+                            <br>
+                            <i class="fal fa-phone-alt"></i> <a href="tel: "> </a>
+                            <i class="fal fa-envelope" style="margin-left: 10px"></i> <a href="mailto: "> </a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="menu-ntd">
+                        <a href="/">
+                            <i class="fal fa-home-alt"></i>
+                            <br>
+                            Trang chủ
+                        </a>
+                    </li>
+
+                    <li class="menu-ntd">
+                        <a href="/TuyenDung">
+                            <i class="fal fa-briefcase"></i>
+                            <br>
+                            Việc làm mới
+                        </a>
+                    </li>
+                    <li class="menu-ntd">
+                        <a href="/UserProfile/EditProfileEmployees">
+                            <i class="fal fa-clipboard-user"></i>
+                            <br>
+                            Cập nhật hồ sơ
+                        </a>
+                    </li>
+                    @*<li class="menu-ntd">
+                            <a href="javascript:void(0)" class="preview-cv">
+                                <i class="fal fa-user-check"></i>
+                                <br>
+                                Xem hồ sơ
+                            </a>
+                        </li>*@
+
+                </ul>
+            </header>
+            <!-- /top header -->
+            <style>
+                .alert {
+                    margin-bottom: 10px;
+                }
+            </style>
+            <!-- main area -->
+            <div class="main-content">
+
+                <div id="panelContent">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span>Tạo thông tin CV</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                @using (Html.BeginForm("NLDCVADD", "UserProfile", FormMethod.Post))
+                                {
+
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Họ tên: <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <input type="text" name="Hoten" id="Hoten" class="form-control" value="@ngld.HoTen" required placeholder="Họ tên của bạn">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Tên công việc: <span class="required">(*)</span></label>
+                                        <div class="">
+
+                                            <input type="text" name="tcv" id="tcv" class="form-control" placeholder="Tên công việc" value="" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Vị trí công việc: <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="vitri" id="vitri" size="1" tabindex="-1" required>
+                                                <option value="">Tên vị trí</option>
+                                                @{
+
+                                                    foreach (var item in vitri)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenViTriCongViec</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Ngành nghề: <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter nganhnghese" style="border-radius:0px;" name="nganhnghe" id="nganhnghe" data-show-subtext="true" data-live-search="true" required>
+                                                <option value="">Tên ngành nghề</option>
+                                                @{
+
+                                                    foreach (var item in nganhnghe)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenNganhNghe</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Kinh nghiệm:  <span class="required">(*)</span></label>
+                                        <div class="">
+
+                                            <input type="text" name="kinhnghiem" id="kinhnghiem" class="form-control" placeholder="Kinh nghiệm" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Kỹ năng: </label>
+                                        <div class="">
+
+                                            <input type="text" name="kynang" id="kynang" class="form-control" placeholder="Kỹ năng">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label"><span>*</span>Ưu điểm:</label>
+                                        <div class="">
+
+                                            @*<input type="text" name="uudiem" id="uudiem" class="form-control" placeholder="Ưu điểm">*@
+                                            <textarea name="uudiem" id="uudiem" class="form-control" placeholder="Ưu điểm"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label"><span>*</span>Khuyết điểm:</label>
+                                        <div class="">
+
+                                            @*<input type="text" name="khuyetdiem" id="khuyetdiem" class="form-control" placeholder="Khuyết điểm">*@
+                                            <textarea name="khuyetdiem" id="khuyetdiem" class="form-control" placeholder="Khuyết điểm"></textarea>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Mức lương mong muốn:  <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="mucluong" id="mucluong" size="1" tabindex="-1" required>
+                                                <option value="">Mức lương</option>
+                                                @{
+
+                                                    foreach (var item in mucluong)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenMucLuong</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Văn hóa:  <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="vanhoa" id="vanhoa" size="1" tabindex="-1" required>
+                                                <option value="">Chọn văn hóa</option>
+                                                @{
+
+                                                    foreach (var item in vanhoa)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenVanHoa</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Tin học: </label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="tinhoc" id="tinhoc" size="1" tabindex="-1">
+                                                <option value="">Chọn tin học</option>
+                                                @{
+
+                                                    foreach (var item in tinhoc)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenChungChi</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Ngoại ngữ:</label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="ngoaingu" id="ngoaingu" size="1" tabindex="-1">
+                                                <option value="">Chọn ngoại ngữ</option>
+                                                @{
+
+                                                    foreach (var item in ngoaingu)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenChungChi</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Văn bằng:</label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="vanbang" id="vanbang" size="1" tabindex="-1">
+                                                <option value="">Chọn văn bằng</option>
+                                                @{
+
+                                                    foreach (var item in vanbang)
+                                                    {
+                                                        <option value="@item.Id" class="childAttr">@item.TenVanBang</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Tỉnh:   <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter tinhes" style="border-radius:0px;" name="tinh" id="ddlProvince" required>
+                                                @{
+                                                    if (tinhng != null)
+                                                    {
+                                                        <option value="@tinhng.Id">@tinhng.TenTinh</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="">--Chọn tỉnh--</option>
+                                                    }
+                                                }
+
+                                                @*@{
+                                                        for (int i = 0; i < tinh.Count; i++)
+                                                        {
+
+                                                            <option value="@tinh[i].Id" class="childAttr">@tinh[i].TenTinh</option>
+                                                        }
+                                                    }*@
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+                                        <label class="control-label">Huyện:   <span class="required">(*)</span></label>
+                                        <div class="">
+                                            <select class="question-select1 selectFilter" style="border-radius:0px;" name="huyen" id="ddlDistrict" required>
+                                                @{
+                                                    if (huyenng != null)
+                                                    {
+                                                        <option value="@huyenng.Id">@huyenng.TenHuyen</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="">--Chọn huyện--</option>
+                                                    }
+                                                }
+
+                                                @*@{
+                                                        for (int i = 0; i < huyen.Count; i++)
+                                                        {
+
+                                                            <option value="@huyen[i].Id" class="childAttr">@huyen[i].TenHuyen</option>
+                                                        }
+                                                    }*@
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 mb20">
+
+                                    </div>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary" id="btnSub">
+                                            <i class="fad fa-check-circle"></i> Tạo CV
+                                        </button>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+
+                    </script>
+                </div>
+
+            </div>
+            <!-- /main area -->
+        </div>
+        <!-- /content panel -->
+
+        <footer class="content-footer hidden-xs">
+            <nav class="footer-left">
+                <ul class="nav">
+                    <li>
+                        <a href="javascript:;">
+                            Copyright <i class="fa fa-copyright"></i> <span>VNPT Long An | https://shop.vnptlongan.vn/ </span>
+                            2021
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+        <!-- /bottom footer -->
+    </div>
+
+    <script type="text/javascript" src="~/Content/Assets/ungvien/js/bundle.js"></script>
+    <script type="text/javascript" src="~/Content/Assets/ungvien/js/capnhathoso.js"></script>
+
+
+    <div id="rememberry__extension__root" style="all: unset;"></div>
+</body>
+
+<script>
+    var provinceUrl = "/UserProfile/GetAllProvinceByCountryId";
+    var districtUrl = "/UserProfile/GetAllDistrictByProvinceId";
+    var wardUrl = "/UserProfile/GetAllWardByDistrictId";
+    $(document).ready(function () {
+        // load danh sách country
+
+        _getProvince();
+
+        $("#ddlProvince").on('change', function () {
+            var id = $(this).val();
+            if (id != undefined && id != '') {
+                _getDistrict(id);
+                
+            }
+        });
+        $("#ddlDistrict").on('change', function () {
+            var id = $(this).val();
+            if (id != undefined && id != '') {
+                _getWard(id);
+            }
+        });
+        //$("#ddlWard").on('change', function () {
+
+        //    var provinceText = $("#ddlProvince option:selected").text();
+        //    var districtText = $("#ddlDistrict option:selected").text();
+        //    var wardText = $("#ddlWard option:selected").text();
+        //    var html = " Tỉnh thành: " + provinceText + " " + "Quận huyện: " + districtText + " " + "Xã phường: " + wardText;
+
+        //    $("#divResult").html(html);
+        //});
+    });
+    // truyền id của country vào
+    function _getProvince() {
+        $.get(provinceUrl, function (data) {
+            if (data != null && data != undefined && data.length) {
+                var html = '';
+                html += '<option value="@tinhng.Id">@tinhng.TenTinh</option>';
+               
+                $.each(data, function (key, item) {
+                    html += '<option value=' + item.Id + '>' + item.TenTinh + '</option>';
+                });
+                $("#ddlProvince").html(html);
+            }
+        });
+    }
+    // truyền id của province vào
+    function _getDistrict(id) {
+        $.get(districtUrl + "?id=" + id, function (data) {
+            if (data != null && data != undefined && data.length) {
+                var html = '';
+                html += '<option value="">--Chọn huyện--</option>';
+                $.each(data, function (key, item) {
+                    html += '<option value=' + item.Id + '>' + item.TenHuyen + '</option>';
+                });
+                $("#ddlDistrict").html(html);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('.nganhnghese').select2({
+
+        });
+    });
+
+    $(document).ready(function () {
+        $('.tinhes').select2({
+
+        });
+    });
+</script>

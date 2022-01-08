@@ -1,0 +1,394 @@
+@{
+    Layout = "~/Views/Shared/_Frontend.cshtml";
+    ViewData["Title"] = "VanBan";
+
+    var vanban = ViewBag.VanBan;
+    int num = 0;
+
+    var vanbanskip = ViewBag.VanBanSkip;
+    var loaivb = ViewBag.LoaiVB;
+    var linhvuc = ViewBag.LinhVuc;
+
+    int skipToPrevious = (int)ViewBag.pPage - 1;
+    int PageCount = (int)ViewBag.PageCount;
+    int skipToNext = (int)ViewBag.pPage + 1;
+    if (skipToNext > PageCount) { skipToNext = 1; };
+    if (skipToPrevious < 1) { skipToPrevious = PageCount; };
+    int CurrentPage = (int)ViewBag.pageCurrent;
+    int pPage = (int)@ViewBag.pPage;
+    if (CurrentPage > 1)
+    {
+        num = ViewBag.Skip * (CurrentPage - 1);
+    }
+    var skip = ViewBag.Skip;
+
+}
+
+<link href="~/Content/Assets/css/bundle.css" rel="stylesheet" />
+<script src="~/Content/Assets/js/bundle.js" type="text/javascript"></script>
+
+<div class="body-view view-news">
+    <div class="page_container">
+        <div class="view-news-container">
+            <div class="main-contentPane left">
+                <div id="dnn_NewsPage_rightPane" class="contentPane">
+                    <div class="DnnModule DnnModule-Document DnnModule-538">
+                        <a name="538"></a>
+                        <div id="dnn_ctr538_ContentPane">
+                            <!-- Start_Module_538 -->
+                            <div id="dnn_ctr538_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$hdfDocumentDetail" id="dnn_ctr538_ViewDocument_ctl00_hdfDocumentDetail" value="112">
+                                <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$hdfPage" id="dnn_ctr538_ViewDocument_ctl00_hdfPage" value="1">
+                                <div class="Invisible">
+                                    <div class="container-box spec-increbox">
+
+                                        <div class="spec-boxitem document-search">
+                                            <div class="search-bar position-relative overflow-hidden mb-3">
+                                                
+                                                @*@using (Html.BeginForm("SearchVanBan", "VanBan", FormMethod.Post))
+                                                {
+                                                    <div class="container">
+                                                        <div class="search-inner">
+                                                            <div class="row row-5 align-items-center">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group position-relative mb-0 noidung">
+                                                                        <input type="text" class="form-control rounded-0 transition-03" placeholder="Nội dung trích yếu" value="" id="searchString" name="searchString">
+                                                                    </div>
+                                                                   
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="row row-5 align-items-center">
+                                                                        <div class="col-md-9">
+                                                                            <div class="form-group position-relative mb-0 nganhnghe">
+                                                                                <select class="form-control select2 vieclam-select2 rounded-0 transition-03 select2-hidden-accessible" multiple="" name="lvbID" id="lvbID" data-placeholder="Lọc theo lĩnh vực" size="1" tabindex="-1">
+                                                                                    @{
+                                                                                        foreach (var item in linhvuc)
+                                                                                        {
+                                                                                            <option class="option-items size-085rem" value="@item.Id">
+                                                                                                @item.TenLinhVuc
+                                                                                            </option>
+                                                                                        }
+                                                                                    }
+
+                                                                                </select>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group position-relative mb-0">
+                                                                                <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                    <i class="fal fa-search"></i>Tìm
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                }*@
+                                                <form action="/VanBan/SearchVanBan">
+                                                    <div class="container">
+                                                        <div class="search-inner">
+                                                            <div class="row row-5 align-items-center">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group position-relative mb-0 noidung">
+                                                                        <input type="text" class="form-control rounded-0 transition-03" placeholder="Nội dung trích yếu, số ký hiệu" value="" id="searchString" name="searchString" >
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="row row-5 align-items-center">
+                                                                        <div class="col-md-9">
+                                                                            <div class="form-group position-relative mb-0 nganhnghe">
+                                                                                <select class="form-control select2 vieclam-select2 rounded-0 transition-03 select2-hidden-accessible" multiple="" name="lvbID" id="lvbID" data-placeholder="Lọc theo lĩnh vực" size="1" tabindex="-1">
+                                                                                    @{
+                                                                                        foreach (var item in linhvuc)
+                                                                                        {
+                                                                                            <option class="option-items size-085rem" value="@item.Id">
+                                                                                                @item.TenLinhVuc
+                                                                                            </option>
+                                                                                        }
+                                                                                    }
+
+                                                                                </select>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group position-relative mb-0">
+                                                                                <button type="submit" class="form-control rounded-0 btn bg-orange transition-03">
+                                                                                    <i class="fal fa-search hidden-small"></i>Tìm
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="result-search">
+                                                <div class="VBPQ_Header">
+                                                    <div class="row">
+                                                        <div class="VBPQ_No  col1">
+                                                            <span>TT</span>
+                                                        </div>
+                                                        <div class="VBPQ_SoHieu left col2">
+                                                            <span>Số hiệu</span>
+                                                        </div>
+                                                        <div class="VBPQ_NgayBanHanh left col3">
+                                                            <span>Ngày ban hành</span>
+                                                        </div>
+                                                        <div class="VBPQ_TrichYeu left col4">
+                                                            <span>Trích yếu</span>
+                                                        </div>
+                                                        <div class="VBPQ_TepGoc left col5">
+                                                            <span>Tải file</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="result-search-list">
+                                                    @foreach (var item in vanbanskip)
+                                                    {
+
+
+                                                        num += 1;
+                                                        
+
+
+                                                        <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$rptDocument$ctl00$hdfId" id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hdfId_0" value="6">
+                                                        <div class="row">
+                                                            <div class="VBPQ_No col1">
+                                                                @num
+                                                            </div>
+                                                            <div class="VBPQ_SoHieu col2">
+                                                                <a id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hplView_0" href="/VanBan/Detail?vbUID=@item.UID">@item.SoKyHieu</a>
+                                                              
+                                                            </div>
+                                                            <div class="VBPQ_NgayBanHanh col3">
+                                                                @if (item.NgayThang != null)
+                                                                {
+                                                                    var date = item.NgayThang.ToString().Split(' ');
+                                                                    @date[0]
+                                                                }
+
+                                                            </div>
+                                                            <div class="VBPQ_TrichYeu col4">
+                                                                @item.TrichYeu
+                                                            </div>
+                                                            <div class="VBPQ_TepGoc col5">
+                                                                @{
+                                                                    if (item.VanBan != null)
+                                                                    {
+                                                                        var slipt = item.VanBan.ToString().Split('[', ']', ',');
+                                                                        var slipt1 = slipt[1].ToString().Split('"');
+                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hplDownload_0" href="~/uploads/@slipt1[1]" target="_blank"><img src="/Content/Portals/0/images/Download.gif" alt=""></a>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hplDownload_0" href="#"><img src="/Content/Portals/0/images/Download.gif" alt=""></a>
+
+                                                                    }
+
+                                                                    @*@slipt1[1]*@
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    @*@for (int i = 0; i < vanbanskip.Count; i++)
+                                                        {
+                                                            num = i + 1;
+                                                            var date = vanbanskip[i].NgayThang.ToString().Split(' ');
+                                                            <input type="hidden" name="dnn$ctr538$ViewDocument$ctl00$rptDocument$ctl00$hdfId" id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hdfId_0" value="6">
+                                                            <div class="row">
+                                                                <div class="VBPQ_No col1">
+                                                                    @num
+                                                                </div>
+                                                                <div class="VBPQ_SoHieu col2">
+                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hplView_0" href="">@vanbanskip[i].SoKyHieu</a>
+                                                                </div>
+                                                                <div class="VBPQ_NgayBanHanh col3">
+
+                                                                    @date[0]
+                                                                </div>
+                                                                <div class="VBPQ_TrichYeu col4">
+                                                                    @vanbanskip[i].TrichYeu
+                                                                </div>
+                                                                <div class="VBPQ_TepGoc col5">
+                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptDocument_hplDownload_0" href="@vanbanskip[i].VanBan"><img src="/Content/Portals/0/images/Download.gif" alt=""></a>
+                                                                </div>
+                                                            </div>
+                                                        }*@
+
+
+
+                                                </div>
+                                                <div class="clear">
+                                                </div>
+                                            </div>
+                                            <div class="clear">
+                                            </div>
+                                            <div style="margin-top: 15px;">
+                                                <table class="PagingTable">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="left" style="width: 1%;" class="Normal"></td>
+                                                            <td align="right" style="width: 99%;" class="Normal">
+                                                                <div class="PagingContainer">
+                                                                    <ul>
+
+                                                                        @{
+                                                                            if (CurrentPage > 1 & PageCount > 1)
+                                                                            {
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_0" class=" PagingActive" href="/VanBan?pCount=@skip&pPage=1">&lt;&lt;</a>
+                                                                                </li>
+
+
+                                                                            }
+
+                                                                            for (int i = 1; i <= PageCount; i++)
+                                                                            {
+                                                                                if (i == pPage)
+                                                                                {
+                                                                                    <li class="aspNetDisabled">
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_1" class="aspNetDisabled PagingActive">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <li>
+                                                                                        <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_2" class="PagingActive" href="/VanBan?pCount=@skip&pPage=@i">@i</a>
+                                                                                    </li>
+
+                                                                                }
+                                                                            }
+                                                                            if (PageCount > 1 & CurrentPage < PageCount)
+                                                                            {
+
+                                                                                <li>
+                                                                                    <a id="dnn_ctr538_ViewDocument_ctl00_rptPager_lnkPage_8" class="PagingActive" href="/VanBan?pCount=@skip&pPage=@PageCount">&gt;&gt;</a>
+                                                                                </li>
+
+                                                                            }
+
+                                                                        }
+
+
+
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div><!-- End_Module_538 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-contentPane left">
+                <div class="nav-contentPane-wrapper">
+                    <div id="dnn_NewsPage_leftPane">
+                        <div class="DnnModule DnnModule-Document DnnModule-535">
+                            <a name="535"></a>
+                            <div id="dnn_ctr535_ContentPane">
+                                <!-- Start_Module_535 -->
+                                <div id="dnn_ctr535_ModuleContent" class="DNNModuleContent ModDocumentC">
+                                    <input type="hidden" name="dnn$ctr535$ViewDocument$ctl00$hdfDocument" id="dnn_ctr535_ViewDocument_ctl00_hdfDocument" value="103">
+                                    <div class="cat-pane">
+                                        <div class="cat-title">
+                                            <span class="icon-news-top">
+                                                <a href="">
+                                                    LĨNH VỰC
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="cat-item" id="dnn_MenuCatalog">
+                                            <div class="Invisible">
+                                                <div class="self-catalog">
+                                                    <ul>
+                                                        @{
+                                                            for (int i = 0; i < linhvuc.Count; i++)
+                                                            {
+                                                                <li id="@i">
+                                                                    <a id="dnn_ctr535_ViewDocument_ctl00_rptCate_hplName_0" href="/VanBan/ListVanBan?lvID=@linhvuc[i].Id">@linhvuc[i].TenLinhVuc</a>
+                                                                </li>
+                                                            }
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                                <script type="text/javascript">
+                                                    $('#li' + '-1').attr('style', 'font-weight:bold')
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="news-conner">
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- End_Module_535 -->
+                            </div>
+                        </div>
+                        @*<div class="DnnModule DnnModule-HomeViectimnguoi DnnModule-539">
+                            <a name="539"></a>
+                            <div id="dnn_ctr539_ContentPane">
+                                <!-- Start_Module_539 -->
+                                <div id="dnn_ctr539_ModuleContent" class="DNNModuleContent ModHomeViectimnguoiC">
+                                    <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfJobBoardID" id="dnn_ctr539_MainHome_ctl00_hdfJobBoardID" value="112">
+                                    <input type="hidden" name="dnn$ctr539$MainHome$ctl00$hdfResume" id="dnn_ctr539_MainHome_ctl00_hdfResume" value="112">
+                                    <div class="Invisible">
+                                        <div class="box-tk">
+
+                                            <div class="tkcontent">
+                                                <a id="dnn_ctr539_MainHome_ctl00_hplJobBoard" class="item-stistic" href="">
+                                                    <span class="itemtxt">
+                                                        <b>
+                                                            90386
+                                                        </b> Việc làm đang
+                                                        tuyển dụng
+                                                    </span> <span class="itemarrow"></span>
+                                                </a>
+                                                <br>
+                                                <a id="dnn_ctr539_MainHome_ctl00_hplResume" class="item-stistic" href="">
+                                                    <span class="itemtxt"><b>125776</b> Hồ sơ ứng viên</span>
+                                                    <span class="itemarrow"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!-- End_Module_539 -->
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+
+            <div id="dnn_NewsPage_FullPane" class="contentPane DNNEmptyPane">
+            </div>
+        </div>
+    </div>
+</div>
