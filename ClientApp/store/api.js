@@ -309,23 +309,7 @@ export function getListRole() {
     params: data
   });
 }
-//DMDanhMuc
-export function getListDanhMucNews() {
-  const params = {};
-  return request({
-    url: "api/dmdanhmuc/news",
-    method: "get",
-    params: params
-  });
-}
-export function getListDanhMucSVL() {
-  const params = {};
-  return request({
-    url: "api/dmdanhmuc/svl",
-    method: "get",
-    params: params
-  });
-}
+
 //ThongKe
 export function getThongKe(nam) {
   const params = { nam };
@@ -336,994 +320,230 @@ export function getThongKe(nam) {
     params: params
   });
 }
-//CauHinh
-export function getCauHinh(ma) {
-  const params = { "filter[MaCauHinh]": ma };
+
+// States
+export function getStates() {
+ 
   return request({
-    url: "api/data/CauHinh",
-    method: "get",
-    params: params
+    url: "api/States/Get",
+    method:'get'
+
   });
 }
-export function getListCauHinh(inc) {
-  const params = { include: inc };
+
+export function selectStates() {
+
   return request({
-    url: "api/data/CauHinh",
-    method: "get",
-    params: params
-  });
-}
-export function updateCauHinh(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/CauHinh/" + id,
-    method: "put",
-    data
-  });
-}
-//NewsChuyenMuc
-export function getListChuyenMuc(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/NewsChuyenMuc",
-    method: "get",
-    params: params
-  });
-}
-export function addChuyenMuc(data) {
-  //const data = {};
-  return request({
-    url: "api/data/NewsChuyenMuc",
-    method: "post",
-    data
-  });
-}
-export function updateChuyenMuc(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/NewsChuyenMuc/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteChuyenMuc(id) {
-  //const data = {};
-  return request({
-    url: "api/data/NewsChuyenMuc/" + id,
-    method: "delete"
-  });
-}
-//DMLinhVuc
-export function getListLinhVuc(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMLinhVuc",
-    method: "get",
-    params: params
-  });
-}
-export function addLinhVuc(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLinhVuc",
-    method: "post",
-    data
-  });
-}
-export function updateLinhVuc(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLinhVuc/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteLinhVuc(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLinhVuc/" + id,
-    method: "delete"
-  });
-}
-//DMLoaiVanBan
-export function getListLoaiVanBan(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMLoaiVanBan",
-    method: "get",
-    params: params
-  });
-}
-export function addLoaiVanBan(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiVanBan",
-    method: "post",
-    data
-  });
-}
-export function updateLoaiVanBan(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiVanBan/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteLoaiVanBan(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiVanBan/" + id,
-    method: "delete"
-  });
-}
-//DMNganhNghe
-export function getListNganhNghe(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMNganhNghe",
-    method: "get",
-    params: params
-  });
-}
-export function addNganhNghe(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNganhNghe",
-    method: "post",
-    data
-  });
-}
-export function updateNganhNghe(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNganhNghe/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteNganhNghe(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNganhNghe/" + id,
-    method: "delete"
-  });
-}
-//DMNganhNghe
-export function getListLoaiHinh(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMLoaiHinh",
-    method: "get",
-    params: params
-  });
-}
-export function addLoaiHinh(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiHinh",
-    method: "post",
-    data
-  });
-}
-export function updateLoaiHinh(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiHinh/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteLoaiHinh(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMLoaiHinh/" + id,
-    method: "delete"
-  });
-}
-//DMGioiTinh
-export function getListGioiTinh(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMGioiTinh",
-    method: "get",
-    params: params
-  });
-}
-export function addGioiTinh(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMGioiTinh",
-    method: "post",
-    data
-  });
-}
-export function updateGioiTinh(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMGioiTinh/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteGioiTinh(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMGioiTinh/" + id,
-    method: "delete"
-  });
-}
-//DMNgoaiNgu
-export function getListNgoaiNgu(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMNgoaiNgu",
-    method: "get",
-    params: params
-  });
-}
-export function addNgoaiNgu(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNgoaiNgu",
-    method: "post",
-    data
-  });
-}
-export function updateNgoaiNgu(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNgoaiNgu/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteNgoaiNgu(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMNgoaiNgu/" + id,
-    method: "delete"
-  });
-}
-//DMTinHoc
-export function getListTinHoc(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMTinHoc",
-    method: "get",
-    params: params
-  });
-}
-export function addTinHoc(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMTinHoc",
-    method: "post",
-    data
-  });
-}
-export function updateTinHoc(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMTinHoc/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteTinHoc(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMTinHoc/" + id,
-    method: "delete"
-  });
-}
-//DMVanBang
-export function getListVanBang(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMVanBang",
-    method: "get",
-    params: params
-  });
-}
-export function addVanBang(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMVanBang",
-    method: "post",
-    data
-  });
-}
-export function updateVanBang(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMVanBang/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteVanBang(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMVanBang/" + id,
-    method: "delete"
-  });
-}
-//DMViTriCongViec
-export function getListViTriCongViec(inc) {
-  const params = { include: inc };
-  return request({
-    url: "api/data/DMViTriCongViec",
-    method: "get",
-    params: params
-  });
-}
-export function addViTriCongViec(data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMViTriCongViec",
-    method: "post",
-    data
-  });
-}
-export function updateViTriCongViec(id, data) {
-  //const data = {};
-  return request({
-    url: "api/data/DMViTriCongViec/" + id,
-    method: "put",
-    data
-  });
-}
-export function deleteViTriCongViec(id) {
-  //const data = {};
-  return request({
-    url: "api/data/DMViTriCongViec/" + id,
-    method: "delete"
-  });
-}
-//NguoiLaoDong
-export function getNguoiLaoDong() {
-  //const params = { };
-  return request({
-    url: "api/NguoiLaoDong/get",
+    url: "api/States/Select",
     method: "get"
-    //params: params
   });
 }
-export function selectNguoiLaoDong() {
-  //const params = { };
-  return request({
-    url: "api/NguoiLaoDong/Select",
-    method: "get"
-    //params: params
-  });
-}
-export function updateNguoiLaoDong(data) {
+
+export function addStates(data) {
   //const data = { };
   return request({
-    url: "api/NguoiLaoDong/update",
+    url: "api/States/Add",
     method: "post",
     data: data
   });
 }
-export function deleteNguoiLaoDong(id) {
+
+export function updateStates(data) {
+
+  return request({
+    url: "api/States/Update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteStates(id) {
   const params = { id };
   return request({
-    url: "api/NguoiLaoDong/delete",
-    method: "post",
-    params: params
-  });
-}
-//DoanhNghiep
-export function getDoanhNghiep() {
-  //const params = { };
-  return request({
-    url: "api/DoanhNghiep/get",
-    method: "get"
-    //params: params
-  });
-}
-export function selectDoanhNghiep() {
-  //const params = { };
-  return request({
-    url: "api/DoanhNghiep/Select",
-    method: "get"
-    //params: params
-  });
-}
-export function updateDoanhNghiep(data) {
-  //const data = { };
-  return request({
-    url: "api/DoanhNghiep/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeDoanhNghiep(data) {
-  //const data = { };
-  return request({
-    url: "api/DoanhNghiep/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteDoanhNghiep(id) {
-  const params = { id };
-  return request({
-    url: "api/DoanhNghiep/delete",
-    method: "post",
-    params: params
-  });
-}
-//HoSoTimViec
-export function getHoSoTimViec() {
-  //const params = { };
-  return axios.get("/api/HoSoTimViec/get", {
-    headers: { Authorization: "Bearer " + getToken() }
-  });
-}
-export function selectHoSoTimViec() {
-  //const params = { };
-  return request({
-    url: "api/HoSoTimViec/select",
-    method: "get"
-    //params: params
-  });
-}
-export function addHoSoTimViec(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTimViec/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateHoSoTimViec(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTimViec/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeHoSoTimViec(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTimViec/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteHoSoTimViec(id) {
-  const params = { id };
-  return request({
-    url: "api/HoSoTimViec/delete",
-    method: "post",
-    params: params
-  });
-}
-//HoSoTuyenDung
-export function getHoSoTuyenDung(conHan) {
-  //const params = { };
-  return axios.get("/api/HoSoTuyenDung/get?conHan=" + conHan, {
-    headers: { Authorization: "Bearer " + getToken() }
-  });
-}
-export function selectHoSoTuyenDung() {
-  //const params = { };
-  return request({
-    url: "api/HoSoTuyenDung/Select",
-    method: "get"
-    //params: params
-  });
-}
-export function addHoSoTuyenDung(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTuyenDung/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateHoSoTuyenDung(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTuyenDung/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeHoSoTuyenDung(data) {
-  //const data = { };
-  return request({
-    url: "api/HoSoTuyenDung/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteHoSoTuyenDung(id) {
-  const params = { id };
-  return request({
-    url: "api/HoSoTuyenDung/delete",
-    method: "post",
-    params: params
-  });
-}
-//DaoTaoNghe
-export function selectDaoTaoNghe() {
-  //const params = { };
-  return request({
-    url: "api/DaoTaoNghe/Select",
-    method: "get"
-    //params: params
-  });
-}
-export function addDaoTaoNghe(data) {
-  //const data = { };
-  return request({
-    url: "api/DaoTaoNghe/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateDaoTaoNghe(data) {
-  //const data = { };
-  return request({
-    url: "api/DaoTaoNghe/update",
-    method: "post",
-    data: data
-  });
-}
-export function deleteDaoTaoNghe(id) {
-  const params = { id };
-  return request({
-    url: "api/DaoTaoNghe/delete",
+    url: "api/States/delete",
     method: "post",
     params: params
   });
 }
 
-//DangKyHocNghe
-export function selectDangKyHocNghe() {
-  //const params = { };
+
+// Status
+export function getStatus() {
+
   return request({
-    url: "api/DangKyHocNghe/Select",
+    url: "api/Status/get",
+    method: 'get'
+
+  });
+}
+
+export function selectStatus() {
+
+  return request({
+    url: "api/Status/Select",
     method: "get"
-    //params: params
   });
 }
-export function addDangKyHocNghe(data) {
+
+export function addStatus(data) {
   //const data = { };
   return request({
-    url: "api/DangKyHocNghe/add",
+    url: "api/Status/add",
     method: "post",
     data: data
   });
 }
-export function updateDangKyHocNghe(data) {
-  //const data = { };
+
+export function updateStatus(data) {
+
   return request({
-    url: "api/DangKyHocNghe/update",
+    url: "api/Status/update",
     method: "post",
     data: data
   });
 }
-export function deleteDangKyHocNghe(id) {
+
+export function deleteStatus(id) {
   const params = { id };
   return request({
-    url: "api/DangKyHocNghe/delete",
+    url: "api/Status/delete",
     method: "post",
     params: params
   });
 }
 
-//DangKyViecLam
-export function selectDangKyViecLam() {
-  //const params = { };
+
+// DichVu
+export function getDichVu() {
+
   return request({
-    url: "api/DangKyViecLam/Select",
+    url: "api/DichVu/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectDichVu() {
+
+  return request({
+    url: "api/DichVu/Select",
     method: "get"
-    //params: params
   });
 }
-export function addDangKyViecLam(data) {
+
+export function addDichVu(data) {
   //const data = { };
   return request({
-    url: "api/DangKyViecLam/add",
+    url: "api/DichVu/add",
     method: "post",
     data: data
   });
 }
-export function updateDangKyViecLam(data) {
-  //const data = { };
+
+export function updateDichVu(data) {
+
   return request({
-    url: "api/DangKyViecLam/update",
+    url: "api/DichVu/Update",
     method: "post",
     data: data
   });
 }
-export function deleteDangKyViecLam(id) {
+
+export function deleteDichVu(id) {
   const params = { id };
   return request({
-    url: "api/DangKyViecLam/delete",
-    method: "post",
-    params: params
-  });
-}
-//SanViecLam
-export function getSanViecLam() {
-  //const params = { };
-  return axios.get("/api/SanViecLam/get", {
-    headers: { Authorization: "Bearer " + getToken() }
-  });
-}
-export function selectSanViecLam(dangDienRa) {
-  const params = { dangDienRa };
-  return request({
-    url: "api/SanViecLam/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addSanViecLam(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateSanViecLam(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/update",
-    method: "post",
-    data: data
-  });
-}
-export function deleteSanViecLam(id) {
-  const params = { id };
-  return request({
-    url: "api/SanViecLam/delete",
-    method: "post",
-    params: params
-  });
-}
-export function getSVLDoanhNghiep(id) {
-  const params = { id };
-  return request({
-    url: "api/SanViecLam/GetHoSoTuyenDung",
-    method: "get",
-    params: params
-  });
-}
-export function getSVLNguoiLaoDong(id) {
-  const params = { id };
-  return request({
-    url: "api/SanViecLam/GetHoSoUngTuyen",
-    method: "get",
-    params: params
-  });
-}
-export function joinSVLDoanhNghiep(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/joinSVLDoanhNghiep",
-    method: "post",
-    data: data
-  });
-}
-export function removeSVLDoanhNghiep(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/removeSVLDoanhNghiep",
-    method: "post",
-    data: data
-  });
-}
-export function joinSVLNguoiLaoDong(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/joinSVLNguoiLaoDong",
-    method: "post",
-    data: data
-  });
-}
-export function removeSVLNguoiLaoDong(data) {
-  //const data = { };
-  return request({
-    url: "api/SanViecLam/removeSVLNguoiLaoDong",
-    method: "post",
-    data: data
-  });
-}
-//NewsMenu
-export function selectNewsMenu(ChuyenMucId) {
-  const params = { ChuyenMucId };
-  return request({
-    url: "api/NewsMenu/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addNewsMenu(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsMenu/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateNewsMenu(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsMenu/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeNewsMenu(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsMenu/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsMenu(id) {
-  const params = { id };
-  return request({
-    url: "api/NewsMenu/delete",
+    url: "api/DichVu/delete",
     method: "post",
     params: params
   });
 }
 
-//NewsHoiDap
-export function getNewsHoiDap(uid) {
-  const params = { uid };
+// NhanSu
+export function getNhanSu() {
+
   return request({
-    url: "api/NewsHoiDap/get",
-    method: "get",
-    params: params
+    url: "api/NhanSu/Get",
+    method: 'get'
+
   });
 }
-export function selectNewsHoiDap() {
-  //const params = { };
+
+export function selectNhanSu() {
+
   return request({
-    url: "api/NewsHoiDap/Select",
+    url: "api/NhanSu/Select",
     method: "get"
-    //params: params
   });
 }
-export function addNewsHoiDap(data) {
+
+export function addNhanSu(data) {
   //const data = { };
   return request({
-    url: "api/NewsHoiDap/add",
+    url: "api/NhanSu/add",
     method: "post",
     data: data
   });
 }
-export function updateNewsHoiDap(data) {
-  //const data = { };
+
+export function updateNhanSu(data) {
+
   return request({
-    url: "api/NewsHoiDap/update",
+    url: "api/NhanSu/update",
     method: "post",
     data: data
   });
 }
-export function activeNewsHoiDap(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsHoiDap/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsHoiDap(id) {
+
+export function deleteNhanSu(id) {
   const params = { id };
   return request({
-    url: "api/NewsHoiDap/delete",
+    url: "api/NhanSu/delete",
     method: "post",
     params: params
   });
 }
 
-//NewsVanBan
-export function getNewsVanBan(uid) {
-  const params = { uid };
+// YeuCau
+export function getYeuCau() {
+
   return request({
-    url: "api/NewsVanBan/get",
+    url: "api/yeucau/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectYeuCau(thoihan) {
+  const params = { thoihan };
+  return request({
+    url: "api/yeucau/Select",
     method: "get",
-    params: params
-  });
-}
-export function selectNewsVanBan(ChuyenMucId) {
-  const params = { ChuyenMucId };
-  return request({
-    url: "api/NewsVanBan/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addNewsVanBan(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVanBan/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateNewsVanBan(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVanBan/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeNewsVanBan(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVanBan/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsVanBan(id) {
-  const params = { id };
-  return request({
-    url: "api/NewsVanBan/delete",
-    method: "post",
     params: params
   });
 }
 
-//NewsBanner
-export function getNewsBanner(uid) {
-  const params = { uid };
-  return request({
-    url: "api/NewsBanner/get",
-    method: "get",
-    params: params
-  });
-}
-export function selectNewsBanner(ChuyenMucId) {
-  const params = { ChuyenMucId };
-  return request({
-    url: "api/NewsBanner/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addNewsBanner(data) {
+export function addYeuCau(data) {
   //const data = { };
   return request({
-    url: "api/NewsBanner/add",
+    url: "api/yeucau/add",
     method: "post",
     data: data
-  });
-}
-export function updateNewsBanner(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsBanner/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeNewsBanner(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsBanner/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsBanner(id) {
-  const params = { id };
-  return request({
-    url: "api/NewsBanner/delete",
-    method: "post",
-    params: params
   });
 }
 
-//NewsVideo
-export function getNewsVideo(uid) {
-  const params = { uid };
+export function updateYeuCau(data) {
+
   return request({
-    url: "api/NewsVideo/get",
-    method: "get",
-    params: params
-  });
-}
-export function selectNewsVideo(ChuyenMucId) {
-  const params = { ChuyenMucId };
-  return request({
-    url: "api/NewsVideo/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addNewsVideo(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVideo/add",
+    url: "api/yeucau/update",
     method: "post",
     data: data
-  });
-}
-export function updateNewsVideo(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVideo/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeNewsVideo(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsVideo/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsVideo(id) {
-  const params = { id };
-  return request({
-    url: "api/NewsVideo/delete",
-    method: "post",
-    params: params
   });
 }
 
-//NewsBanTin
-export function getNewsBanTin(uid) {
-  const params = { uid };
-  return request({
-    url: "api/NewsBanTin/get",
-    method: "get",
-    params: params
-  });
-}
-export function selectNewsBanTin(ChuyenMucId) {
-  const params = { ChuyenMucId };
-  return request({
-    url: "api/NewsBanTin/Select",
-    method: "get",
-    params: params
-  });
-}
-export function addNewsBanTin(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsBanTin/add",
-    method: "post",
-    data: data
-  });
-}
-export function updateNewsBanTin(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsBanTin/update",
-    method: "post",
-    data: data
-  });
-}
-export function activeNewsBanTin(data) {
-  //const data = { };
-  return request({
-    url: "api/NewsBanTin/active",
-    method: "post",
-    data: data
-  });
-}
-export function deleteNewsBanTin(id) {
+export function deleteYeuCau(id) {
   const params = { id };
   return request({
-    url: "api/NewsBanTin/delete",
+    url: "api/yeucau/delete",
     method: "post",
     params: params
   });

@@ -7,12 +7,12 @@
           <div class="page-title-right">
             <ol class="breadcrumb m-0">
               <li class="breadcrumb-item">
-                <a href="javascript: void(0);">Sàn việc làm</a>
+                <a href="javascript: void(0);">Quản lý yêu cầu</a>
               </li>
-              <li class="breadcrumb-item active">Trang chủ</li>
+              <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div>
-          <h4 class="page-title">Trang chủ</h4>
+          <h4 class="page-title">Dashboard</h4>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
       <div class="col-4">
         <div class="card-box table-responsive" style="height: 310px;">
           <div class="header-title">
-            Tổng số Việc làm
+            Tổng số Yêu cầu
           </div>
           <div
             align="center"
@@ -36,7 +36,7 @@
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 145px;">
               <div class="header-title">
-                Doanh nghiệp
+                Tổ chức - doanh nghiệp
               </div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.DoanhNghiep }}
@@ -46,7 +46,7 @@
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 145px;">
               <div class="header-title">
-                Người lao động
+                Chính quyền
               </div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.NguoiLaoDong }}
@@ -56,7 +56,7 @@
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 145px;">
               <div class="header-title">
-                Sàn việc làm
+                Y tế - giáo dục
               </div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.SanViecLam }}
@@ -67,7 +67,7 @@
         <el-row class="row hidden-md-and-down">
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;">
-              <div class="header-title">Hồ sơ tuyển dụng</div>
+              <div class="header-title">Quản trị hệ thống</div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.HoSoTuyenDung }}
               </div>
