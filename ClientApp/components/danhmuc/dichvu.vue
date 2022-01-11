@@ -28,72 +28,71 @@
               style="width: 240px; float: right;"
             ></el-input>
           </div>
-          <el-table
-            :data="renderData()"
-            border
-            v-loading="loading"
-            default-expand-all
-            row-key="Id"
-            style="width: 100%"
-          >
+          <el-table :data="renderData()"
+                    border
+                    v-loading="loading"
+                    default-expand-all
+                    row-key="Id"
+                    style="width: 100%">
             <!-- <el-table-column width="50" label="" align="center">
-              <template></template>
-            </el-table-column> -->
+    <template></template>
+  </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column
-              prop="TenDichVu"
-              label="Tên Dịch Vụ"
-              sortable
-              min-width="225"
-            >
+            <el-table-column prop="TenDichVu"
+                             label="Tên Dịch Vụ"
+                             sortable
+                             min-width="225">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.TenDichVu}}      
+                  {{ scope.row.TenDichVu}}
+                </text-highlight>
+              </template>
+            </el-table-column>
+            <el-table-column prop="DonViYeuCau"
+                             label="Đơn Vị Yêu Cầu"
+                             sortable
+                             min-width="225">
+              <template slot-scope="scope">
+                <text-highlight :queries="search" style="word-break: normal;">
+                  {{ scope.row.DonViYeuCau}}
                 </text-highlight>
               </template>
             </el-table-column>
             <!--<el-table-column
-              prop="LoaiChuyenMuc"
-              label="Loại Chuyên mục"
-              sortable
-              min-width="225"
-            >
-              <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.LoaiChuyenMuc }}
-                </text-highlight>
-              </template>
-            </el-table-column>-->
+    prop="LoaiChuyenMuc"
+    label="Loại Chuyên mục"
+    sortable
+    min-width="225"
+  >
+    <template slot-scope="scope">
+      <text-highlight :queries="search" style="word-break: normal;">
+        {{ scope.row.LoaiChuyenMuc }}
+      </text-highlight>
+    </template>
+  </el-table-column>-->
             <el-table-column align="center" label="" width="125">
               <template slot="header">
-                <el-button
-                  type="primary"
-                  size="small"
-                  icon="el-icon-plus"
-                  class="filter-item"
-                  @click="handleAdd"
-                  >Thêm mới</el-button
-                >
+                <el-button type="primary"
+                           size="small"
+                           icon="el-icon-plus"
+                           class="filter-item"
+                           @click="handleAdd">Thêm mới</el-button>
               </template>
               <template slot-scope="scope">
-                <el-button
-                  @click="handleEdit(scope.$index, scope.row)"
-                  type="primary"
-                  title="Cập nhật"
-                  icon="el-icon-edit"
-                  size="mini"
-                ></el-button>
-                <el-button
-                  @click="handleDelete(scope.row)"
-                  type="danger"
-                  icon="el-icon-delete"
-                  title="Xóa"
-                  size="mini"
-                ></el-button>
+                <el-button @click="handleEdit(scope.$index, scope.row)"
+                           type="primary"
+                           title="Cập nhật"
+                           icon="el-icon-edit"
+                           size="mini"></el-button>
+                <el-button @click="handleDelete(scope.row)"
+                           type="danger"
+                           icon="el-icon-delete"
+                           title="Xóa"
+                           size="mini"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -138,6 +137,13 @@
             size="small"
           ></el-input>
         </el-form-item>
+         <el-form-item label="Đơn Vị Yêu Cầu" prop="DonViYeuCau">
+          <el-input
+            v-model="formData.DonViYeuCau"
+            type="text"
+            size="small"
+          ></el-input>
+        </el-form-item>
         <!--<el-form-item label="Thứ tự" prop="ThuTu">
           <el-input
             v-model="formData.ThuTu"
@@ -175,6 +181,7 @@ export default {
       search: "",
       formData: {
         TenDichVu: null,
+        DonViYeuCau: null,
         ThuTu: null,
         HieuLuc: null
       },
@@ -185,7 +192,14 @@ export default {
             message: "Vui lòng nhập Tên Dịch Vụ",
             trigger: "blur"
           }
-        ]
+        ],
+        DonViYeuCau: [
+          {
+            required: true,
+            message: "Vui lòng nhập Đơn Vị Yêu Cầu",
+            trigger: "blur"
+          }
+        ],
         
       },
       listData: [],
@@ -257,7 +271,7 @@ export default {
       this.$refs.formData.validate(valid => {
         if (valid) {
           if (this.isEditor == 0) {
-            addNDichVu(this.formData).then(data => {
+            addDichVu(this.formData).then(data => {
               //console.log(data);
               this.getListData();
             });

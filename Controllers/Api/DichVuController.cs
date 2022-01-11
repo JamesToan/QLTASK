@@ -96,7 +96,7 @@ namespace coreWeb.Controllers.Api
                     if (result != null) //update
                     {
                         result.TenDichVu = model.TenDichVu;
-                        
+                        result.DonViYeuCau = model.DonViYeuCau;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);

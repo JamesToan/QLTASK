@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using coreWeb.Models;
-
+using System;
 
 namespace coreWeb.Controllers
 {
@@ -27,7 +27,16 @@ namespace coreWeb.Controllers
             //var user = new UserClaim(HttpContext);
             try
             {
-                //var sum = _context.HoSoTuyenDung.Sum(e => e.SoLuong);
+                var sum = _context.YeuCau.Count();
+                var sumChuaHT = _context.YeuCau.Where(p => p.States.StateName == "Chưa hoàn thành").Count();
+                var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
+                var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
+                var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý").Count();
+
+                var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now).Count();
+                var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now).Count();
+
+
                 //var sumDoanhNghiep = _context.DoanhNghiep.Count(e => e.XacThuc == true);
                 //var sumNguoiLaoDong = _context.NguoiLaoDong.Count(e => e.XacThuc == true);
                 //var sumSanViecLam = _context.SanViecLam.Count();
@@ -36,24 +45,28 @@ namespace coreWeb.Controllers
                 //var sumSVLDoanhNghiep = _context.SVLDoanhNghiep.Count();
                 //var sumSVLNguoiLaoDong = _context.SVLNguoiLaoDong.Count();
 
-                //var chart = _context.HoSoTuyenDung
-                //.Include(hs => hs.NoiLamViecTinh)
-                //.Include(hs => hs.NoiLamViecHuyen)
-                //.GroupBy(hs => hs.NoiLamViecHuyen)
-                //.Select(hs => new { name = hs.FirstOrDefault().NoiLamViecHuyen != null ? hs.FirstOrDefault().NoiLamViecHuyen.TenHuyen : "Ngoài tỉnh", y = hs.Sum(e => e.SoLuong) });
-                //var result = new
-                //{
-                //    Tong = sum,
-                //    DoanhNghiep = sumDoanhNghiep,
-                //    NguoiLaoDong = sumNguoiLaoDong,
-                //    SanViecLam = sumSanViecLam,
-                //    HoSoTuyenDung = sumHoSoTuyenDung,
-                //    HoSoTimViec = sumHoSoTimViec,
-                //    SVLDoanhNghiep = sumSVLDoanhNghiep,
-                //    SVLNguoiLaoDong = sumSVLNguoiLaoDong,
-                //    Chart = chart.ToList()
-                //};
-                return Ok();
+                //var chart1 = _context.YeuCau
+                
+                //.GroupBy(hs => hs.Id)
+                //.Select(hs => new { name = hs.FirstOrDefault().ThoiHan < DateTime.Now ? "Trễ hạn" : "Trong hạn", y = hs.Count() });
+                var chart = _context.YeuCau
+                .Include(hs => hs.States)
+
+                .GroupBy(hs => hs.StateId)
+                .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                var result = new
+                {
+                    Tong = sum,
+                    ChuaHT = sumChuaHT,
+                    DaHT = sumDaHT,
+                    DangXL = sumDangXL,
+                    ChuaXL = sumChuaXL,
+                    TrongHan = sumTrongHan,
+                    TreHan = sumTreHan,
+                    Chart = chart.ToList(),
+                    //Chart1 = chart1.ToList()
+                };
+                return Ok(result);
             }
             catch (System.Exception)
             {

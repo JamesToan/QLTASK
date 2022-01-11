@@ -548,3 +548,60 @@ export function deleteYeuCau(id) {
     params: params
   });
 }
+
+// Jira
+
+export function getJira() {
+
+  return request({
+    url: "api/jira/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectJira() {
+  
+  return request({
+    url: "api/jira/Select",
+    method: "get"
+  });
+}
+
+export function addJira(data) {
+  //const data = { };
+  return request({
+    url: "api/jira/add",
+    method: "post",
+    data: data
+  });
+}
+
+export function updateJira(data) {
+
+  return request({
+    url: "api/jira/update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteJira(id) {
+  const params = { id };
+  return request({
+    url: "api/jira/delete",
+    method: "post",
+    params: params
+  });
+}
+
+
+// danh muc
+export function getListDanhMucYeuCau() {
+  const params = {};
+  return request({
+    url: "api/dmdanhmuc/yeucau",
+    method: "get",
+    params: params
+  });
+}

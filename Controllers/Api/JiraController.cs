@@ -5,33 +5,30 @@ using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace coreWeb.Controllers.Api
 {
+
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class YeuCauController : Controller
+    public class JiraController : ControllerBase
     {
         private ApplicationDbContext _context;
 
-        public YeuCauController(ApplicationDbContext context)
+        public JiraController(ApplicationDbContext context)
         {
             _context = context;
         }
+
+
 
         [HttpGet]
         public IActionResult Get()
         {
             var user = new UserClaim(HttpContext);
-            var result = _context.YeuCau
-                .Include(e => e.DichVu)
-                .Include(e => e.NhanSu)
-                .Include(e => e.States)
-                //.Include(e => e.Status)
-                .Include(e => e.User).FirstOrDefault();
+            var result = _context.Jira.SingleOrDefault();
             if (result != null)
             {
                 return Ok(result);
@@ -43,23 +40,12 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Select(bool?  thoihan)
+        public IActionResult Select()
         {
             var user = new UserClaim(HttpContext);
             if (user.RoleId == 1 || user.RoleId == 2)
             {
-                var result = _context.YeuCau
-                .Include(e => e.DichVu)
-                .Include(e => e.NhanSu)
-                .Include(e => e.States)
-                //.Include(e => e.Status)
-                .Include(e => e.Jira)
-                .Include(e => e.User)
-                //.Where(e => thoihan == null
-                //|| (thoihan == true && e.ThoiHan >= DateTime.Today)
-                //|| (thoihan == false && e.ThoiHan < DateTime.Today))
-                .OrderByDescending(e => e.Id)
-                .ToList();
+                var result = _context.Jira.ToList();
                 if (result != null)
                 {
                     return Ok(result);
@@ -77,17 +63,13 @@ namespace coreWeb.Controllers.Api
 
 
         [HttpPost]
-        public IActionResult Add([FromBody] YeuCau model)
+        public IActionResult Add([FromBody] Jira model)
         {
             try
             {
                 var user = new UserClaim(HttpContext);
                 if (user != null)
                 {
-                    model.NguoiTaoId = user.UserId;
-                    model.NgayTao = DateTime.Now;
-                   
-                    model.JiraDaGuiId = 1;
                     _context.Add(model);
                     _context.SaveChanges();
                     return Ok(model.Id);
@@ -104,28 +86,20 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult Update([FromBody] YeuCau model)
+        public IActionResult Update([FromBody] Jira model)
         {
             try
             {
                 var user = new UserClaim(HttpContext);
                 if (user.RoleId == 1 || user.RoleId == 2)
                 {
-                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
+                    var result = _context.Jira.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update
                     {
-                        result.TenYeuCau = model.TenYeuCau;
-                        result.NoiDung = model.NoiDung;
-                        result.ThoiHan = model.ThoiHan;
-                        result.JiraDaGuiId = model.JiraDaGuiId;
-                        //result.StatusId = model.StatusId;
-                        result.NgayYeuCau = model.NgayYeuCau;
-                        result.StateId = model.StateId;
-                        result.DichVuId = model.DichVuId;
-                        result.DonVi = model.DonVi;
-                        result.NguoiTaoId = user.UserId;
-                        result.NgayCapNhat = DateTime.Now;
-
+                        result.TenJira = model.TenJira;
+                        result.LinkJira = model.LinkJira;
+                        result.TrangThaiId = model.TrangThaiId;
+                        result.IsActive = model.IsActive;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -152,7 +126,7 @@ namespace coreWeb.Controllers.Api
         {
             try
             {
-                var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
+                var result = _context.Jira.SingleOrDefault(e => e.Id == id);
                 if (result != null) //update
                 {
                     _context.Remove(result);

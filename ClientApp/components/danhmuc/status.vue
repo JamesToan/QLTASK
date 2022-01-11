@@ -9,10 +9,10 @@
               <li class="breadcrumb-item">
                 <a href="javascript: void(0);">Danh mục</a>
               </li>
-              <li class="breadcrumb-item active">Chuyên mục</li>
+              <li class="breadcrumb-item active">Tình trạng</li>
             </ol>
           </div>
-          <h4 class="page-title">Chuyên mục</h4>
+          <h4 class="page-title">Tình trạng</h4>
         </div>
       </div>
     </div>
@@ -45,18 +45,18 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="TenChuyenMuc"
-              label="Tên Chuyên mục"
+              prop="StatusName"
+              label="Tên Trạng Thái"
               sortable
               min-width="225"
             >
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.TenChuyenMuc }}
+                  {{ scope.row.StatusName }}
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
               prop="LoaiChuyenMuc"
               label="Loại Chuyên mục"
               sortable
@@ -67,7 +67,7 @@
                   {{ scope.row.LoaiChuyenMuc }}
                 </text-highlight>
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column align="center" label="" width="125">
               <template slot="header">
                 <el-button
@@ -113,7 +113,7 @@
       </div>
     </div>
     <el-dialog
-      title="Cập nhật Chuyên mục"
+      title="Cập nhật Trạng Thái"
       :visible.sync="dialogFormDisplay"
       top="15px"
     >
@@ -131,30 +131,14 @@
             :readonly="isEditor"
           ></el-input>
         </el-form-item> -->
-        <el-form-item label="Tên Chuyên mục" prop="TenChuyenMuc">
+        <el-form-item label="Tên Trạng Thái" prop="StatusName">
           <el-input
-            v-model="formData.TenChuyenMuc"
+            v-model="formData.StatusName"
             type="text"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="Loại Chuyên mục" prop="LoaiChuyenMuc">
-          <el-input
-            v-model="formData.LoaiChuyenMuc"
-            type="text"
-            size="small"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="Thứ tự" prop="ThuTu">
-          <el-input
-            v-model="formData.ThuTu"
-            type="number"
-            size="small"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="Hiệu lực">
-          <el-switch v-model="formData.HieuLuc" size="small"></el-switch>
-        </el-form-item>
+       
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm" size="small">Bỏ qua</el-button>
@@ -167,10 +151,11 @@
 </template>
 <script>
 import {
-  addChuyenMuc,
-  updateChuyenMuc,
-  deleteChuyenMuc,
-  getListChuyenMuc
+  addStatus,
+  updateStatus,
+  deleteStatus,
+  selectStatus,
+  getStatus
 } from "../../store/api";
 export default {
   data() {
@@ -180,22 +165,15 @@ export default {
       isEditor: false,
       search: "",
       formData: {
-        TenChuyenMuc: null,
+        StatusName: null,
         ThuTu: null,
         HieuLuc: null
       },
       formRules: {
-        TenChuyenMuc: [
+        StatusName: [
           {
             required: true,
-            message: "Vui lòng nhập Tên Chuyên mục",
-            trigger: "blur"
-          }
-        ],
-        LoaiChuyenMuc: [
-          {
-            required: true,
-            message: "Vui lòng nhập Loại Chuyên mục",
+            message: "Vui lòng nhập Tên Trạng thái",
             trigger: "blur"
           }
         ]
@@ -220,7 +198,7 @@ export default {
         this.$refs.formData.resetFields();
       }
       this.formData = {
-        HieuLuc: true
+        IsActive: true
       };
 
       this.isEditor = false;
@@ -242,7 +220,7 @@ export default {
         cancelButtonText: "Cancel",
         type: "warning"
       }).then(() => {
-        deleteChuyenMuc(row.Id).then(data => {
+        deleteStatus(row.Id).then(data => {
           this.$message({
             type: "success",
             message: "Delete completed"
@@ -258,7 +236,7 @@ export default {
     },
     getListData() {
       this.loading = true;
-      getListChuyenMuc().then(data => {
+      selectStatus().then(data => {
         this.listData = data;
         this.total = data.length;
         this.loading = false;
@@ -269,12 +247,12 @@ export default {
       this.$refs.formData.validate(valid => {
         if (valid) {
           if (this.isEditor == 0) {
-            addChuyenMuc(this.formData).then(data => {
+            addStatus(this.formData).then(data => {
               //console.log(data);
               this.getListData();
             });
           } else {
-            updateChuyenMuc(this.formData.Id, this.formData).then(data => {
+            updateStatus(this.formData).then(data => {
               //console.log(data);
               this.getListData();
             });
@@ -291,8 +269,7 @@ export default {
     renderData() {
       var _data = this.listData.filter(post => {
         return (
-          post.TenChuyenMuc.toLowerCase().includes(this.search.toLowerCase()) ||
-          post.LoaiChuyenMuc.toLowerCase().includes(this.search.toLowerCase())
+          post.StatusName.toLowerCase().includes(this.search.toLowerCase())
         );
       });
       this.total = _data.length;

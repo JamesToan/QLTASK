@@ -21,10 +21,10 @@ namespace coreWeb.Models.Entities
 
         public DateTime? ThoiHan { get; set; }
 
-        [MaxLength]
-        public string JiraDaGui { get; set; }
+        
+        public int JiraDaGuiId { get; set; }
 
-        public int? StatusId { get; set; }
+        //public int? StatusId { get; set; }
         public int? StateId { get; set; }
         public int? NhanSuId { get; set; }
 
@@ -39,8 +39,9 @@ namespace coreWeb.Models.Entities
 
         public DateTime? NgayCapNhat { get; set; }
 
-        [ForeignKey("StatusId")]
-        public Status Status { get; set; }
+        public DateTime? NgayYeuCau { get; set; }
+        //[ForeignKey("StatusId")]
+        //public Status Status { get; set; }
 
         [ForeignKey("StateId")]
         public States States { get; set; }
@@ -53,5 +54,8 @@ namespace coreWeb.Models.Entities
 
         [ForeignKey("NguoiTaoId")]
         public User User { get; set; }
+
+        [ForeignKey("JiraDaGuiId")]
+        public Jira Jira { get; set; }
     }
 }

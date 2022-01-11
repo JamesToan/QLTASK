@@ -171,7 +171,7 @@ export const routes = [
     component: ParentCom,
     icon: "fe-list",
     meta: {
-      display: "Quản lý KH/ĐV",
+      display: "Quản lý yêu cầu",
       show: "true"
     },
     children: [

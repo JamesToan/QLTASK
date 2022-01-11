@@ -34,7 +34,7 @@ namespace coreWeb.Models
         //YeuCau
         public DbSet<YeuCau> YeuCau { get; set; }
 
-
-
+        //Jira
+        public DbSet<Jira> Jira { get; set; }
     }
 }
