@@ -21,8 +21,8 @@ namespace coreWeb.Models.Entities
 
         public DateTime? ThoiHan { get; set; }
 
-        
-        public int JiraDaGuiId { get; set; }
+        [MaxLength]
+        public string JiraDaGui { get; set; }
 
         //public int? StatusId { get; set; }
         public int? StateId { get; set; }
@@ -55,7 +55,7 @@ namespace coreWeb.Models.Entities
         [ForeignKey("NguoiTaoId")]
         public User User { get; set; }
 
-        [ForeignKey("JiraDaGuiId")]
-        public Jira Jira { get; set; }
+        //[ForeignKey("JiraDaGuiId")]
+        //public Jira Jira { get; set; }
     }
 }

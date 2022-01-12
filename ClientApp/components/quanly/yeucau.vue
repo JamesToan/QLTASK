@@ -56,13 +56,14 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="JiraDaGuiId"
+            <el-table-column prop="JiraDaGui"
                              label="Jira Đã Gửi"
                              width="120">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.Jira ? scope.row.Jira.TenJira : ""}}
+                  {{ scope.row.JiraDaGui}}
                 </text-highlight>
+                <!--<el-link href="scope.row.JiraDaGui" target="_blank">{{ scope.row.JiraDaGui}}</el-link>-->
               </template>
             </el-table-column>
             <el-table-column prop="ThoiHan"
@@ -104,12 +105,12 @@
                            :title="scope.row"
                            @click="handleAdd"
                            v-if="allowEdit">Thêm</el-button>
-                <el-button type="success"
+                <!--<el-button type="success"
                            size="small"
                            icon="el-icon-download"
                            class="filter-item"
                            title="Xuất DS"
-                           @click="handleExport">Xuất</el-button>
+                           @click="handleExport">Xuất</el-button>-->
               </template>
               <template slot-scope="scope">
                 <!--<el-button @click="handleActive(scope.$index, scope.row)"
@@ -247,7 +248,14 @@
                     :disabled="!allowEdit"></ckeditor>
         </el-form-item>
 
-
+        <el-form-item label="Jira" prop="JiraDaGui">
+          <el-input v-model="formData.JiraDaGui"
+            type="text"
+            size="small"></el-input>
+            
+            <!--<el-button type="primary" size="small" @click="handleAddJira">Thêm</el-button>-->
+            <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
+        </el-form-item>
         <!--<el-row>
     <el-col :span="12">
       <el-form-item label="Địa chỉ" prop="DiaChiTinhId">
@@ -290,6 +298,41 @@
         <el-button type="primary" size="small" @click="updateData">Cập nhật</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="Quản lý Jira"
+               :visible.sync="dialogFormDisplayJira"
+               top="165px"
+               center>
+      <el-form :model="formData1"
+               :rules="formRules"
+               ref="formData1"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
+
+        <el-form-item label="Tên Jira" prop="TenJira">
+          <el-input v-model="formData1.TenJira"
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="Link Jira" prop="LinkJira">
+          <el-input v-model="formData1.LinkJira"
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>
+        <!--<el-form-item label="Yêu Cầu Id" prop="YeuCauId">
+          <el-input v-model="formData.Id"
+                   
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>-->
+      </el-form>
+      <span slot="footer" class="dialog-footer" v-if="allowEdit">
+        <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
+        <el-button type="primary" size="small" @click="updateDataJira">Cập nhật</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -303,13 +346,17 @@ import {
   updateYeuCau,
   deleteYeuCau,
   addYeuCau,
-  
+  addJira,
+  selectJira,
+  updateJira,
+  deleteJira
 } from "../../store/api";
 export default {
   data() {
     return {
       title: null,
       dialogFormDisplay: false,
+      dialogFormDisplayJira: false,
       loading: false,
       isEditor: false,
       isXacThuc: false,
@@ -320,14 +367,23 @@ export default {
         TenYeuCau: null,
         NoiDung: null,
         ThoiHan: null,
-        JiraDaGuiId: null,
+        JiraDaGui: null,
         StatusId: null,
         StateId: null,
         NhanSuId: null,
         DonVi: null,
         DichVuId: null,
-        NgayYeuCau: null
-        
+        NgayYeuCau: null,
+       
+        domains: [{
+          key: 1,
+          value:''
+        }]
+      },
+      formData1: {
+        TenJira: null,
+        LinkJira: null,
+        YeuCauId:null
       },
       formRules: {
         TenYeuCau: [
@@ -385,7 +441,21 @@ export default {
             message: "Vui lòng chọn dịch vụ",
             trigger: "blur"
           }
-        ]
+        ],
+        TenJira: [
+          {
+            required: true,
+            message: "Vui lòng nhập dữ liệu",
+            trigger: "blur"
+          }
+        ],
+        LinkJira: [
+          {
+            required: true,
+            message: "Vui lòng nhập dữ liệu",
+            trigger: "blur"
+          }
+        ],
       },
       editor: ClassicEditor,
       editorConfig: {
@@ -403,6 +473,7 @@ export default {
       ListDMDichVu: [],
       ListDMJira: [],
       ListDMTinhTrang: [],
+      ListJira: [],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -422,23 +493,7 @@ export default {
         return moment(date).format("DD/MM/YYYY");
       } else return null;
     },
-    //formatDiaChi(tinh, huyen, noi) {
-    //  return (
-    //    (tinh ? tinh.TenTinh : "") +
-    //    (huyen ? ", " + huyen.TenHuyen : "") +
-    //    (noi ? ", " + noi : "")
-    //  );
-    //},
-
-    //changeTinh(val) {
-    //  var tinh = this.ListDMTinh.find(obj => obj.Id == val);
-    //  if (tinh) {
-    //    this.ListDMHuyen = tinh.Huyen;
-    //  } else {
-    //    this.ListDMHuyen = [];
-    //  }
-    //  delete this.formData.DiaChiHuyenId;
-    //},
+   
     formatJson(filterVal, jsonData) {
       return jsonData.map(data =>
         filterVal.map(f => {
@@ -470,13 +525,14 @@ export default {
       );
     },
     changeDichVu(val) {
+      //console.log(val)
       var dv = this.ListDMDichVu.find(obj => obj.Id == val);
       if (dv) {
-        this.DonVi = dv.DonViYeuCau;
+        this.formData.DonVi = dv.DonViYeuCau;
+       
       } else {
         this.DonVi = [];
       }
-      delete this.formData.DonVi;
     },
     handleAdd() {
       if (this.$refs.formData !== undefined) {
@@ -485,9 +541,22 @@ export default {
       this.formData = {
         //IsActive = true
       };
-
+      this.ListJira = [];
       this.isEditor = false;
       this.dialogFormDisplay = true;
+    },
+
+    handleAddJira() {
+      if (this.$refs.formData1 !== undefined) {
+        this.$refs.formData1.resetFields();
+      }
+      
+      this.formData1 = {
+        YeuCauId: this.formData.Id
+      };
+
+      this.isEditor = false;
+      this.dialogFormDisplayJira = true;
     },
     //handleActive(index, row) {
     //  row.XacThuc = !row.XacThuc;
@@ -507,11 +576,18 @@ export default {
         this.$refs.formData.resetFields();
       }
       this.formData = Object.assign({}, row);
+      if (this.formData.JiraDaGui) {
+        this.ListJira = [];
+        
+        var _arr = this.formData.JiraDaGui;
+        this.ListJira = _arr.split(",");
+       
+      }
       
-
       this.isEditor = true;
       this.dialogFormDisplay = true;
     },
+    
     handleDelete(row) {
       this.$confirm("Bạn có chắc chắn muốn xóa?", "Thông báo", {
         confirmButtonText: "OK",
@@ -527,7 +603,13 @@ export default {
         });
       });
     },
-
+    handleSuccess(response, file, ListJira) {
+      this.fileDoc.push({ key: file.name, file: response.file });
+    },
+    handleRemove(file, ListJira) {
+      let i = this.fileDoc.map(item => item.key).indexOf(file.name);
+      this.fileDoc.splice(i, 1);
+    },
     //handleExport() {
     //  import("../../vendor/Export2Excel").then(excel => {
     //    const tHeader = [
@@ -566,6 +648,10 @@ export default {
       this.dialogFormDisplay = false;
       return true;
     },
+    resetFormJira() {
+      this.dialogFormDisplayJira = false;
+      return true;
+    },
     getListData() {
       this.loading = true;
       
@@ -575,11 +661,25 @@ export default {
         selectYeuCau(true).then(data => {
           this.listData = data;
           this.total = data.length;
-
           //this.isXacThuc = true;
           this.loading = false;
         });
       
+    },
+    getListDataJira() {
+      this.loading = true;
+
+      //Quản lý
+      this.loading = true;
+
+      selectJira(this.formData.Id).then(data => {
+        this.listData = data;
+        this.total = data.length;
+
+        //this.isXacThuc = true;
+        this.loading = false;
+      });
+
     },
 
     updateData() {
@@ -606,6 +706,33 @@ export default {
             });
           }
           this.dialogFormDisplay = false;
+        } else {
+          return false;
+        }
+      });
+    },
+    updateDataJira() {
+      this.$refs.formData1.validate(valid => {
+        if (valid) {
+          if (this.isEditor == 0) {
+            addJira(this.formData1).then(data => {
+              //console.log(data);
+              this.$message({
+                type: "success",
+                message: "Thêm mới thành công!"
+              });
+            });
+          } else {
+            //delete this.formData.LinhVuc;
+            updateJira(this.formData1).then(data => {
+              //console.log(data);
+              this.$message({
+                type: "success",
+                message: "Cập nhật thành công!"
+              });
+            });
+          }
+          this.dialogFormDisplayJira = false;
         } else {
           return false;
         }
@@ -648,6 +775,7 @@ export default {
     });
 
     this.getListData();
+    
   }
 };
 </script>

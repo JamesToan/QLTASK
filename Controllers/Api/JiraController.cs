@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,12 +41,12 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Select()
+        public IActionResult Select(int ycid)
         {
             var user = new UserClaim(HttpContext);
             if (user.RoleId == 1 || user.RoleId == 2)
             {
-                var result = _context.Jira.ToList();
+                var result = _context.Jira.Where(j => j.YeuCauId == ycid).Include(e => e.YeuCau).ToList();
                 if (result != null)
                 {
                     return Ok(result);
@@ -98,7 +99,7 @@ namespace coreWeb.Controllers.Api
                     {
                         result.TenJira = model.TenJira;
                         result.LinkJira = model.LinkJira;
-                        result.TrangThaiId = model.TrangThaiId;
+                        result.YeuCauId = model.YeuCauId;
                         result.IsActive = model.IsActive;
                         _context.Update(result);
                         _context.SaveChanges();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
@@ -53,7 +54,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 //.Include(e => e.Status)
-                .Include(e => e.Jira)
+                //.Include(e => e.Jira)
                 .Include(e => e.User)
                 //.Where(e => thoihan == null
                 //|| (thoihan == true && e.ThoiHan >= DateTime.Today)
@@ -87,9 +88,18 @@ namespace coreWeb.Controllers.Api
                     model.NguoiTaoId = user.UserId;
                     model.NgayTao = DateTime.Now;
                    
-                    model.JiraDaGuiId = 1;
+                    
                     _context.Add(model);
                     _context.SaveChanges();
+
+                   var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
+
+                    Jira jr = new Jira();
+                    jr.LinkJira = model.JiraDaGui;
+                    jr.YeuCauId = idyeucau;
+                    _context.Jira.Add(jr);
+                    _context.SaveChanges();
+
                     return Ok(model.Id);
                 }
                 else
@@ -117,7 +127,7 @@ namespace coreWeb.Controllers.Api
                         result.TenYeuCau = model.TenYeuCau;
                         result.NoiDung = model.NoiDung;
                         result.ThoiHan = model.ThoiHan;
-                        result.JiraDaGuiId = model.JiraDaGuiId;
+                        result.JiraDaGui = model.JiraDaGui;
                         //result.StatusId = model.StatusId;
                         result.NgayYeuCau = model.NgayYeuCau;
                         result.StateId = model.StateId;
@@ -169,5 +179,6 @@ namespace coreWeb.Controllers.Api
                 return NotFound(ex.Message);
             }
         }
+        
     }
 }
