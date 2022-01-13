@@ -523,7 +523,7 @@ export default {
       isXacThuc: false,
       allowEdit: true,
       search: "",
-      StateIdFilter: 5,
+      StateIdFilter: 0,
       JiraDaGuiLink:"",
       formData: {
         Id: null,
@@ -856,13 +856,23 @@ export default {
       
         //Quản lý
         this.loading = true;
-
-      selectYeuCau(this.StateIdFilter).then(data => {
+      if (this.StateIdFilter != 0) {
+        selectYeuCau(this.StateIdFilter).then(data => {
           this.listData = data;
           this.total = data.length;
-        
+
           this.loading = false;
         });
+      }
+      else {
+        selectYeuCau().then(data => {
+          this.listData = data;
+          this.total = data.length;
+
+          this.loading = false;
+        });
+      }
+      
       
     },
     // get trạng thái
