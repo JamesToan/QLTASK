@@ -80,7 +80,7 @@
                              label="Thời Hạn"
                              width="120"
                              align="center">
-              <template slot-scope="scope">
+              <template slot-scope="scope" >
                 {{ formatDate(scope.row.ThoiHan) }}
               </template>
             </el-table-column>
@@ -88,7 +88,7 @@
                              label="Trạng Thái"
                              width="120">
               <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
+                <text-highlight :queries="search" :style=changetextColor(scope.row.States.Id)>
                   {{ scope.row.States ? scope.row.States.StateName : ""}}
                 </text-highlight>
               </template>
@@ -958,7 +958,21 @@ export default {
     handleSizeChange(val) {
       this.pagination = val;
     },
-    
+    changetextColor(val) {
+      if (val == 5) {
+        var text = "color:red";
+        return text
+      }
+      else if (val == 6) {
+        var text = "color:green";
+        return text
+      }
+      else if (val == 7) {
+        var text = "color:orange";
+        return text
+      }
+    }
+    ,
     renderData() {
       var _data = this.listData.filter(post => {
         return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase());
