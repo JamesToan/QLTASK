@@ -513,8 +513,8 @@ export function getYeuCau() {
   });
 }
 
-export function selectYeuCau(thoihan) {
-  const params = { thoihan };
+export function selectYeuCau(StateId) {
+  const params = { StateId };
   return request({
     url: "api/yeucau/Select",
     method: "get",
@@ -545,6 +545,15 @@ export function deleteYeuCau(id) {
   return request({
     url: "api/yeucau/delete",
     method: "post",
+    params: params
+  });
+}
+
+export function getTrangThai(majira) {
+  const params = { majira };
+  return request({
+    url: "api/yeucau/GetTrangThai",
+    method: 'get',
     params: params
   });
 }

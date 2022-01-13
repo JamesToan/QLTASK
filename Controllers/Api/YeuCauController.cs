@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,21 +47,17 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Select(bool?  thoihan)
+        public IActionResult Select(int? StateId )
         {
             var user = new UserClaim(HttpContext);
             if (user.RoleId == 1 || user.RoleId == 2)
             {
-                var result = _context.YeuCau
+                var result = _context.YeuCau.Where(e => StateId == null
+                || e.StateId == StateId)
                 .Include(e => e.DichVu)
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
-                //.Include(e => e.Status)
-                //.Include(e => e.Jira)
                 .Include(e => e.User)
-                //.Where(e => thoihan == null
-                //|| (thoihan == true && e.ThoiHan >= DateTime.Today)
-                //|| (thoihan == false && e.ThoiHan < DateTime.Today))
                 .OrderByDescending(e => e.Id)
                 .ToList();
                 if (result != null)
@@ -179,6 +178,39 @@ namespace coreWeb.Controllers.Api
                 return NotFound(ex.Message);
             }
         }
-        
+
+        [HttpGet]
+        public async Task<string> GetTrangThai(string majira)
+        {
+
+            //var client = new RestClient("https://cntt.vnpt.vn/rest/api/2/issue/IT360-224546");
+            //client.Timeout = -1;
+            //var request = new RestRequest(Method.GET);
+            //request.AddHeader("Authorization", "Basic dG9hbmxtLmxhbjpKYW1lczAxMjM0NUA=");
+            //request.AddHeader("Cookie", "BIGipServerPool_ttcntt.vnpt.vn_443=!g4vwiZq0EwOTof/necoQOJnflXX/zfOLbohW5wA9AzCdBwH+UQGxahaf+3dEzm92u+6rauG9ygANZ1E=; JSESSIONID=3A028B54660430287B45BA7B61233E4A; atlassian.xsrf.token=BNR2-A9FG-4XCX-SDI4_c3398ff1e416998278db04f70f8845df05a5899a_lin");
+            //IRestResponse response = client.Execute(request);
+            
+            //Console.WriteLine(split);
+            object userInfos = new { Username = "toanlm.lan", Password = "James012345@" };
+                var client = new System.Net.Http.HttpClient();
+                var jsonObj = JsonConvert.SerializeObject(userInfos);
+                var connectionUrl = "https://cntt.vnpt.vn/rest/api/2/issue/" + majira;
+                StringContent content = new StringContent(jsonObj.ToString(), Encoding.UTF8, "application/json");
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(connectionUrl),
+                    Method = HttpMethod.Get
+                };
+                request.Headers.Add("Authorization", "Basic dG9hbmxtLmxhbjpKYW1lczAxMjM0NUA=");
+                request.Headers.Add("Cookie", "BIGipServerPool_ttcntt.vnpt.vn_443=!g4vwiZq0EwOTof/necoQOJnflXX/zfOLbohW5wA9AzCdBwH+UQGxahaf+3dEzm92u+6rauG9ygANZ1E=; JSESSIONID=3A028B54660430287B45BA7B61233E4A; atlassian.xsrf.token=BNR2-A9FG-4XCX-SDI4_c3398ff1e416998278db04f70f8845df05a5899a_lin");
+                var response = await client.SendAsync(request);
+                
+                var dataResult = response.Content.ReadAsStringAsync().Result;
+                JObject joResponse = JObject.Parse(dataResult);
+                
+                Console.WriteLine(dataResult);
+                return dataResult;
+          
+        }
     }
 }

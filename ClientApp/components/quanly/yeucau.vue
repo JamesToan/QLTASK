@@ -20,11 +20,21 @@
     <div class="row">
       <div class="col-12">
         <div class="card-box table-responsive">
-          <div class="header-title" style="margin-bottom: 10px; float: right">
+          <div class="header-title pb-3" style="margin-bottom: 10px; float: right">
             <el-input clearable
                       v-model="search"
                       placeholder="Tìm kiếm"
                       style="width: 240px; float: right;"></el-input>
+            <el-select style="width: 240px; float: left;"
+                       v-model="StateIdFilter"
+                       @change="changeStateIdFilter"
+                       placeholder="Chọn trạng thái">
+              <el-option v-for="item in ListDMTrangThai"
+                         :key="item.Id"
+                         :label="item.StateName"
+                         :value="item.Id">
+              </el-option>
+            </el-select>
           </div>
           <el-table :data="renderData()"
                     border
@@ -33,8 +43,8 @@
                     row-key="Id"
                     style="width: 100%">
             <!-- <el-table-column width="50" label="" align="center">
-    <template></template>
-  </el-table-column> -->
+            <template></template>
+          </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
@@ -86,7 +96,7 @@
 
             <el-table-column prop="Status" label="Tình trạng" width="125">
 
-              <template slot-scope="scope" >
+              <template slot-scope="scope">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now()">
                   Trễ hạn
                 </span>
@@ -94,7 +104,7 @@
                   Trong hạn
                 </span>
               </template>
-             
+
             </el-table-column>
             <el-table-column align="center" label="" width="185">
               <template slot="header" slot-scope="scope">
@@ -106,18 +116,18 @@
                            @click="handleAdd"
                            v-if="allowEdit">Thêm</el-button>
                 <!--<el-button type="success"
-                           size="small"
-                           icon="el-icon-download"
-                           class="filter-item"
-                           title="Xuất DS"
-                           @click="handleExport">Xuất</el-button>-->
+                       size="small"
+                       icon="el-icon-download"
+                       class="filter-item"
+                       title="Xuất DS"
+                       @click="handleExport">Xuất</el-button>-->
               </template>
               <template slot-scope="scope">
-                <!--<el-button @click="handleActive(scope.$index, scope.row)"
-                 :type="scope.row.XacThuc ? 'success' : 'warning'"
-                 :title="scope.row.XacThuc ? 'Đã xác thực' : 'Chưa xác thực'"
-                 :icon="scope.row.XacThuc ? 'el-icon-check' : 'el-icon-close'"
-                 size="mini"></el-button>-->
+                <el-button @click="handleView(scope.$index, scope.row)"
+                           type="info"
+                           title="Xem"
+                           icon="el-icon-view"
+                           size="mini"></el-button>
                 <el-button @click="handleEdit(scope.$index, scope.row)"
                            type="primary"
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
@@ -250,56 +260,214 @@
 
         <el-form-item label="Jira" prop="JiraDaGui">
           <el-input v-model="formData.JiraDaGui"
-            type="text"
-            size="small"></el-input>
-            
-            <!--<el-button type="primary" size="small" @click="handleAddJira">Thêm</el-button>-->
-            <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
+                    type="text"
+                    size="small"></el-input>
+
+          <!--<el-button type="primary" size="small" @click="handleAddJira">Thêm</el-button>-->
+          <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
         </el-form-item>
         <!--<el-row>
-    <el-col :span="12">
-      <el-form-item label="Địa chỉ" prop="DiaChiTinhId">
-        <el-select v-model="formData.DiaChiTinhId"
-                   placeholder="Chọn tỉnh"
-                   class="w-100"
-                   @change="changeTinh(formData.DiaChiTinhId)"
-                   filterable>
-          <el-option v-for="item in ListDMTinh"
-                     :key="item.Id"
-                     :label="item.TenTinh"
-                     :value="item.Id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-    </el-col>
-    <el-col :span="12">
-      <el-form-item prop="DiaChiHuyenId">
-        <el-select v-model="formData.DiaChiHuyenId"
-                   placeholder="Chọn huyện"
-                   class="w-100"
-                   filterable>
-          <el-option v-for="item in ListDMHuyen"
-                     :key="item.Id"
-                     :label="item.TenHuyen"
-                     :value="item.Id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-    </el-col>
-  </el-row>
-  <el-form-item prop="DiaChi">
-    <el-input v-model="formData.DiaChi"
-              type="text"
-              size="small"></el-input>
-  </el-form-item>-->
+        <el-col :span="12">
+          <el-form-item label="Địa chỉ" prop="DiaChiTinhId">
+            <el-select v-model="formData.DiaChiTinhId"
+                       placeholder="Chọn tỉnh"
+                       class="w-100"
+                       @change="changeTinh(formData.DiaChiTinhId)"
+                       filterable>
+              <el-option v-for="item in ListDMTinh"
+                         :key="item.Id"
+                         :label="item.TenTinh"
+                         :value="item.Id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="DiaChiHuyenId">
+            <el-select v-model="formData.DiaChiHuyenId"
+                       placeholder="Chọn huyện"
+                       class="w-100"
+                       filterable>
+              <el-option v-for="item in ListDMHuyen"
+                         :key="item.Id"
+                         :label="item.TenHuyen"
+                         :value="item.Id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item prop="DiaChi">
+        <el-input v-model="formData.DiaChi"
+                  type="text"
+                  size="small"></el-input>
+      </el-form-item>-->
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetForm" size="small">Bỏ qua</el-button>
         <el-button type="primary" size="small" @click="updateData">Cập nhật</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="Xem nội dung yêu cầu"
+               :visible.sync="dialogFormView"
+               top="165px"
+               center>
+      <el-form :model="formData1"
+               :rules="formRules"
+               ref="formData1"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
 
-    <el-dialog title="Quản lý Jira"
+
+        <el-form-item label="Tiêu đề yêu cầu" prop="TenYeuCau">
+          <el-input v-model="formData1.TenYeuCau"
+                    type="text"
+                    size="small" disabled></el-input>
+         
+        </el-form-item>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Ngày yêu cầu" prop="NgayYeuCau">
+              <el-date-picker v-model="formData1.NgayYeuCau"
+                              type="date"
+                              placeholder="Chọn ngày"
+                              format="dd/MM/yyyy"
+                              size="small"
+                              style="width: 100%"
+                              value-format="yyyy-MM-dd" disabled>
+              </el-date-picker>
+              
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Thời hạn" prop="ThoiHan">
+              <el-date-picker v-model="formData1.ThoiHan"
+                              type="date"
+                              placeholder="Chọn ngày"
+                              format="dd/MM/yyyy"
+                              size="small"
+                              style="width: 100%"
+                              value-format="yyyy-MM-dd" disabled>
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Trạng thái" prop="StateId">
+              <el-select v-model="formData1.StateId"
+                         placeholder="Chọn trạng thái"
+                         class="w-100" disable>
+                <el-option v-for="item in ListDMTrangThai"
+                           :key="item.Id"
+                           :label="item.StateName"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+              
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Nhân Sự" prop="NhanSuId">
+              <el-select v-model="formData1.NhanSuId"
+                         placeholder="Chọn nhân sự"
+                         class="w-100" disable>
+                <el-option v-for="item in ListDMNhanSu"
+                           :key="item.Id"
+                           :label="item.TenNhanSu"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+              <!--{{formData1.NhanSuId ? formData1.NhanSu.TenNhanSu : ""}}-->
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Dịch vụ" prop="DichVuId">
+              <el-select v-model="formData1.DichVuId"
+                         placeholder="Chọn dịch vụ"
+                         @change="changeDichVu(formData.DichVuId)"
+                         class="w-100" disable>
+                <el-option v-for="item in ListDMDichVu"
+                           :key="item.Id"
+                           :label="item.TenDichVu"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+              <!--{{formData1.DichVuId ? formData1.DichVu.TenDichVu : ""}}-->
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Đơn vị yêu cầu" prop="DonVi">
+              <el-input v-model="formData1.DonVi"
+                        type="text"
+                        size="small" disabled></el-input>
+              
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="Nội dung yêu cầu" prop="NoiDung">
+          <!--<span v-html="formData1.NoiDung"></span>-->
+          <ckeditor :editor="editor"
+                    v-model="formData1.NoiDung"
+                    :config="editorConfig"
+                    disabled></ckeditor>
+          <!--{{formData1.NoiDung}}-->
+        </el-form-item>
+
+        <el-form-item label="Jira" prop="JiraDaGui">
+          <!--{{formData1.JiraDaGui}}-->
+           <el-input v-model="formData1.JiraDaGui"
+                        type="text"
+                        size="small" disabled></el-input>
+              
+            
+          <!--<el-button type="primary" size="small" @click="handleAddJira">Thêm</el-button>-->
+          <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
+        </el-form-item>
+
+        <el-form-item label="Trạng thái jira:" prop="StatusJira">
+          {{formData1.StatusJira}}
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer" >
+        <el-button @click="resetFormView" size="small">Bỏ qua</el-button>
+      </span>
+    </el-dialog>
+
+    <!--<el-dialog title="Xem nội dung yêu cầu"
+             :visible.sync="dialogFormJiraState"
+             top="165px"
+             center>
+    <el-form :model="formData1"
+             :rules="formRules"
+             ref="formData1"
+             label-width="140px"
+             class="m-auto"
+             size="small"
+             :disabled="!allowEdit">
+
+      <el-form-item label="Mã Jira :" prop="KeyJira">
+        {{formData1.KeyJira}}
+      </el-form-item>
+      <el-form-item label="Trạng thái :" prop="StatusJira">
+        {{formData1.StatusJira}}
+      </el-form-item>
+
+    </el-form>
+    <span slot="footer" class="dialog-footer" v-if="allowEdit">
+      <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
+    </span>
+  </el-dialog>-->
+
+    <!--<el-dialog title="Quản lý Jira"
                :visible.sync="dialogFormDisplayJira"
                top="165px"
                center>
@@ -312,27 +480,18 @@
                :disabled="!allowEdit">
 
         <el-form-item label="Tên Jira" prop="TenJira">
-          <el-input v-model="formData1.TenJira"
-                    type="text"
-                    size="small"></el-input>
+          <span>aaaaaaa</span>
         </el-form-item>
         <el-form-item label="Link Jira" prop="LinkJira">
-          <el-input v-model="formData1.LinkJira"
-                    type="text"
-                    size="small"></el-input>
+          <span>aaaaaaa</span>
         </el-form-item>
-        <!--<el-form-item label="Yêu Cầu Id" prop="YeuCauId">
-          <el-input v-model="formData.Id"
-                   
-                    type="text"
-                    size="small"></el-input>
-        </el-form-item>-->
+
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
         <el-button type="primary" size="small" @click="updateDataJira">Cập nhật</el-button>
       </span>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 <script>
@@ -349,7 +508,8 @@ import {
   addJira,
   selectJira,
   updateJira,
-  deleteJira
+  deleteJira,
+  getTrangThai
 } from "../../store/api";
 export default {
   data() {
@@ -357,11 +517,14 @@ export default {
       title: null,
       dialogFormDisplay: false,
       dialogFormDisplayJira: false,
+      dialogFormView: false,
       loading: false,
       isEditor: false,
       isXacThuc: false,
       allowEdit: true,
       search: "",
+      StateIdFilter: 5,
+      JiraDaGuiLink:"",
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -374,7 +537,7 @@ export default {
         DonVi: null,
         DichVuId: null,
         NgayYeuCau: null,
-       
+        StatusJira: null,
         domains: [{
           key: 1,
           value:''
@@ -383,7 +546,19 @@ export default {
       formData1: {
         TenJira: null,
         LinkJira: null,
-        YeuCauId:null
+        YeuCauId: null,
+        KeyJira: null,
+        StatusJira: null,
+        TenYeuCau: null,
+        NoiDung: null,
+        ThoiHan: null,
+        JiraDaGui: null,
+        StatusId: null,
+        StateId: null,
+        NhanSuId: null,
+        DonVi: null,
+        DichVuId: null,
+        NgayYeuCau: null,
       },
       formRules: {
         TenYeuCau: [
@@ -474,6 +649,7 @@ export default {
       ListDMJira: [],
       ListDMTinhTrang: [],
       ListJira: [],
+      TrangThai:[],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -534,16 +710,39 @@ export default {
         this.DonVi = [];
       }
     },
+    changeStateIdFilter() {
+     
+      this.getListData();
+    },
+    //xemtrangthaiJira(index, row) {
+    //  var jiralink = row.JiraDaGui;
+    //  var split = jiralink.split('/');
+    //  for (var i = 0; i < split.length; i++) {
+    //    this.JiraDaGuiLink = split[split.length-1];
+    //  }
+      
+    //  console.log(split);
+    //  this.getDataTrangThai();
+    //  this.dialogFormJiraState = true;
+
+
+    //},
     handleAdd() {
-      if (this.$refs.formData !== undefined) {
-        this.$refs.formData.resetFields();
+      if (this.StateIdFilter) {
+        if (this.$refs.formData !== undefined) {
+          this.$refs.formData.resetFields();
+        }
+        this.formData = {
+          //IsActive = true
+          StateId: this.StateIdFilter
+        };
+        this.ListJira = [];
+        this.isEditor = false;
+        this.dialogFormDisplay = true;
+      } else {
+        alert("Chọn trạng thái trước khi thêm mới!");
       }
-      this.formData = {
-        //IsActive = true
-      };
-      this.ListJira = [];
-      this.isEditor = false;
-      this.dialogFormDisplay = true;
+      
     },
 
     handleAddJira() {
@@ -558,31 +757,31 @@ export default {
       this.isEditor = false;
       this.dialogFormDisplayJira = true;
     },
-    //handleActive(index, row) {
-    //  row.XacThuc = !row.XacThuc;
-    //  activeNguoiLaoDong(row).then(data => {
-    //    //console.log(data);
-    //    this.$message({
-    //      type: "success",
-    //      message: row.XacThuc
-    //        ? "Xác thực thành công!"
-    //        : "Hủy xác thực thành công!"
-    //    });
-    //    this.getListData();
-    //  });
-    //},
+    handleView(index, row) {
+      if (this.$refs.formData1 !== undefined) {
+        this.$refs.formData1.resetFields();
+      }
+      this.formData1 = Object.assign({}, row);
+     
+      console.log(split);
+      if (row.JiraDaGui != null) {
+        var jiralink = row.JiraDaGui;
+        var split = jiralink.split('/');
+        for (var i = 0; i < split.length; i++) {
+          this.JiraDaGuiLink = split[split.length - 1];
+        }
+        this.getDataTrangThai();
+      }
+      
+
+      this.isEditor = false;
+      this.dialogFormView = true;
+    },
     handleEdit(index, row) {
       if (this.$refs.formData !== undefined) {
         this.$refs.formData.resetFields();
       }
       this.formData = Object.assign({}, row);
-      if (this.formData.JiraDaGui) {
-        this.ListJira = [];
-        
-        var _arr = this.formData.JiraDaGui;
-        this.ListJira = _arr.split(",");
-       
-      }
       
       this.isEditor = true;
       this.dialogFormDisplay = true;
@@ -648,8 +847,8 @@ export default {
       this.dialogFormDisplay = false;
       return true;
     },
-    resetFormJira() {
-      this.dialogFormDisplayJira = false;
+    resetFormView() {
+      this.dialogFormView = false;
       return true;
     },
     getListData() {
@@ -658,14 +857,32 @@ export default {
         //Quản lý
         this.loading = true;
 
-        selectYeuCau(true).then(data => {
+      selectYeuCau(this.StateIdFilter).then(data => {
           this.listData = data;
           this.total = data.length;
-          //this.isXacThuc = true;
+        
           this.loading = false;
         });
       
     },
+    // get trạng thái
+    getDataTrangThai() {
+      this.loading = true;
+     
+        getTrangThai(this.JiraDaGuiLink).then(data => {
+          if (data != null) {
+            this.TrangThai = data;
+            this.formData1.KeyJira = data.key;
+            this.formData1.StatusJira = data.fields.customfield_10109.currentStatus.status;
+          }
+          
+          this.loading = false;
+          console.log(data);
+        });
+      
+      
+    }
+    ,
     getListDataJira() {
       this.loading = true;
 
@@ -680,8 +897,8 @@ export default {
         this.loading = false;
       });
 
-    },
-
+    }
+    ,
     updateData() {
       this.$refs.formData.validate(valid => {
         if (valid) {
@@ -741,6 +958,7 @@ export default {
     handleSizeChange(val) {
       this.pagination = val;
     },
+    
     renderData() {
       var _data = this.listData.filter(post => {
         return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase());
@@ -753,7 +971,7 @@ export default {
     },
     renderIndex(idx) {
       return idx + this.pagination * (this.activePage - 1) + 1;
-    }
+    },
   },
 
   created() {
