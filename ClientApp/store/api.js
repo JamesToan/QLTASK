@@ -513,12 +513,21 @@ export function getYeuCau() {
   });
 }
 
-export function selectYeuCau(StateId) {
-  const params = { StateId };
+export function selectYeuCau(StateId, DichVuId) {
+  const params = { StateId, DichVuId };
   return request({
     url: "api/yeucau/Select",
     method: "get",
     params: params
+  });
+}
+
+export function selectYeuCauAll() {
+  
+  return request({
+    url: "api/yeucau/SelectAll",
+    method: "get",
+    
   });
 }
 
@@ -611,6 +620,53 @@ export function getListDanhMucYeuCau() {
   return request({
     url: "api/dmdanhmuc/yeucau",
     method: "get",
+    params: params
+  });
+}
+
+
+// DonViYeuCau
+
+export function getDonVi() {
+
+  return request({
+    url: "api/donviyeucau/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectDonVi() {
+
+  return request({
+    url: "api/donviyeucau/Select",
+    method: "get"
+  });
+}
+
+export function addDonVi(data) {
+  //const data = { };
+  return request({
+    url: "api/donviyeucau/add",
+    method: "post",
+    data: data
+  });
+}
+
+export function updateDonVi(data) {
+
+  return request({
+    url: "api/donviyeucau/update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteDonVi(id) {
+  const params = { id };
+  return request({
+    url: "api/donviyeucau/delete",
+    method: "post",
     params: params
   });
 }

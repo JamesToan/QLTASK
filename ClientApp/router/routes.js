@@ -19,7 +19,7 @@ import dichvu from "components/danhmuc/dichvu";
 import nhansu from "components/danhmuc/nhansu";
 import state from "components/danhmuc/state";
 import status from "components/danhmuc/status";
-
+import donviyeucau from "components/danhmuc/donviyeucau";
 
 //// quan ly
 
@@ -153,11 +153,11 @@ export const routes = [
         }
       },
       {
-        name: "status",
-        path: "status",
-        component: status,
+        name: "donviyeucau",
+        path: "donviyeucau",
+        component: donviyeucau,
         meta: {
-          display: "Tình Trạng",
+          display: "Đơn Vị Yêu Cầu",
           show: "true"
         }
       },

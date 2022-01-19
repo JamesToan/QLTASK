@@ -9,10 +9,10 @@
               <li class="breadcrumb-item">
                 <a href="javascript: void(0);">Danh mục</a>
               </li>
-              <li class="breadcrumb-item active">Dịch vụ</li>
+              <li class="breadcrumb-item active">Đơn vị yêu cầu</li>
             </ol>
           </div>
-          <h4 class="page-title">Dịch Vụ</h4>
+          <h4 class="page-title">Đơn vị yêu cầu</h4>
         </div>
       </div>
     </div>
@@ -42,26 +42,26 @@
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column prop="TenDichVu"
+            <el-table-column prop="TenDonViYeuCau"
+                             label="Tên Đơn Vị Yêu Cầu"
+                             sortable
+                             min-width="225">
+              <template slot-scope="scope">
+                <text-highlight :queries="search" style="word-break: normal;">
+                  {{ scope.row.TenDonViYeuCau}}
+                </text-highlight>
+              </template>
+            </el-table-column>
+            <el-table-column prop="DichVuId"
                              label="Tên Dịch Vụ"
                              sortable
                              min-width="225">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.TenDichVu}}
+                  {{ scope.row.DichVuId ? scope.row.DichVu.TenDichVu : ""}}
                 </text-highlight>
               </template>
             </el-table-column>
-            <<!--el-table-column prop="DonViYeuCau"
-                             label="Đơn Vị Yêu Cầu"
-                             sortable
-                             min-width="225">
-              <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.DonViYeuCau}}
-                </text-highlight>
-              </template>
-            </el-table-column>-->
             <!--<el-table-column
     prop="LoaiChuyenMuc"
     label="Loại Chuyên mục"
@@ -130,16 +130,20 @@
             :readonly="isEditor"
           ></el-input>
         </el-form-item> -->
-        <el-form-item label="Tên Dịch Vụ" prop="TenDichVu">
-          <el-input
-            v-model="formData.TenDichVu"
-            type="text"
-            size="small"
-          ></el-input>
+        <el-form-item label="Dịch vụ" prop="DichVuId">
+          <el-select v-model="formData.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     class="w-100">
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
         </el-form-item>
-         <el-form-item label="Đơn Vị Yêu Cầu" prop="DonViYeuCau">
+         <el-form-item label="Đơn Vị Yêu Cầu" prop="TenDonViYeuCau">
           <el-input
-            v-model="formData.DonViYeuCau"
+            v-model="formData.TenDonViYeuCau"
             type="text"
             size="small"
           ></el-input>
@@ -166,11 +170,13 @@
 </template>
 <script>
 import {
-  addDichVu,
-  updateDichVu,
-  deleteDichVu,
-  getDichVu,
-  selectDichVu
+    addDonVi,
+    selectDonVi,
+    getDonVi,
+    updateDonVi,
+    deleteDonVi,
+    
+    getListDanhMucYeuCau,
 } from "../../store/api";
 export default {
   data() {
@@ -180,29 +186,29 @@ export default {
       isEditor: false,
       search: "",
       formData: {
-        TenDichVu: null,
-        DonViYeuCau: null,
-        ThuTu: null,
-        HieuLuc: null
+        DichVuId: null,
+        TenDonViYeuCau: null,
+        
       },
       formRules: {
-        TenDichVu: [
+        TenDonViYeuCau: [
           {
             required: true,
-            message: "Vui lòng nhập Tên Dịch Vụ",
+            message: "Vui lòng nhập Tên Đơn Vị Yêu Cầu",
             trigger: "blur"
           }
         ],
-        DonViYeuCau: [
+        DichVuId: [
           {
             required: true,
-            message: "Vui lòng nhập Đơn Vị Yêu Cầu",
+            message: "Vui lòng nhập dịch vụ",
             trigger: "blur"
           }
         ],
         
       },
       listData: [],
+      ListDMDichVu:[],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -244,7 +250,7 @@ export default {
         cancelButtonText: "Cancel",
         type: "warning"
       }).then(() => {
-        deleteDichVu(row.Id).then(data => {
+        deleteDonVi(row.Id).then(data => {
           this.$message({
             type: "success",
             message: "Delete completed"
@@ -260,7 +266,7 @@ export default {
     },
     getListData() {
       this.loading = true;
-      selectDichVu().then(data => {
+      selectDonVi().then(data => {
         this.listData = data;
         this.total = data.length;
         this.loading = false;
@@ -271,12 +277,12 @@ export default {
       this.$refs.formData.validate(valid => {
         if (valid) {
           if (this.isEditor == 0) {
-            addDichVu(this.formData).then(data => {
+            addDonVi(this.formData).then(data => {
               //console.log(data);
               this.getListData();
             });
           } else {
-            updateDichVu( this.formData).then(data => {
+            updateDonVi( this.formData).then(data => {
               //console.log(data);
               this.getListData();
             });
@@ -293,7 +299,7 @@ export default {
     renderData() {
       var _data = this.listData.filter(post => {
         return (
-          post.TenDichVu.toLowerCase().includes(this.search.toLowerCase()) 
+          post.TenDonViYeuCau.toLowerCase().includes(this.search.toLowerCase()) 
         );
       });
       this.total = _data.length;
@@ -307,7 +313,19 @@ export default {
     }
   },
 
-  created() {
+    created() {
+
+      getListDanhMucYeuCau().then(data => {
+        if (data) {
+          this.ListDMNhanSu = data.DMNhanSu;
+          this.ListDMTinhTrang = data.DMTinhTrang;
+          this.ListDMTrangThai = data.DMTrangThai;
+          this.ListDMDichVu = data.DMDichVu;
+          this.ListDMJira = data.DMJira;
+
+        }
+      });
+
     this.getListData();
   }
 };

@@ -4,7 +4,7 @@ import { getToken, removeToken, setRole } from "./store/common"; // getToken fro
 import { requestGetInfo, requestGetProfile } from "./store/api";
 import firebase from "firebase";
 const whiteList = ["/admin/login", "/admin/signup"]; // no redirect whitelist
-const mainTitle = "Sàn việc làm";
+const mainTitle = "Quản lý yêu cầu";
 router.beforeEach((to, from, next) => {
   //console.log(getToken() === undefined)
   //console.log(getToken());

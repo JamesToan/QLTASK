@@ -39,19 +39,11 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="wwwroot\Content\Admin\bootstrap.css" />
-    <Content Remove="wwwroot\Content\Admin\bootstrap.min.css" />
-    <Content Remove="wwwroot\Content\Admin\bootstrap.min.css.map" />
-    <Content Remove="wwwroot\dist\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="wwwroot\Content\Admin\" />
     <Folder Include="wwwroot\uploads\" />
     <Folder Include="wwwroot\videos\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\Content\Admin\bootstrap.css" />
-    <None Include="wwwroot\Content\Admin\bootstrap.min.css" />
-    <None Include="wwwroot\Content\Admin\bootstrap.min.css.map" />
     <None Include="wwwroot\Content\Assets\css\less\alerts.less" />
     <None Include="wwwroot\Content\Assets\css\less\badges.less" />
     <None Include="wwwroot\Content\Assets\css\less\breadcrumbs.less" />
@@ -146,7 +138,6 @@
     <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.hoverIntent.min.js" />
     <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.min.js" />
     <None Include="wwwroot\Content\Resources\Shared\Scripts\widgets.js" />
-    <None Include="wwwroot\dist\logo.png" />
   </ItemGroup>
 
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

@@ -47,27 +47,85 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Select(int? StateId )
+        public IActionResult Select(int? StateId, int? DichVuId)
         {
             var user = new UserClaim(HttpContext);
             if (user.RoleId == 1 || user.RoleId == 2)
             {
-                var result = _context.YeuCau.Where(e => StateId == null
-                || e.StateId == StateId)
+                if (DichVuId ==7 && StateId != 5)
+                {
+                    var result = _context.YeuCau.Where(e => e.StateId == StateId )
                 .Include(e => e.DichVu)
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 .Include(e => e.User)
                 .OrderByDescending(e => e.Id)
                 .ToList();
-                if (result != null)
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else if (StateId ==5 && DichVuId !=7)
                 {
-                    return Ok(result);
+                    var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId )
+                                   .Include(e => e.DichVu)
+                                   .Include(e => e.NhanSu)
+                                   .Include(e => e.States)
+                                   .Include(e => e.User)
+                                   .OrderByDescending(e => e.Id)
+                                   .ToList();
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else if (StateId != 5 && DichVuId != 7)
+                {
+                    var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId && e.StateId == StateId)
+                                  .Include(e => e.DichVu)
+                                  .Include(e => e.NhanSu)
+                                  .Include(e => e.States)
+                                  .Include(e => e.User)
+                                  .OrderByDescending(e => e.Id)
+                                  .ToList();
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
                 }
                 else
                 {
-                    return NoContent();
+                    var result = _context.YeuCau.Where(e => StateId == null
+                || e.DichVuId == null || e.DichVuId == DichVuId || e.StateId == StateId)
+                .Include(e => e.DichVu)
+                .Include(e => e.NhanSu)
+                .Include(e => e.States)
+                .Include(e => e.User)
+                .OrderByDescending(e => e.Id)
+                .ToList();
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
                 }
+                
             }
             else
             {
@@ -75,6 +133,38 @@ namespace coreWeb.Controllers.Api
             }
         }
 
+        [HttpGet]
+        public IActionResult Selectall(int? StateId, int? DichVuId)
+        {
+            var user = new UserClaim(HttpContext);
+            if (user.RoleId == 1 || user.RoleId == 2)
+            {
+                
+                    var result = _context.YeuCau.Where(e => StateId == null
+                || e.DichVuId == null || e.DichVuId == DichVuId || e.StateId == StateId)
+                .Include(e => e.DichVu)
+                .Include(e => e.NhanSu)
+                .Include(e => e.States)
+                .Include(e => e.User)
+                .Include(e=> e.DonViYeuCau)
+                .OrderByDescending(e => e.Id)
+                .ToList();
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
         [HttpPost]
         public IActionResult Add([FromBody] YeuCau model)
@@ -127,11 +217,13 @@ namespace coreWeb.Controllers.Api
                         result.NoiDung = model.NoiDung;
                         result.ThoiHan = model.ThoiHan;
                         result.JiraDaGui = model.JiraDaGui;
-                        //result.StatusId = model.StatusId;
+                        result.NguoiGiamSatId = model.NguoiGiamSatId;
+                        result.ThoiHanMongMuon = model.ThoiHanMongMuon;
+                        result.FileUpload = model.FileUpload;
                         result.NgayYeuCau = model.NgayYeuCau;
                         result.StateId = model.StateId;
                         result.DichVuId = model.DichVuId;
-                        result.DonVi = model.DonVi;
+                        result.DonViId = model.DonViId;
                         result.NguoiTaoId = user.UserId;
                         result.NgayCapNhat = DateTime.Now;
 
@@ -162,10 +254,14 @@ namespace coreWeb.Controllers.Api
             try
             {
                 var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
+                var jira = _context.Jira.Where(p => p.LinkJira == result.JiraDaGui).FirstOrDefault();
                 if (result != null) //update
                 {
+                    _context.Remove(jira);
                     _context.Remove(result);
                     _context.SaveChanges();
+
+
                     return Ok(1);
                 }
                 else

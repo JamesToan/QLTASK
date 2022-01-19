@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,22 +13,22 @@ namespace coreWeb.Controllers.Api
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class DichVuController : ControllerBase
+    public class DonViYeuCauController : ControllerBase
     {
+        // GET: /<controller>/
         private ApplicationDbContext _context;
 
-        public DichVuController(ApplicationDbContext context)
+        public DonViYeuCauController(ApplicationDbContext context)
         {
             _context = context;
         }
-
 
 
         [HttpGet]
         public IActionResult Get()
         {
             var user = new UserClaim(HttpContext);
-            var result = _context.DichVu.SingleOrDefault();
+            var result = _context.DonViYeuCau.SingleOrDefault();
             if (result != null)
             {
                 return Ok(result);
@@ -44,7 +45,7 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             if (user.RoleId == 1 || user.RoleId == 2)
             {
-                var result = _context.DichVu.ToList();
+                var result = _context.DonViYeuCau.Include(e => e.DichVu).ToList();
                 if (result != null)
                 {
                     return Ok(result);
@@ -62,7 +63,7 @@ namespace coreWeb.Controllers.Api
 
 
         [HttpPost]
-        public IActionResult Add([FromBody] DichVu model)
+        public IActionResult Add([FromBody] DonViYeuCau model)
         {
             try
             {
@@ -85,18 +86,18 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult Update([FromBody] DichVu model)
+        public IActionResult Update([FromBody] DonViYeuCau model)
         {
             try
             {
                 var user = new UserClaim(HttpContext);
                 if (user.RoleId == 1 || user.RoleId == 2)
                 {
-                    var result = _context.DichVu.SingleOrDefault(e => e.Id == model.Id);
+                    var result = _context.DonViYeuCau.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update
                     {
-                        result.TenDichVu = model.TenDichVu;
-                        
+                        result.TenDonViYeuCau = model.TenDonViYeuCau;
+                        result.DichVuId = model.DichVuId;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -123,7 +124,7 @@ namespace coreWeb.Controllers.Api
         {
             try
             {
-                var result = _context.DichVu.SingleOrDefault(e => e.Id == id);
+                var result = _context.DonViYeuCau.SingleOrDefault(e => e.Id == id);
                 if (result != null) //update
                 {
                     _context.Remove(result);
@@ -140,6 +141,5 @@ namespace coreWeb.Controllers.Api
                 return NotFound(ex.Message);
             }
         }
-
     }
 }

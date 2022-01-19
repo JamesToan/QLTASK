@@ -36,5 +36,8 @@ namespace coreWeb.Models
 
         //Jira
         public DbSet<Jira> Jira { get; set; }
+
+        //DonViYeuCau
+        public DbSet<DonViYeuCau> DonViYeuCau { get; set; }
     }
 }

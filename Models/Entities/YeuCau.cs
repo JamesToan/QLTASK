@@ -28,8 +28,8 @@ namespace coreWeb.Models.Entities
         public int? StateId { get; set; }
         public int? NhanSuId { get; set; }
 
-        [MaxLength(500)]
-        public string DonVi { get; set; }
+        
+        public int? DonViId { get; set; }
 
         public int? DichVuId { get; set; }
 
@@ -40,8 +40,12 @@ namespace coreWeb.Models.Entities
         public DateTime? NgayCapNhat { get; set; }
 
         public DateTime? NgayYeuCau { get; set; }
-        //[ForeignKey("StatusId")]
-        //public Status Status { get; set; }
+
+        public string FileUpload { get; set; }
+
+        public int? NguoiGiamSatId { get; set; }
+
+        public DateTime? ThoiHanMongMuon { get; set; }
 
         [ForeignKey("StateId")]
         public States States { get; set; }
@@ -49,13 +53,14 @@ namespace coreWeb.Models.Entities
         [ForeignKey("NhanSuId")]
         public NhanSu NhanSu { get; set; }
 
+       
         [ForeignKey("DichVuId")]
         public DichVu DichVu { get; set; }
 
         [ForeignKey("NguoiTaoId")]
         public User User { get; set; }
 
-        //[ForeignKey("JiraDaGuiId")]
-        //public Jira Jira { get; set; }
+        [ForeignKey("DonViId")]
+        public DonViYeuCau DonViYeuCau { get; set; }
     }
 }

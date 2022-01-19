@@ -49,7 +49,7 @@ namespace coreWeb.Controllers
                 
                 //.GroupBy(hs => hs.Id)
                 //.Select(hs => new { name = hs.FirstOrDefault().ThoiHan < DateTime.Now ? "Trễ hạn" : "Trong hạn", y = hs.Count() });
-                var chart = _context.YeuCau
+                var chart = _context.YeuCau.Where(e => e.StateId !=5)
                 .Include(hs => hs.States)
 
                 .GroupBy(hs => hs.StateId)

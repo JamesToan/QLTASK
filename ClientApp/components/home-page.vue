@@ -18,7 +18,7 @@
     </div>
     <el-row class="row">
       <div class="col-4">
-        <div class="card-box table-responsive" style="height: 310px;">
+        <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
           <div class="header-title">
             Tổng số Yêu cầu
           </div>
@@ -32,7 +32,7 @@
       <div class="col-8">
         <el-row class="row hidden-md-and-down">
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;">
+            <div class="card-box table-responsive" style="height: 145px;background-color:mediumseagreen; color:black">
               <div class="header-title">
                 Đã hoàn thành
               </div>
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;">
+            <div class="card-box table-responsive" style="height: 145px;background-color:orange; color:black">
               <div class="header-title">
                 Đang xử lý
               </div>
@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;">
+            <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
               <div class="header-title">
                 Chưa hoàn thành
               </div>
@@ -64,7 +64,7 @@
         </el-row>
         <el-row class="row hidden-md-and-down">
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 140px;">
+            <div class="card-box table-responsive" style="height: 140px;background-color:mediumseagreen; color:black">
               <div class="header-title">Trong hạn</div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.TrongHan }}
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 140px;">
+            <div class="card-box table-responsive" style="height: 140px;background-color:orange; color:black">
               <div class="header-title">Trễ hạn</div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.TreHan }}
@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 140px;">
+            <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
               <div class="header-title">Chưa xử lý</div>
               <div align="center" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.ChuaXL }}
@@ -117,13 +117,13 @@
                     style="float:left;width:100%"></highcharts>
       </el-col>
     </el-row>
-    <el-row>
+    <!--<el-row>
       <el-col :span="24">
         <highcharts :options="options1"
                     ref="highcharts"
                     style="float:left;width:100%"></highcharts>
       </el-col>
-    </el-row>
+    </el-row>-->
   </div>
   <!-- end page title -->
 </template>

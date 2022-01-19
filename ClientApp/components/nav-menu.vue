@@ -67,7 +67,7 @@
       <router-link class="logo text-center" to="/admin/">
         <!--<a href="index.html" class="logo text-center">-->
         <span class="logo-lg">
-          <img src="/dist/logo-light2.png" alt="" height="64" />
+          <img src="/dist/logo_header.png" alt="" height="64" />
           <!-- <span class="logo-lg-text-light">UBold</span> -->
         </span>
         <span class="logo-sm">
