@@ -29,7 +29,7 @@ namespace coreWeb.Models.Entities
         public int? NhanSuId { get; set; }
 
         
-        public int? DonViId { get; set; }
+        public int? DonViYeuCauId { get; set; }
 
         public int? DichVuId { get; set; }
 
@@ -60,7 +60,7 @@ namespace coreWeb.Models.Entities
         [ForeignKey("NguoiTaoId")]
         public User User { get; set; }
 
-        [ForeignKey("DonViId")]
+        [ForeignKey("DonViYeuCauId")]
         public DonViYeuCau DonViYeuCau { get; set; }
     }
 }

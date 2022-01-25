@@ -311,8 +311,8 @@ export function getListRole() {
 }
 
 //ThongKe
-export function getThongKe(nam) {
-  const params = { nam };
+export function getThongKe(DichVuId) {
+  const params = { DichVuId };
 
   return request({
     url: "api/ThongKe/Dashboard",

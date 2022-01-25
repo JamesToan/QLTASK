@@ -34,6 +34,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.DichVu)
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
+                .Include(e => e.DonViYeuCau)
                 //.Include(e => e.Status)
                 .Include(e => e.User).FirstOrDefault();
             if (result != null)
@@ -59,6 +60,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 .Include(e => e.User)
+                .Include(e => e.DonViYeuCau)
                 .OrderByDescending(e => e.Id)
                 .ToList();
                     if (result != null)
@@ -77,6 +79,7 @@ namespace coreWeb.Controllers.Api
                                    .Include(e => e.NhanSu)
                                    .Include(e => e.States)
                                    .Include(e => e.User)
+                                   .Include(e => e.DonViYeuCau)
                                    .OrderByDescending(e => e.Id)
                                    .ToList();
                     if (result != null)
@@ -95,6 +98,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
+                                  .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.Id)
                                   .ToList();
                     if (result != null)
@@ -114,6 +118,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 .Include(e => e.User)
+                .Include(e => e.DonViYeuCau)
                 .OrderByDescending(e => e.Id)
                 .ToList();
                     if (result != null)
@@ -223,7 +228,7 @@ namespace coreWeb.Controllers.Api
                         result.NgayYeuCau = model.NgayYeuCau;
                         result.StateId = model.StateId;
                         result.DichVuId = model.DichVuId;
-                        result.DonViId = model.DonViId;
+                        result.DonViYeuCauId = model.DonViYeuCauId;
                         result.NguoiTaoId = user.UserId;
                         result.NgayCapNhat = DateTime.Now;
 

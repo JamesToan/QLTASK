@@ -22,51 +22,74 @@ namespace coreWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Dashboard()
+        public IActionResult Dashboard(int? DichVuId)
         {
             //var user = new UserClaim(HttpContext);
             try
             {
-                var sum = _context.YeuCau.Count();
-                var sumChuaHT = _context.YeuCau.Where(p => p.States.StateName == "Chưa hoàn thành").Count();
-                var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
-                var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
-                var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý").Count();
-
-                var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now).Count();
-                var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now).Count();
-
-
-                //var sumDoanhNghiep = _context.DoanhNghiep.Count(e => e.XacThuc == true);
-                //var sumNguoiLaoDong = _context.NguoiLaoDong.Count(e => e.XacThuc == true);
-                //var sumSanViecLam = _context.SanViecLam.Count();
-                //var sumHoSoTuyenDung = _context.HoSoTuyenDung.Count(e => e.XacThuc == true);
-                //var sumHoSoTimViec = _context.HoSoTimViec.Count(e => e.XacThuc == true);
-                //var sumSVLDoanhNghiep = _context.SVLDoanhNghiep.Count();
-                //var sumSVLNguoiLaoDong = _context.SVLNguoiLaoDong.Count();
-
-                //var chart1 = _context.YeuCau
-                
-                //.GroupBy(hs => hs.Id)
-                //.Select(hs => new { name = hs.FirstOrDefault().ThoiHan < DateTime.Now ? "Trễ hạn" : "Trong hạn", y = hs.Count() });
-                var chart = _context.YeuCau.Where(e => e.StateId !=5)
-                .Include(hs => hs.States)
-
-                .GroupBy(hs => hs.StateId)
-                .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
-                var result = new
+                if (DichVuId != null)
                 {
-                    Tong = sum,
-                    ChuaHT = sumChuaHT,
-                    DaHT = sumDaHT,
-                    DangXL = sumDangXL,
-                    ChuaXL = sumChuaXL,
-                    TrongHan = sumTrongHan,
-                    TreHan = sumTreHan,
-                    Chart = chart.ToList(),
-                    //Chart1 = chart1.ToList()
-                };
-                return Ok(result);
+                    var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
+                    var sumChuaHT = _context.YeuCau.Where(p => p.States.StateName == "Chưa hoàn thành" && p.DichVuId == DichVuId).Count();
+                    var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
+                    var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId).Count();
+                    var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId).Count();
+
+                    var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.DichVuId == DichVuId).Count();
+                    var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId).Count();
+
+
+                    var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
+                    .Include(hs => hs.States)
+
+                    .GroupBy(hs => hs.StateId)
+                    .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                    var result = new
+                    {
+                        Tong = sum,
+                        ChuaHT = sumChuaHT,
+                        DaHT = sumDaHT,
+                        DangXL = sumDangXL,
+                        ChuaXL = sumChuaXL,
+                        TrongHan = sumTrongHan,
+                        TreHan = sumTreHan,
+                        Chart = chart.ToList(),
+                        //Chart1 = chart1.ToList()
+                    };
+                    return Ok(result);
+                }
+                else
+                {
+                    var sum = _context.YeuCau.Count();
+                    var sumChuaHT = _context.YeuCau.Where(p => p.States.StateName == "Chưa hoàn thành" ).Count();
+                    var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" ).Count();
+                    var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
+                    var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý").Count();
+
+                    var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now ).Count();
+                    var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now).Count();
+
+
+                    var chart = _context.YeuCau.Where(e => e.StateId != 5)
+                    .Include(hs => hs.States)
+
+                    .GroupBy(hs => hs.StateId)
+                    .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                    var result = new
+                    {
+                        Tong = sum,
+                        ChuaHT = sumChuaHT,
+                        DaHT = sumDaHT,
+                        DangXL = sumDangXL,
+                        ChuaXL = sumChuaXL,
+                        TrongHan = sumTrongHan,
+                        TreHan = sumTreHan,
+                        Chart = chart.ToList(),
+                        //Chart1 = chart1.ToList()
+                    };
+                    return Ok(result);
+                }
+                
             }
             catch (System.Exception)
             {
