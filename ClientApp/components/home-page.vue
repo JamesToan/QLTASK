@@ -16,9 +16,22 @@
         </div>
       </div>
     </div>
+    <el-row>
+      <el-select style="width: 240px; float: left; margin-bottom: 10px"
+                 v-model="DichVuIdFilter"
+                 @change="changeDichVuIdFilter"
+                 placeholder="Chọn Dịch Vụ">
+        <el-option v-for="item in ListDMDichVu"
+                   :key="item.Id"
+                   :label="item.TenDichVu"
+                   :value="item.Id">
+        </el-option>
+      </el-select>
+    </el-row>
     <el-row class="row">
       <div class="col-4">
         <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
+
           <div class="header-title">
             Tổng số Yêu cầu
           </div>
@@ -130,11 +143,16 @@
 
 <script>
 import $ from "jquery";
-import { getThongKe } from "../store/api";
+  import {
+    getThongKe,
+    getListDanhMucYeuCau,
+
+  } from "../store/api";
 import "element-ui/lib/theme-chalk/display.css";
 import MapLoader from "./map/MapLoader.vue";
 import ChildMarker from "./map/ChildMarker.vue";
-require("metismenu");
+  require("metismenu");
+  
 export default {
   components: {
     "map-loader": MapLoader,
@@ -146,6 +164,8 @@ export default {
       arrayPie: [],
       arrayColumn: [],
       markers: [],
+      ListDMDichVu: [],
+      DichVuIdFilter: 7,
       mapConfig: {
         zoom: 13,
         center: { lat: 10.53661, lng: 106.413002 }
@@ -285,23 +305,46 @@ export default {
         }
       });
     },
-
+    changeDichVuIdFilter() {
+      
+      this.getThongKe();
+    },
     getThongKe() {
-      // this.arrayPie = [];
-      // this.arrayColumn = [];
-
-      getThongKe().then(data => {
-        this.ThongKe = data;
-        this.options.series[0].data = data.Chart;
-        //this.options.series[0].data = data.Chart;
-        //this.markers = data.markers;
-      });
+      
+      this.loading = true;
+      if (this.DichVuIdFilter != 7) {
+        getThongKe(this.DichVuIdFilter).then(data => {
+          this.ThongKe = data;
+          this.options.series[0].data = data.Chart;
+          this.loading = false;
+        });
+      }
+      else {
+        getThongKe().then(data => {
+          this.ThongKe = data;
+          this.options.series[0].data = data.Chart;
+          this.loading = false;
+        });
+      }
+      
     }
   },
   mounted() {
     this.menuMobile();
   },
-  created() {
+    created() {
+
+      getListDanhMucYeuCau().then(data => {
+        if (data) {
+          this.ListDMNhanSu = data.DMNhanSu;
+          this.ListDMTinhTrang = data.DMTinhTrang;
+          this.ListDMTrangThai = data.DMTrangThai;
+          this.ListDMDichVu = data.DMDichVu;
+          this.ListDMJira = data.DMJira;
+          this.ListDMDonVi = data.DMDonVi;
+        }
+      });
+
     this.menuMobile();
     this.getThongKe();
   }

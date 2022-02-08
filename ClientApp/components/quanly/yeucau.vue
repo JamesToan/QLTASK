@@ -86,14 +86,14 @@
                 <!--<el-link href="scope.row.JiraDaGui" target="_blank">{{ scope.row.JiraDaGui}}</el-link>-->
               </template>
             </el-table-column>
-            <el-table-column prop="Comment"
+            <!--<el-table-column prop="Comment"
                              label="Comment"
                              width="120"
                              align="center">
               <template slot-scope="scope">
                 {{ scope.row.Comment}}
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="ThoiHan"
                              label="Deadline"
                              width="120"
@@ -133,12 +133,13 @@
                            :title="scope.row"
                            @click="handleAdd"
                            v-if="allowEdit">Thêm</el-button>
-                <!--<el-button type="success"
-             size="small"
-             icon="el-icon-download"
-             class="filter-item"
-             title="Xuất DS"
-             @click="handleExport">Xuất</el-button>-->
+                <el-button type="success"
+                     size="small"
+                     icon="el-icon-download"
+                     class="filter-item"
+                     title="Xuất DS"
+                     @click="handleExport"
+                           >Xuất</el-button>
               </template>
               <template slot-scope="scope">
                 <el-button @click="handleView(scope.$index, scope.row)"
@@ -290,8 +291,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Đơn vị" prop="DonViId">
-              <el-select v-model="formData.DonViId"
+            <el-form-item label="Đơn vị" prop="DonViYeuCauId">
+              <el-select v-model="formData.DonViYeuCauId"
                          placeholder="Chọn đơn vị"
                          class="w-100"
                          clearable
@@ -354,13 +355,10 @@
                class="m-auto"
                size="small"
                :disabled="!allowEdit">
-
-
         <el-form-item label="Tiêu đề yêu cầu" prop="TenYeuCau">
           <el-input v-model="formData1.TenYeuCau"
                     type="text"
                     size="small" disabled></el-input>
-
         </el-form-item>
 
         <el-row>
@@ -470,8 +468,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Đơn vị" prop="DonViId">
-              <el-select v-model="formData1.DonViId"
+            <el-form-item label="Đơn vị" prop="DonViYeuCauId">
+              <el-select v-model="formData1.DonViYeuCauId"
                          placeholder="Chọn đơn vị"
                          class="w-100"
                          clearable
@@ -508,15 +506,32 @@
           <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
         </el-form-item>
 
+
         <el-form-item label="Trạng thái jira:" prop="StatusJira">
           {{formData1.StatusJira}}
+        </el-form-item>
+        <el-form-item label="Số lần comment" prop="Comment">
+          <el-input type="text"
+                    size="small"
+                    v-for="item in Comment"
+                    :value="item.author.displayName + ' - ' + formatDateTime(item.updated)">
+
+          </el-input>
+
+        </el-form-item>
+        <el-form-item label="Mức độ" prop="Priority" :style=changetextColorPio(formData1.Priority)>
+          <el-input v-model="formData1.Priority" 
+                    
+                    size="small" disable>
+            
+          </el-input>
+
         </el-form-item>
         <el-form-item label="Tập tin đính kèm">
           <el-upload action="/api/TapTin/UploadDoc"
                      :limit="3"
                      :multiple="true"
                      :on-preview="handlePreview"
-                     
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
@@ -600,7 +615,7 @@ import {
   selectJira,
   updateJira,
   deleteJira,
-    getTrangThai,
+  getTrangThai,
   selectYeuCauAll
 } from "../../store/api";
 export default {
@@ -627,7 +642,7 @@ export default {
         StatusId: null,
         StateId: null,
         NhanSuId: null,
-        DonViId: null,
+        DonViYeuCauId: null,
         DichVuId: null,
         NgayYeuCau: null,
         StatusJira: null,
@@ -635,6 +650,7 @@ export default {
         NguoiGiamSatId: null,
         ThoiHanMongMuon:null,
         KeyJira: null,
+        Priority: null,
         domains: [{
           key: 1,
           value:''
@@ -653,12 +669,13 @@ export default {
         StatusId: null,
         StateId: null,
         NhanSuId: null,
-        DonViId: null,
+        DonViYeuCauId: null,
         DichVuId: null,
         NgayYeuCau: null,
         FileUpload: null,
         NguoiGiamSatId: null,
         ThoiHanMongMuon: null,
+        Priority: null,
       },
       formData2: {
         TenJira: null,
@@ -708,7 +725,7 @@ export default {
             trigger: "blur"
           }
         ],
-        DonVi: [
+        DonViYeuCauId: [
           {
             required: true,
             message: "Vui lòng nhập đơn vị yêu cầu",
@@ -756,7 +773,7 @@ export default {
       ListDMDonVi :[],
       ListJira: [],
       TrangThai: [],
-      Comment: "",
+      Comment: [],
       fileList: [],
       fileDoc: [],
       pagination: 10,
@@ -778,6 +795,11 @@ export default {
         return moment(date).format("DD/MM/YYYY");
       } else return null;
     },
+  formatDateTime(date) {
+      if (date) {
+        return moment(date).format("MM/DD/YYYY hh:mm");
+      } else return null;
+    },
     formatTenTapTin(val) {
       if (val) {
         return val.substring(val.length - 18, val.length);
@@ -791,23 +813,36 @@ export default {
             let f1 = f.split(".")[0];
             let f2 = f.split(".")[1];
             result = data[f1][f2];
+
+            if (f2 == "NhanSu") {
+              return result ? result.TenNhanSu : "";
+            }
+
+            if (f2 == "States") {
+              return result ? result.StateName : "";
+            }
+            if (f2 == "DichVu") {
+              return result ? result.TenDichVu : "";
+            }
+           if (f2 == "DonViYeuCau") {
+            return result ? result.TenDonViYeuCau : "";
+          }
+            if (f2 == "NhanSu") {
+              return result ? result.TenNhanSu : "";
+            }
           } else {
             if (f.startsWith("Ngay")) {
               return this.formatDate(data[f]);
             }
             result = data[f];
           }
-          if (f == "Status") {
-            return result ? result.StatusName : "";
+
+          if (f == "ThoiHan") {
+            return this.formatDate(result);
           }
-          if (f == "NhanSu") {
-            return result ? result.TenNhanSu : "";
-          }
-          if (f == "DichVu") {
-            return result ? result.DichVu : "";
-          }
-          if (f == "States") {
-            return result ? result.StateName : "";
+
+          if (f == "ThoiHanMongMuon") {
+            return this.formatDate(result);
           }
           return result;
         })
@@ -818,28 +853,28 @@ export default {
       var dv = this.ListDMDichVu.find(obj => obj.Id == val);
       if (dv) {
         this.ListDMDonVi = dv.DonVi;
-       
+
       } else {
         this.DonVi = [];
       }
-      delete this.formData.DonViId; 
+      delete this.formData.DonViYeuCauId;
     },
     changeStateIdFilter() {
-     
+
       this.getListData();
     },
     changeDichVuIdFilter() {
 
       this.getListData();
     },
-    
+
     //xemtrangthaiJira(index, row) {
     //  var jiralink = row.JiraDaGui;
     //  var split = jiralink.split('/');
     //  for (var i = 0; i < split.length; i++) {
     //    this.JiraDaGuiLink = split[split.length-1];
     //  }
-      
+
     //  console.log(split);
     //  this.getDataTrangThai();
     //  this.dialogFormJiraState = true;
@@ -864,14 +899,14 @@ export default {
       } else {
         alert("Chọn trạng thái trước khi thêm mới!");
       }
-      
+
     },
 
     handleAddJira() {
       if (this.$refs.formData1 !== undefined) {
         this.$refs.formData1.resetFields();
       }
-      
+
       this.formData1 = {
         YeuCauId: this.formData.Id
       };
@@ -884,7 +919,7 @@ export default {
         this.$refs.formData1.resetFields();
       }
       this.formData1 = Object.assign({}, row);
-     
+
       console.log(split);
       if (row.JiraDaGui != null) {
         var jiralink = row.JiraDaGui;
@@ -894,7 +929,7 @@ export default {
         }
         this.getDataTrangThai();
       }
-      
+
 
       this.isEditor = false;
       this.dialogFormView = true;
@@ -917,7 +952,7 @@ export default {
       this.isEditor = true;
       this.dialogFormDisplay = true;
     },
-    
+
     handleDelete(row) {
       this.$confirm("Bạn có chắc chắn muốn xóa?", "Thông báo", {
         confirmButtonText: "OK",
@@ -960,40 +995,43 @@ export default {
       }
       return (isPdf || isDoc || isDocx) && isLt10M;
     },
-    //handleExport() {
-    //  import("../../vendor/Export2Excel").then(excel => {
-    //    const tHeader = [
-    //      "Họ tên",
-    //      "Giới tính",
-    //      "Ngày sinh",
-    //      "Số điện thoại",
-    //      "Email",
-    //      "Địa chỉ",
-    //      "Huyện",
-    //      "Tỉnh",
-    //      "Tình trạng"
-    //    ];
-    //    const filterVal = [
-    //      "HoTen",
-    //      "GioiTinh",
-    //      "NgaySinh",
-    //      "SoDienThoai",
-    //      "Email",
-    //      "DiaChi",
-    //      "DiaChiHuyen",
-    //      "DiaChiTinh",
-    //      "TinhTrang"
-    //    ];
-    //    const data = this.formatJson(filterVal, this.listData);
-    //    console.log(data);
-    //    var filename = "DSNguoiLaoDong_" + moment().format("YYYYMMDD_hhmmss");
-    //    excel.export_json_to_excel({
-    //      header: tHeader,
-    //      data,
-    //      filename: filename
-    //    });
-    //  });
-    //},
+    handleExport() {
+      import("../../vendor/Export2Excel").then(excel => {
+        const tHeader = [
+          "Tên yêu cầu",
+          "Nội dung",
+          "Thời hạn",
+          "Task Jira",
+          "Trạng thái",
+          "Nhân sự",
+          "Dịch vụ",
+          "Đơn vị",
+          //"Người giám sát",
+          "Thời hạn KH mong muốn"
+        ];
+        const filterVal = [
+          "TenYeuCau",
+          "NoiDung",
+          "ThoiHan",
+          "JiraDaGui",
+          "States.StateName",
+          "NhanSu.TenNhanSu",
+          "DichVu.TenDichVu",
+          "DonViYeuCau.TenDonViYeuCau",
+          //"NhanSu.TenNhanSu",
+          "ThoiHanMongMuon",
+
+        ];
+        const data = this.formatJson(filterVal, this.listData);
+        console.log(data);
+        var filename = "DSYeuCau_" + moment().format("YYYYMMDD_hhmmss");
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: filename
+        });
+      });
+    },
     resetForm() {
       this.dialogFormDisplay = false;
       return true;
@@ -1004,7 +1042,7 @@ export default {
     },
     getListData() {
       this.loading = true;
-      
+
         //Quản lý
         this.loading = true;
       if (this.StateIdFilter != 5 || this.DichVuIdFilter != 7) {
@@ -1024,25 +1062,27 @@ export default {
         });
       }
       this.getDataTrangThai();
-      
+
     },
     // get trạng thái
     getDataTrangThai() {
       this.loading = true;
-     
+
         getTrangThai(this.JiraDaGuiLink).then(data => {
           if (data != null) {
             this.TrangThai = data;
             this.formData1.KeyJira = data.key;
             this.formData1.StatusJira = data.fields.customfield_10109.currentStatus.status;
             this.Comment = data.fields.comment.comments;
+            this.formData1.Priority = data.fields.priority.name;
           }
+
           console.log(this.Comment);
           this.loading = false;
-          console.log(data);
+          //console.log(data);
         });
-      
-      
+
+
     },
     getDataTrangThai1() {
       this.loading = true;
@@ -1052,6 +1092,8 @@ export default {
           this.TrangThai = data;
           this.formData.KeyJira = data.key;
           this.formData.StatusJira = data.fields.customfield_10109.currentStatus.status;
+          this.Comment = data.fields.comment.comments;
+          this.formData.Priority = data.fields.priority;
         }
 
         this.loading = false;
@@ -1156,6 +1198,11 @@ export default {
     checkTrangThai() {
 
     },
+    changetextColorPio(val){
+    if(val == "Medium")
+        var text = "color:coral;font-weight: bold;";
+    return text
+    },
     renderData() {
       var _data = this.listData.filter(post => {
         return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase());
@@ -1190,7 +1237,7 @@ export default {
     });
 
     this.getListData();
-    
+
   }
 };
 </script>
