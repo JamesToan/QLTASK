@@ -138,6 +138,7 @@
     <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.hoverIntent.min.js" />
     <None Include="wwwroot\Content\Resources\Shared\Scripts\jquery\jquery.min.js" />
     <None Include="wwwroot\Content\Resources\Shared\Scripts\widgets.js" />
+    <None Include="wwwroot\dist\vendor.js" />
   </ItemGroup>
 
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

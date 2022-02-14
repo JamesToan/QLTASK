@@ -44,7 +44,7 @@ namespace coreWeb.Controllers.Api
         public IActionResult Select(int ycid)
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1 || user.RoleId == 2)
+            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
             {
                 var result = _context.Jira.Where(j => j.YeuCauId == ycid).Include(e => e.YeuCau).ToList();
                 if (result != null)
@@ -92,7 +92,7 @@ namespace coreWeb.Controllers.Api
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2)
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
                     var result = _context.Jira.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update

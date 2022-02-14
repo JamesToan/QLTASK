@@ -43,7 +43,7 @@ namespace coreWeb.Controllers.Api
         public IActionResult Select()
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1 || user.RoleId == 2)
+            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
             {
                 var result = _context.DonViYeuCau.Include(e => e.DichVu).ToList();
                 if (result != null)
@@ -91,7 +91,7 @@ namespace coreWeb.Controllers.Api
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2)
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
                     var result = _context.DonViYeuCau.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update

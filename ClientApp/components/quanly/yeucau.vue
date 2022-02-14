@@ -80,10 +80,10 @@
                              label="Task Jira"
                              width="120">
               <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
+                <!--<text-highlight :queries="search" style="word-break: normal;" >
                   {{ scope.row.JiraDaGui}}
-                </text-highlight>
-                <!--<el-link href="scope.row.JiraDaGui" target="_blank">{{ scope.row.JiraDaGui}}</el-link>-->
+                </text-highlight>-->
+                <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
               </template>
             </el-table-column>
             <!--<el-table-column prop="Comment"
@@ -124,7 +124,7 @@
               </template>
 
             </el-table-column>
-            <el-table-column align="center" label="" width="185">
+            <el-table-column align="center" label="" width="185"  fixed="right">
               <template slot="header" slot-scope="scope">
                 <el-button type="primary"
                            size="small"
@@ -512,11 +512,10 @@
         </el-form-item>
         <el-form-item label="Số lần comment" prop="Comment">
           <el-input type="text"
+                    rows="5"
                     size="small"
                     v-for="item in Comment"
-                    :value="item.author.displayName + ' - ' + formatDateTime(item.updated)">
-
-          </el-input>
+                    :value="item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)"></el-input>
 
         </el-form-item>
         <el-form-item label="Mức độ" prop="Priority" :style=changetextColorPio(formData1.Priority)>
@@ -616,7 +615,8 @@ import {
   updateJira,
   deleteJira,
   getTrangThai,
-  selectYeuCauAll
+  selectYeuCauAll,
+  getListUser
 } from "../../store/api";
 export default {
   data() {
@@ -633,6 +633,7 @@ export default {
       StateIdFilter: 5,
       DichVuIdFilter: 7,
       JiraDaGuiLink:"",
+
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -765,6 +766,7 @@ export default {
       },
       RoleId: getRole(),
       listData: [],
+
       ListDMTrangThai: [],
       ListDMNhanSu: [],
       ListDMDichVu: [],
@@ -803,6 +805,17 @@ export default {
     formatTenTapTin(val) {
       if (val) {
         return val.substring(val.length - 18, val.length);
+      } else return null;
+    },
+    formatJira(val) {
+      if (val) {
+        var jira="";
+        var jiralink = val;
+        var split = jiralink.split('/');
+        for (var i = 0; i < split.length; i++) {
+          jira = split[split.length - 1];
+        }
+        return jira;
       } else return null;
     },
     formatJson(filterVal, jsonData) {
@@ -929,7 +942,16 @@ export default {
         }
         this.getDataTrangThai();
       }
-
+      if (this.formData1.FileUpload) {
+        this.fileList = [];
+        this.fileDoc = [];
+        var _arr = JSON.parse(this.formData1.FileUpload);
+        for (var i = 0; i < _arr.length; i++) {
+          var urlFile = "/uploads/" + _arr[i];
+          this.fileList.push({ name: _arr[i], url: urlFile });
+          this.fileDoc.push({ key: _arr[i], file: _arr[i] });
+        }
+      }
 
       this.isEditor = false;
       this.dialogFormView = true;
@@ -954,19 +976,30 @@ export default {
     },
 
     handleDelete(row) {
-      this.$confirm("Bạn có chắc chắn muốn xóa?", "Thông báo", {
-        confirmButtonText: "OK",
-        cancelButtonText: "Cancel",
-        type: "warning"
-      }).then(() => {
-        deleteYeuCau(row.Id).then(data => {
-          this.$message({
-            type: "success",
-            message: "Xóa thành công!"
+     var role = this.RoleId;
+
+        this.$confirm("Bạn có chắc chắn muốn xóa?", "Thông báo", {
+          confirmButtonText: "OK",
+          cancelButtonText: "Cancel",
+          type: "warning"
+        }).then(() => {
+          deleteYeuCau(row.Id).then(data => {
+            if(data == 1){
+              this.$message({
+               type: "success",
+                message: "Xóa thành công!"
+              });
+              this.getListData();
+            }
+            else{
+               this.$message({
+               type: "warning",
+                message: "Không thể xóa!"
+              });
+            }
           });
-          this.getListData();
         });
-      });
+
     },
     handleSuccess(response, file, ListJira) {
       this.fileDoc.push({ key: file.name, file: response.file });
@@ -1072,9 +1105,10 @@ export default {
           if (data != null) {
             this.TrangThai = data;
             this.formData1.KeyJira = data.key;
-            this.formData1.StatusJira = data.fields.customfield_10109.currentStatus.status;
+            this.formData1.StatusJira = data.fields.status.name;
             this.Comment = data.fields.comment.comments;
             this.formData1.Priority = data.fields.priority.name;
+
           }
 
           console.log(this.Comment);
@@ -1091,7 +1125,7 @@ export default {
         if (data != null) {
           this.TrangThai = data;
           this.formData.KeyJira = data.key;
-          this.formData.StatusJira = data.fields.customfield_10109.currentStatus.status;
+          this.formData.StatusJira = data.fields.status.name;
           this.Comment = data.fields.comment.comments;
           this.formData.Priority = data.fields.priority;
         }

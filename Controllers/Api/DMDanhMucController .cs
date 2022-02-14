@@ -27,7 +27,7 @@ namespace coreWeb.Controllers
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2)
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
                     var DMNhanSu    = _context.NhanSu.ToList();
                     var DMTinhTrang = _context.Status.ToList();

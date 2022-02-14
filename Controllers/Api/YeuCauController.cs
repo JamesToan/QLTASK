@@ -51,7 +51,7 @@ namespace coreWeb.Controllers.Api
         public IActionResult Select(int? StateId, int? DichVuId)
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1 || user.RoleId == 2)
+            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
             {
                 if (DichVuId ==7 && StateId != 5)
                 {
@@ -142,7 +142,7 @@ namespace coreWeb.Controllers.Api
         public IActionResult Selectall(int? StateId, int? DichVuId)
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1 || user.RoleId == 2)
+            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
             {
                 
                     var result = _context.YeuCau.Where(e => StateId == null
@@ -213,7 +213,7 @@ namespace coreWeb.Controllers.Api
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2)
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
                     var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update
@@ -258,21 +258,60 @@ namespace coreWeb.Controllers.Api
         {
             try
             {
-                var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
-                var jira = _context.Jira.Where(p => p.LinkJira == result.JiraDaGui).FirstOrDefault();
-                if (result != null) //update
+                var user = new UserClaim(HttpContext);
+                if (user.RoleId == 1 || user.RoleId == 2)
                 {
-                    _context.Remove(jira);
-                    _context.Remove(result);
-                    _context.SaveChanges();
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
+                    var jira = _context.Jira.Where(p => p.LinkJira == result.JiraDaGui).FirstOrDefault();
+                    if (result != null) //update
+                    {
+                        if (jira != null)
+                        {
+                            _context.Remove(jira);
+                        }
+                        
+                        _context.Remove(result);
+                        _context.SaveChanges();
 
 
-                    return Ok(1);
+                        return Ok(1);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
                 }
                 else
                 {
-                    return NoContent();
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
+                    if (result.NguoiTaoId == user.UserId)
+                    {
+                        var jira = _context.Jira.Where(p => p.LinkJira == result.JiraDaGui).FirstOrDefault();
+                        if (result != null) //update
+                        {
+                            if (jira != null)
+                            {
+                                _context.Remove(jira);
+                            }
+
+                            _context.Remove(result);
+                            _context.SaveChanges();
+
+
+                            return Ok(1);
+                        }
+                        else
+                        {
+                            return NoContent();
+                        }
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+
                 }
+                
             }
             catch (Exception ex)
             {

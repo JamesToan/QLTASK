@@ -137,6 +137,7 @@ export default {
                 message: "Mật khẩu được đổi thành công."
               });
               this.resetForm();
+              this.$refs.formData.resetFields();
             } else {
               this.$message({
                 type: "warning",
