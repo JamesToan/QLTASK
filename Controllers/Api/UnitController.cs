@@ -31,7 +31,7 @@ namespace coreWeb.Controllers
 
             var result = _context.Unit
                 .Include(x => x.children)
-                .Where(u => u.ParentId == null)
+                .Where(u => u.IsActive == true)
                 .ToList();
             //return Ok(result);
 

@@ -39,5 +39,8 @@ namespace coreWeb.Models
 
         //DonViYeuCau
         public DbSet<DonViYeuCau> DonViYeuCau { get; set; }
+
+        //Comment
+        public DbSet<Comment> Comment { get; set; }
     }
 }

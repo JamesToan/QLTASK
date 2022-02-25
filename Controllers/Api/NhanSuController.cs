@@ -40,7 +40,7 @@ namespace coreWeb.Controllers.Api
         public IActionResult Select()
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+            if (user.RoleId == 1)
             {
                 var result = _context.NhanSu.ToList();
                 if (result != null)
@@ -51,6 +51,38 @@ namespace coreWeb.Controllers.Api
                 {
                     return NoContent();
                 }
+            }
+            else if (user.RoleId == 2 || user.RoleId == 3)
+            {
+                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+                if (userinfo.UnitId == 1)
+                {
+                    var result = _context.NhanSu.Where(p => p.UnitId == 1).ToList();
+
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                {
+                    var result = _context.NhanSu.Where(p => p.UnitId != 1 && p.UnitId == userinfo.UnitId).ToList();
+
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+               
+               
             }
             else
             {
@@ -65,10 +97,12 @@ namespace coreWeb.Controllers.Api
             try
             {
                 var user = new UserClaim(HttpContext);
+                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                 if (user != null)
                 {
                     model.NguoiTaoId = user.UserId;
                     model.NgayTao = DateTime.Now;
+                    
                     _context.Add(model);
                     _context.SaveChanges();
                     return Ok(model.Id);
@@ -97,6 +131,7 @@ namespace coreWeb.Controllers.Api
                     {
                         result.TenNhanSu = model.TenNhanSu;
                         result.NgayCapNhat = DateTime.Now;
+                        result.UnitId = model.UnitId;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);

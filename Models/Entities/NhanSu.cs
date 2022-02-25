@@ -22,7 +22,12 @@ namespace coreWeb.Models.Entities
 
         public DateTime? NgayCapNhat { get; set; }
 
+        public int? UnitId { get; set; }
+
         [ForeignKey("NguoiTaoId")]
         public User User { get; set; }
+
+        [ForeignKey("UnitId")]
+        public Unit Unit { get; set; }
     }
 }

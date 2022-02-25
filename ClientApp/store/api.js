@@ -116,10 +116,12 @@ export function changePass(PasswordOld, PasswordNew) {
     data
   });
 }
-export function updateProfile(FullName, Phone) {
+export function updateProfile(FullName, Phone, JiraAcount, JiraPass) {
   const data = {
     FullName,
-    Phone
+    Phone,
+    JiraAcount,
+    JiraPass
   };
   return request({
     url: "api/user/UpdateProfile",
@@ -567,6 +569,15 @@ export function getTrangThai(majira) {
   });
 }
 
+export function sendTeleAsync(id) {
+  const params = { id };
+  return request({
+    url: "api/yeucau/sendTeleAsync",
+    method: 'get',
+    params: params
+  });
+}
+
 // Jira
 
 export function getJira() {
@@ -666,6 +677,53 @@ export function deleteDonVi(id) {
   const params = { id };
   return request({
     url: "api/donviyeucau/delete",
+    method: "post",
+    params: params
+  });
+}
+
+// Comments
+
+export function getComments() {
+
+  return request({
+    url: "api/comment/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectComments(ycId) {
+  const params = { ycId};
+  return request({
+    url: "api/comment/Select",
+    method: "get",
+    params: params
+  });
+}
+
+export function addComments(comments, ycid) {
+  const params = { comments, ycid };
+  return request({
+    url: "api/comment/Add",
+    method: "post",
+    params: params
+  });
+}
+
+export function updateComments(comments, id) {
+  const params = { comments, id };
+  return request({
+    url: "api/comment/update",
+    method: "post",
+    params: params
+  });
+}
+
+export function deleteComments(id) {
+  const params = { id };
+  return request({
+    url: "api/comment/delete",
     method: "post",
     params: params
   });

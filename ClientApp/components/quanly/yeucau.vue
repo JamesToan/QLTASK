@@ -21,10 +21,22 @@
       <div class="col-12">
         <div class="card-box table-responsive">
           <div class="header-title pb-3" style="margin-bottom: 10px; float: right">
+
+            <el-button type="primary"
+                       size="small"
+                       icon="el-icon-plus"
+                       class="filter-item"
+                       @click="handleAdd"
+                       v-if="allowEdit">Thêm</el-button>
+            <el-button type="success"
+                       size="small"
+                       icon="el-icon-download"
+                       class="filter-item"
+                       @click="handleExport">Xuất</el-button>
             <el-input clearable
                       v-model="search"
                       placeholder="Tìm kiếm"
-                      style="width: 240px; float: right;"></el-input>
+                      style="width: 240px; float: left; "></el-input>
             <el-select style="width: 240px; float: left;"
                        v-model="StateIdFilter"
                        @change="changeStateIdFilter"
@@ -35,7 +47,7 @@
                          :value="item.Id">
               </el-option>
             </el-select>
-            <el-select style="width: 240px; float: left;"
+            <el-select style="width: 240px; float: left;margin-right:3px"
                        v-model="DichVuIdFilter"
                        @change="changeDichVuIdFilter"
                        placeholder="Chọn Dịch Vụ">
@@ -52,6 +64,7 @@
                     default-expand-all
                     row-key="Id"
                     style="width: 100%">
+
             <!-- <el-table-column width="50" label="" align="center">
     <template></template>
   </el-table-column> -->
@@ -60,40 +73,50 @@
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" width="150">
+            <el-table-column prop="Id" label="Mã Yêu Cầu" width="150">
+              <template slot-scope="scope">
+                <text-highlight :queries="search" style="word-break: normal;">
+                  YC{{ scope.row.Id }}
+                </text-highlight>
+              </template>
+            </el-table-column>
+            <el-table-column prop="TenYeuCau" label="Yêu Cầu" width="250">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="NoiDung"
-                             label="Nội Dung"
-                             min-width="250">
-              <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;" v-html="scope.row.NoiDung">
-                  <!--{{ scope.row.NoiDung }}-->
-                </text-highlight>
-              </template>
-            </el-table-column>
+            <!--<el-table-column prop="NoiDung"
+                   label="Nội Dung"
+                   min-width="250">
+    <template slot-scope="scope">
+      <text-highlight :queries="search" style="word-break: normal;" v-html="scope.row.NoiDung">
+      </text-highlight>
+    </template>
+  </el-table-column>-->
             <el-table-column prop="JiraDaGui"
                              label="Task Jira"
-                             width="120">
+                             width="150">
               <template slot-scope="scope">
                 <!--<text-highlight :queries="search" style="word-break: normal;" >
-                  {{ scope.row.JiraDaGui}}
-                </text-highlight>-->
+        {{ scope.row.JiraDaGui}}
+      </text-highlight>-->
                 <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
               </template>
+
+
             </el-table-column>
-            <!--<el-table-column prop="Comment"
-                             label="Comment"
-                             width="120"
+
+
+            <el-table-column prop="NhanSu"
+                             label="Người Thực Hiện"
+                             width="130"
                              align="center">
               <template slot-scope="scope">
-                {{ scope.row.Comment}}
+                {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}
               </template>
-            </el-table-column>-->
+            </el-table-column>
             <el-table-column prop="ThoiHan"
                              label="Deadline"
                              width="120"
@@ -112,7 +135,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="Status" label="Tình trạng" width="125">
+            <el-table-column prop="Status" label="Tình Trạng" width="125">
 
               <template slot-scope="scope">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now() && scope.row.StateId != 6" style="color:darkorange">
@@ -124,22 +147,9 @@
               </template>
 
             </el-table-column>
-            <el-table-column align="center" label="" width="185"  fixed="right">
+            <el-table-column align="center" label="" width="185" fixed="right">
               <template slot="header" slot-scope="scope">
-                <el-button type="primary"
-                           size="small"
-                           icon="el-icon-plus"
-                           class="filter-item"
-                           :title="scope.row"
-                           @click="handleAdd"
-                           v-if="allowEdit">Thêm</el-button>
-                <el-button type="success"
-                     size="small"
-                     icon="el-icon-download"
-                     class="filter-item"
-                     title="Xuất DS"
-                     @click="handleExport"
-                           >Xuất</el-button>
+
               </template>
               <template slot-scope="scope">
                 <el-button @click="handleView(scope.$index, scope.row)"
@@ -176,7 +186,8 @@
     </div>
     <el-dialog title="Quản lý yêu cầu"
                :visible.sync="dialogFormDisplay"
-               top="15px"
+               top="55px"
+               width="80%"
                center>
       <el-form :model="formData"
                :rules="formRules"
@@ -224,7 +235,7 @@
             <el-form-item label="Trạng thái" prop="StateId">
               <el-select v-model="formData.StateId"
                          placeholder="Chọn trạng thái"
-                         class="w-100">
+                         class="w-100" filterable>
                 <el-option v-for="item in ListDMTrangThai"
                            :key="item.Id"
                            :label="item.StateName"
@@ -237,7 +248,7 @@
             <el-form-item label="Nhân Sự" prop="NhanSuId">
               <el-select v-model="formData.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100">
+                         class="w-100" filterable>
                 <el-option v-for="item in ListDMNhanSu"
                            :key="item.Id"
                            :label="item.TenNhanSu"
@@ -281,7 +292,7 @@
               <el-select v-model="formData.DichVuId"
                          placeholder="Chọn dịch vụ"
                          @change="changeDichVu(formData.DichVuId)"
-                         class="w-100">
+                         class="w-100" filterable>
                 <el-option v-for="item in ListDMDichVu"
                            :key="item.Id"
                            :label="item.TenDichVu"
@@ -332,7 +343,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -346,7 +357,8 @@
     </el-dialog>
     <el-dialog title="Xem nội dung yêu cầu"
                :visible.sync="dialogFormView"
-               top="165px"
+               top="55px"
+               width="80%"
                center>
       <el-form :model="formData1"
                :rules="formRules"
@@ -355,36 +367,41 @@
                class="m-auto"
                size="small"
                :disabled="!allowEdit">
-        <el-form-item label="Tiêu đề yêu cầu" prop="TenYeuCau">
-          <el-input v-model="formData1.TenYeuCau"
-                    type="text"
-                    size="small" disabled></el-input>
+        <el-form-item label="Tiêu đề yêu cầu:" prop="TenYeuCau">
+
+          <!--<el-input v-model="formData1.TenYeuCau"
+           type="text"
+           size="small" disabled></el-input>-->
+          {{formData1.TenYeuCau}}
         </el-form-item>
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Ngày yêu cầu" prop="NgayYeuCau">
-              <el-date-picker v-model="formData1.NgayYeuCau"
+            <el-form-item label="Ngày yêu cầu: " prop="NgayYeuCau">
+              <!--<el-date-picker v-model="formData1.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
                               value-format="yyyy-MM-dd" disabled>
-              </el-date-picker>
+              </el-date-picker>-->
+              {{formData1.NgayYeuCau}}
 
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Deadline" prop="ThoiHan">
-              <el-date-picker v-model="formData1.ThoiHan"
+            <el-form-item label="Deadline: " prop="ThoiHan">
+
+              <!--<el-date-picker v-model="formData1.ThoiHan"
                               type="date"
                               placeholder="Chọn ngày"
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
                               value-format="yyyy-MM-dd" disabled>
-              </el-date-picker>
+              </el-date-picker>-->
+              {{formData1.ThoiHan}}
             </el-form-item>
           </el-col>
 
@@ -392,8 +409,8 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Trạng thái" prop="StateId">
-              <el-select v-model="formData1.StateId"
+            <el-form-item label="Trạng thái: " prop="StateId">
+              <!--<el-select v-model="formData1.StateId"
                          placeholder="Chọn trạng thái"
                          class="w-100" disable>
                 <el-option v-for="item in ListDMTrangThai"
@@ -401,13 +418,13 @@
                            :label="item.StateName"
                            :value="item.Id">
                 </el-option>
-              </el-select>
-
+              </el-select>-->
+              {{formData1.StateId ? formData1.States.StateName : ""}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Nhân Sự" prop="NhanSuId">
-              <el-select v-model="formData1.NhanSuId"
+            <el-form-item label="Nhân Sự: " prop="NhanSuId">
+              <!--<el-select v-model="formData1.NhanSuId"
                          placeholder="Chọn nhân sự"
                          class="w-100" disable>
                 <el-option v-for="item in ListDMNhanSu"
@@ -415,8 +432,8 @@
                            :label="item.TenNhanSu"
                            :value="item.Id">
                 </el-option>
-              </el-select>
-              <!--{{formData1.NhanSuId ? formData1.NhanSu.TenNhanSu : ""}}-->
+              </el-select>-->
+              {{formData1.NhanSuId ? formData1.NhanSu.TenNhanSu : ""}}
 
             </el-form-item>
 
@@ -425,8 +442,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Người giám sát" prop="NguoiGiamSatId">
-              <el-select v-model="formData1.NguoiGiamSatId"
+            <el-form-item label="Người giám sát: " prop="NguoiGiamSatId">
+              <!--<el-select v-model="formData1.NguoiGiamSatId"
                          placeholder="Chọn người giám sát"
                          class="w-100"
                          disable>
@@ -435,26 +452,28 @@
                            :label="item.TenNhanSu"
                            :value="item.Id">
                 </el-option>
-              </el-select>
+              </el-select>-->
+              <!--{{formData1.NguoiGiamSatId ? formData1.NhanSu.TenNhanSu : ""}}-->
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH">
-              <el-date-picker v-model="formData1.ThoiHanMongMuon"
+            <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH: ">
+              <!--<el-date-picker v-model="formData1.ThoiHanMongMuon"
                               type="date"
                               placeholder="Chọn ngày"
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
                               value-format="yyyy-MM-dd" disable>
-              </el-date-picker>
+              </el-date-picker>-->
+              {{formData1.ThoiHanMongMuon}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Dịch vụ" prop="DichVuId">
-              <el-select v-model="formData1.DichVuId"
+            <el-form-item label="Dịch vụ: " prop="DichVuId">
+              <!--<el-select v-model="formData1.DichVuId"
                          placeholder="Chọn dịch vụ"
                          @change="changeDichVu(formData.DichVuId)"
                          class="w-100" disable>
@@ -463,13 +482,13 @@
                            :label="item.TenDichVu"
                            :value="item.Id">
                 </el-option>
-              </el-select>
-              <!--{{formData1.DichVuId ? formData1.DichVu.TenDichVu : ""}}-->
+              </el-select>-->
+              {{formData1.DichVuId ? formData1.DichVu.TenDichVu : ""}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Đơn vị" prop="DonViYeuCauId">
-              <el-select v-model="formData1.DonViYeuCauId"
+            <el-form-item label="Đơn vị: " prop="DonViYeuCauId">
+              <!--<el-select v-model="formData1.DonViYeuCauId"
                          placeholder="Chọn đơn vị"
                          class="w-100"
                          clearable
@@ -480,53 +499,80 @@
                            :label="item.TenDonViYeuCau"
                            :value="item.Id">
                 </el-option>
-              </el-select>
+              </el-select>-->
+              {{formData1.DonViYeuCauId ? formData1.DonViYeuCau.TenDonViYeuCau : ""}}
             </el-form-item>
 
           </el-col>
         </el-row>
-        <el-form-item label="Nội dung yêu cầu" prop="NoiDung">
+        <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
           <!--<span v-html="formData1.NoiDung"></span>-->
-          <ckeditor :editor="editor"
-                    v-model="formData1.NoiDung"
-                    :config="editorConfig"
-                    disabled></ckeditor>
+          <!--<ckeditor :editor="editor"
+            v-model="formData1.NoiDung"
+            :config="editorConfig"
+            disabled></ckeditor>-->
           <!--{{formData1.NoiDung}}-->
+          <text-highlight :queries="search" style="word-break: normal;" v-html="formData1.NoiDung">
+          </text-highlight>
         </el-form-item>
 
-        <el-form-item label="Jira" prop="JiraDaGui">
+        <el-form-item label="Jira: " prop="JiraDaGui">
 
-          <!--{{formData1.JiraDaGui}}-->
-          <el-input v-model="formData1.JiraDaGui"
+          {{formData1.JiraDaGui}}
+          <!--<el-input v-model="formData1.JiraDaGui"
                     type="text"
-                    size="small" disabled></el-input>
-
-
+                    size="small" disabled></el-input>-->
           <!--<el-button type="primary" size="small" @click="handleAddJira">Thêm</el-button>-->
           <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
         </el-form-item>
 
 
-        <el-form-item label="Trạng thái jira:" prop="StatusJira">
+        <el-form-item label="Trạng thái jira: " prop="StatusJira">
           {{formData1.StatusJira}}
         </el-form-item>
         <el-form-item label="Số lần comment" prop="Comment">
-          <el-input type="text"
+          <!--<el-input type="text"
                     rows="5"
                     size="small"
                     v-for="item in Comment"
-                    :value="item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)"></el-input>
+                    :value="item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)"></el-input>-->
+          <el-tabs type="border-card">
+            <el-tab-pane label="Jira Comment">
+              <div>
+                <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
+                  <li>
+                    <b>+</b> {{item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)}}
+                  </li>
+                </ul>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="Yêu Cầu Comment">
+              <el-form-item v-for="item in YeuCauComment" :label="item.User.FullName +' : '" >
+                {{item.Comments}}
+                <!--<el-button @click="handleEditComment(item.Id, item.Comments)" v-if="isPermiss" icon="el-icon-edit" style="margin-left:10px"></el-button>
+                <el-button @click="DeleteComment(item.Id)" v-if="isPermiss" icon="el-icon-delete"></el-button>-->
+              </el-form-item>
+              <el-form-item prop="CommentYeuCau">
+                <el-input type="text"
+                          size="small" v-model="formData1.CommentYeuCau"></el-input>
+                <el-button @click="handleAddComment">Save Comment</el-button>
+              </el-form-item>
+
+
+            </el-tab-pane>
+          </el-tabs>
+
 
         </el-form-item>
-        <el-form-item label="Mức độ" prop="Priority" :style=changetextColorPio(formData1.Priority)>
-          <el-input v-model="formData1.Priority" 
-                    
+        <el-form-item label="Mức độ: " prop="Priority" :style=changetextColorPio(formData1.Priority)>
+          <!--<el-input v-model="formData1.Priority"
+
                     size="small" disable>
-            
-          </el-input>
 
+          </el-input>-->
+          {{formData1.Priority}}
         </el-form-item>
-        <el-form-item label="Tập tin đính kèm">
+        <el-form-item label="Tập tin đính kèm: ">
           <el-upload action="/api/TapTin/UploadDoc"
                      :limit="3"
                      :multiple="true"
@@ -534,46 +580,21 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx"
+                     accept=".pdf,.doc,.docx,.xls,  .xlsx, .xlsm"
                      :auto-upload="true"
                      size="mini">
 
           </el-upload>
         </el-form-item>
       </el-form>
-      
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetFormView" size="small">Bỏ qua</el-button>
       </span>
     </el-dialog>
 
     <!--<el-dialog title="Xem nội dung yêu cầu"
-             :visible.sync="dialogFormJiraState"
-             top="165px"
-             center>
-    <el-form :model="formData1"
-             :rules="formRules"
-             ref="formData1"
-             label-width="140px"
-             class="m-auto"
-             size="small"
-             :disabled="!allowEdit">
-
-      <el-form-item label="Mã Jira :" prop="KeyJira">
-        {{formData1.KeyJira}}
-      </el-form-item>
-      <el-form-item label="Trạng thái :" prop="StatusJira">
-        {{formData1.StatusJira}}
-      </el-form-item>
-
-    </el-form>
-    <span slot="footer" class="dialog-footer" v-if="allowEdit">
-      <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
-    </span>
-  </el-dialog>-->
-
-    <!--<el-dialog title="Quản lý Jira"
-               :visible.sync="dialogFormDisplayJira"
+               :visible.sync="dialogFormJiraState"
                top="165px"
                center>
       <el-form :model="formData1"
@@ -584,17 +605,42 @@
                size="small"
                :disabled="!allowEdit">
 
-        <el-form-item label="Tên Jira" prop="TenJira">
-          <span>aaaaaaa</span>
+        <el-form-item label="Mã Jira :" prop="KeyJira">
+          {{formData1.KeyJira}}
         </el-form-item>
-        <el-form-item label="Link Jira" prop="LinkJira">
-          <span>aaaaaaa</span>
+        <el-form-item label="Trạng thái :" prop="StatusJira">
+          {{formData1.StatusJira}}
         </el-form-item>
 
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
-        <el-button type="primary" size="small" @click="updateDataJira">Cập nhật</el-button>
+      </span>
+    </el-dialog>-->
+    <!--<el-dialog title="Cập nhật comment"
+               :visible.sync="dialogFormDisplayComment"
+               top="165px"
+               center>
+      <el-form :model="formData2"
+               :rules="formRules"
+               ref="formData2"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
+
+        <el-form-item label="Comment mới" prop="CommentYeuCau">
+         <el-input type="text"
+                          size="small" v-model="formData2.CommentYeuCau">
+
+         </el-input>
+        </el-form-item>
+        
+
+      </el-form>
+      <span slot="footer" class="dialog-footer" v-if="allowEdit">
+        <el-button @click="resetFormComment" size="small">Bỏ qua</el-button>
+        <el-button type="primary" size="small" @click="UpdateComment">Cập nhật</el-button>
       </span>
     </el-dialog>-->
   </div>
@@ -616,24 +662,30 @@ import {
   deleteJira,
   getTrangThai,
   selectYeuCauAll,
-  getListUser
+  getListUser,
+  requestGetProfile,
+  selectComments,
+  addComments,
+  updateComments,
+  deleteComments,
+  sendTeleAsync,
 } from "../../store/api";
 export default {
   data() {
     return {
       title: null,
       dialogFormDisplay: false,
-      dialogFormDisplayJira: false,
+      dialogFormDisplayComment: false,
       dialogFormView: false,
       loading: false,
       isEditor: false,
       isXacThuc: false,
       allowEdit: true,
+      isPermiss: true,
       search: "",
       StateIdFilter: 5,
-      DichVuIdFilter: 7,
+      DichVuIdFilter: 1,
       JiraDaGuiLink:"",
-
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -652,12 +704,14 @@ export default {
         ThoiHanMongMuon:null,
         KeyJira: null,
         Priority: null,
+        UnitId: null,
         domains: [{
           key: 1,
           value:''
         }]
       },
       formData1: {
+        Id: null,
         TenJira: null,
         LinkJira: null,
         YeuCauId: null,
@@ -677,12 +731,13 @@ export default {
         NguoiGiamSatId: null,
         ThoiHanMongMuon: null,
         Priority: null,
+        CommentYeuCau:null,
       },
       formData2: {
-        TenJira: null,
-        LinkJira: null,
-
+        CommentYeuCau: null,
+        Id: null,
       },
+
       formRules: {
         TenYeuCau: [
           {
@@ -719,21 +774,8 @@ export default {
             trigger: "blur"
           }
         ],
-        NhanSuId: [
-          {
-            required: true,
-            message: "Vui lòng chọn nhân sự",
-            trigger: "blur"
-          }
-        ],
-        DonViYeuCauId: [
-          {
-            required: true,
-            message: "Vui lòng nhập đơn vị yêu cầu",
-            trigger: "blur"
-          }
-        ],
-        DichVuId: [
+
+       DichVuId: [
           {
             required: true,
             message: "Vui lòng chọn dịch vụ",
@@ -766,7 +808,7 @@ export default {
       },
       RoleId: getRole(),
       listData: [],
-
+      YeuCauComment:[],
       ListDMTrangThai: [],
       ListDMNhanSu: [],
       ListDMDichVu: [],
@@ -781,7 +823,9 @@ export default {
       pagination: 10,
       total: 10,
       activePage: 1,
-      dataFilter: null
+      dataFilter: null,
+      stateOld : [],
+      stateNew: [],
     };
   },
 
@@ -940,8 +984,14 @@ export default {
         for (var i = 0; i < split.length; i++) {
           this.JiraDaGuiLink = split[split.length - 1];
         }
+        var name = getUser();
+
         this.getDataTrangThai();
+
       }
+
+      this.getListComment(this.formData1.Id);
+
       if (this.formData1.FileUpload) {
         this.fileList = [];
         this.fileDoc = [];
@@ -959,8 +1009,17 @@ export default {
     handleEdit(index, row) {
       if (this.$refs.formData !== undefined) {
         this.$refs.formData.resetFields();
+
       }
       this.formData = Object.assign({}, row);
+      this.stateOld = this.formData.StateId;
+
+      console.log(this.stateOld);
+      if(this.formData.DichVuId != null){
+          var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData.DichVuId);
+          this.ListDMDonVi = dv.DonVi;
+      }
+
       if (this.formData.FileUpload) {
         this.fileList = [];
         this.fileDoc = [];
@@ -973,6 +1032,7 @@ export default {
       }
       this.isEditor = true;
       this.dialogFormDisplay = true;
+
     },
 
     handleDelete(row) {
@@ -1073,12 +1133,16 @@ export default {
       this.dialogFormView = false;
       return true;
     },
+    resetFormComment(){
+      this.dialogFormDisplayComment= false;
+      return true;
+    },
     getListData() {
       this.loading = true;
 
         //Quản lý
         this.loading = true;
-      if (this.StateIdFilter != 5 || this.DichVuIdFilter != 7) {
+      if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1) {
         selectYeuCau(this.StateIdFilter, this.DichVuIdFilter).then(data => {
           this.listData = data;
           this.total = data.length;
@@ -1102,7 +1166,7 @@ export default {
       this.loading = true;
 
         getTrangThai(this.JiraDaGuiLink).then(data => {
-          if (data != null) {
+          if (data != null && data.errorMessages == null) {
             this.TrangThai = data;
             this.formData1.KeyJira = data.key;
             this.formData1.StatusJira = data.fields.status.name;
@@ -1122,7 +1186,8 @@ export default {
       this.loading = true;
 
       getTrangThai(this.JiraDaGuiLink).then(data => {
-        if (data != null) {
+        if (data != null ) {
+
           this.TrangThai = data;
           this.formData.KeyJira = data.key;
           this.formData.StatusJira = data.fields.status.name;
@@ -1166,16 +1231,40 @@ export default {
                 type: "success",
                 message: "Thêm mới thành công!"
               });
+                  if(this.formData.UnitId != 1){
+                    // var text = "Yêu cầu " + this.formData.TenYeuCau + " đã đổi trạng thái sang " +  this.formData.States.StateName;
+
+                    // sendTeleAsync(text);
+                    sendTeleAsync(data);
+                  }
               this.getListData();
             });
           } else {
             //delete this.formData.LinhVuc;
             updateYeuCau(this.formData).then(data => {
-              //console.log(data);
-              this.$message({
-                type: "success",
-                message: "Cập nhật thành công!"
+              console.log(data);
+              if(data != ""){
+                  this.$message({
+                  type: "success",
+                  message: "Cập nhật thành công!"
+                  });
+                  this.stateNew = this.formData.StateId;
+                  console.log(this.stateNew);
+                  if(this.stateNew != this.stateOld && this.formData.UnitId != 1){
+                    // var text = "Yêu cầu " + this.formData.TenYeuCau + " đã đổi trạng thái sang " +  this.formData.States.StateName;
+
+                    // sendTeleAsync(text);
+                    sendTeleAsync(this.formData.Id);
+                  }
+                  this.getListData();
+              }
+              else{
+                 this.$message({
+                type: "warning",
+                message: "Không thể cập nhật!"
               });
+             }
+
               this.getListData();
             });
           }
@@ -1212,6 +1301,84 @@ export default {
         }
       });
     },
+
+    getListComment(val){
+      if(val != null){
+        selectComments(val).then(data => {
+            this.YeuCauComment = data;
+
+        });
+      }
+    },
+    handleAddComment(){
+      addComments(this.formData1.CommentYeuCau, this.formData1.Id).then(data => {
+        if(data != "" && data != null){
+          this.$message({
+                  type: "success",
+                  message: "Thêm thành công!"
+                  });
+          this.getListComment(this.formData1.Id);
+          this.formData1.CommentYeuCau = "";
+        }
+        else{
+
+          this.$message({
+                  type: "warning",
+                  message: "Không thể thêm comment!"
+                  });
+        }
+      });
+    },
+    handleEditComment(id, value){
+      if (this.$refs.formData2 !== undefined) {
+        this.$refs.formData2.resetFields();
+
+      }
+      this.formData2.CommentYeuCau = value;
+      this.formData2.Id = id;
+      this.dialogFormDisplayComment = true;
+      this.isEditor = true;
+    },
+    UpdateComment(){
+
+      updateComments(this.formData2.CommentYeuCau, this.formData2.Id).then(data => {
+        if(data != "" && data != null){
+          this.$message({
+                  type: "success",
+                  message: "Cập nhật thành công!"
+                  });
+          this.dialogFormDisplayComment = false;
+          this.getListComment(this.formData1.Id);
+
+        }
+        else{
+
+          this.$message({
+                  type: "warning",
+                  message: "Không thể cập nhật comment!"
+                  });
+        }
+      });
+
+    },
+    DeleteComment(val){
+      deleteComments(val).then(data => {
+            if(data == 1){
+              this.$message({
+               type: "success",
+                message: "Xóa thành công!"
+              });
+              this.getListComment(this.formData1.Id);
+            }
+            else{
+               this.$message({
+               type: "warning",
+                message: "Không thể xóa!"
+              });
+            }
+          });
+
+    },
     handleSizeChange(val) {
       this.pagination = val;
     },
@@ -1233,13 +1400,36 @@ export default {
 
     },
     changetextColorPio(val){
-    if(val == "Medium")
+      if(val == "Medium"){
         var text = "color:coral;font-weight: bold;";
-    return text
+        return text
+
+      }
+      else if(val == "Highest"){
+
+        var text = "color:red;font-weight: bold;";
+        return text
+      }
+      else if(val == "High"){
+
+        var text = "color:red;font-weight: bold;";
+        return text
+      }
+      else if(val == "Low"){
+
+        var text = "color:blue;font-weight: bold;";
+        return text
+      }
+      else if(val == "Lowest"){
+
+      var text = "color:blue;font-weight: bold;";
+      return text
+    }
     },
     renderData() {
       var _data = this.listData.filter(post => {
         return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase());
+        return post.Id.includes(this.search);
       });
       this.total = _data.length;
       return _data.slice(
@@ -1280,6 +1470,7 @@ export default {
     background-color: #fff !important;
     color: #606266 !important;
   }
+
   .ck-editor__editable_inline {
     min-height: 200px;
   }

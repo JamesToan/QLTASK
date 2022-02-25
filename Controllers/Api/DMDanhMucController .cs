@@ -27,14 +27,43 @@ namespace coreWeb.Controllers
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+               
+                if (user.RoleId == 1 )
                 {
                     var DMNhanSu    = _context.NhanSu.ToList();
                     var DMTinhTrang = _context.Status.ToList();
                     var DMTrangThai = _context.States.ToList();
                     var DMDonVi     = _context.DonViYeuCau.ToList();
-                    var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderByDescending(e =>e.Id).ToList();
+                    var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderBy(e =>e.Id).ToList();
                     var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList(); 
+                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null)
+                    {
+                        var result = new
+                        {
+                            DMNhanSu = DMNhanSu,
+                            DMTinhTrang = DMTinhTrang,
+                            DMTrangThai = DMTrangThai,
+                            DMDichVu = DMDichVu,
+                            DMJira = DMJira,
+                            DMDonVi = DMDonVi,
+                        };
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else if(user.RoleId == 2 || user.RoleId == 3)
+                {
+                    var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+
+                    var DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).ToList();
+                    var DMTinhTrang = _context.Status.ToList();
+                    var DMTrangThai = _context.States.ToList();
+                    var DMDonVi = _context.DonViYeuCau.ToList();
+                    var DMDichVu = _context.DichVu.Where(dm => dm.IsActive == true).Include(e => e.DonVi).OrderBy(e => e.Id).ToList();
+                    var DMJira = _context.Jira.Where(dm => dm.IsActive == true).ToList();
                     if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null)
                     {
                         var result = new

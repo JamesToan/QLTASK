@@ -117,44 +117,42 @@
       :visible.sync="dialogFormDisplay"
       top="15px"
     >
-      <el-form
-        :model="formData"
-        :rules="formRules"
-        ref="formData"
-        label-width="150px"
-      >
-        <!-- <el-form-item label="Mã Chuyên mục" prop="MaChuyenMuc">
-          <el-input
-            v-model="formData.MaChuyenMuc"
-            type="text"
-            size="small"
-            :readonly="isEditor"
-          ></el-input>
-        </el-form-item> -->
+      <el-form :model="formData"
+               :rules="formRules"
+               ref="formData"
+               label-width="150px">
+
         <el-form-item label="Tên Nhân Sự" prop="TenNhanSu">
-          <el-input
-            v-model="formData.TenNhanSu"
-            type="text"
-            size="small"
-          ></el-input>
+          <el-input v-model="formData.TenNhanSu"
+                    type="text"
+                    size="small"></el-input>
         </el-form-item>
+
+        <el-form-item label="Đơn vị" prop="UnitId" size="small">
+          <treeselect v-model="formData.UnitId"
+                      :multiple="false"
+                      placeholder="Chọn đơn vị"
+                      :searchable="false"
+                      :options="ListDonVi" />
+        </el-form-item>
+
         <!--<el-form-item label="Loại Chuyên mục" prop="LoaiChuyenMuc">
-          <el-input
-            v-model="formData.LoaiChuyenMuc"
-            type="text"
-            size="small"
-          ></el-input>
-        </el-form-item>-->
+    <el-input
+      v-model="formData.LoaiChuyenMuc"
+      type="text"
+      size="small"
+    ></el-input>
+  </el-form-item>-->
         <!--<el-form-item label="Thứ tự" prop="ThuTu">
-          <el-input
-            v-model="formData.ThuTu"
-            type="number"
-            size="small"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="Hiệu lực">
-          <el-switch v-model="formData.HieuLuc" size="small"></el-switch>
-        </el-form-item>-->
+    <el-input
+      v-model="formData.ThuTu"
+      type="number"
+      size="small"
+    ></el-input>
+  </el-form-item>
+  <el-form-item label="Hiệu lực">
+    <el-switch v-model="formData.HieuLuc" size="small"></el-switch>
+  </el-form-item>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm" size="small">Bỏ qua</el-button>
@@ -166,14 +164,19 @@
   </div>
 </template>
 <script>
+  import Treeselect from "@riophae/vue-treeselect";
+  // import the styles
+  import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {
   addNhanSu,
   updateNhanSu,
   deleteNhanSu,
   getNhanSu,
-  selectNhanSu
+  selectNhanSu,
+  getListUnitAll
 } from "../../store/api";
-export default {
+  export default {
+  components: { Treeselect },
   data() {
     return {
       dialogFormDisplay: false,
@@ -183,7 +186,8 @@ export default {
       formData: {
         TenNhanSu: null,
         ThuTu: null,
-        HieuLuc: null
+        HieuLuc: null,
+        UnitId: null,
       },
       formRules: {
         TenNhanSu: [
@@ -196,6 +200,7 @@ export default {
         
       },
       listData: [],
+      ListDonVi: [],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -226,7 +231,7 @@ export default {
         this.$refs.formData.resetFields();
       }
       this.formData = Object.assign({}, row);
-
+      this.formData.UnitId = row.UnitId;
       this.isEditor = true;
       this.dialogFormDisplay = true;
     },
@@ -280,6 +285,14 @@ export default {
         }
       });
     },
+    listUnit() {
+      this.loading = true;
+      getListUnitAll().then(data => {
+        if (data != null) {
+          this.ListDonVi = data;
+        }
+      });
+    },
     handleSizeChange(val) {
       this.pagination = val;
     },
@@ -302,6 +315,7 @@ export default {
 
   created() {
     this.getListData();
+    this.listUnit();
   }
 };
 </script>

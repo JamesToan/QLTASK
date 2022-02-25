@@ -45,6 +45,8 @@ namespace coreWeb.Models.Entities
 
         public int? NguoiGiamSatId { get; set; }
 
+        public int? UnitId { get; set; }
+
         public DateTime? ThoiHanMongMuon { get; set; }
 
         [ForeignKey("StateId")]
@@ -62,5 +64,8 @@ namespace coreWeb.Models.Entities
 
         [ForeignKey("DonViYeuCauId")]
         public DonViYeuCau DonViYeuCau { get; set; }
+
+        [ForeignKey("UnitId")]
+        public Unit Unit { get; set; }
     }
 }

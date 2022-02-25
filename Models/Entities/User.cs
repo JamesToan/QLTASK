@@ -24,6 +24,10 @@ namespace coreWeb.Models.Entities
         public string FullName { get; set; }
         [StringLength(50)]
         public string Phone { get; set; }
+        [StringLength(250)]
+        public string JiraAcount { get; set; }
+        [StringLength(250)]
+        public string JiraPass { get; set; }
         public DateTime DateCreated { get; set; }
         public bool isActive { get; set; }
 

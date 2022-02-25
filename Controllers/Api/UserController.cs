@@ -89,6 +89,8 @@ namespace coreWeb.Controllers
                 var _user = _context.User.Where(x => x.Id == user.UserId).FirstOrDefault();
                 _user.FullName = obj.FullName;
                 _user.Phone = obj.Phone;
+                _user.JiraAcount = obj.JiraAcount;
+                _user.JiraPass = obj.JiraPass;
                 //_context.Entry(_user).State = EntityState.Detached;
                 _context.User.Update(_user);
                 _context.SaveChanges();
@@ -182,6 +184,7 @@ namespace coreWeb.Controllers
                            where p.UserName == obj.UserName
                            select new
                            {
+                               p.Id,
                                p.RoleId,
                                p.UserName,
                                p.FullName,

@@ -137,13 +137,13 @@
             size="small"
           ></el-input>
         </el-form-item>
-         <el-form-item label="Đơn Vị Yêu Cầu" prop="DonViYeuCau">
+         <!--<el-form-item label="Đơn Vị Yêu Cầu" prop="DonViYeuCau">
           <el-input
             v-model="formData.DonViYeuCau"
             type="text"
             size="small"
           ></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <!--<el-form-item label="Thứ tự" prop="ThuTu">
           <el-input
             v-model="formData.ThuTu"
