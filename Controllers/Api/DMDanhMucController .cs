@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using coreWeb.Models;
 
 using coreWeb.Models.Entities;
+using System.Collections.Generic;
 
 namespace coreWeb.Controllers
 {
@@ -27,16 +28,34 @@ namespace coreWeb.Controllers
             try
             {
                 var user = new UserClaim(HttpContext);
-               
-                if (user.RoleId == 1 )
+                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+                List<NhanSu> DMNhanSu;
+                List<User> DMUser;
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
-                    var DMNhanSu    = _context.NhanSu.ToList();
+                    if (userinfo .UnitId == 1)
+                    {
+                        DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).Include(e => e.DichVu).Include(e => e.Unit).ToList();
+                    }
+                    else
+                    {
+                        DMNhanSu = _context.NhanSu.Include(e => e.DichVu).Include(e => e.Unit).ToList();
+                    }
+                    if (user.RoleId == 1)
+                    {
+                        DMUser = _context.User.ToList();
+                    }
+                    else
+                    {
+                        DMUser = _context.User.Where(p => p.UnitId == userinfo.UnitId).ToList();
+                    }
+                   
                     var DMTinhTrang = _context.Status.ToList();
                     var DMTrangThai = _context.States.ToList();
                     var DMDonVi     = _context.DonViYeuCau.ToList();
                     var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderBy(e =>e.Id).ToList();
                     var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList(); 
-                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null)
+                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null && DMUser != null)
                     {
                         var result = new
                         {
@@ -46,6 +65,7 @@ namespace coreWeb.Controllers
                             DMDichVu = DMDichVu,
                             DMJira = DMJira,
                             DMDonVi = DMDonVi,
+                            DMUser  = DMUser,
                         };
                         return Ok(result);
                     }
@@ -54,34 +74,34 @@ namespace coreWeb.Controllers
                         return NoContent();
                     }
                 }
-                else if(user.RoleId == 2 || user.RoleId == 3)
-                {
-                    var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+                //else if(user.RoleId == 2 || user.RoleId == 3)
+                //{
+                //    var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
 
-                    var DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).ToList();
-                    var DMTinhTrang = _context.Status.ToList();
-                    var DMTrangThai = _context.States.ToList();
-                    var DMDonVi = _context.DonViYeuCau.ToList();
-                    var DMDichVu = _context.DichVu.Where(dm => dm.IsActive == true).Include(e => e.DonVi).OrderBy(e => e.Id).ToList();
-                    var DMJira = _context.Jira.Where(dm => dm.IsActive == true).ToList();
-                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null)
-                    {
-                        var result = new
-                        {
-                            DMNhanSu = DMNhanSu,
-                            DMTinhTrang = DMTinhTrang,
-                            DMTrangThai = DMTrangThai,
-                            DMDichVu = DMDichVu,
-                            DMJira = DMJira,
-                            DMDonVi = DMDonVi,
-                        };
-                        return Ok(result);
-                    }
-                    else
-                    {
-                        return NoContent();
-                    }
-                }
+                //    var DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).Include(e => e.DichVu).Include(e => e.Unit).ToList();
+                //    var DMTinhTrang = _context.Status.ToList();
+                //    var DMTrangThai = _context.States.ToList();
+                //    var DMDonVi = _context.DonViYeuCau.ToList();
+                //    var DMDichVu = _context.DichVu.Where(dm => dm.IsActive == true).Include(e => e.DonVi).OrderBy(e => e.Id).ToList();
+                //    var DMJira = _context.Jira.Where(dm => dm.IsActive == true).ToList();
+                //    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null)
+                //    {
+                //        var result = new
+                //        {
+                //            DMNhanSu = DMNhanSu,
+                //            DMTinhTrang = DMTinhTrang,
+                //            DMTrangThai = DMTrangThai,
+                //            DMDichVu = DMDichVu,
+                //            DMJira = DMJira,
+                //            DMDonVi = DMDonVi,
+                //        };
+                //        return Ok(result);
+                //    }
+                //    else
+                //    {
+                //        return NoContent();
+                //    }
+                //}
                 return NotFound();
             }
             catch (Exception ex)

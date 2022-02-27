@@ -24,10 +24,20 @@ namespace coreWeb.Models.Entities
 
         public int? UnitId { get; set; }
 
+        public int? DichVuId { get; set; }
+
+        public int? UserId { get; set; }
+
         [ForeignKey("NguoiTaoId")]
-        public User User { get; set; }
+        public User Users { get; set; }
 
         [ForeignKey("UnitId")]
         public Unit Unit { get; set; }
+
+        [ForeignKey("DichVuId")]
+        public DichVu DichVu { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }

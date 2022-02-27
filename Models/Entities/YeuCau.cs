@@ -35,11 +35,16 @@ namespace coreWeb.Models.Entities
 
         public int NguoiTaoId { get; set; }
 
+        [MaxLength]
+        public string NoiDungXuLy { get; set; }
+
         public DateTime? NgayTao { get; set; }
 
         public DateTime? NgayCapNhat { get; set; }
 
         public DateTime? NgayYeuCau { get; set; }
+
+        public DateTime? NgayXuLy { get; set; }
 
         public string FileUpload { get; set; }
 

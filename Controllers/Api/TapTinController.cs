@@ -40,7 +40,7 @@ namespace coreWeb.Controllers.Api
             var fileName = vTimeFile + "_" + file.FileName;
             string type = fileName.Split('.').Last();
 
-            if (type.ToLower() != "pdf" && type.ToLower() != "doc" && type.ToLower() != "docx")
+            if (type.ToLower() != "pdf" && type.ToLower() != "doc" && type.ToLower() != "docx" && type.ToLower() != "xls" && type.ToLower() != "xlsx" && type.ToLower() != "xlsm")
             {
                 return Ok(new { status = 0, message = "Không đúng định dạng quy định" });
             }

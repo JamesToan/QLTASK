@@ -75,6 +75,7 @@ namespace coreWeb.Controllers.Api
                     result = new Comment();
                     result.UserId = user.UserId;
                     result.Comments = comments;
+                    result.NgayComment = DateTime.Now;
                     result.YeuCauId = ycId;
                     _context.Add(result);
                     _context.SaveChanges();

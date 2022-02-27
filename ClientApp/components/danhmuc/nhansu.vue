@@ -135,7 +135,28 @@
                       :searchable="false"
                       :options="ListDonVi" />
         </el-form-item>
-
+        <el-form-item label="Dịch vụ" prop="DichVuId">
+          <el-select v-model="formData.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="User" prop="UserId">
+          <el-select v-model="formData.UserId"
+                     placeholder="Chọn user"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMUser"
+                       :key="item.Id"
+                       :label="item.FullName"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <!--<el-form-item label="Loại Chuyên mục" prop="LoaiChuyenMuc">
     <el-input
       v-model="formData.LoaiChuyenMuc"
@@ -173,7 +194,8 @@ import {
   deleteNhanSu,
   getNhanSu,
   selectNhanSu,
-  getListUnitAll
+  getListUnitAll,
+  getListDanhMucYeuCau,
 } from "../../store/api";
   export default {
   components: { Treeselect },
@@ -188,6 +210,8 @@ import {
         ThuTu: null,
         HieuLuc: null,
         UnitId: null,
+        DichVuId: null,
+        UserId : null,
       },
       formRules: {
         TenNhanSu: [
@@ -197,10 +221,26 @@ import {
             trigger: "blur"
           }
         ],
+        UnitId: [
+          {
+            required: true,
+            message: "Vui lòng chọn Đơn Vị",
+            trigger: "blur"
+          }
+        ],
+        UserId: [
+          {
+            required: true,
+            message: "Vui lòng chọn user",
+            trigger: "blur"
+          }
+        ],
         
       },
       listData: [],
       ListDonVi: [],
+      ListDMDichVu: [],
+      ListDMUser:[],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -316,6 +356,13 @@ import {
   created() {
     this.getListData();
     this.listUnit();
+    getListDanhMucYeuCau().then(data => {
+      if (data) {
+        
+        this.ListDMDichVu = data.DMDichVu;
+        this.ListDMUser = data.DMUser;
+      }
+    });
   }
 };
 </script>

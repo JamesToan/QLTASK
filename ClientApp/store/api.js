@@ -129,6 +129,13 @@ export function updateProfile(FullName, Phone, JiraAcount, JiraPass) {
     data
   });
 }
+
+export function getUserUnitId() {
+  return request({
+    url: "api/user/getUnitId",
+    method: "post"
+  });
+}
 //Permis
 export function addPer(Route, Path, IsActive) {
   const data = { Route, Path, IsActive };
@@ -505,6 +512,15 @@ export function deleteNhanSu(id) {
   });
 }
 
+export function getCurrentNS() {
+  
+  return request({
+    url: "api/NhanSu/getCurrentNS",
+    method: "post",
+   
+  });
+}
+
 // YeuCau
 export function getYeuCau() {
 
@@ -578,6 +594,24 @@ export function sendTeleAsync(id) {
   });
 }
 
+export function getYCUnitId(id) {
+  const params = { id };
+  return request({
+    url: "api/yeucau/getYCUnitId",
+    method: "post",
+    params: params
+  });
+}
+
+
+export function completeYeuCau(data) {
+
+  return request({
+    url: "api/yeucau/Completed",
+    method: "post",
+    data: data
+  });
+}
 // Jira
 
 export function getJira() {

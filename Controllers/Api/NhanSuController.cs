@@ -132,6 +132,8 @@ namespace coreWeb.Controllers.Api
                         result.TenNhanSu = model.TenNhanSu;
                         result.NgayCapNhat = DateTime.Now;
                         result.UnitId = model.UnitId;
+                        result.DichVuId = model.DichVuId;
+                        result.UserId = model.UserId;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -176,6 +178,19 @@ namespace coreWeb.Controllers.Api
             }
         }
 
-
+        [HttpPost]
+        public IActionResult getCurrentNS()
+        {
+            var user = new UserClaim(HttpContext);
+            var objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
+            if (objUser != null)
+            {
+                return Ok(objUser);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
     }
 }

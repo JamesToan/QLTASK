@@ -188,8 +188,24 @@ namespace coreWeb.Controllers
                                p.RoleId,
                                p.UserName,
                                p.FullName,
-                               p.Phone
+                               p.Phone,
+                               p.UnitId,
                            }).FirstOrDefault();
+            if (objUser != null)
+            {
+                return Ok(objUser);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult getUnitId()
+        {
+            var user = new UserClaim(HttpContext);
+            var objUser = _context.User.Where(p => p.Id == user.UserId).Select(p => new UserViewModel { UnitId = (int)p.UnitId }).Single();
             if (objUser != null)
             {
                 return Ok(objUser);
@@ -205,6 +221,11 @@ namespace coreWeb.Controllers
             // public string UserName { get; set; }
             public string PasswordOld { get; set; }
             public string PasswordNew { get; set; }
+        }
+        public class UserViewModel
+        {
+            public int UnitId { get; set; }
+            
         }
     }
 }

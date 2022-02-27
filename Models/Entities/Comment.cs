@@ -20,6 +20,8 @@ namespace coreWeb.Models.Entities
 
         public int? YeuCauId { get; set; }
 
+        public DateTime? NgayComment { get; set; }
+
         [ForeignKey("UserId")]
         public User User { get; set; }
 
