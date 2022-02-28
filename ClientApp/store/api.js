@@ -540,12 +540,12 @@ export function selectYeuCau(StateId, DichVuId) {
   });
 }
 
-export function selectYeuCauAll() {
-  
+export function selectYeuCauAll(StateId, DichVuId) {
+  const params = { StateId, DichVuId };
   return request({
     url: "api/yeucau/SelectAll",
     method: "get",
-    
+    params: params
   });
 }
 
@@ -610,6 +610,33 @@ export function completeYeuCau(data) {
     url: "api/yeucau/Completed",
     method: "post",
     data: data
+  });
+}
+
+export function acceptYeuCau(Id) {
+  const params = { Id };
+  return request({
+    url: "api/yeucau/Accept",
+    method: "post",
+    params: params
+  });
+}
+
+export function forwardYeuCau(Id) {
+  const params = { Id };
+  return request({
+    url: "api/yeucau/Forward",
+    method: "post",
+    params: params
+  });
+}
+
+export function deniesYeuCau(Id) {
+  const params = { Id };
+  return request({
+    url: "api/yeucau/Denies",
+    method: "post",
+    params: params
   });
 }
 // Jira

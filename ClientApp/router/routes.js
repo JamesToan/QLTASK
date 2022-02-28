@@ -184,6 +184,16 @@ export const routes = [
           show: "true"
         }
       },
+      {
+        name: "yeucau1",
+        path: "yeucau/:StateId",
+        params: { StateId: 10},
+        component: yeucau,
+        meta: {
+          display: "Yêu cầu mới tạo",
+          show: "true"
+        }
+      },
       
     ]
   },

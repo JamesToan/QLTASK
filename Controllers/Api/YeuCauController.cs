@@ -264,7 +264,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.States)
                        .Include(e => e.User)
                        .Include(e => e.DonViYeuCau)
-                       .OrderByDescending(e => e.ThoiHan)
+                       .OrderByDescending(e => e.Id)
                        .ToList();
                         if (result != null)
                         {
@@ -283,7 +283,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.States)
                                        .Include(e => e.User)
                                        .Include(e => e.DonViYeuCau)
-                                       .OrderByDescending(e => e.ThoiHan)
+                                       .OrderByDescending(e => e.Id)
                                        .ToList();
                         if (result != null)
                         {
@@ -302,7 +302,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.States)
                                       .Include(e => e.User)
                                       .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.ThoiHan)
+                                      .OrderByDescending(e => e.Id)
                                       .ToList();
                         if (result != null)
                         {
@@ -321,7 +321,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.States)
                                       .Include(e => e.User)
                                       .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.ThoiHan)
+                                      .OrderByDescending(e => e.Id)
                                       .ToList();
                         if (result != null)
                         {
@@ -341,7 +341,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.States)
                     .Include(e => e.User)
                     .Include(e => e.DonViYeuCau)
-                    .OrderByDescending(e => e.ThoiHan)
+                    .OrderByDescending(e => e.Id)
                     .ToList();
                         if (result != null)
                         {
@@ -364,7 +364,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.States)
                        .Include(e => e.User)
                        .Include(e => e.DonViYeuCau)
-                       .OrderByDescending(e => e.ThoiHan)
+                       .OrderByDescending(e => e.Id)
                        .ToList();
                         if (result != null)
                         {
@@ -383,7 +383,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.States)
                                        .Include(e => e.User)
                                        .Include(e => e.DonViYeuCau)
-                                       .OrderByDescending(e => e.ThoiHan)
+                                       .OrderByDescending(e => e.Id)
                                        .ToList();
                         if (result != null)
                         {
@@ -402,7 +402,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.States)
                                       .Include(e => e.User)
                                       .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.ThoiHan)
+                                      .OrderByDescending(e => e.Id)
                                       .ToList();
                         if (result != null)
                         {
@@ -415,13 +415,13 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (StateId == 6)
                     {
-                        var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId && e.StateId == 6 && e.UnitId == userinfo.UnitId)
+                        var result = _context.YeuCau.Where(e => e.StateId == 6 && e.UnitId == userinfo.UnitId)
                                       .Include(e => e.DichVu)
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
                                       .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.ThoiHan)
+                                      .OrderByDescending(e => e.Id)
                                       .ToList();
                         if (result != null)
                         {
@@ -441,7 +441,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.States)
                     .Include(e => e.User)
                     .Include(e => e.DonViYeuCau)
-                    .OrderByDescending(e => e.ThoiHan)
+                    .OrderByDescending(e => e.Id)
                     .ToList();
                         if (result != null)
                         {
@@ -472,16 +472,30 @@ namespace coreWeb.Controllers.Api
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
             if (user.RoleId == 1 )
             {
-                
-                    var result = _context.YeuCau.Where(e => StateId == null && e.StateId != 6
-                || e.DichVuId == null && e.StateId != 6 || e.DichVuId == DichVuId && e.StateId != 6)
-                .Include(e => e.DichVu)
-                .Include(e => e.NhanSu)
-                .Include(e => e.States)
-                .Include(e => e.User)
-                .Include(e=> e.DonViYeuCau)
-                .OrderByDescending(e => e.ThoiHan)
-                .ToList();
+                List<YeuCau> result = new List<YeuCau>();
+                if (StateId != null && StateId != 5)    
+                {
+                    result = _context.YeuCau.Where(e => e.StateId == StateId)
+                       .Include(e => e.DichVu)
+                       .Include(e => e.NhanSu)
+                       .Include(e => e.States)
+                       .Include(e => e.User)
+                       .Include(e => e.DonViYeuCau)
+                       .OrderByDescending(e => e.Id)
+                       .ToList();
+                }
+                else
+                {
+                    result = _context.YeuCau.Where(e => e.StateId != 6)
+                       .Include(e => e.DichVu)
+                       .Include(e => e.NhanSu)
+                       .Include(e => e.States)
+                       .Include(e => e.User)
+                       .Include(e => e.DonViYeuCau)
+                       .OrderByDescending(e => e.Id)
+                       .ToList();
+                }
+                    
                     if (result != null)
                     {
                         return Ok(result);
@@ -505,7 +519,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.States)
                                 .Include(e => e.User)
                                 .Include(e => e.DonViYeuCau)
-                                .OrderByDescending(e => e.ThoiHan)
+                                .OrderByDescending(e => e.Id)
                                 .ToList();
                         if (result != null)
                         {
@@ -524,7 +538,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.States)
                                 .Include(e => e.User)
                                 .Include(e => e.DonViYeuCau)
-                                .OrderByDescending(e => e.ThoiHan)
+                                .OrderByDescending(e => e.Id)
                                 .ToList();
                         if (result != null)
                         {
@@ -546,7 +560,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.States)
                                 .Include(e => e.User)
                                 .Include(e => e.DonViYeuCau)
-                                .OrderByDescending(e => e.ThoiHan)
+                                .OrderByDescending(e => e.Id)
                                 .ToList();
                     if (result != null)
                     {
@@ -560,15 +574,59 @@ namespace coreWeb.Controllers.Api
                 
                 else
                 {
-                    var result = _context.YeuCau.Where(e => StateId == null && e.StateId != 6 && e.UnitId == userinfo.UnitId 
-                    || e.DichVuId == null && e.StateId != 6 && e.UnitId == userinfo.UnitId || e.DichVuId == DichVuId && e.StateId != 6 && e.UnitId == userinfo.UnitId)
-                    .Include(e => e.DichVu)
-                    .Include(e => e.NhanSu)
-                    .Include(e => e.States)
-                    .Include(e => e.User)
-                    .Include(e => e.DonViYeuCau)
-                    .OrderByDescending(e => e.ThoiHan)
-                    .ToList();
+                    List<YeuCau> result = new List<YeuCau>();
+                    if (user.RoleId == 2)
+                    {
+                        if (StateId != null && StateId != 5)
+                        {
+                            result = _context.YeuCau.Where(e => (e.DichVuId == null || e.DichVuId == DichVuId) && e.StateId != 6 && e.UnitId == userinfo.UnitId && e.StateId == 10 )
+                                .Include(e => e.DichVu)
+                                .Include(e => e.NhanSu)
+                                .Include(e => e.States)
+                                .Include(e => e.User)
+                                .Include(e => e.DonViYeuCau)
+                                .OrderByDescending(e => e.Id)
+                                .ToList();
+                        }
+                        else
+                        {
+                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.UnitId == userinfo.UnitId)
+                                 .Include(e => e.DichVu)
+                                 .Include(e => e.NhanSu)
+                                 .Include(e => e.States)
+                                 .Include(e => e.User)
+                                 .Include(e => e.DonViYeuCau)
+                                 .OrderByDescending(e => e.Id)
+                                 .ToList();
+                        }
+                    }
+                    else
+                    {
+                        if (StateId != null && StateId != 5)
+                        {
+                            result = _context.YeuCau.Where(e => (e.DichVuId == null || e.DichVuId == DichVuId) && e.StateId != 6 && e.UnitId == userinfo.UnitId && e.StateId == 10 && e.NguoiTaoId == userinfo.Id)
+                                .Include(e => e.DichVu)
+                                .Include(e => e.NhanSu)
+                                .Include(e => e.States)
+                                .Include(e => e.User)
+                                .Include(e => e.DonViYeuCau)
+                                .OrderByDescending(e => e.Id)
+                                .ToList();
+                        }
+                        else
+                        {
+                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                                 .Include(e => e.DichVu)
+                                 .Include(e => e.NhanSu)
+                                 .Include(e => e.States)
+                                 .Include(e => e.User)
+                                 .Include(e => e.DonViYeuCau)
+                                 .OrderByDescending(e => e.Id)
+                                 .ToList();
+                        }
+                    }
+                    
+                    
                     if (result != null)
                     {
                         return Ok(result);
@@ -602,7 +660,7 @@ namespace coreWeb.Controllers.Api
                         model.NguoiTaoId = user.UserId;
                         model.NgayTao = DateTime.Now;
                         model.UnitId = userinfo.UnitId;
-                        model.StateId = 9;
+                        model.StateId = 10;
                         _context.Add(model);
                         _context.SaveChanges();
 
@@ -745,6 +803,117 @@ namespace coreWeb.Controllers.Api
 
                         result.StateId = 6;
                         result.NgayXuLy = DateTime.Now;
+
+                        _context.Update(result);
+                        _context.SaveChanges();
+                        return Ok(result.Id);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Accept(int Id)
+        {
+            try
+            {
+                var user = new UserClaim(HttpContext);
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+                {
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == Id);
+                    if (result != null) //update
+                    {
+                       
+
+                        result.StateId = 7;
+                        
+
+                        _context.Update(result);
+                        _context.SaveChanges();
+                        return Ok(result.Id);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Forward(int Id)
+        {
+            try
+            {
+                var user = new UserClaim(HttpContext);
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+                {
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == Id);
+                    if (result != null) //update
+                    {
+
+
+                        result.StateId = 9;
+
+
+                        _context.Update(result);
+                        _context.SaveChanges();
+                        return Ok(result.Id);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Denies(int Id)
+        {
+            try
+            {
+                var user = new UserClaim(HttpContext);
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+                {
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == Id);
+                    if (result != null) //update
+                    {
+
+
+                        result.StateId = 10;
+
 
                         _context.Update(result);
                         _context.SaveChanges();

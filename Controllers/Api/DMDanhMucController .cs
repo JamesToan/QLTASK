@@ -51,7 +51,7 @@ namespace coreWeb.Controllers
                     }
                    
                     var DMTinhTrang = _context.Status.ToList();
-                    var DMTrangThai = _context.States.ToList();
+                    var DMTrangThai = _context.States.OrderByDescending(e=>e.Id).ToList();
                     var DMDonVi     = _context.DonViYeuCau.ToList();
                     var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderBy(e =>e.Id).ToList();
                     var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList(); 
