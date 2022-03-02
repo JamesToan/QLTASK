@@ -42,5 +42,11 @@ namespace coreWeb.Models
 
         //Comment
         public DbSet<Comment> Comment { get; set; }
+
+        //Comment
+        public DbSet<QuanLyDichVu> QuanLyDichVu { get; set; }
+
+       
+
     }
 }

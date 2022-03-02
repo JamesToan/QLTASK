@@ -9,10 +9,10 @@
               <li class="breadcrumb-item">
                 <a href="javascript: void(0);">Danh mục</a>
               </li>
-              <li class="breadcrumb-item active">Dịch vụ</li>
+              <li class="breadcrumb-item active">Quản lý dịch vụ</li>
             </ol>
           </div>
-          <h4 class="page-title">Dịch vụ</h4>
+          <h4 class="page-title">Quản lý dịch vụ</h4>
         </div>
       </div>
     </div>
@@ -42,38 +42,36 @@
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column prop="TenDichVu"
-                             label="Tên dịch vụ"
+            <el-table-column prop="DichVuId"
+                             label="Dịch vụ"
                              sortable
                              min-width="225">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.TenDichVu}}
+                  {{ scope.row.DichVuId ? scope.row.DichVu.TenDichVu : " "}}
                 </text-highlight>
               </template>
             </el-table-column>
-            <!--el-table-column prop="DonViYeuCau"
-                             label="Đơn Vị Yêu Cầu"
+            <el-table-column prop="NhanSuId"
+                             label="Nhân sự quản lý"
                              sortable
                              min-width="225">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.DonViYeuCau}}
+                  {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : " "}}
                 </text-highlight>
               </template>
-            </el-table-column>-->
-            <!--<el-table-column
-    prop="LoaiChuyenMuc"
-    label="Loại Chuyên mục"
-    sortable
-    min-width="225"
-  >
-    <template slot-scope="scope">
-      <text-highlight :queries="search" style="word-break: normal;">
-        {{ scope.row.LoaiChuyenMuc }}
-      </text-highlight>
-    </template>
-  </el-table-column>-->
+            </el-table-column>
+            <el-table-column prop="UnitId"
+                             label="Địa bàn"
+                             sortable
+                             min-width="225">
+              <template slot-scope="scope">
+                <text-highlight :queries="search" style="word-break: normal;">
+                  {{ scope.row.UnitId ? scope.row.Unit.UnitName : " " }}
+                </text-highlight>
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="" width="125">
               <template slot="header">
                 <el-button type="primary"
@@ -112,48 +110,47 @@
       </div>
     </div>
     <el-dialog
-      title="Cập nhật dịch vụ"
+      title="Cập nhật quản lý dịch vụ"
       :visible.sync="dialogFormDisplay"
       top="15px"
     >
-      <el-form
-        :model="formData"
-        :rules="formRules"
-        ref="formData"
-        label-width="150px"
-      >
-        <!-- <el-form-item label="Mã Chuyên mục" prop="MaChuyenMuc">
-          <el-input
-            v-model="formData.MaChuyenMuc"
-            type="text"
-            size="small"
-            :readonly="isEditor"
-          ></el-input>
-        </el-form-item> -->
-        <el-form-item label="Tên dịch vụ" prop="TenDichVu">
-          <el-input
-            v-model="formData.TenDichVu"
-            type="text"
-            size="small"
-          ></el-input>
+      <el-form :model="formData"
+               :rules="formRules"
+               ref="formData"
+               label-width="150px">
+
+        <el-form-item label="Dịch vụ" prop="DichVuId">
+          <el-select v-model="formData.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
         </el-form-item>
-         <!--<el-form-item label="Đơn Vị Yêu Cầu" prop="DonViYeuCau">
-          <el-input
-            v-model="formData.DonViYeuCau"
-            type="text"
-            size="small"
-          ></el-input>
-        </el-form-item>-->
-        <!--<el-form-item label="Thứ tự" prop="ThuTu">
-          <el-input
-            v-model="formData.ThuTu"
-            type="number"
-            size="small"
-          ></el-input>
+
+        <el-form-item label="Nhân sự quản lý" prop="NhanSuId" >
+          <el-select v-model="formData.NhanSuId"
+                     placeholder="Chọn nhân sự"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListNhanSu"
+                       :key="item.Id"
+                       :label="item.TenNhanSu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="Hiệu lực">
-          <el-switch v-model="formData.HieuLuc" size="small"></el-switch>
-        </el-form-item>-->
+
+        <el-form-item label="Địa bàn" prop="UnitId" >
+          <treeselect v-model="formData.UnitId"
+                      :multiple="false"
+                      placeholder="Chọn đơn vị"
+                      :searchable="false"
+                      :options="ListDonVi" />
+        </el-form-item>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm" size="small">Bỏ qua</el-button>
@@ -165,14 +162,20 @@
   </div>
 </template>
 <script>
+  import Treeselect from "@riophae/vue-treeselect";
+  // import the styles
+  import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {
-  addDichVu,
-  updateDichVu,
-  deleteDichVu,
-  getDichVu,
-  selectDichVu
+    getQLDV,
+    selectQLDV,
+    addQLDV,
+    updateQLDV,
+    deleteQLDV,
+    getListDanhMucYeuCau,
+    getListUnitAll,
 } from "../../store/api";
-export default {
+  export default {
+    components: { Treeselect },
   data() {
     return {
       dialogFormDisplay: false,
@@ -180,29 +183,38 @@ export default {
       isEditor: false,
       search: "",
       formData: {
-        TenDichVu: null,
-        DonViYeuCau: null,
-        ThuTu: null,
-        HieuLuc: null
+        DichVuId: null,
+        UnitId: null,
+        NhanSuId: null,
+       
       },
       formRules: {
-        TenDichVu: [
+        DichVuId: [
           {
             required: true,
-            message: "Vui lòng nhập Tên Dịch Vụ",
+            message: "Vui lòng nhập dịch vụ",
             trigger: "blur"
           }
         ],
-        DonViYeuCau: [
+        UnitId: [
           {
             required: true,
-            message: "Vui lòng nhập Đơn Vị Yêu Cầu",
+            message: "Vui lòng nhập địa bàn",
             trigger: "blur"
           }
         ],
-        
+        NhanSuId: [
+          {
+            required: true,
+            message: "Vui lòng nhập nhân sự",
+            trigger: "blur"
+          }
+        ],
       },
       listData: [],
+      ListDonVi: [],
+      ListNhanSu: [],
+      ListDichVu:[],
       pagination: 10,
       total: 10,
       activePage: 1,
@@ -244,7 +256,7 @@ export default {
         cancelButtonText: "Cancel",
         type: "warning"
       }).then(() => {
-        deleteDichVu(row.Id).then(data => {
+        deleteQLDV(row.Id).then(data => {
           this.$message({
             type: "success",
             message: "Delete completed"
@@ -260,7 +272,7 @@ export default {
     },
     getListData() {
       this.loading = true;
-      selectDichVu().then(data => {
+      selectQLDV().then(data => {
         this.listData = data;
         this.total = data.length;
         this.loading = false;
@@ -271,13 +283,39 @@ export default {
       this.$refs.formData.validate(valid => {
         if (valid) {
           if (this.isEditor == 0) {
-            addDichVu(this.formData).then(data => {
+            addQLDV(this.formData).then(data => {
               //console.log(data);
+              if (data != null && data != "") {
+                this.$message({
+                  type: "success",
+                  message: "Thêm mới thành công!"
+                });
+              }
+              else {
+                this.$message({
+                  type: "warning",
+                  message: "Không thể thêm mới!"
+                });
+
+              }
               this.getListData();
             });
           } else {
-            updateDichVu( this.formData).then(data => {
+            updateQLDV( this.formData).then(data => {
               //console.log(data);
+              if (data != null && data != "") {
+                this.$message({
+                  type: "success",
+                  message: "Cập nhật thành công!"
+                });
+              }
+              else {
+                this.$message({
+                  type: "warning",
+                  message: "Không thể cập nhật!"
+                });
+
+              }
               this.getListData();
             });
           }
@@ -287,14 +325,22 @@ export default {
         }
       });
     },
+    listUnit() {
+      this.loading = true;
+      getListUnitAll().then(data => {
+        if (data != null) {
+          this.ListDonVi = data;
+        }
+      });
+    },
     handleSizeChange(val) {
       this.pagination = val;
     },
     renderData() {
       var _data = this.listData.filter(post => {
-        return (
-          post.TenDichVu.toLowerCase().includes(this.search.toLowerCase()) 
-        );
+        var id = post.DichVuId;
+        return post.DichVuId;
+        //return id.toLowerCase().includes(this.search.toLowerCase());
       });
       this.total = _data.length;
       return _data.slice(
@@ -307,9 +353,22 @@ export default {
     }
   },
 
-  created() {
-    this.getListData();
-  }
+    created() {
+      
+      getListDanhMucYeuCau().then(data => {
+        if (data) {
+          this.ListNhanSu = data.DMNhanSu;
+          
+          
+          this.ListDichVu = data.DMDichVu;
+          
+         
+        }
+      });
+
+      this.getListData();
+      this.listUnit();
+    }
 };
 </script>
 <style></style>

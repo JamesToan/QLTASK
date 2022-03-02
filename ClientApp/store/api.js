@@ -552,7 +552,7 @@ export function selectYeuCauAll(StateId, DichVuId) {
 export function addYeuCau(data) {
   //const data = { };
   return request({
-    url: "api/yeucau/add",
+    url: "api/yeucau/Add",
     method: "post",
     data: data
   });
@@ -785,6 +785,53 @@ export function deleteComments(id) {
   const params = { id };
   return request({
     url: "api/comment/delete",
+    method: "post",
+    params: params
+  });
+}
+
+//  ----- Quản lý dịch vụ -------//
+
+export function getQLDV() {
+
+  return request({
+    url: "api/quanlydichvu/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectQLDV() {
+  //const params = { qlId };
+  return request({
+    url: "api/quanlydichvu/Select",
+    method: "get",
+    //params: params
+  });
+}
+
+export function addQLDV(data) {
+  
+  return request({
+    url: "api/quanlydichvu/Add",
+    method: "post",
+    data
+  });
+}
+
+export function updateQLDV(comments, id) {
+  const params = { comments, id };
+  return request({
+    url: "api/quanlydichvu/update",
+    method: "post",
+    params: params
+  });
+}
+
+export function deleteQLDV(id) {
+  const params = { id };
+  return request({
+    url: "api/quanlydichvu/delete",
     method: "post",
     params: params
   });

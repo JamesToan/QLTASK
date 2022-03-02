@@ -35,11 +35,11 @@ namespace coreWeb.Controllers
                 {
                     if (userinfo .UnitId == 1)
                     {
-                        DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).Include(e => e.DichVu).Include(e => e.Unit).ToList();
+                        DMNhanSu = _context.NhanSu.Where(p => p.UnitId == userinfo.UnitId).Include(e => e.Unit).ToList();
                     }
                     else
                     {
-                        DMNhanSu = _context.NhanSu.Include(e => e.DichVu).Include(e => e.Unit).ToList();
+                        DMNhanSu = _context.NhanSu.Include(e => e.Unit).ToList();
                     }
                     if (user.RoleId == 1)
                     {
@@ -49,13 +49,13 @@ namespace coreWeb.Controllers
                     {
                         DMUser = _context.User.Where(p => p.UnitId == userinfo.UnitId).ToList();
                     }
-                   
+                    var DMQLDV = _context.QuanLyDichVu.ToList();
                     var DMTinhTrang = _context.Status.ToList();
                     var DMTrangThai = _context.States.OrderByDescending(e=>e.Id).ToList();
                     var DMDonVi     = _context.DonViYeuCau.ToList();
                     var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderBy(e =>e.Id).ToList();
                     var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList(); 
-                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null && DMUser != null)
+                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null && DMUser != null && DMQLDV != null)
                     {
                         var result = new
                         {
@@ -66,6 +66,7 @@ namespace coreWeb.Controllers
                             DMJira = DMJira,
                             DMDonVi = DMDonVi,
                             DMUser  = DMUser,
+                            DMQLDV = DMQLDV,
                         };
                         return Ok(result);
                     }

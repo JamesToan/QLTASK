@@ -20,7 +20,7 @@ import nhansu from "components/danhmuc/nhansu";
 import state from "components/danhmuc/state";
 import status from "components/danhmuc/status";
 import donviyeucau from "components/danhmuc/donviyeucau";
-
+import quanlydichvu from "components/danhmuc/quanlydichvu";
 //// quan ly
 
 import yeucau from "components/quanly/yeucau";
@@ -130,7 +130,7 @@ export const routes = [
         path: "dichvu",
         component: dichvu,
         meta: {
-          display: "Dịch Vụ",
+          display: "Dịch vụ",
           show: "true"
         }
       },
@@ -139,7 +139,16 @@ export const routes = [
         path: "nhansu",
         component: nhansu,
         meta: {
-          display: "Nhân Sự",
+          display: "Nhân sự",
+          show: "true"
+        }
+      },
+      {
+        name: "quanlydichvu",
+        path: "quanlydichvu",
+        component: quanlydichvu,
+        meta: {
+          display: "Quản lý dịch vụ",
           show: "true"
         }
       },
@@ -148,7 +157,7 @@ export const routes = [
         path: "state",
         component: state,
         meta: {
-          display: "Trạng Thái",
+          display: "Trạng thái",
           show: "true"
         }
       },
@@ -157,7 +166,7 @@ export const routes = [
         path: "donviyeucau",
         component: donviyeucau,
         meta: {
-          display: "Đơn Vị Yêu Cầu",
+          display: "Đơn vị yêu cầu",
           show: "true"
         }
       },
@@ -180,7 +189,7 @@ export const routes = [
         path: "yeucau",
         component: yeucau,
         meta: {
-          display: "Danh sách yêu cầu",
+          display: "Tất cả yêu cầu",
           show: "true"
         }
       },
@@ -194,7 +203,36 @@ export const routes = [
           show: "true"
         }
       },
-      
+      {
+        name: "yeucau2",
+        path: "yeucau/:StateId",
+        params: { StateId: 9 },
+        component: yeucau,
+        meta: {
+          display: "Yêu cầu chưa xử lý",
+          show: "true"
+        }
+      },
+      {
+        name: "yeucau3",
+        path: "yeucau/:StateId",
+        params: { StateId: 7 },
+        component: yeucau,
+        meta: {
+          display: "Yêu cầu đang xử lý",
+          show: "true"
+        }
+      },
+      {
+        name: "yeucau4",
+        path: "yeucau/:StateId",
+        params: { StateId: 6 },
+        component: yeucau,
+        meta: {
+          display: "Yêu cầu đã hoàn thành",
+          show: "true"
+        }
+      },
     ]
   },
  

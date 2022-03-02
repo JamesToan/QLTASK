@@ -33,7 +33,7 @@
         <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
 
           <div class="header-title">
-            Tổng số Yêu cầu
+            Tổng số yêu cầu
           </div>
           <div align="center"
                style="font-size: 64px; font-weight: bold"
@@ -67,10 +67,10 @@
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
               <div class="header-title">
-                Chưa hoàn thành
+                Mới tạo
               </div>
               <div align="center" style="font-size: 26px; font-weight: bold">
-                {{ ThongKe.ChuaHT }}
+                {{ ThongKe.MoiTao }}
               </div>
             </div>
           </div>
@@ -165,7 +165,7 @@ export default {
       arrayColumn: [],
       markers: [],
       ListDMDichVu: [],
-      DichVuIdFilter: 7,
+      DichVuIdFilter: 1,
       mapConfig: {
         zoom: 13,
         center: { lat: 10.53661, lng: 106.413002 }
@@ -312,7 +312,7 @@ export default {
     getThongKe() {
       
       this.loading = true;
-      if (this.DichVuIdFilter != 7) {
+      if (this.DichVuIdFilter != 1) {
         getThongKe(this.DichVuIdFilter).then(data => {
           this.ThongKe = data;
           this.options.series[0].data = data.Chart;

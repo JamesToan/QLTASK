@@ -73,14 +73,14 @@
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column prop="Id" label="Mã Yêu Cầu" width="150">
+            <el-table-column prop="Id" label="Mã" width="80">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
                   YC{{ scope.row.Id }}
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu Cầu" width="250">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" width="250">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
@@ -96,7 +96,7 @@
             </template>
           </el-table-column>-->
             <el-table-column prop="JiraDaGui"
-                             label="Task Jira"
+                             label="Task jira"
                              width="150">
               <template slot-scope="scope">
                 <!--<text-highlight :queries="search" style="word-break: normal;" >
@@ -110,10 +110,11 @@
 
 
             <el-table-column prop="NhanSu"
-                             label="Người Thực Hiện"
-                             width="130"
-                             align="center">
-              <template slot-scope="scope">
+                             label="Người thực hiện"
+                             width="140"
+                             align="center"
+                             style="white-space: nowrap">
+              <template slot-scope="scope" style="white-space: nowrap">
                 {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}
               </template>
             </el-table-column>
@@ -127,7 +128,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="StateId"
-                             label="Trạng Thái"
+                             label="Trạng thái"
                              width="120">
               <template slot-scope="scope">
                 <text-highlight :queries="search" :style=changetextColor(scope.row.States.Id)>
@@ -136,7 +137,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="Status" label="Tình Trạng" width="125">
+            <el-table-column prop="Status" label="Tình trạng" width="125">
 
               <template slot-scope="scope">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now() && scope.row.StateId != 6" style="color:darkorange">
@@ -185,6 +186,8 @@
         </div>
       </div>
     </div>
+
+    <!--    ///////////////////   -->
     <el-dialog title="Quản lý yêu cầu"
                :visible.sync="dialogFormDisplay"
                top="55px"
@@ -459,7 +462,7 @@
         <el-form-item label="Số lần comment" prop="Comment">
 
           <el-tabs type="border-card">
-            <el-tab-pane label="Jira Comment">
+            <el-tab-pane label="Jira comment">
               <div>
                 <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
                   <li>
@@ -468,7 +471,7 @@
                 </ul>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="Yêu Cầu Comment">
+            <el-tab-pane label="Yêu cầu comment">
               <el-form-item v-for="item in YeuCauComment">
                 <!--{{item.Comments + ' - ' + item.NgayComment}}-->
                 <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + item.NgayComment"></span>
@@ -538,7 +541,7 @@
   </el-dialog>-->
 
 
-    <!--     \\\\\\\\\\\\\\\\\\\     -->
+    <!--     \\\\\\\\\\  PBH  \\\\\\\\\     -->
 
     <el-dialog title="Quản lý yêu cầu"
                :visible.sync="dialogFormBHDisplay"
@@ -587,7 +590,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Ngày khách hàng yêu cầu" prop="NgayYeuCau">
+            <el-form-item label="Ngày KH yêu cầu" prop="NgayYeuCau">
               <el-date-picker v-model="formData2.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
@@ -647,6 +650,9 @@
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
         <el-button type="primary" size="small" @click="addDataBH">Cập nhật</el-button>
+        <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>
+
+        
       </span>
     </el-dialog>
 
@@ -683,7 +689,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Ngày khách hàng yêu cầu:" prop="NgayYeuCau">
+              <el-form-item label="Ngày KH yêu cầu:" prop="NgayYeuCau">
 
                 {{formatDate(formData3.NgayYeuCau)}}
               </el-form-item>
@@ -733,13 +739,13 @@
                   <!--{{item.Comments + ' - ' + item.NgayComment}}-->
 
                 </el-form-item>
-                <el-form-item prop="CommentYeuCau">
+                <el-form-item prop="CommentYeuCau" >
                   <!--<el-input type="text"
               size="small" v-model="formData3.CommentYeuCau"></el-input>-->
                   <ckeditor :editor="editor"
                             v-model="formData3.CommentYeuCau"
-                            :config="editorConfig"></ckeditor>
-                  <el-button @click="handleAddComment">Save Comment</el-button>
+                            :config="editorConfig" v-if="isComment"></ckeditor>
+                  <el-button @click="handleAddComment" v-if="isComment">Save Comment</el-button>
                 </el-form-item>
 
 
@@ -783,9 +789,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHView" size="small">Bỏ qua</el-button>
-        <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
         
-
       </span>
     </el-dialog>
 
@@ -822,7 +826,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Ngày khách hàng yêu cầu:" prop="NgayYeuCau">
+              <el-form-item label="Ngày KH yêu cầu:" prop="NgayYeuCau">
 
                 {{formatDate(formData4.NgayYeuCau)}}
               </el-form-item>
@@ -875,7 +879,7 @@
             <ckeditor :editor="editor"
                       v-model="formData4.NoiDungXuLy"
                       :config="editorConfig"
-                      :disabled="!allowEdit" ></ckeditor>
+                      :disabled="isAccept" ></ckeditor>
 
           </el-form-item>
         </div>
@@ -885,7 +889,11 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
-        <el-button type="primary" size="small" @click="xuLyYeuCau">Xử lý</el-button>
+        <el-button v-if="isAccept" @click="deniesYC" size="small" type="warning">Trả về</el-button>
+        <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
+        <el-button v-if="isAccept" @click="capnhatYeuCau" size="small" type="primary" v-else>Tiếp nhận</el-button>
+        <el-button type="primary" size="small" @click="xuLyYeuCau" v-else>Xử lý</el-button>
+
       </span>
     </el-dialog>
   </div>
@@ -939,6 +947,8 @@ export default {
       isPermiss: true,
       isView: false,
       isEdit : false,
+      isComment:true,
+      isChuyenYc: false,
       search: "",
       isAccept: false,
       StateIdFilter: 5,
@@ -995,6 +1005,7 @@ export default {
         CommentYeuCau:null,
       },
       formData2: {
+
         TenYeuCau: null,
         DichVuId: null,
         NhanSuId: null,
@@ -1003,6 +1014,7 @@ export default {
         NoiDung: null,
         JiraDaGui: null,
         FileUpload: null,
+
       },
       formData3: {
         Id: null,
@@ -1100,6 +1112,7 @@ export default {
         }
       },
       RoleId: getRole(),
+
       listData: [],
       YeuCauComment:[],
       ListDMTrangThai: [],
@@ -1109,6 +1122,7 @@ export default {
       ListDMTinhTrang: [],
       ListDMDonVi :[],
       ListJira: [],
+      ListQLDV: [],
       TrangThai: [],
       Comment: [],
       fileList: [],
@@ -1202,9 +1216,11 @@ export default {
     },
     setNguoiThucHien(val){
         var dv = this.ListDMDichVu.find(obj => obj.Id == val);
-        var nhansu = this.ListDMNhanSu.find(obj => obj.DichVuId == dv.Id);
+
+
+        var qldv = this.ListQLDV.find(obj => obj.DichVuId == dv.Id && obj.UnitId == this.UserUnitId);
         if(dv){
-          this.formData2.NhanSuId = nhansu.Id;
+          this.formData2.NhanSuId = qldv.NhanSuId;
 
         }
 
@@ -1246,10 +1262,19 @@ export default {
       if (this.StateIdFilter || this.DichVuIdFilter) {
 
         if(this.UserUnitId ==1 ){
-          if (this.$refs.formData !== undefined) {
-          this.$refs.formData.resetFields();
+          if(this.UserDV != 7 && this.UserDV != 8){
+            if (this.$refs.formData2 !== undefined) {
+              this.$refs.formData2.resetFields();
+            }
+            this.dialogFormBHDisplay = true;
           }
-          this.dialogFormDisplay = true;
+          else{
+            if (this.$refs.formData !== undefined) {
+            this.$refs.formData.resetFields();
+            }
+            this.dialogFormDisplay = true;
+          }
+
         }
         else if(this.UserUnitId !=1){
             if (this.$refs.formData2 !== undefined) {
@@ -1292,9 +1317,11 @@ export default {
       this.dialogFormDisplayJira = true;
     },
     handleView(index, row) {
-       if(row.StateId ==9 && this.UserUnitId == 1){
-          this.isAccept = true;
-        }
+
+       if(row.StateId == 6){
+          this.isComment = false;
+          console.log(this.isComment)
+      }
 
       if(row.DichVuId == this.UserDV){
         if (this.$refs.formData3 !== undefined) {
@@ -1416,41 +1443,71 @@ export default {
     },
     handleEdit(index, row) {
 
+      this.isChuyenYc = false;
       if(this.UserUnitId == 1 ){
           var bool = false;
-
-          if(row.StateId ==6){
+          if(row.StateId ==9){
+            this.isAccept = true;
+          }
+          if(row.StateId == 6){
             this.$message({
                type: "warning",
                 message: "Không thể cập nhật!"
               });
           }
-          else if(row.StateId == 9 && this.RoleId != 1){
-              this.$message({
-               type: "warning",
-                message: "Chưa tiếp nhận yêu cầu!"
-              });
 
-          }
           else{
               if (row.DichVuId == this.UserDV){
-              if (this.$refs.formData4 !== undefined) {
-              this.$refs.formData4.resetFields();
+                if (this.$refs.formData4 !== undefined) {
+                this.$refs.formData4.resetFields();
+
+                }
+                this.formData4 = Object.assign({}, row);
+                this.stateOld = this.formData4.StateId;
+
+                console.log(this.stateOld);
+                if(this.formData4.DichVuId != null){
+                    var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData4.DichVuId);
+                    this.ListDMDonVi = dv.DonVi;
+                }
+
+                if (this.formData4.FileUpload) {
+                  this.fileList = [];
+                  this.fileDoc = [];
+                  var _arr = JSON.parse(this.formData4.FileUpload);
+                  for (var i = 0; i < _arr.length; i++) {
+                    var urlFile = "/uploads/" + _arr[i];
+                    this.fileList.push({ name: _arr[i], url: urlFile });
+                    this.fileDoc.push({ key: _arr[i], file: _arr[i] });
+                  }
+                }
+
+                this.isEditor = true;
+                this.dialogFormBHHandle = true;
+            }
+            else{
+
+              if(this.RoleId ==1 && row.UnitId !=1 ){
+                    this.isEdit = true;
+              }
+
+              if (this.$refs.formData !== undefined) {
+                this.$refs.formData.resetFields();
 
               }
-              this.formData4 = Object.assign({}, row);
-              this.stateOld = this.formData4.StateId;
+              this.formData = Object.assign({}, row);
+              this.stateOld = this.formData.StateId;
 
               console.log(this.stateOld);
-              if(this.formData4.DichVuId != null){
-                  var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData4.DichVuId);
+              if(this.formData.DichVuId != null){
+                  var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData.DichVuId);
                   this.ListDMDonVi = dv.DonVi;
               }
 
-              if (this.formData4.FileUpload) {
+              if (this.formData.FileUpload) {
                 this.fileList = [];
                 this.fileDoc = [];
-                var _arr = JSON.parse(this.formData4.FileUpload);
+                var _arr = JSON.parse(this.formData.FileUpload);
                 for (var i = 0; i < _arr.length; i++) {
                   var urlFile = "/uploads/" + _arr[i];
                   this.fileList.push({ name: _arr[i], url: urlFile });
@@ -1459,47 +1516,14 @@ export default {
               }
 
               this.isEditor = true;
-              this.dialogFormBHHandle = true;
-          }
-          else{
-
-            if(this.RoleId ==1 && row.UnitId !=1 ){
-                  this.isEdit = true;
+              this.dialogFormDisplay = true;
             }
 
-            if (this.$refs.formData !== undefined) {
-              this.$refs.formData.resetFields();
 
-            }
-            this.formData = Object.assign({}, row);
-            this.stateOld = this.formData.StateId;
-
-            console.log(this.stateOld);
-            if(this.formData.DichVuId != null){
-                var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData.DichVuId);
-                this.ListDMDonVi = dv.DonVi;
-            }
-
-            if (this.formData.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
-
-            this.isEditor = true;
-            this.dialogFormDisplay = true;
-          }
-
-
-          getYCUnitId(this.formData.Id).then(data => {
-            this.YCUnit = data.UnitId;
-          });
-          console.log(this.YCUnit)
+            getYCUnitId(this.formData.Id).then(data => {
+              this.YCUnit = data.UnitId;
+            });
+            console.log(this.YCUnit)
 
           }
 
@@ -1507,7 +1531,7 @@ export default {
 
       }
       else if(this.UserUnitId != 1){
-        if(row.StateId == 9 ){
+        if(row.StateId == 10){
           if (this.$refs.formData2 !== undefined) {
             this.$refs.formData2.resetFields();
 
@@ -1516,6 +1540,11 @@ export default {
           this.stateOld = this.formData2.StateId;
 
           console.log(this.stateOld);
+
+          if(this.RoleId != 1 && row.StateId == 10){
+            this.isChuyenYc = true;
+
+          }
 
           if (this.formData2.FileUpload) {
             this.fileList = [];
@@ -1527,13 +1556,14 @@ export default {
               this.fileDoc.push({ key: _arr[i], file: _arr[i] });
             }
           }
+
           this.isEditor = true;
           this.dialogFormBHDisplay = true;
         }
         else{
               this.$message({
                type: "warning",
-                message: "Yêu cầu đã được tiếp nhận, không thể cập nhật!"
+                message: "Yêu cầu đã chuyển đi, không thể cập nhật!"
               });
         }
 
@@ -1657,8 +1687,10 @@ export default {
     },
     getListData() {
       this.loading = true;
-      getCurrentNS().then(data => {
-          this.UserDV = data.DichVuId;
+        getCurrentNS().then(data => {
+          if(data != null && data != ""){
+            this.UserDV = data.DichVuId;
+          }
 
        });
 
@@ -1798,11 +1830,11 @@ export default {
       });
     },
     AcceptYeuCau(){
-       this.$refs.formData3.validate(valid => {
+       this.$refs.formData4.validate(valid => {
         if (valid) {
 
 
-              acceptYeuCau(this.formData3.Id).then(data => {
+              acceptYeuCau(this.formData4.Id).then(data => {
                   if(data != null && data != ""){
                       this.$message({
                         type: "success",
@@ -1816,7 +1848,49 @@ export default {
                        });
 
                   }
-              this.dialogFormBHView= false;
+              this.dialogFormBHHandle= false;
+              this.getListData();
+              });
+
+
+
+        } else {
+          return false;
+        }
+      });
+    },
+    capnhatYeuCau(){
+
+      this.$refs.formData4.validate(valid => {
+        if (valid) {
+          if (this.formData4.FileUpload) {
+              this.fileList = [];
+              this.fileDoc = [];
+              var _arr = JSON.parse(this.formData4.FileUpload);
+              for (var i = 0; i < _arr.length; i++) {
+                var urlFile = "/uploads/" + _arr[i];
+                this.fileList.push({ name: _arr[i], url: urlFile });
+                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
+              }
+            }
+            this.formData4.FileUpload = JSON.stringify(
+            this.fileDoc.map(ite => ite.file));
+
+              updateYeuCau(this.formData4).then(data => {
+                  if(data != null && data != ""){
+                      this.$message({
+                        type: "success",
+                        message: "Cập nhật thành công!"
+                      });
+                  }
+                  else{
+                      this.$message({
+                        type: "warning",
+                        message: "Không thể cập nhật!"
+                       });
+
+                  }
+              this.dialogFormBHHandle= false;
               this.getListData();
               });
 
@@ -1884,7 +1958,9 @@ export default {
             }
             this.formData2.FileUpload = JSON.stringify(
             this.fileDoc.map(ite => ite.file));
-            if(this.isEditor == 0){
+
+
+            if (this.isEditor == 0){
               addYeuCau(this.formData2).then(data => {
                   if(data != null && data != ""){
                       this.$message({
@@ -2071,6 +2147,50 @@ export default {
           });
 
     },
+    forwardYC(){
+
+      forwardYeuCau(this.formData2.Id).then(data =>{
+        if(data != "" && data != null){
+              this.$message({
+               type: "success",
+                message: "Chuyển thành công!"
+              });
+              this.getListComment(this.formData2.Id);
+            }
+            else{
+               this.$message({
+               type: "warning",
+                message: "Chuyển thất bại!"
+              });
+            }
+         this.dialogFormBHDisplay= false;
+         this.getListData();
+      });
+
+
+    },
+  deniesYC(){
+
+      deniesYeuCau(this.formData4.Id).then(data =>{
+        if(data != "" && data != null){
+              this.$message({
+               type: "success",
+                message: "Đã từ chối!"
+              });
+              this.getListComment(this.formData4.Id);
+            }
+            else{
+               this.$message({
+               type: "warning",
+                message: "Từ chối thất bại!"
+              });
+            }
+         this.dialogFormBHHandle= false;
+         this.getListData();
+      });
+
+
+    },
     handleSizeChange(val) {
       this.pagination = val;
     },
@@ -2140,9 +2260,20 @@ export default {
    console.log(this.$route.params);
    if(this.$route.params.StateId == 10){
       this.StateIdFilter = parseInt(this.$route.params.StateId);
-      console.log(this.StateIdFilter);
-  }
 
+   }
+  else if(this.$route.params.StateId == 9){
+     this.StateIdFilter = parseInt(this.$route.params.StateId);
+
+  }
+  else if(this.$route.params.StateId == 7){
+     this.StateIdFilter = parseInt(this.$route.params.StateId);
+
+  }
+   else if(this.$route.params.StateId == 6){
+     this.StateIdFilter = parseInt(this.$route.params.StateId);
+
+  }
     getListDanhMucYeuCau().then(data => {
       if (data) {
         this.ListDMNhanSu = data.DMNhanSu;
@@ -2151,6 +2282,7 @@ export default {
         this.ListDMDichVu = data.DMDichVu;
         this.ListDMJira = data.DMJira;
         this.ListDMDonVi = data.DMDonVi;
+        this.ListQLDV = data.DMQLDV;
       }
     });
 

@@ -5,27 +5,31 @@ using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace coreWeb.Controllers.Api
 {
+
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class NhanSuController : ControllerBase
+    public class QuanLyDichVuController : ControllerBase
     {
         private ApplicationDbContext _context;
 
-        public NhanSuController(ApplicationDbContext context)
+        public QuanLyDichVuController(ApplicationDbContext context)
         {
             _context = context;
         }
+
+
 
         [HttpGet]
         public IActionResult Get()
         {
             var user = new UserClaim(HttpContext);
-            var result = _context.NhanSu.SingleOrDefault();
+            var result = _context.QuanLyDichVu.SingleOrDefault();
             if (result != null)
             {
                 return Ok(result);
@@ -40,49 +44,30 @@ namespace coreWeb.Controllers.Api
         public IActionResult Select()
         {
             var user = new UserClaim(HttpContext);
-            if (user.RoleId == 1)
+            var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
             {
-                var result = _context.NhanSu.ToList();
-                if (result != null)
+                if (userinfo.UnitId == 1)
                 {
-                    return Ok(result);
+                    var result = _context.QuanLyDichVu.
+                    Include(e => e.DichVu).
+                    Include(e => e.NhanSu).
+                    Include(e => e.Unit)
+                    .ToList();
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
                 }
                 else
                 {
                     return NoContent();
                 }
-            }
-            else if (user.RoleId == 2 || user.RoleId == 3)
-            {
-                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-                if (userinfo.UnitId == 1)
-                {
-                    var result = _context.NhanSu.Where(p => p.UnitId == 1).ToList();
 
-                    if (result != null)
-                    {
-                        return Ok(result);
-                    }
-                    else
-                    {
-                        return NoContent();
-                    }
-                }
-                else
-                {
-                    var result = _context.NhanSu.Where(p => p.UnitId != 1 && p.UnitId == userinfo.UnitId).ToList();
-
-                    if (result != null)
-                    {
-                        return Ok(result);
-                    }
-                    else
-                    {
-                        return NoContent();
-                    }
-                }
-               
-               
             }
             else
             {
@@ -92,17 +77,13 @@ namespace coreWeb.Controllers.Api
 
 
         [HttpPost]
-        public IActionResult Add([FromBody] NhanSu model)
+        public IActionResult Add([FromBody] QuanLyDichVu model)
         {
             try
             {
                 var user = new UserClaim(HttpContext);
-                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                 if (user != null)
                 {
-                    model.NguoiTaoId = user.UserId;
-                    model.NgayTao = DateTime.Now;
-                    
                     _context.Add(model);
                     _context.SaveChanges();
                     return Ok(model.Id);
@@ -119,21 +100,19 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult Update([FromBody] NhanSu model)
+        public IActionResult Update([FromBody] QuanLyDichVu model)
         {
             try
             {
                 var user = new UserClaim(HttpContext);
-                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+                if (user.RoleId == 1 || user.RoleId == 2)
                 {
-                    var result = _context.NhanSu.SingleOrDefault(e => e.Id == model.Id);
+                    var result = _context.QuanLyDichVu.SingleOrDefault(e => e.Id == model.Id);
                     if (result != null) //update
                     {
-                        result.TenNhanSu = model.TenNhanSu;
-                        result.NgayCapNhat = DateTime.Now;
-                        result.UnitId = model.UnitId;
                         result.DichVuId = model.DichVuId;
-                        result.UserId = model.UserId;
+                        result.NhanSuId = model.NhanSuId;
+                        result.UnitId = model.UnitId;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -160,7 +139,7 @@ namespace coreWeb.Controllers.Api
         {
             try
             {
-                var result = _context.NhanSu.SingleOrDefault(e => e.Id == id);
+                var result = _context.QuanLyDichVu.SingleOrDefault(e => e.Id == id);
                 if (result != null) //update
                 {
                     _context.Remove(result);
@@ -178,32 +157,6 @@ namespace coreWeb.Controllers.Api
             }
         }
 
-        [HttpPost]
-        public IActionResult getCurrentNS()
-        {
-            var user = new UserClaim(HttpContext);
-            var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-            NhanSuViewModel objUser = new NhanSuViewModel();
-            if (nhansu.DichVuId != null)
-            {
-                objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId }).Single();
-            }
-            
-            if (objUser != null)
-            {
-                return Ok(objUser);
-            }
-            else
-            {
-                return NoContent();
-            }
-        }
-
-        public class NhanSuViewModel
-        {
-            public int DichVuId { get; set; }
-
-        }
-
+        
     }
 }
