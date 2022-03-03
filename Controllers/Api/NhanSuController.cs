@@ -184,10 +184,23 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
             NhanSuViewModel objUser = new NhanSuViewModel();
-            if (nhansu.DichVuId != null)
+            if (user.RoleId ==1)
             {
-                objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId }).Single();
+                objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id };
             }
+            else
+            {
+                if (nhansu != null)
+                {
+                    if (nhansu.DichVuId != null)
+                    {
+                        objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId , UserId = user.UserId, NhanSuId =nhansu.Id }).Single();
+                    }
+                }
+               
+            }
+            
+           
             
             if (objUser != null)
             {
@@ -202,7 +215,8 @@ namespace coreWeb.Controllers.Api
         public class NhanSuViewModel
         {
             public int DichVuId { get; set; }
-
+            public int UserId { get; set; }
+            public int NhanSuId { get; set; }
         }
 
     }

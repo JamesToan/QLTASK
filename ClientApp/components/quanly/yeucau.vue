@@ -40,7 +40,8 @@
             <el-select style="width: 240px; float: left;"
                        v-model="StateIdFilter"
                        @change="changeStateIdFilter"
-                       placeholder="Chọn trạng thái">
+                       placeholder="Chọn trạng thái"
+                       v-if="isTrangThai">
               <el-option v-for="item in ListDMTrangThai"
                          :key="item.Id"
                          :label="item.StateName"
@@ -82,9 +83,13 @@
             </el-table-column>
             <el-table-column prop="TenYeuCau" label="Yêu cầu" width="250">
               <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.TenYeuCau }}
+                <text-highlight >
+
+
                 </text-highlight>
+                <span :queries="search" style="word-break: normal;">
+                  {{ scope.row.TenYeuCau }}
+                </span>
               </template>
             </el-table-column>
             <!--<el-table-column prop="NoiDung"
@@ -111,11 +116,12 @@
 
             <el-table-column prop="NhanSu"
                              label="Người thực hiện"
-                             width="140"
+                             min-width="140"
                              align="center"
-                             style="white-space: nowrap">
-              <template slot-scope="scope" style="white-space: nowrap">
-                {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}
+                             style="word-break: normal;">
+              <template slot-scope="scope" style="word-break: normal;">
+                <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
+               
               </template>
             </el-table-column>
             <el-table-column prop="ThoiHan"
@@ -132,7 +138,9 @@
                              width="120">
               <template slot-scope="scope">
                 <text-highlight :queries="search" :style=changetextColor(scope.row.States.Id)>
+                  
                   {{ scope.row.StateId ? scope.row.States.StateName : ""}}
+
                 </text-highlight>
               </template>
             </el-table-column>
@@ -154,7 +162,7 @@
 
               </template>
               <template slot-scope="scope">
-                <el-button @click="handleView(scope.$index, scope.row)"
+                <el-button v-if="" @click="handleView(scope.$index, scope.row)"
                            type="info"
                            title="Xem"
                            icon="el-icon-view"
@@ -163,13 +171,14 @@
                            type="primary"
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
-                           size="mini"></el-button>
+                           size="mini"
+                           v-if=" RoleId==1 || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 "></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
                            title="Xóa"
                            size="mini"
-                           v-if="allowEdit"></el-button>
+                           v-if="scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -474,7 +483,7 @@
             <el-tab-pane label="Yêu cầu comment">
               <el-form-item v-for="item in YeuCauComment">
                 <!--{{item.Comments + ' - ' + item.NgayComment}}-->
-                <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + item.NgayComment"></span>
+                <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
               </el-form-item>
               <el-form-item prop="CommentYeuCau">
                 <ckeditor :editor="editor"
@@ -734,9 +743,9 @@
               </el-tab-pane>
               <el-tab-pane label="Yêu Cầu Comment">
                 <el-form-item v-for="item in YeuCauComment">
-                  <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + item.NgayComment"></span>
+                  <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
 
-                  <!--{{item.Comments + ' - ' + item.NgayComment}}-->
+                  <!--{{item.Comments + ' - ' + formatDateTime(item.NgayComment)}}-->
 
                 </el-form-item>
                 <el-form-item prop="CommentYeuCau" >
@@ -889,10 +898,11 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
+        <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary" v-else>Cập nhật</el-button>
         <el-button v-if="isAccept" @click="deniesYC" size="small" type="warning">Trả về</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
-        <el-button v-if="isAccept" @click="capnhatYeuCau" size="small" type="primary" v-else>Tiếp nhận</el-button>
-        <el-button type="primary" size="small" @click="xuLyYeuCau" v-else>Xử lý</el-button>
+
+        <el-button type="primary" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
 
       </span>
     </el-dialog>
@@ -949,6 +959,10 @@ export default {
       isEdit : false,
       isComment:true,
       isChuyenYc: false,
+      isButtonEdit: false,
+      isButtonDelete:false,
+      isButtonView:false,
+      isTrangThai: true,
       search: "",
       isAccept: false,
       StateIdFilter: 5,
@@ -957,6 +971,8 @@ export default {
       UserUnitId:0,
       YCUnit: 0,
       UserDV: 0,
+      NhanSuId: 0,
+      UserId: 0,
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -1190,9 +1206,9 @@ export default {
             if (f2 == "DichVu") {
               return result ? result.TenDichVu : "";
             }
-           if (f2 == "DonViYeuCau") {
-            return result ? result.TenDonViYeuCau : "";
-          }
+           if (f2 == "Unit") {
+            return result ? result.UnitName : "";
+            }
             if (f2 == "NhanSu") {
               return result ? result.TenNhanSu : "";
             }
@@ -1530,6 +1546,12 @@ export default {
 
 
       }
+      else if(this.UserUnitId == 2){
+            this.$message({
+               type: "warning",
+                message: "Không thể cập nhật!"
+            });
+      }
       else if(this.UserUnitId != 1){
         if(row.StateId == 10){
           if (this.$refs.formData2 !== undefined) {
@@ -1649,7 +1671,7 @@ export default {
           "States.StateName",
           "NhanSu.TenNhanSu",
           "DichVu.TenDichVu",
-          "DonViYeuCau.TenDonViYeuCau",
+          "Unit.UnitName",
           //"NhanSu.TenNhanSu",
           "ThoiHanMongMuon",
 
@@ -1690,6 +1712,8 @@ export default {
         getCurrentNS().then(data => {
           if(data != null && data != ""){
             this.UserDV = data.DichVuId;
+            this.UserId = data.UserId;
+            this.NhanSuId = data.NhanSuId;
           }
 
        });
@@ -2236,7 +2260,7 @@ export default {
 
       var text = "color:blue;font-weight: bold;";
       return text
-    }
+      }
     },
     renderData() {
       var _data = this.listData.filter(post => {
@@ -2260,19 +2284,19 @@ export default {
    console.log(this.$route.params);
    if(this.$route.params.StateId == 10){
       this.StateIdFilter = parseInt(this.$route.params.StateId);
-
+      this.isTrangThai = false;
    }
   else if(this.$route.params.StateId == 9){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
-
+      this.isTrangThai = false;
   }
   else if(this.$route.params.StateId == 7){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
-
+      this.isTrangThai = false;
   }
    else if(this.$route.params.StateId == 6){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
-
+      this.isTrangThai = false;
   }
     getListDanhMucYeuCau().then(data => {
       if (data) {
