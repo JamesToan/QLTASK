@@ -61,6 +61,7 @@
           </div>
           <el-table :data="renderData()"
                     border
+                    stripe
                     v-loading="loading"
                     default-expand-all
                     row-key="Id"
@@ -81,7 +82,7 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" width="250">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="350">
               <template slot-scope="scope">
                 <text-highlight >
 
@@ -116,9 +117,11 @@
 
             <el-table-column prop="NhanSu"
                              label="Người thực hiện"
-                             min-width="140"
+                             width="180"
+                             
                              align="center"
                              style="word-break: normal;">
+
               <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
                
@@ -209,7 +212,7 @@
                class="m-auto"
                size="small"
                :disabled="!allowEdit">
-        <el-form-item label="Tiêu đề yêu cầu" prop="TenYeuCau">
+        <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
           <el-input v-model="formData.TenYeuCau"
                     type="text"
                     size="small"></el-input>
@@ -217,7 +220,7 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Ngày yêu cầu" prop="NgayYeuCau">
+            <el-form-item label="Ngày yêu cầu: " prop="NgayYeuCau">
               <el-date-picker v-model="formData.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
@@ -229,7 +232,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Deadline" prop="ThoiHan">
+            <el-form-item label="Deadline: " prop="ThoiHan">
               <el-date-picker v-model="formData.ThoiHan"
                               type="date"
                               placeholder="Chọn ngày"
@@ -245,7 +248,7 @@
 
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Trạng thái" prop="StateId">
+            <el-form-item label="Trạng thái: " prop="StateId">
               <el-select v-model="formData.StateId"
                          placeholder="Chọn trạng thái"
                          class="w-100" filterable>
@@ -258,7 +261,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Nhân Sự" prop="NhanSuId">
+            <el-form-item label="Nhân sự: " prop="NhanSuId">
               <el-select v-model="formData.NhanSuId"
                          placeholder="Chọn nhân sự"
                          class="w-100" filterable>
@@ -273,7 +276,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Người giám sát" prop="NguoiGiamSatId">
+            <el-form-item label="Người giám sát: " prop="NguoiGiamSatId">
               <el-select v-model="formData.NguoiGiamSatId"
                          placeholder="Chọn người giám sát"
                          class="w-100"
@@ -287,7 +290,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH">
+            <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH: ">
               <el-date-picker v-model="formData.ThoiHanMongMuon"
                               type="date"
                               placeholder="Chọn ngày"
@@ -303,7 +306,7 @@
           <el-col :span="12">
             <el-form-item label="Dịch vụ" prop="DichVuId">
               <el-select v-model="formData.DichVuId"
-                         placeholder="Chọn dịch vụ"
+                         placeholder="Chọn dịch vụ: "
                          @change="changeDichVu(formData.DichVuId)"
                          class="w-100" filterable>
                 <el-option v-for="item in ListDMDichVu"
@@ -317,7 +320,7 @@
           <el-col :span="12">
             <el-form-item label="Đơn vị" prop="DonViYeuCauId">
               <el-select v-model="formData.DonViYeuCauId"
-                         placeholder="Chọn đơn vị"
+                         placeholder="Chọn đơn vị: "
                          class="w-100"
                          clearable
                          filterable>
@@ -331,14 +334,14 @@
 
           </el-col>
         </el-row>
-        <el-form-item label="Nội dung yêu cầu" prop="NoiDung">
+        <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
           <ckeditor :editor="editor"
                     v-model="formData.NoiDung"
                     :config="editorConfig"
                     :disabled="!allowEdit"></ckeditor>
         </el-form-item>
 
-        <el-form-item label="Jira" prop="JiraDaGui">
+        <el-form-item label="Jira: " prop="JiraDaGui">
           <el-input v-model="formData.JiraDaGui"
                     type="text"
                     size="small"></el-input>
@@ -347,7 +350,7 @@
           <!--<el-button size="small" @click="updateData">Xóa</el-button>-->
         </el-form-item>
 
-        <el-form-item label="Tập tin đính kèm">
+        <el-form-item label="Tập tin đính kèm: ">
           <el-upload action="/api/TapTin/UploadDoc"
                      :limit="3"
                      :multiple="true"
@@ -415,7 +418,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Nhân Sự: " prop="NhanSuId">
+            <el-form-item label="Nhân sự: " prop="NhanSuId">
 
               {{formData1.NhanSuId ? formData1.NhanSu.TenNhanSu : ""}}
 
@@ -480,7 +483,7 @@
                 </ul>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="Yêu cầu comment">
+            <el-tab-pane label="Yêu cầu comment: ">
               <el-form-item v-for="item in YeuCauComment">
                 <!--{{item.Comments + ' - ' + item.NgayComment}}-->
                 <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
@@ -566,7 +569,7 @@
                :disabled="!allowEdit">
         
 
-        <el-form-item label="Dịch vụ" prop="DichVuId">
+        <el-form-item label="Dịch vụ: " prop="DichVuId">
           <el-select v-model="formData2.DichVuId"
                      placeholder="Chọn dịch vụ"
                      @change="setNguoiThucHien(formData2.DichVuId)"
@@ -579,14 +582,14 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="Tiêu đề yêu cầu" prop="TenYeuCau">
+        <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
           <el-input v-model="formData2.TenYeuCau"
                     type="text"
                     size="small"></el-input>
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Nhân sự thực hiện" prop="NhanSuId">
+            <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
                          class="w-100" disabled>
@@ -599,7 +602,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Ngày KH yêu cầu" prop="NgayYeuCau">
+            <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
               <el-date-picker v-model="formData2.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
@@ -614,7 +617,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Hạn xử lý" prop="ThoiHan">
+            <el-form-item label="Hạn xử lý: " prop="ThoiHan">
               <el-date-picker v-model="formData2.ThoiHan"
                               type="date"
                               placeholder="Chọn ngày"
@@ -626,20 +629,20 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="Nội dung yêu cầu" prop="NoiDung">
+        <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
           <ckeditor :editor="editor"
                     v-model="formData2.NoiDung"
                     :config="editorConfig"
                     :disabled="!allowEdit"></ckeditor>
         </el-form-item>
-        <el-form-item label="Jira" prop="JiraDaGui">
+        <el-form-item label="Jira: " prop="JiraDaGui">
           <el-input v-model="formData2.JiraDaGui"
                     type="text"
                     size="small"></el-input>
 
         </el-form-item>
 
-        <el-form-item label="Tập tin đính kèm">
+        <el-form-item label="Tập tin đính kèm: ">
           <el-upload action="/api/TapTin/UploadDoc"
                      :limit="3"
                      :multiple="true"
@@ -680,25 +683,25 @@
                size="small"
                :disabled="!allowEdit">
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
-          <h4 style="margin-left:20px">Nội dung yêu cầu</h4>
+          <h4 style="margin-left:20px">Nội dung yêu cầu: </h4>
           <el-form-item label="Dịch vụ:" prop="DichVuId">
 
             {{formData3.DichVuId ? formData3.DichVu.TenDichVu : ""}}
           </el-form-item>
 
-          <el-form-item label="Tiêu đề yêu cầu:" prop="TenYeuCau">
+          <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
 
             {{formData3.TenYeuCau}}
           </el-form-item>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Nhân sự thực hiện:" prop="NhanSuId">
+              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
 
                 {{formData3.NhanSuId ? formData3.NhanSu.TenNhanSu : ""}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Ngày KH yêu cầu:" prop="NgayYeuCau">
+              <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
                 {{formatDate(formData3.NgayYeuCau)}}
               </el-form-item>
@@ -707,29 +710,29 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Trạng thái:" prop="StateId">
+              <el-form-item label="Trạng thái: " prop="StateId">
 
                 {{formData3.StateId ? formData3.States.StateName : ""}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Hạn xử lý:" prop="ThoiHan">
+              <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData3.ThoiHan)}}
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="Nội dung yêu cầu:" prop="NoiDung">
+          <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
             <span v-html="formData3.NoiDung">
             </span>
             <!--{{formData3.NoiDung}}-->
           </el-form-item>
-          <el-form-item label="Jira:" prop="JiraDaGui">
+          <el-form-item label="Jira: " prop="JiraDaGui">
 
             {{formData3.JiraDaGui}}
           </el-form-item>
 
-          <el-form-item label="Số lần comment" prop="Comment">
+          <el-form-item label="Số lần comment: " prop="Comment">
 
             <el-tabs type="border-card">
               <el-tab-pane label="Jira Comment">
@@ -786,7 +789,7 @@
 
         
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC; border-radius:0.5rem">
-          <h4 style="margin-left:20px">Nội dung xử lý</h4>
+          <h4 style="margin-left:20px">Nội dung xử lý: </h4>
           <el-form-item label="Kết quả xử lý" prop="NoiDungXuLy" style="margin-right:10px">
 
             <span v-html="formData3.NoiDungXuLy">
@@ -818,24 +821,24 @@
                size="small"
                :disabled="!allowEdit">
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
-          <h4 style="margin-left:20px">Nội dung yêu cầu</h4>
+          <h4 style="margin-left:20px">Nội dung yêu cầu: </h4>
           <el-form-item label="Dịch vụ:" prop="DichVuId">
 
             {{formData4.DichVuId ? formData4.DichVu.TenDichVu : ""}}
           </el-form-item>
-          <el-form-item label="Tiêu đề yêu cầu:" prop="TenYeuCau">
+          <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
 
             {{formData4.TenYeuCau}}
           </el-form-item>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Nhân sự thực hiện:" prop="NhanSuId">
+              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
 
                 {{formData4.NhanSuId ? formData4.NhanSu.TenNhanSu : ""}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Ngày KH yêu cầu:" prop="NgayYeuCau">
+              <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
                 {{formatDate(formData4.NgayYeuCau)}}
               </el-form-item>
@@ -844,29 +847,29 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Trạng thái:" prop="StateId">
+              <el-form-item label="Trạng thái: " prop="StateId">
 
                 {{formData4.StateId ? formData4.States.StateName : ""}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Hạn xử lý:" prop="ThoiHan">
+              <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData4.ThoiHan)}}
               </el-form-item>
             </el-col>
 
           </el-row>
-          <el-form-item label="Nội dung yêu cầu:" prop="NoiDung">
+          <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
             <span v-html="formData4.NoiDung"></span>
             <!--{{formData4.NoiDung}}-->
           </el-form-item>
-          <el-form-item label="Jira:" prop="JiraDaGui">
+          <el-form-item label="Jira: " prop="JiraDaGui">
 
             {{formData4.JiraDaGui}}
           </el-form-item>
 
-          <el-form-item label="Tập tin đính kèm:">
+          <el-form-item label="Tập tin đính kèm: ">
             <el-upload action="/api/TapTin/UploadDoc"
                        :limit="3"
                        :multiple="true"
@@ -883,8 +886,8 @@
           </el-form-item>
         </div>
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
-          <h4 style="margin-left:20px">Nội dung xử lý</h4>
-          <el-form-item label="Kết quả xử lý" prop="NoiDungXuLy" style="margin-right:10px">
+          <h4 style="margin-left:20px">Nội dung xử lý: </h4>
+          <el-form-item label="Kết quả xử lý:" prop="NoiDungXuLy" style="margin-right:10px">
             <ckeditor :editor="editor"
                       v-model="formData4.NoiDungXuLy"
                       :config="editorConfig"

@@ -1195,7 +1195,7 @@ namespace coreWeb.Controllers.Api
                         result.NhanSuId = model.NhanSuId;
                         result.DichVuId = model.DichVuId;
                         result.DonViYeuCauId = model.DonViYeuCauId;
-                        result.NguoiTaoId = user.UserId;
+                        
                         result.NgayCapNhat = DateTime.Now;
                         result.NoiDungXuLy = model.NoiDungXuLy;
                         _context.Update(result);
@@ -1227,7 +1227,7 @@ namespace coreWeb.Controllers.Api
                             result.NoiDungXuLy = model.NoiDungXuLy;
                             result.DichVuId = model.DichVuId;
                             result.DonViYeuCauId = model.DonViYeuCauId;
-                            result.NguoiTaoId = user.UserId;
+                            
                             result.NgayCapNhat = DateTime.Now;
                         }
                         

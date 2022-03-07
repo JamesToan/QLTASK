@@ -186,7 +186,14 @@ namespace coreWeb.Controllers.Api
             NhanSuViewModel objUser = new NhanSuViewModel();
             if (user.RoleId ==1)
             {
-                objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id };
+                if (nhansu != null)
+                {
+                    if (nhansu.DichVuId != null)
+                    {
+                        objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id };
+                    }
+                }
+                
             }
             else
             {
