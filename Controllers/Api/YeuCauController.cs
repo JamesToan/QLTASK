@@ -277,32 +277,19 @@ namespace coreWeb.Controllers.Api
                     if (DichVuId == 1 && StateId != 5 && StateId != 6)
                     {
                         List<YeuCau> result = new List<YeuCau>();
-                        if (user.RoleId == 3)
-                        {
-                            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId ==nhansu.UserId))
-                           .Include(e => e.DichVu)
-                           .Include(e => e.NhanSu)
-                           .Include(e => e.States)
-                           .Include(e => e.User)
-                           .Include(e => e.Unit)
-                           .Include(e => e.DonViYeuCau)
-                           .OrderByDescending(e => e.Id)
-                           .ToList();
-                        }
-                        else
-                        {
-                            
-                            result = _context.YeuCau.Where(e => e.StateId == StateId)
-                           .Include(e => e.DichVu)
-                           .Include(e => e.NhanSu)
-                           .Include(e => e.States)
-                           .Include(e => e.User)
-                           .Include(e => e.Unit)
-                           .Include(e => e.DonViYeuCau)
-                           .OrderByDescending(e => e.Id)
-                           .ToList();
-                        }
-                        
+
+
+                        result = _context.YeuCau.Where(e => e.StateId == StateId)
+                       .Include(e => e.DichVu)
+                       .Include(e => e.NhanSu)
+                       .Include(e => e.States)
+                       .Include(e => e.User)
+                       .Include(e => e.Unit)
+                       .Include(e => e.DonViYeuCau)
+                       .OrderByDescending(e => e.Id)
+                       .ToList();
+
+
                         if (result != null)
                         {
                             return Ok(result);
@@ -315,31 +302,18 @@ namespace coreWeb.Controllers.Api
                     else if (StateId == 5 && DichVuId != 1)
                     {
                         List<YeuCau> result = new List<YeuCau>();
-                        if (user.RoleId == 3)
-                        {
-                            result = _context.YeuCau.Where(e => e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
-                        else
-                        {
-                            result = _context.YeuCau.Where(e =>e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId)
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
-                       
+
+                        result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == DichVuId)
+                                  .Include(e => e.DichVu)
+                                  .Include(e => e.NhanSu)
+                                  .Include(e => e.States)
+                                  .Include(e => e.User)
+                                  .Include(e => e.Unit)
+                                  .Include(e => e.DonViYeuCau)
+                                  .OrderByDescending(e => e.Id)
+                                  .ToList();
+
+
                         if (result != null)
                         {
                             return Ok(result);
@@ -352,31 +326,18 @@ namespace coreWeb.Controllers.Api
                     else if (StateId != 5 && StateId != 6 && DichVuId != 1)
                     {
                         List<YeuCau> result = new List<YeuCau>();
-                        if (user.RoleId == 3)
-                        {
-                            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
-                        else
-                        {
-                            result = _context.YeuCau.Where(e => e.StateId == StateId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
-                        
+
+                        result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == DichVuId)
+                                  .Include(e => e.DichVu)
+                                  .Include(e => e.NhanSu)
+                                  .Include(e => e.States)
+                                  .Include(e => e.User)
+                                  .Include(e => e.Unit)
+                                  .Include(e => e.DonViYeuCau)
+                                  .OrderByDescending(e => e.Id)
+                                  .ToList();
+
+
                         if (result != null)
                         {
                             return Ok(result);
@@ -389,30 +350,17 @@ namespace coreWeb.Controllers.Api
                     else if (StateId == 6 )
                     {
                         List<YeuCau> result = new List<YeuCau>();
-                        if (user.RoleId == 3)
-                        {
-                            result = _context.YeuCau.Where(e => e.StateId == 6 && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
-                        else
-                        {
-                            result = _context.YeuCau.Where(e => e.StateId == 6  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                                      .Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit)
-                                      .Include(e => e.DonViYeuCau)
-                                      .OrderByDescending(e => e.Id)
-                                      .ToList();
-                        }
+
+                        result = _context.YeuCau.Where(e => e.StateId == 6 )
+                                  .Include(e => e.DichVu)
+                                  .Include(e => e.NhanSu)
+                                  .Include(e => e.States)
+                                  .Include(e => e.User)
+                                  .Include(e => e.Unit)
+                                  .Include(e => e.DonViYeuCau)
+                                  .OrderByDescending(e => e.Id)
+                                  .ToList();
+
 
                         if (result != null)
                         {
@@ -586,7 +534,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (StateId == 5 && DichVuId != 1)
                     {
-                        var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId && e.UnitId != 1)
+                        var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId && e.UnitId != 1 && e.StateId == StateId)
                                        .Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
@@ -1119,6 +1067,7 @@ namespace coreWeb.Controllers.Api
                         model.NguoiTaoId = user.UserId;
                         model.NgayTao = DateTime.Now;
                         model.UnitId = userinfo.UnitId;
+                        model.MaSoThue = model.MaSoThue;
                         model.StateId = 10;
                         _context.Add(model);
                         _context.SaveChanges();
@@ -1142,7 +1091,7 @@ namespace coreWeb.Controllers.Api
                         model.NgayTao = DateTime.Now;
                         model.UnitId = userinfo.UnitId;
                         model.StateId = 10;
-
+                        model.MaSoThue = model.MaSoThue;
                         _context.Add(model);
                         _context.SaveChanges();
 
@@ -1195,7 +1144,7 @@ namespace coreWeb.Controllers.Api
                         result.NhanSuId = model.NhanSuId;
                         result.DichVuId = model.DichVuId;
                         result.DonViYeuCauId = model.DonViYeuCauId;
-                        
+                        result.MaSoThue = model.MaSoThue;
                         result.NgayCapNhat = DateTime.Now;
                         result.NoiDungXuLy = model.NoiDungXuLy;
                         _context.Update(result);
@@ -1227,7 +1176,7 @@ namespace coreWeb.Controllers.Api
                             result.NoiDungXuLy = model.NoiDungXuLy;
                             result.DichVuId = model.DichVuId;
                             result.DonViYeuCauId = model.DonViYeuCauId;
-                            
+                            result.MaSoThue = model.MaSoThue;
                             result.NgayCapNhat = DateTime.Now;
                         }
                         
@@ -1593,15 +1542,22 @@ namespace coreWeb.Controllers.Api
             var nhansu = _context.NhanSu.Where(p => p.Id == yeucau.NhanSuId).FirstOrDefault();
             var text = "";
             DateTime thoihan = (DateTime)yeucau.ThoiHan;
-            if (yeucau.NgayCapNhat != null)
+            if (yeucau.StateId == 9)
             {
                 
-                text = "<strong>🔔 Thông báo cập nhật</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n - Tình trạng: <strong>Đã chuyển tới tiếp nhận</strong>";
+
+            }
+            else if(yeucau.StateId == 10)
+            {
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong> \n - Tình trạng: <strong>Bị từ chối </strong>";
+
 
             }
             else
             {
-                text = "<strong>🔔 Thông báo tạo mới</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>";
+
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
             }
 

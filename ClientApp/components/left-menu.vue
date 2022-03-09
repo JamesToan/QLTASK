@@ -5,16 +5,16 @@
       <div id="sidebar-menu">
         <ul class="metismenu" id="side-menu">
           <template v-for="item in routes">
-            <li
+            <li class="mm-active"
               :key="item.name"
               v-if="item.children && item.meta.show == 'true'"
             >
-              <a href="#">
+              <a href="#" aria-expanded="true">
                 <i :class="item.icon"></i>
                 <span> {{ item.meta.display }} </span>
                 <span class="menu-arrow"></span>
               </a>
-              <ul class="nav-second-level" aria-expanded="false">
+              <ul class="nav-second-level" aria-expanded="true">
                 <template v-for="item in item.children">
                   <li :key="item.name">
                     <router-link

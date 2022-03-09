@@ -589,7 +589,7 @@ export function sendTeleAsync(id) {
   const params = { id };
   return request({
     url: "api/yeucau/sendTeleAsync",
-    method: 'get',
+    method: 'post',
     params: params
   });
 }

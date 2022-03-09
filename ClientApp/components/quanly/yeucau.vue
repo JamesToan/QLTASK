@@ -82,12 +82,12 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="350">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" >
               <template slot-scope="scope">
-                <text-highlight >
+                <!--<text-highlight >
 
 
-                </text-highlight>
+                </text-highlight>-->
                 <span :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </span>
@@ -101,35 +101,32 @@
               </text-highlight>
             </template>
           </el-table-column>-->
-            <el-table-column prop="JiraDaGui"
+            <!--<el-table-column prop="JiraDaGui"
                              label="Task jira"
                              width="150">
               <template slot-scope="scope">
-                <!--<text-highlight :queries="search" style="word-break: normal;" >
-                {{ scope.row.JiraDaGui}}
-              </text-highlight>-->
+                
                 <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
               </template>
 
 
-            </el-table-column>
+            </el-table-column>-->
 
 
             <el-table-column prop="NhanSu"
                              label="Người thực hiện"
-                             width="180"
                              
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal;">
+              <template slot-scope="scope" style="word-break: normal; max-width:180px">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
                
               </template>
             </el-table-column>
             <el-table-column prop="ThoiHan"
                              label="Deadline"
-                             width="120"
+                             width="130"
                              align="center"
                               >
               <template slot-scope="scope">
@@ -148,7 +145,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="Status" label="Tình trạng" width="125">
+            <el-table-column prop="Status" label="Tình trạng" width="100">
 
               <template slot-scope="scope">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now() && scope.row.StateId != 6" style="color:darkorange">
@@ -160,7 +157,7 @@
               </template>
 
             </el-table-column>
-            <el-table-column align="center" label="" width="185" fixed="right">
+            <el-table-column align="center" label="" fixed="right" width="190">
               <template slot="header" slot-scope="scope">
 
               </template>
@@ -175,7 +172,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" RoleId==1 || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 "></el-button>
+                           v-if=" RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 "></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -457,7 +454,7 @@
           </el-col>
         </el-row>
         <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
-          <text-highlight :queries="search" style="word-break: normal;" v-html="formData1.NoiDung">
+          <text-highlight  style="word-break: normal;" v-html="formData1.NoiDung">
           </text-highlight>
         </el-form-item>
 
@@ -628,6 +625,12 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="Mã số thuế: " prop="MaSoThue">
+              <el-input v-model="formData2.MaSoThue"  type="text"
+                    size="small"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
           <ckeditor :editor="editor"
@@ -719,6 +722,12 @@
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData3.ThoiHan)}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Mã số thuế: " prop="MaSoThue">
+
+                {{formData3.MaSoThue}}
               </el-form-item>
             </el-col>
           </el-row>
@@ -860,6 +869,14 @@
             </el-col>
 
           </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="Mã Số Thuế: " prop="MaSoThue">
+
+                {{formData4.MaSoThue}}
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
             <span v-html="formData4.NoiDung"></span>
             <!--{{formData4.NoiDung}}-->
@@ -901,11 +918,11 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
-        <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary" v-else>Cập nhật</el-button>
+        <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary" >Cập nhật</el-button>
         <el-button v-if="isAccept" @click="deniesYC" size="small" type="warning">Trả về</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
 
-        <el-button type="primary" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
+        <el-button type="success" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
 
       </span>
     </el-dialog>
@@ -1033,6 +1050,7 @@ export default {
         NoiDung: null,
         JiraDaGui: null,
         FileUpload: null,
+        MaSoThue: null,
 
       },
       formData3: {
@@ -1049,6 +1067,7 @@ export default {
         Priority: null,
         CommentYeuCau:null,
         StateId: null,
+        MaSoThue: null,
       },
       formData4: {
         TenYeuCau: null,
@@ -1061,6 +1080,7 @@ export default {
         FileUpload: null,
         NoiDungXuLy: null,
         StateId: null,
+        MaSoThue:null,
       },
       formRules: {
         TenYeuCau: [
@@ -1310,7 +1330,7 @@ export default {
 
 
 
-        console.log(this.UserUnitId)
+
         this.fileList = [];
         this.fileDoc = [];
         this.fileImage = [];
@@ -1339,7 +1359,7 @@ export default {
 
        if(row.StateId == 6){
           this.isComment = false;
-          console.log(this.isComment)
+
       }
 
       if(row.DichVuId == this.UserDV){
@@ -1348,7 +1368,6 @@ export default {
         }
         this.formData3 = Object.assign({}, row);
 
-        console.log(split);
         if (row.JiraDaGui != null) {
           var jiralink = row.JiraDaGui;
           var split = jiralink.split('/');
@@ -1387,7 +1406,6 @@ export default {
 						}
 						this.formData1 = Object.assign({}, row);
 
-						console.log(split);
 						if (row.JiraDaGui != null) {
 						  var jiralink = row.JiraDaGui;
 						  var split = jiralink.split('/');
@@ -1423,7 +1441,6 @@ export default {
 						}
 						this.formData3 = Object.assign({}, row);
 
-						console.log(split);
 						if (row.JiraDaGui != null) {
 						  var jiralink = row.JiraDaGui;
 						  var split = jiralink.split('/');
@@ -1484,7 +1501,7 @@ export default {
                 this.formData4 = Object.assign({}, row);
                 this.stateOld = this.formData4.StateId;
 
-                console.log(this.stateOld);
+
                 if(this.formData4.DichVuId != null){
                     var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData4.DichVuId);
                     this.ListDMDonVi = dv.DonVi;
@@ -1517,7 +1534,7 @@ export default {
               this.formData = Object.assign({}, row);
               this.stateOld = this.formData.StateId;
 
-              console.log(this.stateOld);
+
               if(this.formData.DichVuId != null){
                   var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData.DichVuId);
                   this.ListDMDonVi = dv.DonVi;
@@ -1542,7 +1559,7 @@ export default {
             getYCUnitId(this.formData.Id).then(data => {
               this.YCUnit = data.UnitId;
             });
-            console.log(this.YCUnit)
+
 
           }
 
@@ -1564,7 +1581,7 @@ export default {
           this.formData2 = Object.assign({}, row);
           this.stateOld = this.formData2.StateId;
 
-          console.log(this.stateOld);
+
 
           if(this.RoleId != 1 && row.StateId == 10){
             this.isChuyenYc = true;
@@ -1663,7 +1680,7 @@ export default {
           "Nhân sự",
           "Dịch vụ",
           "Đơn vị",
-          //"Người giám sát",
+          "Mã số thuế",
           "Thời hạn KH mong muốn"
         ];
         const filterVal = [
@@ -1675,12 +1692,12 @@ export default {
           "NhanSu.TenNhanSu",
           "DichVu.TenDichVu",
           "Unit.UnitName",
-          //"NhanSu.TenNhanSu",
+          "MaSoThue",
           "ThoiHanMongMuon",
 
         ];
         const data = this.formatJson(filterVal, this.listData);
-        console.log(data);
+
         var filename = "DSYeuCau_" + moment().format("YYYYMMDD_hhmmss");
         excel.export_json_to_excel({
           header: tHeader,
@@ -1721,7 +1738,7 @@ export default {
 
        });
 
-        console.log(this.UserDV);
+
         //Quản lý
         this.loading = true;
       if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1) {
@@ -1745,7 +1762,7 @@ export default {
           this.UserUnitId = data.UnitId;
 
        });
-        console.log(this.UserUnitId);
+
 
     },
     // get trạng thái
@@ -1762,9 +1779,8 @@ export default {
 
           }
 
-          console.log(this.Comment);
+
           this.loading = false;
-          //console.log(data);
         });
 
 
@@ -1783,7 +1799,7 @@ export default {
         }
 
         this.loading = false;
-        console.log(data);
+
       });
 
 
@@ -1812,7 +1828,7 @@ export default {
           );
           if (this.isEditor == 0) {
             addYeuCau(this.formData).then(data => {
-              //console.log(data);
+
               this.$message({
                 type: "success",
                 message: "Thêm mới thành công!"
@@ -1826,14 +1842,13 @@ export default {
           } else {
             //delete this.formData.LinhVuc;
             updateYeuCau(this.formData).then(data => {
-              console.log(data);
+
               if(data != ""){
                   this.$message({
                   type: "success",
                   message: "Cập nhật thành công!"
                   });
                   this.stateNew = this.formData.StateId;
-                  console.log(this.stateNew);
                   if(this.stateNew != this.stateOld && this.formData.UnitId != 1){
 
                     sendTeleAsync(this.formData.Id);
@@ -1867,6 +1882,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
+                      sendTeleAsync(this.formData4.Id);
                   }
                   else{
                       this.$message({
@@ -1909,6 +1925,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
+
                   }
                   else{
                       this.$message({
@@ -1950,6 +1967,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
+                    sendTeleAsync(this.formData4.Id);
                   }
                   else{
                       this.$message({
@@ -2014,6 +2032,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
+
                   }
                   else{
                       this.$message({
@@ -2055,6 +2074,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
+                      sendTeleAsync(this.formData3.Id);
                   }
                   else{
                       this.$message({
@@ -2182,7 +2202,10 @@ export default {
                type: "success",
                 message: "Chuyển thành công!"
               });
+              //console.log(this.formData2.Id);
+              sendTeleAsync(this.formData2.Id);
               this.getListComment(this.formData2.Id);
+
             }
             else{
                this.$message({
@@ -2205,6 +2228,7 @@ export default {
                 message: "Đã từ chối!"
               });
               this.getListComment(this.formData4.Id);
+              sendTeleAsync(this.formData4.Id);
             }
             else{
                this.$message({
@@ -2284,7 +2308,6 @@ export default {
 
   created() {
 
-   console.log(this.$route.params);
    if(this.$route.params.StateId == 10){
       this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
@@ -2328,5 +2351,9 @@ export default {
 
   .ck-editor__editable_inline {
     min-height: 200px;
+  }
+
+  .el-input__inner {
+    height:34px !important;
   }
 </style>

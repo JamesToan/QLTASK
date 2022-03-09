@@ -24,6 +24,8 @@ namespace coreWeb.Models.Entities
         [MaxLength]
         public string JiraDaGui { get; set; }
 
+        public string MaSoThue { get; set; }
+
         //public int? StatusId { get; set; }
         public int? StateId { get; set; }
         public int? NhanSuId { get; set; }

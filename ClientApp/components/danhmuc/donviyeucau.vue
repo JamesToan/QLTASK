@@ -112,7 +112,7 @@
       </div>
     </div>
     <el-dialog
-      title="Cập nhật Dịch Vụ"
+      title="Cập nhật Đơn vị yêu cầu"
       :visible.sync="dialogFormDisplay"
       top="15px"
     >
