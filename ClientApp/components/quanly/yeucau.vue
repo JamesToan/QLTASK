@@ -172,13 +172,13 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 "></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
                            title="Xóa"
                            size="mini"
-                           v-if="scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId"></el-button>
+                           v-if="(scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId) && UserUnitId != 2"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -472,7 +472,7 @@
 
           <el-tabs type="border-card">
             <el-tab-pane label="Jira comment">
-              <div>
+              <div style="overflow-y:scroll; height:300px">
                 <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
                   <li>
                     <b>+</b> {{item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)}}
@@ -481,10 +481,13 @@
               </div>
             </el-tab-pane>
             <el-tab-pane label="Yêu cầu comment: ">
-              <el-form-item v-for="item in YeuCauComment">
-                <!--{{item.Comments + ' - ' + item.NgayComment}}-->
-                <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
-              </el-form-item>
+              <div style="overflow-y:scroll; max-height:400px">
+                <el-form-item v-for="item in YeuCauComment">
+                  <!--{{item.Comments + ' - ' + item.NgayComment}}-->
+                  <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
+                </el-form-item>
+              </div>
+              
               <el-form-item prop="CommentYeuCau">
                 <ckeditor :editor="editor"
                           v-model="formData1.CommentYeuCau"
@@ -665,6 +668,7 @@
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
         <el-button type="primary" size="small" @click="addDataBH">Cập nhật</el-button>
+        <el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
         <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>
 
         
@@ -745,7 +749,7 @@
 
             <el-tabs type="border-card">
               <el-tab-pane label="Jira Comment">
-                <div>
+                <div style="overflow-y:scroll; height:300px">
                   <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
                     <li>
                       <b>+</b> {{item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)}}
@@ -754,12 +758,12 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Yêu Cầu Comment">
-                <el-form-item v-for="item in YeuCauComment">
-                  <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
-
-                  <!--{{item.Comments + ' - ' + formatDateTime(item.NgayComment)}}-->
-
-                </el-form-item>
+                <div style="overflow-y:scroll; height:400px">
+                  <el-form-item v-for="item in YeuCauComment">
+                    <!--{{item.Comments + ' - ' + item.NgayComment}}-->
+                    <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
+                  </el-form-item>
+                </div>
                 <el-form-item prop="CommentYeuCau" >
                   <!--<el-input type="text"
               size="small" v-model="formData3.CommentYeuCau"></el-input>-->
@@ -958,7 +962,8 @@ import {
   completeYeuCau,
   acceptYeuCau,
   forwardYeuCau,
-  deniesYeuCau
+  deniesYeuCau,
+  addYeuCauNew
 } from "../../store/api";
 export default {
   data() {
@@ -1304,13 +1309,16 @@ export default {
           if(this.UserDV != 7 && this.UserDV != 8){
             if (this.$refs.formData2 !== undefined) {
               this.$refs.formData2.resetFields();
+
             }
+            this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
           }
           else{
             if (this.$refs.formData !== undefined) {
             this.$refs.formData.resetFields();
             }
+            this.isChuyenYc = false;
             this.dialogFormDisplay = true;
           }
 
@@ -1319,6 +1327,7 @@ export default {
             if (this.$refs.formData2 !== undefined) {
               this.$refs.formData2.resetFields();
             }
+            this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
         }
 
@@ -1327,8 +1336,6 @@ export default {
           StateId: this.StateIdFilter,
           DichVuId: this.DichVuIdFilter,
         };
-
-
 
 
         this.fileList = [];
@@ -1588,6 +1595,7 @@ export default {
 
           }
 
+
           if (this.formData2.FileUpload) {
             this.fileList = [];
             this.fileDoc = [];
@@ -1719,10 +1727,12 @@ export default {
       return true;
     },
     resetFormBHHandle(){
+
       this.dialogFormBHHandle= false;
       return true;
     },
     resetFormBH(){
+
       this.dialogFormBHDisplay= false;
       return true;
 
@@ -2219,7 +2229,54 @@ export default {
 
 
     },
-  deniesYC(){
+    addForward(){
+        this.$refs.formData2.validate(valid => {
+        if (valid) {
+          if (this.formData2.FileUpload) {
+              this.fileList = [];
+              this.fileDoc = [];
+              var _arr = JSON.parse(this.formData2.FileUpload);
+              for (var i = 0; i < _arr.length; i++) {
+                var urlFile = "/uploads/" + _arr[i];
+                this.fileList.push({ name: _arr[i], url: urlFile });
+                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
+              }
+            }
+            this.formData2.FileUpload = JSON.stringify(
+            this.fileDoc.map(ite => ite.file));
+
+
+            if (this.isEditor == 0){
+              addYeuCauNew(this.formData2).then(data => {
+                  if(data != null && data != ""){
+                      this.$message({
+                        type: "success",
+                        message: "Thêm mới thành công!"
+                      });
+                  }
+                  else{
+                      this.$message({
+                        type: "warning",
+                        message: "Không thể thêm mới!"
+                       });
+
+                  }
+              this.dialogFormBHDisplay= false;
+              this.getListData();
+              });
+
+            }
+
+
+        } else {
+          return false;
+        }
+      });
+
+
+    },
+
+    deniesYC(){
 
       deniesYeuCau(this.formData4.Id).then(data =>{
         if(data != "" && data != null){

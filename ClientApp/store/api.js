@@ -558,6 +558,15 @@ export function addYeuCau(data) {
   });
 }
 
+export function addYeuCauNew(data) {
+  //const data = { };
+  return request({
+    url: "api/yeucau/AddNew",
+    method: "post",
+    data: data
+  });
+}
+
 export function updateYeuCau(data) {
 
   return request({

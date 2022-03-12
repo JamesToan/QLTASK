@@ -1277,6 +1277,75 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpPost]
+        public IActionResult AddNew ([FromBody] YeuCau model)
+        {
+            try
+            {
+                var user = new UserClaim(HttpContext);
+                var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+                var nhansu = _context.NhanSu.Where(p => p.UserId == userinfo.Id).FirstOrDefault();
+                if (user != null)
+                {
+                    if (userinfo.UnitId != 1)
+                    {
+                        model.NguoiTaoId = user.UserId;
+                        model.NgayTao = DateTime.Now;
+                        model.UnitId = userinfo.UnitId;
+                        model.MaSoThue = model.MaSoThue;
+                        model.StateId = 9;
+                        _context.Add(model);
+                        _context.SaveChanges();
+
+                        var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
+                        if (model.JiraDaGui != null)
+                        {
+                            Jira jr = new Jira();
+                            jr.LinkJira = model.JiraDaGui;
+                            jr.YeuCauId = idyeucau;
+                            _context.Jira.Add(jr);
+                            _context.SaveChanges();
+                        }
+
+
+                        return Ok(model.Id);
+                    }
+                    else
+                    {
+                        model.NguoiTaoId = user.UserId;
+                        model.NgayTao = DateTime.Now;
+                        model.UnitId = userinfo.UnitId;
+                        model.StateId = 9;
+                        model.MaSoThue = model.MaSoThue;
+                        _context.Add(model);
+                        _context.SaveChanges();
+
+                        var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
+                        if (model.JiraDaGui != null)
+                        {
+                            Jira jr = new Jira();
+                            jr.LinkJira = model.JiraDaGui;
+                            jr.YeuCauId = idyeucau;
+                            _context.Jira.Add(jr);
+                            _context.SaveChanges();
+                        }
+
+
+                        return Ok(model.Id);
+                    }
+
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
         public IActionResult Forward(int Id)
         {
             try
