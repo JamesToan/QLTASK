@@ -828,12 +828,12 @@ export function addQLDV(data) {
   });
 }
 
-export function updateQLDV(comments, id) {
-  const params = { comments, id };
+export function updateQLDV(data) {
+  //const params = { comments, id };
   return request({
-    url: "api/quanlydichvu/update",
+    url: "api/quanlydichvu/Update",
     method: "post",
-    params: params
+    data
   });
 }
 

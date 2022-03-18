@@ -199,20 +199,20 @@ export const routes = [
         params: { StateId: 10},
         component: yeucau,
         meta: {
-          display: "Yêu cầu mới tạo",
+          display: "Yêu cầu chưa tiếp nhận",
           show: "true"
         }
       },
-      {
-        name: "yeucau2",
-        path: "yeucau/:StateId",
-        params: { StateId: 9 },
-        component: yeucau,
-        meta: {
-          display: "Yêu cầu chưa xử lý",
-          show: "true"
-        }
-      },
+      //{
+      //  name: "yeucau2",
+      //  path: "yeucau/:StateId",
+      //  params: { StateId: 9 },
+      //  component: yeucau,
+      //  meta: {
+      //    display: "Yêu cầu chưa xử lý",
+      //    show: "true"
+      //  }
+      //},
       {
         name: "yeucau3",
         path: "yeucau/:StateId",

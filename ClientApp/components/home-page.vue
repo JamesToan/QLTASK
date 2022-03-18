@@ -30,52 +30,76 @@
     </el-row>
     <el-row class="row">
       <div class="col-4">
-        <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
+        <a href="/admin/yeucau">
+          <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
 
-          <div class="header-title">
-            Tổng số yêu cầu
+            <div class="header-title">
+              Tổng số yêu cầu
+            </div>
+
+            <div align="center"
+                 style="font-size: 64px; font-weight: bold"
+                 class="mt-5">
+              {{ ThongKe.Tong }}
+            </div>
           </div>
-          <div align="center"
-               style="font-size: 64px; font-weight: bold"
-               class="mt-5">
-            {{ ThongKe.Tong }}
-          </div>
-        </div>
+        </a>
+        
       </div>
       <div class="col-8">
         <el-row class="row hidden-md-and-down">
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;background-color:mediumseagreen; color:black">
-              <div class="header-title">
-                Đã hoàn thành
+            <a href="/admin/yeucau/6">
+              <div class="card-box table-responsive" style="height: 145px;background-color:mediumseagreen; color:black">
+                <div class="header-title">
+                  Đã hoàn thành
+                </div>
+                <div align="center" style="font-size: 26px; font-weight: bold">
+                  {{ ThongKe.DaHT }}
+                </div>
               </div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
-                {{ ThongKe.DaHT }}
-              </div>
-            </div>
+            </a>
+           
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;background-color:orange; color:black">
-              <div class="header-title">
-                Đang xử lý
+            <a href="/admin/yeucau/7">
+              <div class="card-box table-responsive" style="height: 145px;background-color:orange; color:black">
+                <div class="header-title">
+                  Đang xử lý
+                </div>
+                <div align="center" style="font-size: 26px; font-weight: bold">
+                  {{ ThongKe.DangXL }}
+                </div>
               </div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
-                {{ ThongKe.DangXL }}
-              </div>
-            </div>
+            </a>
+           
           </div>
           <div class="col-4">
-            <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
-              <div class="header-title">
-                Mới tạo
+            <a href="/admin/yeucau/10">
+              <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
+                <div class="header-title">
+                  Mới tạo
+                </div>
+                <div align="center" style="font-size: 26px; font-weight: bold">
+                  {{ ThongKe.MoiTao }}
+                </div>
               </div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
-                {{ ThongKe.MoiTao }}
-              </div>
-            </div>
+            </a>
+            
           </div>
         </el-row>
         <el-row class="row hidden-md-and-down">
+          <div class="col-4">
+            <a href="/admin/yeucau/9">
+              <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
+                <div class="header-title">Chưa xử lý</div>
+                <div align="center" style="font-size: 26px; font-weight: bold">
+                  {{ ThongKe.ChuaXL }}
+                </div>
+              </div>
+            </a>
+            
+          </div>
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;background-color:mediumseagreen; color:black">
               <div class="header-title">Trong hạn</div>
@@ -92,14 +116,7 @@
               </div>
             </div>
           </div>
-          <div class="col-4">
-            <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
-              <div class="header-title">Chưa xử lý</div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
-                {{ ThongKe.ChuaXL }}
-              </div>
-            </div>
-          </div>
+
         </el-row>
 
       </div>

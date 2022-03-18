@@ -115,7 +115,7 @@
 
             <el-table-column prop="NhanSu"
                              label="Người thực hiện"
-                             
+                             width="180"
                              align="center"
                              style="word-break: normal;">
 
@@ -178,7 +178,7 @@
                            icon="el-icon-delete"
                            title="Xóa"
                            size="mini"
-                           v-if="(scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId) && UserUnitId != 2"></el-button>
+                           v-if="(scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) && UserUnitId != 2"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -394,14 +394,14 @@
           <el-col :span="12">
             <el-form-item label="Ngày yêu cầu: " prop="NgayYeuCau">
 
-              {{formData1.NgayYeuCau}}
+              {{formatDate(formData1.NgayYeuCau)}}
 
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="Deadline: " prop="ThoiHan">
 
-              {{formData1.ThoiHan}}
+              {{formatDate(formData1.ThoiHan)}}
             </el-form-item>
           </el-col>
 
@@ -434,7 +434,7 @@
           <el-col :span="12">
             <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH: ">
 
-              {{formData1.ThoiHanMongMuon}}
+              {{formatDate(formData1.ThoiHanMongMuon)}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -592,7 +592,7 @@
             <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100" disabled>
+                         class="w-100" :disabled="isChangeNhanSu">
                 <el-option v-for="item in ListDMNhanSu"
                            :key="item.Id"
                            :label="item.TenNhanSu"
@@ -668,10 +668,12 @@
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
         <el-button type="primary" size="small" @click="addDataBH">Cập nhật</el-button>
-        <el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
-        <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>
+        <el-button v-if="isViewBT" @click="AcceptYeuCau1" size="small" type="success">Tiếp nhận</el-button>
 
-        
+        <!--<el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
+  <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>-->
+
+
       </span>
     </el-dialog>
 
@@ -922,8 +924,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
-        <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary" >Cập nhật</el-button>
-        <el-button v-if="isAccept" @click="deniesYC" size="small" type="warning">Trả về</el-button>
+        <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary">Cập nhật</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
 
         <el-button type="success" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
@@ -982,11 +983,13 @@ export default {
       isPermiss: true,
       isView: false,
       isEdit : false,
+      isChangeNhanSu:true,
       isComment:true,
       isChuyenYc: false,
       isButtonEdit: false,
       isButtonDelete:false,
       isButtonView:false,
+      isViewBT:false,
       isTrangThai: true,
       search: "",
       isAccept: false,
@@ -1070,6 +1073,8 @@ export default {
         FileUpload: null,
         NoiDungXuLy: null,
         Priority: null,
+        KeyJira: null,
+        StatusJira: null,
         CommentYeuCau:null,
         StateId: null,
         MaSoThue: null,
@@ -1489,9 +1494,18 @@ export default {
       this.isChuyenYc = false;
       if(this.UserUnitId == 1 ){
           var bool = false;
-          if(row.StateId ==9){
+
+          if(row.StateId ==10 && row.NhanSuId == this.NhanSuId){
             this.isAccept = true;
           }
+          if(row.StateId ==10 && row.NguoiTaoId == this.UserId){
+            this.isViewBT = true;
+          }
+          else if(row.StateId !=10){
+            this.isAccept = false;
+            this.isViewBT = false;
+          }
+
           if(row.StateId == 6){
             this.$message({
                type: "warning",
@@ -1500,7 +1514,7 @@ export default {
           }
 
           else{
-              if (row.DichVuId == this.UserDV){
+             if (row.DichVuId == this.UserDV && ((row.NguoiTaoId == this.UserId && row.StateId !=10 )||row.NguoiTaoId != this.UserId ) || (this.RoleId ==2 && (row.DichVuId != 7 ||row.DichVuId != 8 || row.DichVuId != 9))){
                 if (this.$refs.formData4 !== undefined) {
                 this.$refs.formData4.resetFields();
 
@@ -1527,6 +1541,34 @@ export default {
 
                 this.isEditor = true;
                 this.dialogFormBHHandle = true;
+            }
+            else if(row.DichVuId == this.UserDV && row.NguoiTaoId == this.UserId && row.StateId == 10){
+                if (this.$refs.formData2 !== undefined) {
+                  this.$refs.formData2.resetFields();
+
+                  }
+                  this.formData2 = Object.assign({}, row);
+                  this.stateOld = this.formData2.StateId;
+
+
+                  if(this.formData2.DichVuId != null){
+                      var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData2.DichVuId);
+                      this.ListDMDonVi = dv.DonVi;
+                  }
+
+                  if (this.formData2.FileUpload) {
+                    this.fileList = [];
+                    this.fileDoc = [];
+                    var _arr = JSON.parse(this.formData2.FileUpload);
+                    for (var i = 0; i < _arr.length; i++) {
+                      var urlFile = "/uploads/" + _arr[i];
+                      this.fileList.push({ name: _arr[i], url: urlFile });
+                      this.fileDoc.push({ key: _arr[i], file: _arr[i] });
+                    }
+                  }
+
+                  this.isEditor = true;
+                  this.dialogFormBHDisplay = true;
             }
             else{
 
@@ -1782,10 +1824,21 @@ export default {
         getTrangThai(this.JiraDaGuiLink).then(data => {
           if (data != null && data.errorMessages == null && data.fields) {
             this.TrangThai = data;
-            this.formData1.KeyJira = data.key;
-            this.formData1.StatusJira = data.fields.status.name;
             this.Comment = data.fields.comment.comments;
-            this.formData1.Priority = data.fields.priority.name;
+            if(this.UserUnitId ==1){
+
+              this.formData1.KeyJira = data.key;
+              this.formData1.StatusJira = data.fields.status.name;
+
+              this.formData1.Priority = data.fields.priority.name;
+            }
+            else{
+              this.formData3.KeyJira = data.key;
+              this.formData3.StatusJira = data.fields.status.name;
+
+              this.formData3.Priority = data.fields.priority.name;
+            }
+
 
           }
 
@@ -1843,10 +1896,7 @@ export default {
                 type: "success",
                 message: "Thêm mới thành công!"
               });
-                  if(this.formData.UnitId != 1){
 
-                    sendTeleAsync(data);
-                  }
               this.getListData();
             });
           } else {
@@ -1861,7 +1911,7 @@ export default {
                   this.stateNew = this.formData.StateId;
                   if(this.stateNew != this.stateOld && this.formData.UnitId != 1){
 
-                    sendTeleAsync(this.formData.Id);
+                    //sendTeleAsync(this.formData.Id);
                   }
                   this.getListData();
               }
@@ -1882,35 +1932,71 @@ export default {
       });
     },
     AcceptYeuCau(){
-       this.$refs.formData4.validate(valid => {
-        if (valid) {
+
+          this.$refs.formData4.validate(valid => {
+            if (valid) {
 
 
-              acceptYeuCau(this.formData4.Id).then(data => {
-                  if(data != null && data != ""){
-                      this.$message({
-                        type: "success",
-                        message: "Cập nhật thành công!"
-                      });
-                      sendTeleAsync(this.formData4.Id);
-                  }
-                  else{
-                      this.$message({
-                        type: "warning",
-                        message: "Không thể cập nhật!"
-                       });
+                  acceptYeuCau(this.formData4.Id).then(data => {
+                      if(data != null && data != ""){
+                          this.$message({
+                            type: "success",
+                            message: "Cập nhật thành công!"
+                          });
+                          //sendTeleAsync(this.formData4.Id);
+                      }
+                      else{
+                          this.$message({
+                            type: "warning",
+                            message: "Không thể cập nhật!"
+                           });
 
-                  }
-              this.dialogFormBHHandle= false;
-              this.getListData();
-              });
+                      }
+                  this.dialogFormBHHandle= false;
+                  this.getListData();
+                  });
 
 
 
-        } else {
-          return false;
-        }
-      });
+            } else {
+              return false;
+            }
+          });
+
+
+
+
+    },
+    AcceptYeuCau1(){
+      this.$refs.formData2.validate(valid => {
+          if (valid) {
+
+
+                acceptYeuCau(this.formData2.Id).then(data => {
+                    if(data != null && data != ""){
+                        this.$message({
+                          type: "success",
+                          message: "Cập nhật thành công!"
+                        });
+                        //sendTeleAsync(this.formData2.Id);
+                    }
+                    else{
+                        this.$message({
+                          type: "warning",
+                          message: "Không thể cập nhật!"
+                         });
+
+                    }
+                this.dialogFormBHDisplay= false;
+                this.getListData();
+                });
+
+
+
+          } else {
+            return false;
+          }
+        });
     },
     capnhatYeuCau(){
 
@@ -1977,7 +2063,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-                    sendTeleAsync(this.formData4.Id);
+                    //sendTeleAsync(this.formData4.Id);
                   }
                   else{
                       this.$message({
@@ -2084,7 +2170,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-                      sendTeleAsync(this.formData3.Id);
+                      //sendTeleAsync(this.formData3.Id);
                   }
                   else{
                       this.$message({
@@ -2213,7 +2299,7 @@ export default {
                 message: "Chuyển thành công!"
               });
               //console.log(this.formData2.Id);
-              sendTeleAsync(this.formData2.Id);
+              //sendTeleAsync(this.formData2.Id);
               this.getListComment(this.formData2.Id);
 
             }
@@ -2285,7 +2371,7 @@ export default {
                 message: "Đã từ chối!"
               });
               this.getListComment(this.formData4.Id);
-              sendTeleAsync(this.formData4.Id);
+              //sendTeleAsync(this.formData4.Id);
             }
             else{
                this.$message({

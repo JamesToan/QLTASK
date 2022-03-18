@@ -97,68 +97,202 @@ namespace coreWeb.Controllers
                 else if (user.RoleId == 2)
                 {
                     var userInfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-                    if (DichVuId != null)
+                    if (userInfo.UnitId == 1)
                     {
-                        var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                        var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                        var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                        var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                        var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-
-                        var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                        var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-
-
-                        var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
-                        .Include(hs => hs.States)
-
-                        .GroupBy(hs => hs.StateId)
-                        .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
-                        var result = new
+                        if (DichVuId != null)
                         {
-                            Tong = sum,
-                            MoiTao = sumMoiTao,
-                            DaHT = sumDaHT,
-                            DangXL = sumDangXL,
-                            ChuaXL = sumChuaXL,
-                            TrongHan = sumTrongHan,
-                            TreHan = sumTreHan,
-                            Chart = chart.ToList(),
-                            //Chart1 = chart1.ToList()
-                        };
-                        return Ok(result);
+                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.DichVuId == DichVuId ).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId ).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.DichVuId == DichVuId ).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId ).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
+                        else
+                        {
+                            var sum = _context.YeuCau.Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" ).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" ).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" ).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now ).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now ).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
+                    }
+                    else if (userInfo.UnitId ==2)
+                    {
+                        if (DichVuId != null)
+                        {
+                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.DichVuId == DichVuId && p.UnitId !=1).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId && e.UnitId != 1)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
+                        else
+                        {
+                            var sum = _context.YeuCau.Where(p => p.UnitId != 1).Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.UnitId != 1).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId != 1).Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId != 1).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId != 1).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.UnitId != 1).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.UnitId != 1).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.UnitId != 1)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
                     }
                     else
                     {
-                        var sum = _context.YeuCau.Where(p => p.UnitId == userInfo.UnitId).Count();
-                        var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.UnitId == userInfo.UnitId).Count();
-                        var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId == userInfo.UnitId).Count();
-                        var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId == userInfo.UnitId).Count();
-                        var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId == userInfo.UnitId).Count();
-
-                        var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.UnitId == userInfo.UnitId).Count();
-                        var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.UnitId == userInfo.UnitId).Count();
-
-
-                        var chart = _context.YeuCau.Where(e => e.StateId != 5)
-                        .Include(hs => hs.States)
-
-                        .GroupBy(hs => hs.StateId)
-                        .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
-                        var result = new
+                        if (DichVuId != null)
                         {
-                            Tong = sum,
-                            MoiTao = sumMoiTao,
-                            DaHT = sumDaHT,
-                            DangXL = sumDangXL,
-                            ChuaXL = sumChuaXL,
-                            TrongHan = sumTrongHan,
-                            TreHan = sumTreHan,
-                            Chart = chart.ToList(),
-                            //Chart1 = chart1.ToList()
-                        };
-                        return Ok(result);
+                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
+                        else
+                        {
+                            var sum = _context.YeuCau.Where(p => p.UnitId == userInfo.UnitId).Count();
+                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Mới tạo" && p.UnitId == userInfo.UnitId).Count();
+                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId == userInfo.UnitId).Count();
+                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId == userInfo.UnitId).Count();
+                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId == userInfo.UnitId).Count();
+
+                            var sumTrongHan = _context.YeuCau.Where(p => p.ThoiHan >= DateTime.Now && p.UnitId == userInfo.UnitId).Count();
+                            var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.UnitId == userInfo.UnitId).Count();
+
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.UnitId == userInfo.UnitId)
+                            .Include(hs => hs.States)
+
+                            .GroupBy(hs => hs.StateId)
+                            .Select(hs => new { name = hs.FirstOrDefault().States != null ? hs.FirstOrDefault().States.StateName : "Chưa xác định", y = hs.Count() });
+                            var result = new
+                            {
+                                Tong = sum,
+                                MoiTao = sumMoiTao,
+                                DaHT = sumDaHT,
+                                DangXL = sumDangXL,
+                                ChuaXL = sumChuaXL,
+                                TrongHan = sumTrongHan,
+                                TreHan = sumTreHan,
+                                Chart = chart.ToList(),
+                                //Chart1 = chart1.ToList()
+                            };
+                            return Ok(result);
+                        }
                     }
+                    
                 }
                 else
                 {
@@ -178,7 +312,7 @@ namespace coreWeb.Controllers
                             var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId && p.NhanSuId == nhansu.Id).Count();
 
 
-                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
+                            var chart = _context.YeuCau.Where(e => (e.StateId != 5 && e.DichVuId == DichVuId) &&(e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
                             .Include(hs => hs.States)
 
                             .GroupBy(hs => hs.StateId)
@@ -209,7 +343,7 @@ namespace coreWeb.Controllers
                             var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.NhanSuId == nhansu.Id).Count();
 
 
-                            var chart = _context.YeuCau.Where(e => e.StateId != 5)
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
                             .Include(hs => hs.States)
 
                             .GroupBy(hs => hs.StateId)
@@ -243,7 +377,7 @@ namespace coreWeb.Controllers
                             var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
 
 
-                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
                             .Include(hs => hs.States)
 
                             .GroupBy(hs => hs.StateId)
@@ -274,7 +408,7 @@ namespace coreWeb.Controllers
                             var sumTreHan = _context.YeuCau.Where(p => p.ThoiHan < DateTime.Now && p.NguoiTaoId == userInfo.Id).Count();
 
 
-                            var chart = _context.YeuCau.Where(e => e.StateId != 5)
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
                             .Include(hs => hs.States)
 
                             .GroupBy(hs => hs.StateId)
