@@ -623,7 +623,7 @@ namespace coreWeb.Controllers.Api
                             List<YeuCau> result = new List<YeuCau>();
                             if (StateId == 10)
                             {
-                                result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId)
+                                result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
                                 .Include(e => e.DichVu)
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)

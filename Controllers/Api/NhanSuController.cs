@@ -190,7 +190,7 @@ namespace coreWeb.Controllers.Api
                 {
                     if (nhansu.DichVuId != null)
                     {
-                        objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id };
+                        objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu };
                     }
                 }
                 
@@ -201,7 +201,12 @@ namespace coreWeb.Controllers.Api
                 {
                     if (nhansu.DichVuId != null)
                     {
-                        objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId , UserId = user.UserId, NhanSuId =nhansu.Id }).Single();
+                        objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId , UserId = user.UserId, NhanSuId =nhansu.Id, TenNhanSu = nhansu.TenNhanSu }).Single();
+                    }
+                    else
+                    {
+                        objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu }).Single();
+
                     }
                 }
                
@@ -224,6 +229,7 @@ namespace coreWeb.Controllers.Api
             public int DichVuId { get; set; }
             public int UserId { get; set; }
             public int NhanSuId { get; set; }
+            public string TenNhanSu { get; set; }
         }
 
     }

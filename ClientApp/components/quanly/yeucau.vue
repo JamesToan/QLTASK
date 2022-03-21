@@ -82,12 +82,12 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" >
+            <el-table-column prop="TenYeuCau" label="Yêu cầu">
               <template slot-scope="scope">
                 <!--<text-highlight >
 
 
-                </text-highlight>-->
+              </text-highlight>-->
                 <span :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </span>
@@ -102,15 +102,15 @@
             </template>
           </el-table-column>-->
             <!--<el-table-column prop="JiraDaGui"
-                             label="Task jira"
-                             width="150">
-              <template slot-scope="scope">
-                
-                <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
-              </template>
+                           label="Task jira"
+                           width="150">
+            <template slot-scope="scope">
+
+              <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
+            </template>
 
 
-            </el-table-column>-->
+          </el-table-column>-->
 
 
             <el-table-column prop="NhanSu"
@@ -121,14 +121,13 @@
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
-               
+
               </template>
             </el-table-column>
             <el-table-column prop="ThoiHan"
                              label="Deadline"
                              width="130"
-                             align="center"
-                              >
+                             align="center">
               <template slot-scope="scope">
                 {{ formatDate(scope.row.ThoiHan) }}
               </template>
@@ -138,7 +137,7 @@
                              width="120">
               <template slot-scope="scope">
                 <text-highlight :queries="search" :style=changetextColor(scope.row.States.Id)>
-                  
+
                   {{ scope.row.StateId ? scope.row.States.StateName : ""}}
 
                 </text-highlight>
@@ -356,7 +355,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -454,7 +453,7 @@
           </el-col>
         </el-row>
         <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
-          <text-highlight  style="word-break: normal;" v-html="formData1.NoiDung">
+          <text-highlight style="word-break: normal;" v-html="formData1.NoiDung">
           </text-highlight>
         </el-form-item>
 
@@ -487,7 +486,7 @@
                   <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
                 </el-form-item>
               </div>
-              
+
               <el-form-item prop="CommentYeuCau">
                 <ckeditor :editor="editor"
                           v-model="formData1.CommentYeuCau"
@@ -506,18 +505,21 @@
           {{formData1.Priority}}
         </el-form-item>
         <el-form-item label="Tập tin đính kèm: ">
-          <el-upload action="/api/TapTin/UploadDoc"
-                     :limit="3"
-                     :multiple="true"
-                     :on-preview="handlePreview"
-                     :file-list="fileList"
-                     :on-success="handleSuccess"
-                     :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
-                     :auto-upload="true"
-                     size="mini">
+          <!--<el-upload action="/api/TapTin/UploadDoc"
+             :limit="3"
+             :multiple="true"
+             :on-preview="handlePreview"
+             :file-list="fileList"
+             :on-success="handleSuccess"
+             :before-upload="beforeUpload"
+             accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+             :auto-upload="true"
+             size="mini">
 
-          </el-upload>
+  </el-upload>-->
+          <div v-for="item in fileList">
+            <a :href=item.url download>{{item.name}}</a>
+          </div>
         </el-form-item>
       </el-form>
 
@@ -551,8 +553,6 @@
       <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
     </span>
   </el-dialog>-->
-
-
     <!--     \\\\\\\\\\  PBH  \\\\\\\\\     -->
 
     <el-dialog title="Quản lý yêu cầu"
@@ -567,7 +567,7 @@
                class="m-auto"
                size="small"
                :disabled="!allowEdit">
-        
+
 
         <el-form-item label="Dịch vụ: " prop="DichVuId">
           <el-select v-model="formData2.DichVuId"
@@ -630,8 +630,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="Mã số thuế: " prop="MaSoThue">
-              <el-input v-model="formData2.MaSoThue"  type="text"
-                    size="small"></el-input>
+              <el-input v-model="formData2.MaSoThue" type="text"
+                        size="small"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -657,7 +657,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -671,7 +671,7 @@
         <el-button v-if="isViewBT" @click="AcceptYeuCau1" size="small" type="success">Tiếp nhận</el-button>
 
         <!--<el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
-  <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>-->
+      <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>-->
 
 
       </span>
@@ -710,24 +710,30 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
+              <el-form-item label="Người tạo: " prop="NguoiTaoId">
 
-                {{formatDate(formData3.NgayYeuCau)}}
+                {{formData3.NguoiTaoId ? formData3.NhanSu.TenNhanSu : ""}}
               </el-form-item>
             </el-col>
 
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Trạng thái: " prop="StateId">
+              <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
-                {{formData3.StateId ? formData3.States.StateName : ""}}
+                {{formatDate(formData3.NgayYeuCau)}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData3.ThoiHan)}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Trạng thái: " prop="StateId">
+
+                {{formData3.StateId ? formData3.States.StateName : ""}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -766,9 +772,9 @@
                     <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
                   </el-form-item>
                 </div>
-                <el-form-item prop="CommentYeuCau" >
+                <el-form-item prop="CommentYeuCau">
                   <!--<el-input type="text"
-              size="small" v-model="formData3.CommentYeuCau"></el-input>-->
+                size="small" v-model="formData3.CommentYeuCau"></el-input>-->
                   <ckeditor :editor="editor"
                             v-model="formData3.CommentYeuCau"
                             :config="editorConfig" v-if="isComment"></ckeditor>
@@ -786,23 +792,25 @@
             {{formData3.Priority}}
           </el-form-item>
           <el-form-item label="Tập tin đính kèm:">
-            <el-upload action="/api/TapTin/UploadDoc"
-                       :limit="3"
+            <!--<el-upload action="/api/TapTin/UploadDoc"
+                       :limit="4"
                        :multiple="true"
                        :on-preview="handlePreview"
                        :on-remove="handleRemove"
                        :file-list="fileList"
                        :on-success="handleSuccess"
                        :before-upload="beforeUpload"
-                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
                        :auto-upload="true"
                        size="mini">
-
-            </el-upload>
+            </el-upload>-->
+            <div v-for="item in fileList">
+              <a :href=item.url download>{{item.name}}</a>
+            </div>
           </el-form-item>
         </div>
 
-        
+
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC; border-radius:0.5rem">
           <h4 style="margin-left:20px">Nội dung xử lý: </h4>
           <el-form-item label="Kết quả xử lý" prop="NoiDungXuLy" style="margin-right:10px">
@@ -812,11 +820,11 @@
 
           </el-form-item>
         </div>
-       
+
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHView" size="small">Bỏ qua</el-button>
-        
+
       </span>
     </el-dialog>
 
@@ -893,19 +901,22 @@
           </el-form-item>
 
           <el-form-item label="Tập tin đính kèm: ">
-            <el-upload action="/api/TapTin/UploadDoc"
-                       :limit="3"
-                       :multiple="true"
-                       :on-preview="handlePreview"
-                       :on-remove="handleRemove"
-                       :file-list="fileList"
-                       :on-success="handleSuccess"
-                       :before-upload="beforeUpload"
-                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
-                       :auto-upload="true"
-                       size="mini">
+            <!--<el-upload action="/api/TapTin/UploadDoc"
+             :limit="3"
+             :multiple="true"
+             :on-preview="handlePreview"
+             :on-remove="handleRemove"
+             :file-list="fileList"
+             :on-success="handleSuccess"
+             :before-upload="beforeUpload"
+             accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
+             :auto-upload="true"
+             size="mini">
 
-            </el-upload>
+  </el-upload>-->
+            <div v-for="item in fileList">
+              <a :href=item.url download>{{item.name}}</a>
+            </div>
           </el-form-item>
         </div>
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
@@ -914,13 +925,13 @@
             <ckeditor :editor="editor"
                       v-model="formData4.NoiDungXuLy"
                       :config="editorConfig"
-                      :disabled="isAccept" ></ckeditor>
+                      :disabled="isAccept"></ckeditor>
 
           </el-form-item>
         </div>
 
-        
-        
+
+
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
@@ -930,6 +941,15 @@
         <el-button type="success" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
 
       </span>
+    </el-dialog>
+    <el-dialog top="50px"
+               title="Download"
+               :visible.sync="dialogVisibleDoc"
+               width="50%">
+      <!--<embed :src="dialogFileUrl + '#navpanes=0&scrollbar=0'"
+             width="100%"
+             height="500px" />-->
+      <a :href="dialogFileUrl" download>{{FileDowloadName}}</a>
     </el-dialog>
   </div>
 </template>
@@ -970,6 +990,9 @@ export default {
   data() {
     return {
       title: null,
+      dialogVisibleDoc: false,
+      dialogFileUrl: null,
+      FileDowloadName:null,
       dialogFormDisplay: false,
       dialogFormBHDisplay: false,
       dialogFormBHEdit: false,
@@ -1001,6 +1024,7 @@ export default {
       UserDV: 0,
       NhanSuId: 0,
       UserId: 0,
+      NhanSu:"",
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -1402,7 +1426,8 @@ export default {
           var _arr = JSON.parse(this.formData3.FileUpload);
           for (var i = 0; i < _arr.length; i++) {
             var urlFile = "/uploads/" + _arr[i];
-            this.fileList.push({ name: _arr[i], url: urlFile });
+            console.log(_arr[i]);
+            this.fileList.push({ name: _arr[i]  , url: urlFile });
             this.fileDoc.push({ key: _arr[i], file: _arr[i] });
           }
         }
@@ -1470,6 +1495,7 @@ export default {
 						if (this.formData3.FileUpload) {
 						  this.fileList = [];
 						  this.fileDoc = [];
+
 						  var _arr = JSON.parse(this.formData3.FileUpload);
 						  for (var i = 0; i < _arr.length; i++) {
 							var urlFile = "/uploads/" + _arr[i];
@@ -1698,7 +1724,14 @@ export default {
     },
     handlePreview(file) {
       this.dialogFileUrl = file.url;
+
+      var fileurl = this.dialogFileUrl;
+      var filename = fileurl.split('/');
+      console.log(this.fileList);
+      this.FileDowloadName = filename[2];
       this.dialogVisibleDoc = true;
+
+
     },
 
     beforeUpload(file) {
@@ -1710,14 +1743,16 @@ export default {
       const isXls = file.type === "application/vnd.ms-excel";
       const isXlsx = file.type ==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
       const isXlsm = file.type === "application/vnd.ms-excel.sheet.macroEnabled.12";
+      const isjpg = file.type == "image/jpeg";
+      const ispng = file.type == "image/png";
       const isLt10M = file.size / 1024 / 1024 < 10;
-      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm) {
+      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm && !isjpg && !ispng) {
         this.$message.error("Không đúng định dạng quy định");
       }
       if (!isLt10M) {
         this.$message.error("Dung lượng vượt quá 10M");
       }
-      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm) && isLt10M;
+      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm || isjpg || ispng) && isLt10M;
     },
     handleExport() {
       import("../../vendor/Export2Excel").then(excel => {
@@ -1786,6 +1821,8 @@ export default {
             this.UserDV = data.DichVuId;
             this.UserId = data.UserId;
             this.NhanSuId = data.NhanSuId;
+            this.NhanSu = data.TenNhanSu;
+
           }
 
        });
@@ -1911,7 +1948,7 @@ export default {
                   this.stateNew = this.formData.StateId;
                   if(this.stateNew != this.stateOld && this.formData.UnitId != 1){
 
-                    //sendTeleAsync(this.formData.Id);
+                    sendTeleAsync(this.formData.Id);
                   }
                   this.getListData();
               }
@@ -1943,7 +1980,7 @@ export default {
                             type: "success",
                             message: "Cập nhật thành công!"
                           });
-                          //sendTeleAsync(this.formData4.Id);
+                         sendTeleAsync(this.formData4.Id);
                       }
                       else{
                           this.$message({
@@ -1978,7 +2015,7 @@ export default {
                           type: "success",
                           message: "Cập nhật thành công!"
                         });
-                        //sendTeleAsync(this.formData2.Id);
+                        sendTeleAsync(this.formData2.Id);
                     }
                     else{
                         this.$message({
@@ -2063,7 +2100,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-                    //sendTeleAsync(this.formData4.Id);
+                    sendTeleAsync(this.formData4.Id);
                   }
                   else{
                       this.$message({
@@ -2093,6 +2130,7 @@ export default {
               var _arr = JSON.parse(this.formData2.FileUpload);
               for (var i = 0; i < _arr.length; i++) {
                 var urlFile = "/uploads/" + _arr[i];
+
                 this.fileList.push({ name: _arr[i], url: urlFile });
                 this.fileDoc.push({ key: _arr[i], file: _arr[i] });
               }
@@ -2170,7 +2208,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-                      //sendTeleAsync(this.formData3.Id);
+                      sendTeleAsync(this.formData3.Id);
                   }
                   else{
                       this.$message({
@@ -2299,7 +2337,7 @@ export default {
                 message: "Chuyển thành công!"
               });
               //console.log(this.formData2.Id);
-              //sendTeleAsync(this.formData2.Id);
+              sendTeleAsync(this.formData2.Id);
               this.getListComment(this.formData2.Id);
 
             }
@@ -2371,7 +2409,7 @@ export default {
                 message: "Đã từ chối!"
               });
               this.getListComment(this.formData4.Id);
-              //sendTeleAsync(this.formData4.Id);
+              sendTeleAsync(this.formData4.Id);
             }
             else{
                this.$message({
@@ -2498,5 +2536,10 @@ export default {
 
   .el-input__inner {
     height:34px !important;
+  }
+
+  .el-form-item--small .el-form-item__content .image img {
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
   }
 </style>

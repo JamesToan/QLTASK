@@ -27,6 +27,7 @@ namespace coreWeb.Controllers.Api
         [HttpPost]
         public IActionResult UploadDoc([FromForm] TapTin doc)
         {
+            
             // Getting Name
             string name = doc.Name;
             // Getting Image
@@ -40,7 +41,7 @@ namespace coreWeb.Controllers.Api
             var fileName = vTimeFile + "_" + file.FileName;
             string type = fileName.Split('.').Last();
 
-            if (type.ToLower() != "pdf" && type.ToLower() != "doc" && type.ToLower() != "docx" && type.ToLower() != "xls" && type.ToLower() != "xlsx" && type.ToLower() != "xlsm")
+            if (type.ToLower() != "pdf" && type.ToLower() != "doc" && type.ToLower() != "docx" && type.ToLower() != "xls" && type.ToLower() != "xlsx" && type.ToLower() != "xlsm" && type.ToLower() !=  "jpg" && type.ToLower() != "png")
             {
                 return Ok(new { status = 0, message = "Không đúng định dạng quy định" });
             }
