@@ -35,7 +35,7 @@ namespace coreWeb.Models.Entities
 
         public int? DichVuId { get; set; }
 
-        public int NguoiTaoId { get; set; }
+        public int? NguoiTaoId { get; set; }
 
         [MaxLength]
         public string NoiDungXuLy { get; set; }
@@ -49,6 +49,8 @@ namespace coreWeb.Models.Entities
         public DateTime? NgayXuLy { get; set; }
 
         public string FileUpload { get; set; }
+
+        public string FileXuLy { get; set; }
 
         public int? NguoiGiamSatId { get; set; }
 

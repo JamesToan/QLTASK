@@ -78,7 +78,7 @@
             <a href="/admin/yeucau/10">
               <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
                 <div class="header-title">
-                  Mới tạo
+                  Chưa tiếp nhận
                 </div>
                 <div align="center" style="font-size: 26px; font-weight: bold">
                   {{ ThongKe.MoiTao }}
@@ -89,7 +89,7 @@
           </div>
         </el-row>
         <el-row class="row hidden-md-and-down">
-          <div class="col-4">
+          <!--<div class="col-4">
             <a href="/admin/yeucau/9">
               <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
                 <div class="header-title">Chưa xử lý</div>
@@ -99,7 +99,7 @@
               </div>
             </a>
             
-          </div>
+          </div>-->
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;background-color:mediumseagreen; color:black">
               <div class="header-title">Trong hạn</div>

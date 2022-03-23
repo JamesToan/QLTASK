@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\Content\Admin\" />
-    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Content\Assets\css\less\alerts.less" />

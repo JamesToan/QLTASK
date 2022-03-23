@@ -171,7 +171,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -657,7 +657,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.zip,.rar,image/jpeg,image/gif,image/png,"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -712,7 +712,7 @@
             <el-col :span="12">
               <el-form-item label="Người tạo: " prop="NguoiTaoId">
 
-                {{formData3.NguoiTaoId ? formData3.NhanSu.TenNhanSu : ""}}
+                {{formData3.NguoiTaoId ? formData3.User.FullName : ""}}
               </el-form-item>
             </el-col>
 
@@ -819,6 +819,12 @@
             </span>
 
           </el-form-item>
+          <el-form-item label="Tập tin xử lý: ">
+
+            <div v-for="item in fileList1">
+              <a :href=item.url download>{{item.name}}</a>
+            </div>
+          </el-form-item>
         </div>
 
       </el-form>
@@ -855,9 +861,22 @@
           </el-form-item>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
 
-                {{formData4.NhanSuId ? formData4.NhanSu.TenNhanSu : ""}}
+              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
+                <span v-if="!isAccept">
+                  {{formData4.NhanSuId ? formData4.NhanSu.TenNhanSu : ""}}
+                </span>
+                <span v-if="isAccept">
+                  <el-select v-model="formData4.NhanSuId"
+                             placeholder="Chọn nhân sự"
+                             class="w-100">
+                    <el-option v-for="item in ListNhansuQLDV"
+                               :key="item.Id"
+                               :label="item.TenNhanSu"
+                               :value="item.Id">
+                    </el-option>
+                  </el-select>
+                </span>               
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -901,19 +920,7 @@
           </el-form-item>
 
           <el-form-item label="Tập tin đính kèm: ">
-            <!--<el-upload action="/api/TapTin/UploadDoc"
-             :limit="3"
-             :multiple="true"
-             :on-preview="handlePreview"
-             :on-remove="handleRemove"
-             :file-list="fileList"
-             :on-success="handleSuccess"
-             :before-upload="beforeUpload"
-             accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm"
-             :auto-upload="true"
-             size="mini">
-
-  </el-upload>-->
+           
             <div v-for="item in fileList">
               <a :href=item.url download>{{item.name}}</a>
             </div>
@@ -928,6 +935,22 @@
                       :disabled="isAccept"></ckeditor>
 
           </el-form-item>
+          <el-form-item label="Tập tin xử lý:">
+            <el-upload action="/api/TapTin/UploadDoc"
+                       :limit="4"
+                       :multiple="true"
+                       :on-preview="handlePreview"
+                       :on-remove="handleRemove1"
+                       :file-list="fileList1"
+                       :on-success="handleSuccess1"
+                       :before-upload="beforeUpload"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                       :auto-upload="true"
+                       size="mini">
+              <el-button size="small" type="primary">Tải lên</el-button>
+            </el-upload>
+           
+          </el-form-item>
         </div>
 
 
@@ -936,20 +959,26 @@
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
         <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary">Cập nhật</el-button>
-        <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
 
-        <el-button type="success" size="small" @click="xuLyYeuCau" v-else>Hoàn thành</el-button>
+        <el-button v-if="isAccept" @click="capnhatYeuCau" size="small" type="primary">Chuyển yêu cầu</el-button>
+        <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
+        <el-button type="success" size="small" @click="handleXacNhan" v-else>Hoàn thành</el-button>
 
       </span>
     </el-dialog>
     <el-dialog top="50px"
-               title="Download"
-               :visible.sync="dialogVisibleDoc"
-               width="50%">
-      <!--<embed :src="dialogFileUrl + '#navpanes=0&scrollbar=0'"
-             width="100%"
-             height="500px" />-->
-      <a :href="dialogFileUrl" download>{{FileDowloadName}}</a>
+               title="Hoàn thành"
+               :visible.sync="dialogXacNhan"
+               width="30%">
+      <div style="text-align: center">
+        <h3>Bạn xác nhận hoàn thành?</h3>
+        <div style="margin-top:20px">
+          <el-button style="margin-right:5px" type="warning" size="small" @click="resetFormXacNhan">No</el-button>
+          <el-button type="success" size="small" @click="xuLyYeuCau">Yes</el-button>
+        </div>
+        
+      </div>
+     
     </el-dialog>
   </div>
 </template>
@@ -984,7 +1013,9 @@ import {
   acceptYeuCau,
   forwardYeuCau,
   deniesYeuCau,
-  addYeuCauNew
+  addYeuCauNew,
+  currenQL,
+  NSQL,
 } from "../../store/api";
 export default {
   data() {
@@ -999,6 +1030,7 @@ export default {
       dialogFormView: false,
       dialogFormBHHandle: false,
       dialogFormBHView: false,
+      dialogXacNhan: false,
       loading: false,
       isEditor: false,
       isXacThuc: false,
@@ -1083,6 +1115,7 @@ export default {
         JiraDaGui: null,
         FileUpload: null,
         MaSoThue: null,
+        NguoiTaoId: null,
 
       },
       formData3: {
@@ -1090,6 +1123,7 @@ export default {
         TenYeuCau: null,
         DichVuId: null,
         NhanSuId: null,
+        NguoiTaoId: null,
         NgayYeuCau: null,
         ThoiHan: null,
         NoiDung: null,
@@ -1106,6 +1140,7 @@ export default {
       formData4: {
         TenYeuCau: null,
         DichVuId: null,
+        NguoiTaoId: null,
         NhanSuId: null,
         NgayYeuCau: null,
         ThoiHan: null,
@@ -1115,6 +1150,7 @@ export default {
         NoiDungXuLy: null,
         StateId: null,
         MaSoThue:null,
+        FileXuLy:null,
       },
       formRules: {
         TenYeuCau: [
@@ -1200,6 +1236,8 @@ export default {
       Comment: [],
       fileList: [],
       fileDoc: [],
+      fileList1: [],
+      fileDoc1: [],
       fileImage:[],
       pagination: 10,
       total: 10,
@@ -1208,6 +1246,9 @@ export default {
       stateOld : [],
       stateNew: [],
       UserProFile:[],
+      QLDVList:[],
+      ListNhansuQLDV:[],
+      NhansuQLDV:[],
     };
   },
 
@@ -1223,7 +1264,7 @@ export default {
         return moment(date).format("DD/MM/YYYY");
       } else return null;
     },
-  formatDateTime(date) {
+    formatDateTime(date) {
       if (date) {
         return moment(date).format("MM/DD/YYYY hh:mm");
       } else return null;
@@ -1232,6 +1273,13 @@ export default {
       if (val) {
         return val.substring(val.length - 18, val.length);
       } else return null;
+    },
+    formatHtml(val){
+      if(val){
+        return val.replace(/<[^>]*>?/gm, '');
+
+      }
+
     },
     formatJira(val) {
       if (val) {
@@ -1244,6 +1292,7 @@ export default {
         return jira;
       } else return null;
     },
+
     formatJson(filterVal, jsonData) {
       return jsonData.map(data =>
         filterVal.map(f => {
@@ -1279,7 +1328,9 @@ export default {
           if (f == "ThoiHan") {
             return this.formatDate(result);
           }
-
+          if(f == "NoiDung"){
+            return this.formatHtml(result)
+          }
           if (f == "ThoiHanMongMuon") {
             return this.formatDate(result);
           }
@@ -1331,6 +1382,10 @@ export default {
 
 
     //},
+    handleXacNhan(){
+      this.dialogXacNhan = true;
+
+    },
     handleAdd() {
       if (this.StateIdFilter || this.DichVuIdFilter) {
 
@@ -1340,6 +1395,7 @@ export default {
               this.$refs.formData2.resetFields();
 
             }
+            this.formData2.NoiDung ="";
             this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
           }
@@ -1347,15 +1403,27 @@ export default {
             if (this.$refs.formData !== undefined) {
             this.$refs.formData.resetFields();
             }
+            this.formData.NoiDung ="";
             this.isChuyenYc = false;
             this.dialogFormDisplay = true;
           }
 
         }
-        else if(this.UserUnitId !=1){
+        else if (this.UserUnitId ==2){
+          if (this.$refs.formData2 !== undefined) {
+            this.$refs.formData2.resetFields();
+          }
+          this.formData2.NoiDung ="";
+          this.isChuyenYc = false;
+          this.isChangeNhanSu = false;
+          this.dialogFormBHDisplay = true;
+
+        }
+        else if (this.UserUnitId !=2 && this.UserUnitId !=1) {
             if (this.$refs.formData2 !== undefined) {
               this.$refs.formData2.resetFields();
             }
+            this.formData2.NoiDung ="";
             this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
         }
@@ -1432,6 +1500,20 @@ export default {
           }
         }
 
+          if (this.formData3.FileXuLy) {
+          this.fileList1 = [];
+          this.fileDo1c = [];
+
+
+          var _arr = JSON.parse(this.formData3.FileXuLy);
+          for (var i = 0; i < _arr.length; i++) {
+            var urlFile = "/uploads/" + _arr[i];
+            console.log(_arr[i]);
+            this.fileList1.push({ name: _arr[i]  , url: urlFile });
+            this.fileDoc1.push({ key: _arr[i], file: _arr[i] });
+          }
+        }
+
         this.isEditor = false;
         this.dialogFormBHView = true;
       }
@@ -1503,7 +1585,19 @@ export default {
 							this.fileDoc.push({ key: _arr[i], file: _arr[i] });
 						  }
 						}
+            if (this.formData3.FileXuLy) {
+          this.fileList1 = [];
+          this.fileDo1c = [];
 
+
+          var _arr = JSON.parse(this.formData3.FileXuLy);
+          for (var i = 0; i < _arr.length; i++) {
+            var urlFile = "/uploads/" + _arr[i];
+            console.log(_arr[i]);
+            this.fileList1.push({ name: _arr[i]  , url: urlFile });
+            this.fileDoc1.push({ key: _arr[i], file: _arr[i] });
+          }
+        }
 						this.isEditor = false;
 						this.dialogFormBHView = true;
 
@@ -1517,6 +1611,7 @@ export default {
     },
     handleEdit(index, row) {
 
+      this.ListNhansuQLDV= [];
       this.isChuyenYc = false;
       if(this.UserUnitId == 1 ){
           var bool = false;
@@ -1532,19 +1627,42 @@ export default {
             this.isViewBT = false;
           }
 
+          var checkdv = false;
+
+          for( var i = 0; i < this.QLDVList.length; i++){
+            if(this.QLDVList[i].DichVuId == row.DichVuId){
+                checkdv = true;
+            }
+          }
+
+
           if(row.StateId == 6){
             this.$message({
                type: "warning",
                 message: "Không thể cập nhật!"
               });
           }
-
-          else{
-             if (row.DichVuId == this.UserDV && ((row.NguoiTaoId == this.UserId && row.StateId !=10 )||row.NguoiTaoId != this.UserId ) || (this.RoleId ==2 && (row.DichVuId != 7 ||row.DichVuId != 8 || row.DichVuId != 9))){
+           else{
+             if (checkdv == true && ((row.NguoiTaoId == this.UserId && row.StateId !=10 )||row.NguoiTaoId != this.UserId ) || (this.RoleId ==2 && (row.DichVuId != 7 ||row.DichVuId != 8 || row.DichVuId != 9))){
                 if (this.$refs.formData4 !== undefined) {
                 this.$refs.formData4.resetFields();
 
                 }
+                for(var i=0; i<this.NhansuQLDV.length ; i++){
+                  if(this.NhansuQLDV[i].DichVuId == row.DichVuId){
+                    console.log(this.NhansuQLDV[i]);
+                    for(var k=0; k<this.ListDMNhanSu.length ; k++){
+                      if(this.NhansuQLDV[i].NhanSuId == this.ListDMNhanSu[k].Id ){
+
+                          this.ListNhansuQLDV.push(this.ListDMNhanSu[k]);
+                      }
+                    }
+
+                  }
+
+                }
+
+                console.log(this.ListNhansuQLDV);
                 this.formData4 = Object.assign({}, row);
                 this.stateOld = this.formData4.StateId;
 
@@ -1565,10 +1683,24 @@ export default {
                   }
                 }
 
+                 if (this.formData4.FileXuLy) {
+                  this.fileList1 = [];
+                  this.fileDoc1 = [];
+                  var _arr = JSON.parse(this.formData4.FileXuLy);
+                  for (var i = 0; i < _arr.length; i++) {
+                    var urlFile = "/uploads/" + _arr[i];
+                    this.fileList1.push({ name: _arr[i], url: urlFile });
+                    this.fileDoc1.push({ key: _arr[i], file: _arr[i] });
+                  }
+                }
+
+                if(row.NoiDungXuLy == null){
+                  this.formData4.NoiDungXuLy = "";
+                }
                 this.isEditor = true;
                 this.dialogFormBHHandle = true;
             }
-            else if(row.DichVuId == this.UserDV && row.NguoiTaoId == this.UserId && row.StateId == 10){
+            else if(checkdv == true && row.NguoiTaoId == this.UserId && row.StateId == 10){
                 if (this.$refs.formData2 !== undefined) {
                   this.$refs.formData2.resetFields();
 
@@ -1648,7 +1780,7 @@ export default {
             });
       }
       else if(this.UserUnitId != 1){
-        if(row.StateId == 10){
+        if(row.StateId != 6){
           if (this.$refs.formData2 !== undefined) {
             this.$refs.formData2.resetFields();
 
@@ -1681,7 +1813,7 @@ export default {
         else{
               this.$message({
                type: "warning",
-                message: "Yêu cầu đã chuyển đi, không thể cập nhật!"
+                message: "Yêu cầu đã hoàn thành, không thể cập nhật!"
               });
         }
 
@@ -1722,6 +1854,13 @@ export default {
       let i = this.fileDoc.map(item => item.key).indexOf(file.name);
       this.fileDoc.splice(i, 1);
     },
+    handleSuccess1(response, file, ListJira) {
+      this.fileDoc1.push({ key: file.name, file: response.file });
+    },
+    handleRemove1(file, ListJira) {
+      let i = this.fileDoc1.map(item => item.key).indexOf(file.name);
+      this.fileDoc1.splice(i, 1);
+    },
     handlePreview(file) {
       this.dialogFileUrl = file.url;
 
@@ -1745,14 +1884,16 @@ export default {
       const isXlsm = file.type === "application/vnd.ms-excel.sheet.macroEnabled.12";
       const isjpg = file.type == "image/jpeg";
       const ispng = file.type == "image/png";
+      const israr = file.type == "application/rar";
+      const iszip = file.type == "application/x-zip-compressed";
       const isLt10M = file.size / 1024 / 1024 < 10;
-      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm && !isjpg && !ispng) {
+      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm && !isjpg && !ispng && !israr && !iszip) {
         this.$message.error("Không đúng định dạng quy định");
       }
       if (!isLt10M) {
         this.$message.error("Dung lượng vượt quá 10M");
       }
-      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm || isjpg || ispng) && isLt10M;
+      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm || isjpg || ispng || israr || iszip) && isLt10M;
     },
     handleExport() {
       import("../../vendor/Export2Excel").then(excel => {
@@ -1814,6 +1955,9 @@ export default {
       return true;
 
     },
+    resetFormXacNhan(){
+      this.dialogXacNhan = false;
+    },
     getListData() {
       this.loading = true;
         getCurrentNS().then(data => {
@@ -1826,8 +1970,19 @@ export default {
           }
 
        });
+        currenQL().then(data =>{
+          if(data != null && data != ""){
 
+            this.QLDVList = data
 
+          }
+        });
+        NSQL().then(data=> {
+          if(data){
+           this.NhansuQLDV = data;
+
+          }
+        });
         //Quản lý
         this.loading = true;
       if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1) {
@@ -1933,7 +2088,7 @@ export default {
                 type: "success",
                 message: "Thêm mới thành công!"
               });
-
+              sendTeleAsync(this.formData.Id);
               this.getListData();
             });
           } else {
@@ -1946,10 +2101,10 @@ export default {
                   message: "Cập nhật thành công!"
                   });
                   this.stateNew = this.formData.StateId;
-                  if(this.stateNew != this.stateOld && this.formData.UnitId != 1){
 
-                    sendTeleAsync(this.formData.Id);
-                  }
+
+                   sendTeleAsync(this.formData.Id);
+
                   this.getListData();
               }
               else{
@@ -2039,19 +2194,9 @@ export default {
 
       this.$refs.formData4.validate(valid => {
         if (valid) {
-          if (this.formData4.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData4.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
-            this.formData4.FileUpload = JSON.stringify(
-            this.fileDoc.map(ite => ite.file));
 
+            this.formData4.FileUpload = JSON.stringify(this.fileDoc.map(ite => ite.file));
+            this.formData4.FileXuLy = JSON.stringify(this.fileDoc1.map(ite => ite.file));
               updateYeuCau(this.formData4).then(data => {
                   if(data != null && data != ""){
                       this.$message({
@@ -2081,19 +2226,11 @@ export default {
     xuLyYeuCau(){
       this.$refs.formData4.validate(valid => {
         if (valid) {
-          if (this.formData4.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData4.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
+
+
             this.formData4.FileUpload = JSON.stringify(
             this.fileDoc.map(ite => ite.file));
-
+            this.formData4.FileXuLy = JSON.stringify(this.fileDoc1.map(ite => ite.file));
               completeYeuCau(this.formData4).then(data => {
                   if(data != null && data != ""){
                       this.$message({
@@ -2124,17 +2261,8 @@ export default {
     addDataBH() {
       this.$refs.formData2.validate(valid => {
         if (valid) {
-          if (this.formData2.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData2.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
+        console.log(this.formData2);
 
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
             this.formData2.FileUpload = JSON.stringify(
             this.fileDoc.map(ite => ite.file));
 
@@ -2146,6 +2274,7 @@ export default {
                         type: "success",
                         message: "Thêm mới thành công!"
                       });
+                    sendTeleAsync(data);
                   }
                   else{
                       this.$message({
@@ -2166,7 +2295,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-
+                    
                   }
                   else{
                       this.$message({
@@ -2177,6 +2306,7 @@ export default {
                   }
               this.dialogFormBHDisplay= false;
               this.getListData();
+
               });
 
             }
@@ -2189,16 +2319,7 @@ export default {
     updateDataBH(){
       this.$refs.formData3.validate(valid => {
         if (valid) {
-          if (this.formData3.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData3.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
+
             this.formData3.FileUpload = JSON.stringify(
             this.fileDoc.map(ite => ite.file));
             if(this.isEditor == 0){
@@ -2356,16 +2477,7 @@ export default {
     addForward(){
         this.$refs.formData2.validate(valid => {
         if (valid) {
-          if (this.formData2.FileUpload) {
-              this.fileList = [];
-              this.fileDoc = [];
-              var _arr = JSON.parse(this.formData2.FileUpload);
-              for (var i = 0; i < _arr.length; i++) {
-                var urlFile = "/uploads/" + _arr[i];
-                this.fileList.push({ name: _arr[i], url: urlFile });
-                this.fileDoc.push({ key: _arr[i], file: _arr[i] });
-              }
-            }
+
             this.formData2.FileUpload = JSON.stringify(
             this.fileDoc.map(ite => ite.file));
 
@@ -2419,6 +2531,7 @@ export default {
             }
          this.dialogFormBHHandle= false;
          this.getListData();
+
       });
 
 
@@ -2542,4 +2655,10 @@ export default {
     width: -webkit-fill-available;
     height: -webkit-fill-available;
   }
+  .el-table{
+    color: black !important;
+  }
+    .el-table thead {
+      color: black !important;
+    }
 </style>

@@ -845,3 +845,19 @@ export function deleteQLDV(id) {
     params: params
   });
 }
+export function currenQL() {
+  //const params = { qlId };
+  return request({
+    url: "api/quanlydichvu/getdichVuNhanSu",
+    method: "get",
+    
+  });
+}
+export function NSQL() {
+  //const params = { qlId };
+  return request({
+    url: "api/quanlydichvu/getdsnhansudv",
+    method: "get",
+
+  });
+}

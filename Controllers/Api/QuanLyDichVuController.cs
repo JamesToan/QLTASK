@@ -157,6 +157,41 @@ namespace coreWeb.Controllers.Api
             }
         }
 
-        
+        [HttpGet]
+        public IActionResult getdichVuNhanSu()
+        {
+            var user = new UserClaim(HttpContext);
+            var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
+            List<QLDVViewModel> quanLy = new List<QLDVViewModel>();
+            if (nhansu != null)
+            {
+                quanLy = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(e => new QLDVViewModel { DichVuId = (int)e.DichVuId, NhanSuId = nhansu.Id}).Distinct().ToList();
+
+            }
+            if (quanLy != null)
+            {
+                return Ok(quanLy);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
+
+        public IActionResult getdsnhansudv()
+        {
+            var user = new UserClaim(HttpContext);
+            var quanly = _context.QuanLyDichVu.Select(e => new QLDVViewModel { DichVuId = (int)e.DichVuId, NhanSuId = (int)e.NhanSuId}).Distinct().ToList();
+
+            return Ok(quanly);
+        }
+
+        public class QLDVViewModel
+        {
+            public int DichVuId { get; set; }
+            public int NhanSuId { get; set; }
+           
+        }
+
     }
 }
