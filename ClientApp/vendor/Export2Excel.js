@@ -171,11 +171,11 @@ export function export_json_to_excel({
       /*再判断是否为中文*/
       else if (val.toString().charCodeAt(0) > 255) {
         return {
-          'wch': val.toString().length * 2
+          'wch': 35
         };
       } else {
         return {
-          'wch': val.toString().length
+          'wch': 15
         };
       }
     }))

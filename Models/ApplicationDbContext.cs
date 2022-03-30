@@ -43,10 +43,10 @@ namespace coreWeb.Models
         //Comment
         public DbSet<Comment> Comment { get; set; }
 
-        //Comment
+        //Quanlydichvu
         public DbSet<QuanLyDichVu> QuanLyDichVu { get; set; }
 
-       
-
+        //Quanlydichvu
+        public DbSet<LoaiYeuCau> LoaiYeuCau { get; set; }
     }
 }

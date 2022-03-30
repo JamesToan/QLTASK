@@ -51,11 +51,13 @@ namespace coreWeb.Controllers
                     }
                     var DMQLDV = _context.QuanLyDichVu.ToList();
                     var DMTinhTrang = _context.Status.ToList();
+                    
                     var DMTrangThai = _context.States.OrderByDescending(e=>e.Id).ToList();
                     var DMDonVi     = _context.DonViYeuCau.ToList();
                     var DMDichVu    = _context.DichVu.Where(dm => dm.IsActive == true).Include(e=>e.DonVi).OrderBy(e =>e.Id).ToList();
-                    var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList(); 
-                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null && DMUser != null && DMQLDV != null)
+                    var DMJira      = _context.Jira.Where(dm => dm.IsActive == true).ToList();
+                    var DMLYC       = _context.LoaiYeuCau.ToList();
+                    if (DMNhanSu != null && DMTinhTrang != null && DMTrangThai != null && DMDichVu != null && DMJira != null && DMDonVi != null && DMUser != null && DMQLDV != null && DMLYC != null)
                     {
                         var result = new
                         {
@@ -67,6 +69,7 @@ namespace coreWeb.Controllers
                             DMDonVi = DMDonVi,
                             DMUser  = DMUser,
                             DMQLDV = DMQLDV,
+                            DMLYC  = DMLYC,
                         };
                         return Ok(result);
                     }

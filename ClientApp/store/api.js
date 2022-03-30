@@ -861,3 +861,48 @@ export function NSQL() {
 
   });
 }
+
+//  ----- Loại yêu cầu -------//
+export function getLoaiYeuCau() {
+
+  return request({
+    url: "api/loaiyeucau/Get",
+    method: 'get'
+
+  });
+}
+
+export function selectLoaiYeuCau() {
+
+  return request({
+    url: "api/loaiyeucau/Select",
+    method: "get"
+  });
+}
+
+export function addLoaiYeuCau(data) {
+  //const data = { };
+  return request({
+    url: "api/loaiyeucau/add",
+    method: "post",
+    data: data
+  });
+}
+
+export function updateLoaiYeuCau(data) {
+
+  return request({
+    url: "api/loaiyeucau/update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteLoaiYeuCau(id) {
+  const params = { id };
+  return request({
+    url: "api/loaiyeucau/delete",
+    method: "post",
+    params: params
+  });
+}

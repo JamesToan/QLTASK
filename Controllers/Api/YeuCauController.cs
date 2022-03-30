@@ -1297,6 +1297,7 @@ namespace coreWeb.Controllers.Api
                         result.MaSoThue = model.MaSoThue;
                         result.NgayCapNhat = DateTime.Now;
                         result.NoiDungXuLy = model.NoiDungXuLy;
+                        result.LoaiYeuCauId = model.LoaiYeuCauId;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -1332,6 +1333,7 @@ namespace coreWeb.Controllers.Api
                             result.NgayCapNhat = DateTime.Now;
                             result.StateId = model.StateId;
                             result.FileXuLy = model.FileXuLy;
+                            result.LoaiYeuCauId = model.LoaiYeuCauId;
                         }
                         
                         
@@ -1769,34 +1771,57 @@ namespace coreWeb.Controllers.Api
             var userinfo = _context.User.Where(p => p.Id == yeucau.NguoiTaoId).FirstOrDefault();
             var state = _context.States.Where(p => p.Id == yeucau.StateId).FirstOrDefault();
             var nhansu = _context.NhanSu.Where(p => p.Id == yeucau.NhanSuId).FirstOrDefault();
+            
             var text = "";
             DateTime thoihan = (DateTime)yeucau.ThoiHan;
-            //if (yeucau.StateId == 9)
-            //{
+            if (yeucau.NoiDungXuLy != null && yeucau.StateId == 7)
+            {
+                var xuly = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n - Nội dung xử lý: <strong>" + xuly + "</strong>";
 
-            //    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n - Tình trạng: <strong>Đã chuyển tới tiếp nhận</strong>";
-
-            //}
-            //else if(yeucau.StateId == 10)
-            //{
-            //    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong> \n - Tình trạng: <strong>Bị từ chối </strong>";
+            }
+            else if (yeucau.NoiDungXuLy == null)
+            {
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
 
-            //}
+            }
+            else
+            {
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
-            text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+            }
+
+            //text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
 
             var client = new System.Net.Http.HttpClient();
             var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
+
             var request = new HttpRequestMessage()
             {
                 RequestUri = new Uri(connectionUrl),
                 Method = HttpMethod.Get
             };
+            
             var response = await client.SendAsync(request);
             var dataResult = response.Content.ReadAsStringAsync().Result;
+
             JObject joResponse = JObject.Parse(dataResult);
+            System.Diagnostics.Debug.WriteLine(joResponse);
+            //var  user_id = (string)joResponse.SelectToken("result.contact.user_id");
+            //var connectionUrl1 = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id="+ user_id + "&text=" + text;
+            //var request1 = new HttpRequestMessage()
+            //{
+            //    RequestUri = new Uri(connectionUrl1),
+            //    Method = HttpMethod.Get
+            //};
+            //var response1 = await client.SendAsync(request1);
+            //var dataResult1 = response1.Content.ReadAsStringAsync().Result;
+
+            
             return dataResult;
         }
 

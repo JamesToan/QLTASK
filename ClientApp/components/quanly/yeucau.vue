@@ -68,14 +68,14 @@
                     style="width: 100%">
 
             <!-- <el-table-column width="50" label="" align="center">
-            <template></template>
-          </el-table-column> -->
+    <template></template>
+  </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column prop="Id" label="Mã" width="80">
+            <el-table-column prop="Id" label="Mã" width="80" sortable>
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
                   YC{{ scope.row.Id }}
@@ -87,30 +87,30 @@
                 <!--<text-highlight >
 
 
-              </text-highlight>-->
+      </text-highlight>-->
                 <span :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </span>
               </template>
             </el-table-column>
             <!--<el-table-column prop="NoiDung"
-                           label="Nội Dung"
-                           min-width="250">
-            <template slot-scope="scope">
-              <text-highlight :queries="search" style="word-break: normal;" v-html="scope.row.NoiDung">
-              </text-highlight>
-            </template>
-          </el-table-column>-->
+                   label="Nội Dung"
+                   min-width="250">
+    <template slot-scope="scope">
+      <text-highlight :queries="search" style="word-break: normal;" v-html="scope.row.NoiDung">
+      </text-highlight>
+    </template>
+  </el-table-column>-->
             <!--<el-table-column prop="JiraDaGui"
-                           label="Task jira"
-                           width="150">
-            <template slot-scope="scope">
+                   label="Task jira"
+                   width="150">
+    <template slot-scope="scope">
 
-              <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
-            </template>
+      <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
+    </template>
 
 
-          </el-table-column>-->
+  </el-table-column>-->
 
 
             <el-table-column prop="NhanSu"
@@ -127,7 +127,8 @@
             <el-table-column prop="ThoiHan"
                              label="Deadline"
                              width="130"
-                             align="center">
+                             align="center"
+                             sortable>
               <template slot-scope="scope">
                 {{ formatDate(scope.row.ThoiHan) }}
               </template>
@@ -144,7 +145,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column prop="Status" label="Tình trạng" width="100">
+            <el-table-column prop="Status" label="Tình trạng" width="100" v-if="!isXacNhan">
 
               <template slot-scope="scope">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now() && scope.row.StateId != 6" style="color:darkorange">
@@ -153,6 +154,13 @@
                 <span v-if="new Date(scope.row.ThoiHan) >= Date.now() && scope.row.StateId != 6" style="color:green">
                   Trong hạn
                 </span>
+              </template>
+
+            </el-table-column>
+            <el-table-column prop="NgayXuLy" label="Ngày xử lý" width="130" v-if="isXacNhan">
+
+              <template slot-scope="scope">
+                {{ formatDate(scope.row.NgayXuLy) }}
               </template>
 
             </el-table-column>
@@ -171,7 +179,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -355,7 +363,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png,.zip,.rar,.p7b"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -430,6 +438,15 @@
               {{formData1.NguoiGiamSatId ? formData1.NhanSu.TenNhanSu : ""}}
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="Người tạo: " prop="NguoiTaoId">
+
+              {{formData1.NguoiTaoId ? formData1.User.FullName : ""}}
+            </el-form-item>
+          </el-col>
+          
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item prop="ThoiHanMongMuon" label="Thời hạn KH: ">
 
@@ -589,6 +606,19 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
+            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau" >
+              <el-select v-model="formData2.LoaiYeuCauId"
+                         placeholder="Chọn loại yêu cầu"
+                         class="w-100" :disabled="isLoaiYC">
+                <el-option v-for="item in ListLoaiYC"
+                           :key="item.Id"
+                           :label="item.TenLoaiYeuCau"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
@@ -601,8 +631,12 @@
               </el-select>
             </el-form-item>
           </el-col>
+          
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
+             
               <el-date-picker v-model="formData2.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
@@ -613,9 +647,6 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="Hạn xử lý: " prop="ThoiHan">
               <el-date-picker v-model="formData2.ThoiHan"
@@ -628,6 +659,9 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
+          
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="Mã số thuế: " prop="MaSoThue">
               <el-input v-model="formData2.MaSoThue" type="text"
@@ -657,7 +691,7 @@
                      :file-list="fileList"
                      :on-success="handleSuccess"
                      :before-upload="beforeUpload"
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.zip,.rar,image/jpeg,image/gif,image/png,"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png,.zip,.rar,.p7b"
                      :auto-upload="true"
                      size="mini">
             <el-button size="small" type="primary">Tải lên</el-button>
@@ -880,9 +914,25 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
+              <el-form-item label="Người tạo: " prop="NguoiTaoId">
+
+                {{formData4.NguoiTaoId ? formData4.User.FullName : ""}}
+              </el-form-item>
+            </el-col>
+
+          </el-row>
+          <el-row>
+            <el-col :span="12">
               <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
                 {{formatDate(formData4.NgayYeuCau)}}
+              </el-form-item>
+            </el-col>
+            
+            <el-col :span="12">
+              <el-form-item label="Hạn xử lý: " prop="ThoiHan">
+
+                {{formatDate(formData4.ThoiHan)}}
               </el-form-item>
             </el-col>
 
@@ -894,15 +944,6 @@
                 {{formData4.StateId ? formData4.States.StateName : ""}}
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="Hạn xử lý: " prop="ThoiHan">
-
-                {{formatDate(formData4.ThoiHan)}}
-              </el-form-item>
-            </el-col>
-
-          </el-row>
-          <el-row>
             <el-col :span="12">
               <el-form-item label="Mã Số Thuế: " prop="MaSoThue">
 
@@ -944,7 +985,7 @@
                        :file-list="fileList1"
                        :on-success="handleSuccess1"
                        :before-upload="beforeUpload"
-                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png,.zip,.rar,.p7b"
                        :auto-upload="true"
                        size="mini">
               <el-button size="small" type="primary">Tải lên</el-button>
@@ -1046,6 +1087,8 @@ export default {
       isButtonView:false,
       isViewBT:false,
       isTrangThai: true,
+      isXacNhan:false,
+      isLoaiYC:true,
       search: "",
       isAccept: false,
       StateIdFilter: 5,
@@ -1116,6 +1159,7 @@ export default {
         FileUpload: null,
         MaSoThue: null,
         NguoiTaoId: null,
+        LoaiYeuCauId: null,
 
       },
       formData3: {
@@ -1136,6 +1180,7 @@ export default {
         CommentYeuCau:null,
         StateId: null,
         MaSoThue: null,
+        NgayXuLy:null,
       },
       formData4: {
         TenYeuCau: null,
@@ -1151,6 +1196,7 @@ export default {
         StateId: null,
         MaSoThue:null,
         FileXuLy:null,
+        NgayXuLy:null,
       },
       formRules: {
         TenYeuCau: [
@@ -1181,6 +1227,7 @@ export default {
             trigger: "blur"
           }
         ],
+
         StateId: [
           {
             required: true,
@@ -1249,6 +1296,7 @@ export default {
       QLDVList:[],
       ListNhansuQLDV:[],
       NhansuQLDV:[],
+      ListLoaiYC :[],
     };
   },
 
@@ -1273,6 +1321,12 @@ export default {
       if (val) {
         return val.substring(val.length - 18, val.length);
       } else return null;
+    },
+    formatMYC(val){
+      if(val){
+        var MYC = "YC" + val;
+        return MYC;
+      }else return null;
     },
     formatHtml(val){
       if(val){
@@ -1334,6 +1388,9 @@ export default {
           if (f == "ThoiHanMongMuon") {
             return this.formatDate(result);
           }
+          if (f == "Id") {
+            return this.formatMYC(result);
+          }
           return result;
         })
       );
@@ -1343,11 +1400,17 @@ export default {
 
 
         var qldv = this.ListQLDV.find(obj => obj.DichVuId == dv.Id && obj.UnitId == this.UserUnitId);
-        if(dv){
+        if(qldv){
           this.formData2.NhanSuId = qldv.NhanSuId;
 
         }
-
+        if(val == 6){
+          this.isLoaiYC = false;
+        }
+        else if(val != 6){
+          this.isLoaiYC = true;
+          this.formData2.LoaiYeuCauId = null;
+        }
     },
     changeDichVu(val) {
       //console.log(val)
@@ -1416,6 +1479,7 @@ export default {
           this.formData2.NoiDung ="";
           this.isChuyenYc = false;
           this.isChangeNhanSu = false;
+
           this.dialogFormBHDisplay = true;
 
         }
@@ -1630,7 +1694,7 @@ export default {
           var checkdv = false;
 
           for( var i = 0; i < this.QLDVList.length; i++){
-            if(this.QLDVList[i].DichVuId == row.DichVuId){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && this.QLDVList[i].DichVuId ==6 ){
                 checkdv = true;
             }
           }
@@ -1650,7 +1714,7 @@ export default {
                 }
                 for(var i=0; i<this.NhansuQLDV.length ; i++){
                   if(this.NhansuQLDV[i].DichVuId == row.DichVuId){
-                    console.log(this.NhansuQLDV[i]);
+                    //console.log(this.NhansuQLDV[i]);
                     for(var k=0; k<this.ListDMNhanSu.length ; k++){
                       if(this.NhansuQLDV[i].NhanSuId == this.ListDMNhanSu[k].Id ){
 
@@ -1662,7 +1726,7 @@ export default {
 
                 }
 
-                console.log(this.ListNhansuQLDV);
+
                 this.formData4 = Object.assign({}, row);
                 this.stateOld = this.formData4.StateId;
 
@@ -1724,8 +1788,8 @@ export default {
                       this.fileDoc.push({ key: _arr[i], file: _arr[i] });
                     }
                   }
-
-                  this.isEditor = true;
+                  this.isLoaiYC= false;
+                  this.isEditor = false;
                   this.dialogFormBHDisplay = true;
             }
             else{
@@ -1806,7 +1870,7 @@ export default {
               this.fileDoc.push({ key: _arr[i], file: _arr[i] });
             }
           }
-
+          this.isLoaiYC= false;
           this.isEditor = true;
           this.dialogFormBHDisplay = true;
         }
@@ -1884,20 +1948,23 @@ export default {
       const isXlsm = file.type === "application/vnd.ms-excel.sheet.macroEnabled.12";
       const isjpg = file.type == "image/jpeg";
       const ispng = file.type == "image/png";
-      const israr = file.type == "application/rar";
+      const israr = file.type == "";
+
       const iszip = file.type == "application/x-zip-compressed";
+      const isp7b = file.type =="application/x-pkcs7-certificates";
       const isLt10M = file.size / 1024 / 1024 < 10;
-      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm && !isjpg && !ispng && !israr && !iszip) {
+      if (!isPdf && !isDoc && !isDocx && !isXls && !isXlsx && !isXlsm && !isjpg && !ispng && !israr && !iszip && !isp7b) {
         this.$message.error("Không đúng định dạng quy định");
       }
       if (!isLt10M) {
         this.$message.error("Dung lượng vượt quá 10M");
       }
-      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm || isjpg || ispng || israr || iszip) && isLt10M;
+      return (isPdf || isDoc || isDocx || isXls || isXlsx || isXlsm || isjpg || ispng || israr || iszip || isp7b) && isLt10M;
     },
     handleExport() {
       import("../../vendor/Export2Excel").then(excel => {
         const tHeader = [
+          "Mã yêu cầu",
           "Tên yêu cầu",
           "Nội dung",
           "Thời hạn",
@@ -1910,6 +1977,7 @@ export default {
           "Thời hạn KH mong muốn"
         ];
         const filterVal = [
+          "Id",
           "TenYeuCau",
           "NoiDung",
           "ThoiHan",
@@ -2088,7 +2156,7 @@ export default {
                 type: "success",
                 message: "Thêm mới thành công!"
               });
-              sendTeleAsync(this.formData.Id);
+              sendTeleAsync(data);
               this.getListData();
             });
           } else {
@@ -2203,7 +2271,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-
+                    sendTeleAsync(this.formData4.Id);
                   }
                   else{
                       this.$message({
@@ -2246,6 +2314,7 @@ export default {
                        });
 
                   }
+              this.dialogXacNhan = false;
               this.dialogFormBHHandle= false;
               this.getListData();
               });
@@ -2284,6 +2353,7 @@ export default {
 
                   }
               this.dialogFormBHDisplay= false;
+              this.isLoaiYC = true;
               this.getListData();
               });
 
@@ -2295,7 +2365,7 @@ export default {
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-                    
+
                   }
                   else{
                       this.$message({
@@ -2305,6 +2375,7 @@ export default {
 
                   }
               this.dialogFormBHDisplay= false;
+              this.isLoaiYC = true;
               this.getListData();
 
               });
@@ -2605,18 +2676,22 @@ export default {
    if(this.$route.params.StateId == 10){
       this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
+      this.isXacNhan= false;
    }
   else if(this.$route.params.StateId == 9){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
+      this.isXacNhan= false;
   }
   else if(this.$route.params.StateId == 7){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
+      this.isXacNhan= false;
   }
    else if(this.$route.params.StateId == 6){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
+      this.isXacNhan= true;
   }
     getListDanhMucYeuCau().then(data => {
       if (data) {
@@ -2627,6 +2702,7 @@ export default {
         this.ListDMJira = data.DMJira;
         this.ListDMDonVi = data.DMDonVi;
         this.ListQLDV = data.DMQLDV;
+        this.ListLoaiYC = data.DMLYC;
       }
     });
 
