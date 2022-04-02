@@ -897,10 +897,10 @@
             <el-col :span="12">
 
               <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
-                <span v-if="!isAccept">
+                <span v-if="!isAccept && !isChuyenNS">
                   {{formData4.NhanSuId ? formData4.NhanSu.TenNhanSu : ""}}
                 </span>
-                <span v-if="isAccept">
+                <span v-if="isAccept || isChuyenNS">
                   <el-select v-model="formData4.NhanSuId"
                              placeholder="Chọn nhân sự"
                              class="w-100">
@@ -999,9 +999,10 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
+        <el-button v-if="isAccept || isChuyenNS" @click="capnhatYeuCau" size="small" type="primary">Chuyển yêu cầu</el-button>
         <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary">Cập nhật</el-button>
 
-        <el-button v-if="isAccept" @click="capnhatYeuCau" size="small" type="primary">Chuyển yêu cầu</el-button>
+
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
         <el-button type="success" size="small" @click="handleXacNhan" v-else>Hoàn thành</el-button>
 
@@ -1091,6 +1092,7 @@ export default {
       isLoaiYC:true,
       search: "",
       isAccept: false,
+      isChuyenNS :false,
       StateIdFilter: 5,
       DichVuIdFilter: 1,
       JiraDaGuiLink:"",
@@ -1453,7 +1455,7 @@ export default {
       if (this.StateIdFilter || this.DichVuIdFilter) {
 
         if(this.UserUnitId ==1 ){
-          if(this.UserDV != 7 && this.UserDV != 8){
+          if(this.UserDV == 6 || this.UserDV == 11){
             if (this.$refs.formData2 !== undefined) {
               this.$refs.formData2.resetFields();
 
@@ -1689,12 +1691,19 @@ export default {
           else if(row.StateId !=10){
             this.isAccept = false;
             this.isViewBT = false;
+
+          }
+
+          if(row.StateId !=10 && row.NhanSuId == this.NhanSuId && row.DichVuId == 6){
+             this.isChuyenNS = true;
+          }else{
+            this.isChuyenNS = false;
           }
 
           var checkdv = false;
 
           for( var i = 0; i < this.QLDVList.length; i++){
-            if(this.QLDVList[i].DichVuId == row.DichVuId && this.QLDVList[i].DichVuId ==6 ){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId ==6 || this.QLDVList[i].DichVuId ==11 )){
                 checkdv = true;
             }
           }
@@ -1967,6 +1976,7 @@ export default {
           "Mã yêu cầu",
           "Tên yêu cầu",
           "Nội dung",
+          "Ngày tạo",
           "Thời hạn",
           "Task Jira",
           "Trạng thái",
@@ -1980,6 +1990,7 @@ export default {
           "Id",
           "TenYeuCau",
           "NoiDung",
+          "",
           "ThoiHan",
           "JiraDaGui",
           "States.StateName",

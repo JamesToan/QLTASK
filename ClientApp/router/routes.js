@@ -22,7 +22,7 @@ import status from "components/danhmuc/status";
 import donviyeucau from "components/danhmuc/donviyeucau";
 import quanlydichvu from "components/danhmuc/quanlydichvu";
 //// quan ly
-
+import baocao from "components/quanly/baocao";
 import yeucau from "components/quanly/yeucau";
 
 
@@ -173,7 +173,6 @@ export const routes = [
       
     ]
   },
-  
   {
     name: "QuanLy",
     path: "/admin/",
@@ -235,7 +234,29 @@ export const routes = [
       },
     ]
   },
- 
+  {
+    name: "Báo cáo",
+    path: "/admin/",
+    component: ParentCom,
+    icon: "fe-code",
+    meta: {
+      display: "Báo cáo",
+      show: "true"
+    },
+    children: [
+      {
+        name: "baocao",
+        path: "baocao",
+        component: baocao,
+        meta: {
+          display: "Báo cáo",
+          show: "true"
+        }
+      },
+    ]
+  },
+
+
   {
     name: "Login",
     path: "/admin/login",

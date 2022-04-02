@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/coreWeb",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:57178/",
       "sslPort": 0

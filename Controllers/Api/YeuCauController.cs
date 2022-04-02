@@ -1281,6 +1281,7 @@ namespace coreWeb.Controllers.Api
                     DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
                     if (result != null) //update
                     {
+                        
                         result.TenYeuCau = model.TenYeuCau;
                         result.NoiDung = model.NoiDung;
                         result.ThoiHan = time;
@@ -1298,6 +1299,11 @@ namespace coreWeb.Controllers.Api
                         result.NgayCapNhat = DateTime.Now;
                         result.NoiDungXuLy = model.NoiDungXuLy;
                         result.LoaiYeuCauId = model.LoaiYeuCauId;
+                        if (model.StateId == 6)
+                        {
+                            result.NgayXuLy = DateTime.Now;
+                        }
+                        
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -1334,6 +1340,10 @@ namespace coreWeb.Controllers.Api
                             result.StateId = model.StateId;
                             result.FileXuLy = model.FileXuLy;
                             result.LoaiYeuCauId = model.LoaiYeuCauId;
+                            if (model.StateId == 6)
+                            {
+                                result.NgayXuLy = DateTime.Now;
+                            }
                         }
                         
                         
@@ -1796,9 +1806,9 @@ namespace coreWeb.Controllers.Api
 
 
             var client = new System.Net.Http.HttpClient();
-            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
-            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
+            var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
             var request = new HttpRequestMessage()
             {
@@ -1823,6 +1833,22 @@ namespace coreWeb.Controllers.Api
 
             
             return dataResult;
+        }
+
+        [HttpGet]
+        public IActionResult GetYCbyTimeRange(DateTime time1 , DateTime time2)
+        {
+            var user = new UserClaim(HttpContext);
+            var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            List<YeuCau> result = new List<YeuCau>();
+            result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 ).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit)
+                                       .Include(e => e.DonViYeuCau).ToList();
+
+            return Ok(result);
         }
 
 

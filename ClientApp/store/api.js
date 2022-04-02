@@ -648,6 +648,17 @@ export function deniesYeuCau(Id) {
     params: params
   });
 }
+
+export function getycbytime( time1, time2) {
+  const params = { time1, time2 };
+  return request({
+    url: "api/yeucau/GetYCbyTimeRange",
+    method: "get",
+    params: params
+  });
+}
+
+
 // Jira
 
 export function getJira() {
