@@ -21,6 +21,7 @@ namespace coreWeb.Models.Entities
         public virtual Unit Parent { get; set; }
         [StringLength(50)]
         public string LinhVuc { get; set; }
+        public int? ChatId { get; set; }
         public bool IsActive { get; set; }
         public virtual List<Unit> children { get; set; }
         public Unit()

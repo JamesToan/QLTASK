@@ -34,7 +34,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.DichVu)
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
-                .Include(e => e.Unit)
+                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                 .Include(e => e.DonViYeuCau)
                 //.Include(e => e.Status)
                 .Include(e => e.User).FirstOrDefault();
@@ -64,7 +64,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 .Include(e => e.User)
-                .Include(e => e.Unit)
+                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                 .Include(e => e.DonViYeuCau)
                 .OrderByDescending(e => e.ThoiHan)
                 .ToList();
@@ -84,7 +84,7 @@ namespace coreWeb.Controllers.Api
                                    .Include(e => e.NhanSu)
                                    .Include(e => e.States)
                                    .Include(e => e.User)
-                                   .Include(e => e.Unit)
+                                   .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                    .Include(e => e.DonViYeuCau)
                                    .OrderByDescending(e => e.ThoiHan)
                                    .ToList();
@@ -104,7 +104,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
-                                  .Include(e => e.Unit)
+                                  .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                   .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.ThoiHan)
                                   .ToList();
@@ -124,7 +124,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
-                                  .Include(e => e.Unit)
+                                  .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                   .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.ThoiHan)
                                   .ToList();
@@ -145,7 +145,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
                 .Include(e => e.User)
-                .Include(e => e.Unit)
+                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                 .Include(e => e.DonViYeuCau)
                 .OrderByDescending(e => e.ThoiHan)
                 .ToList();
@@ -177,7 +177,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.ThoiHan)
                        .ToList();
@@ -197,7 +197,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderByDescending(e => e.ThoiHan)
                                        .ToList();
@@ -217,7 +217,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.ThoiHan)
                                       .ToList();
@@ -237,7 +237,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.ThoiHan)
                                       .ToList();
@@ -258,7 +258,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.NhanSu)
                     .Include(e => e.States)
                     .Include(e => e.User)
-                    .Include(e => e.Unit)
+                    .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                     .Include(e => e.DonViYeuCau)
                     .OrderByDescending(e => e.ThoiHan)
                     .ToList();
@@ -284,7 +284,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -308,7 +308,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
-                                  .Include(e => e.Unit)
+                                  .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                   .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.Id)
                                   .ToList();
@@ -332,7 +332,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
-                                  .Include(e => e.Unit)
+                                  .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                   .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.Id)
                                   .ToList();
@@ -356,7 +356,7 @@ namespace coreWeb.Controllers.Api
                                   .Include(e => e.NhanSu)
                                   .Include(e => e.States)
                                   .Include(e => e.User)
-                                  .Include(e => e.Unit)
+                                  .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                   .Include(e => e.DonViYeuCau)
                                   .OrderByDescending(e => e.Id)
                                   .ToList();
@@ -379,7 +379,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.NhanSu)
                     .Include(e => e.States)
                     .Include(e => e.User)
-                    .Include(e => e.Unit)
+                    .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                     .Include(e => e.DonViYeuCau)
                     .OrderByDescending(e => e.Id)
                     .ToList();
@@ -403,7 +403,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -423,7 +423,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderByDescending(e => e.Id)
                                        .ToList();
@@ -443,7 +443,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -463,7 +463,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -484,7 +484,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.NhanSu)
                     .Include(e => e.States)
                     .Include(e => e.User)
-                    .Include(e => e.Unit)
+                    .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                     .Include(e => e.DonViYeuCau)
                     .OrderByDescending(e => e.Id)
                     .ToList();
@@ -503,14 +503,14 @@ namespace coreWeb.Controllers.Api
                 
 
             }
-            else if(user.RoleId == 3)
+            else if(user.RoleId == 3) // role nhân viên
             {
                 QuanLyDichVu quanlydv = new QuanLyDichVu();
                 if (nhansu != null)
                 {
                     quanlydv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id && p.DichVuId == nhansu.DichVuId).FirstOrDefault();
                 }
-                if (userinfo.UnitId == 2)
+                if (userinfo.UnitId == 2) // phòng KHTCDN
                 {
                     if (DichVuId == 1 && StateId != 5 && StateId != 6)
                     {
@@ -519,7 +519,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -539,7 +539,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderByDescending(e => e.Id)
                                        .ToList();
@@ -559,7 +559,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -579,7 +579,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -600,7 +600,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.NhanSu)
                     .Include(e => e.States)
                     .Include(e => e.User)
-                    .Include(e => e.Unit)
+                    .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                     .Include(e => e.DonViYeuCau)
                     .OrderByDescending(e => e.Id)
                     .ToList();
@@ -614,172 +614,32 @@ namespace coreWeb.Controllers.Api
                         }
                     }
                 }
-                else if (userinfo.UnitId == 1)
+                else if (userinfo.UnitId == 1) // TT CNTT
                 {
-                    //if (quanlydv != null)
-                    //{
-                    //    if (DichVuId == 1 && StateId != 5 && StateId != 6)
-                    //    {
-                    //        List<YeuCau> result = new List<YeuCau>();
-                    //        if (StateId == 10)
-                    //        {
-                    //            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //            .Include(e => e.DichVu)
-                    //            .Include(e => e.NhanSu)
-                    //            .Include(e => e.States)
-                    //            .Include(e => e.User)
-                    //            .Include(e => e.Unit)
-                    //            .Include(e => e.DonViYeuCau)
-                    //            .OrderByDescending(e => e.Id)
-                    //            .ToList();
-                    //        }
-                    //        else
-                    //        {
-                    //            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //           .Include(e => e.DichVu)
-                    //           .Include(e => e.NhanSu)
-                    //           .Include(e => e.States)
-                    //           .Include(e => e.User)
-                    //           .Include(e => e.Unit)
-                    //           .Include(e => e.DonViYeuCau)
-                    //           .OrderByDescending(e => e.Id)
-                    //           .ToList();
-                    //        }
-
-
-                    //        if (result != null)
-                    //        {
-                    //            return Ok(result);
-                    //        }
-                    //        else
-                    //        {
-                    //            return NoContent();
-                    //        }
-                    //    }
-                    //    else if (StateId == 5 && DichVuId != 1)
-                    //    {
-                    //        var result = _context.YeuCau.Where(e => e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //                       .Include(e => e.DichVu)
-                    //                       .Include(e => e.NhanSu)
-                    //                       .Include(e => e.States)
-                    //                       .Include(e => e.User)
-                    //                       .Include(e => e.Unit)
-                    //                       .Include(e => e.DonViYeuCau)
-                    //                       .OrderByDescending(e => e.Id)
-                    //                       .ToList();
-                    //        if (result != null)
-                    //        {
-                    //            return Ok(result);
-                    //        }
-                    //        else
-                    //        {
-                    //            return NoContent();
-                    //        }
-                    //    }
-                    //    else if (StateId != 5 && StateId != 6 && DichVuId != 1)
-                    //    {
-                    //        List<YeuCau> result = new List<YeuCau>();
-                    //        if (StateId == 10)
-                    //        {
-                    //            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && e.NguoiTaoId == user.UserId)
-                    //                     .Include(e => e.DichVu)
-                    //                     .Include(e => e.NhanSu)
-                    //                     .Include(e => e.States)
-                    //                     .Include(e => e.User)
-                    //                     .Include(e => e.Unit)
-                    //                     .Include(e => e.DonViYeuCau)
-                    //                     .OrderByDescending(e => e.Id)
-                    //                     .ToList();
-                    //        }
-                    //        else
-                    //        {
-                    //            result = _context.YeuCau.Where(e => e.StateId == StateId && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //                     .Include(e => e.DichVu)
-                    //                     .Include(e => e.NhanSu)
-                    //                     .Include(e => e.States)
-                    //                     .Include(e => e.User)
-                    //                     .Include(e => e.Unit)
-                    //                     .Include(e => e.DonViYeuCau)
-                    //                     .OrderByDescending(e => e.Id)
-                    //                     .ToList();
-                    //        }
-
-                    //        if (result != null)
-                    //        {
-                    //            return Ok(result);
-                    //        }
-                    //        else
-                    //        {
-                    //            return NoContent();
-                    //        }
-                    //    }
-                    //    else if (StateId == 6)
-                    //    {
-                    //        var result = _context.YeuCau.Where(e => e.StateId == 6 && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //                      .Include(e => e.DichVu)
-                    //                      .Include(e => e.NhanSu)
-                    //                      .Include(e => e.States)
-                    //                      .Include(e => e.User)
-                    //                      .Include(e => e.Unit)
-                    //                      .Include(e => e.DonViYeuCau)
-                    //                      .OrderByDescending(e => e.Id)
-                    //                      .ToList();
-                    //        if (result != null)
-                    //        {
-                    //            return Ok(result);
-                    //        }
-                    //        else
-                    //        {
-                    //            return NoContent();
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        var result = _context.YeuCau.Where(e => (StateId == null
-                    //     || e.StateId == StateId) && e.DichVuId == quanlydv.DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
-                    //    .Include(e => e.DichVu)
-                    //    .Include(e => e.NhanSu)
-                    //    .Include(e => e.States)
-                    //    .Include(e => e.User)
-                    //    .Include(e => e.Unit)
-                    //    .Include(e => e.DonViYeuCau)
-                    //    .OrderByDescending(e => e.Id)
-                    //    .ToList();
-                    //        if (result != null)
-                    //        {
-                    //            return Ok(result);
-                    //        }
-                    //        else
-                    //        {
-                    //            return NoContent();
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                        if (DichVuId == 1 && StateId != 5 && StateId != 6)
+                    
+                        if (DichVuId == 1 && StateId != 5 && StateId != 6) // Tất cả dịch vụ + theo trạng thái
                         {
                             List<YeuCau> result = new List<YeuCau>();
                             if (StateId == 10)
                             {
-                                result = _context.YeuCau.Where(e => e.StateId == StateId && (e.NguoiTaoId == nhansu.UserId || e.NhanSuId == nhansu.Id))
+                                result = _context.YeuCau.Where(e => e.StateId == StateId && (e.NguoiTaoId == nhansu.UserId || e.NhanSuId == nhansu.Id || e.DichVuId == nhansu.AdminDichVuId))
                                 .Include(e => e.DichVu)
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderByDescending(e => e.Id)
                                 .ToList();
                             }
                             else
                             {
-                                result = _context.YeuCau.Where(e => e.StateId == StateId  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
+                                result = _context.YeuCau.Where(e => e.StateId == StateId  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId || e.DichVuId == nhansu.AdminDichVuId))
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
                                .Include(e => e.User)
-                               .Include(e => e.Unit)
+                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                .Include(e => e.DonViYeuCau)
                                .OrderByDescending(e => e.Id)
                                .ToList();
@@ -795,14 +655,14 @@ namespace coreWeb.Controllers.Api
                                 return NoContent();
                             }
                         }
-                        else if (StateId == 5 && DichVuId != 1)
+                        else if (StateId == 5 && DichVuId != 1) // Tất cả trạng thái + theo dịch vụ
                         {
-                            var result = _context.YeuCau.Where(e => e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId)
+                            var result = _context.YeuCau.Where(e => e.DichVuId == DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId || e.DichVuId == nhansu.AdminDichVuId))
                                            .Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                            .Include(e => e.DonViYeuCau)
                                            .OrderByDescending(e => e.Id)
                                            .ToList();
@@ -815,29 +675,29 @@ namespace coreWeb.Controllers.Api
                                 return NoContent();
                             }
                         }
-                        else if (StateId != 5 && StateId != 6 && DichVuId != 1)
+                        else if (StateId != 5 && StateId != 6 && DichVuId != 1) // Theo trạng thái và dịch vụ
                         {
                             List<YeuCau> result = new List<YeuCau>();
                             if (StateId == 10)
                             {
-                                result = _context.YeuCau.Where(e => e.StateId == StateId  && e.NguoiTaoId == user.UserId)
+                                result = _context.YeuCau.Where(e => e.StateId == StateId  && (e.NguoiTaoId == user.UserId || e.DichVuId == nhansu.AdminDichVuId) && e.DichVuId == DichVuId )
                                          .Include(e => e.DichVu)
                                          .Include(e => e.NhanSu)
                                          .Include(e => e.States)
                                          .Include(e => e.User)
-                                         .Include(e => e.Unit)
+                                         .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                          .Include(e => e.DonViYeuCau)
                                          .OrderByDescending(e => e.Id)
                                          .ToList();
                             }
                             else
                             {
-                                result = _context.YeuCau.Where(e => e.StateId == StateId  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
+                                result = _context.YeuCau.Where(e => e.StateId == StateId  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId || e.DichVuId == nhansu.AdminDichVuId) && e.DichVuId == DichVuId )
                                          .Include(e => e.DichVu)
                                          .Include(e => e.NhanSu)
                                          .Include(e => e.States)
                                          .Include(e => e.User)
-                                         .Include(e => e.Unit)
+                                         .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                          .Include(e => e.DonViYeuCau)
                                          .OrderByDescending(e => e.Id)
                                          .ToList();
@@ -852,14 +712,14 @@ namespace coreWeb.Controllers.Api
                                 return NoContent();
                             }
                         }
-                        else if (StateId == 6)
+                        else if (StateId == 6) // yêu cầu đã hoàn thành
                         {
-                            var result = _context.YeuCau.Where(e => e.StateId == 6  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
+                            var result = _context.YeuCau.Where(e => e.StateId == 6  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId || e.DichVuId == nhansu.AdminDichVuId))
                                           .Include(e => e.DichVu)
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                           .Include(e => e.DonViYeuCau)
                                           .OrderByDescending(e => e.Id)
                                           .ToList();
@@ -875,12 +735,12 @@ namespace coreWeb.Controllers.Api
                         else
                         {
                             var result = _context.YeuCau.Where(e => (StateId == null
-                         || e.StateId == StateId)  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId))
+                         || e.StateId == StateId)  && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == nhansu.UserId || e.DichVuId == nhansu.AdminDichVuId))
                         .Include(e => e.DichVu)
                         .Include(e => e.NhanSu)
                         .Include(e => e.States)
                         .Include(e => e.User)
-                        .Include(e => e.Unit)
+                        .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                         .Include(e => e.DonViYeuCau)
                         .OrderByDescending(e => e.Id)
                         .ToList();
@@ -893,10 +753,10 @@ namespace coreWeb.Controllers.Api
                                 return NoContent();
                             }
                         }
-                    //}
+                   
                     
                 }
-                else
+                else // các phòng khác
                 {
                     if (DichVuId == 1 && StateId != 5 && StateId != 6)
                     {
@@ -905,7 +765,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -925,7 +785,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderByDescending(e => e.Id)
                                        .ToList();
@@ -945,7 +805,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -965,7 +825,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                       .Include(e => e.DonViYeuCau)
                                       .OrderByDescending(e => e.Id)
                                       .ToList();
@@ -986,7 +846,7 @@ namespace coreWeb.Controllers.Api
                     .Include(e => e.NhanSu)
                     .Include(e => e.States)
                     .Include(e => e.User)
-                    .Include(e => e.Unit)
+                    .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                     .Include(e => e.DonViYeuCau)
                     .OrderByDescending(e => e.Id)
                     .ToList();
@@ -1024,7 +884,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -1036,7 +896,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                        .Include(e => e.DonViYeuCau)
                        .OrderByDescending(e => e.Id)
                        .ToList();
@@ -1067,19 +927,20 @@ namespace coreWeb.Controllers.Api
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
                                .Include(e => e.User)
-                               .Include(e => e.Unit)
+                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                .Include(e => e.DonViYeuCau)
                                .OrderByDescending(e => e.Id)
                                .ToList();
                     }
                     else
                     {
-                        result = _context.YeuCau.Where(e => e.StateId != 6 && (e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId))
+                        // select cho nhân sự cntt có admin dịch vụ id có thể xem hết yêu cầu chưa hoàn thành
+                        result = _context.YeuCau.Where(e => e.StateId != 6 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId))
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
                                .Include(e => e.User)
-                               .Include(e => e.Unit)
+                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                .Include(e => e.DonViYeuCau)
                                .OrderByDescending(e => e.Id)
                                .ToList();
@@ -1103,7 +964,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderByDescending(e => e.Id)
                                 .ToList();
@@ -1129,7 +990,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderByDescending(e => e.Id)
                                 .ToList();
@@ -1141,7 +1002,7 @@ namespace coreWeb.Controllers.Api
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
                                  .Include(e => e.User)
-                                 .Include(e => e.Unit)
+                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                  .Include(e => e.DonViYeuCau)
                                  .OrderByDescending(e => e.Id)
                                  .ToList();
@@ -1156,7 +1017,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderByDescending(e => e.Id)
                                 .ToList();
@@ -1168,7 +1029,7 @@ namespace coreWeb.Controllers.Api
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
                                  .Include(e => e.User)
-                                 .Include(e => e.Unit)
+                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                  .Include(e => e.DonViYeuCau)
                                  .OrderByDescending(e => e.Id)
                                  .ToList();
@@ -1215,7 +1076,8 @@ namespace coreWeb.Controllers.Api
                         model.MaSoThue = model.MaSoThue;
                         model.ThoiHan = time;
                         model.StateId = 10;
-                        _context.Add(model);
+
+                        _context.YeuCau.Add(model);
                         _context.SaveChanges();
 
                         var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
@@ -1806,9 +1668,9 @@ namespace coreWeb.Controllers.Api
 
 
             var client = new System.Net.Http.HttpClient();
-            //var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
+            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
-            var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
+            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
             var request = new HttpRequestMessage()
             {
@@ -1819,10 +1681,30 @@ namespace coreWeb.Controllers.Api
             var response = await client.SendAsync(request);
             var dataResult = response.Content.ReadAsStringAsync().Result;
 
-            JObject joResponse = JObject.Parse(dataResult);
-            System.Diagnostics.Debug.WriteLine(joResponse);
-            //var  user_id = (string)joResponse.SelectToken("result.contact.user_id");
-            //var connectionUrl1 = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id="+ user_id + "&text=" + text;
+            var user = new UserClaim(HttpContext);
+            var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
+            HttpResponseMessage response2;
+            string dataResult2;
+            if (unit.ChatId != null)
+            {
+                var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id="+unit.ChatId+"&text=" + text;
+
+                var request2 = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(connectionUrl2),
+                    Method = HttpMethod.Get
+                };
+
+                response2 = await client.SendAsync(request2);
+                dataResult2 = response2.Content.ReadAsStringAsync().Result;
+            }
+            
+
+            //JObject joResponse = JObject.Parse(dataResult);
+            //System.Diagnostics.Debug.WriteLine(joResponse);
+            //var user_id = (string)joResponse.SelectToken("result.contact.user_id");
+            //var connectionUrl1 = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=" + user_id + "&text=" + text;
             //var request1 = new HttpRequestMessage()
             //{
             //    RequestUri = new Uri(connectionUrl1),
@@ -1831,8 +1713,8 @@ namespace coreWeb.Controllers.Api
             //var response1 = await client.SendAsync(request1);
             //var dataResult1 = response1.Content.ReadAsStringAsync().Result;
 
-            
-            return dataResult;
+
+            return dataResult ;
         }
 
         [HttpGet]
@@ -1840,22 +1722,246 @@ namespace coreWeb.Controllers.Api
         {
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
             List<YeuCau> result = new List<YeuCau>();
-            result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 ).Include(e => e.DichVu)
+            if (user.RoleId ==1)
+            {
+                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau).ToList();
+            }
+            else if (user.RoleId == 2)
+            {
+                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+            }
+            else if (user.RoleId == 3)
+            {
+                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+            }
+        
+           
 
             return Ok(result);
         }
 
+        public IActionResult GetValue(int index , DateTime time1 , DateTime time2)
+        {
+            var user = new UserClaim(HttpContext);
+            var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
+            List<YeuCau> result = new List<YeuCau>();
+            if (user.RoleId == 1)
+            {
+                if (index == 1)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+                }
+                else if (index == 2)
+                {
+                    result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+                }
+                else if (index == 3)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2).Include(e => e.DichVu)
+                                      .Include(e => e.NhanSu)
+                                      .Include(e => e.States)
+                                      .Include(e => e.User)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.DonViYeuCau).ToList();
+                }
+
+            }
+            else if(user.RoleId == 2)
+            {
+                if (nhansu.UnitId == 1)
+                {
+                    if (index == 1)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 ).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 2)
+                    {
+                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 ).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 3)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 ).Include(e => e.DichVu)
+                                          .Include(e => e.NhanSu)
+                                          .Include(e => e.States)
+                                          .Include(e => e.User)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.DonViYeuCau).ToList();
+                    }
+                }
+                else if (nhansu.UnitId == 2)
+                {
+                    if (index == 1)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 2)
+                    {
+                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 3)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                                          .Include(e => e.NhanSu)
+                                          .Include(e => e.States)
+                                          .Include(e => e.User)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.DonViYeuCau).ToList();
+                    }
+                }
+                else
+                {
+                    if (index == 1)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 2)
+                    {
+                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                                           .Include(e => e.NhanSu)
+                                           .Include(e => e.States)
+                                           .Include(e => e.User)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.DonViYeuCau).ToList();
+                    }
+                    else if (index == 3)
+                    {
+                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                                          .Include(e => e.NhanSu)
+                                          .Include(e => e.States)
+                                          .Include(e => e.User)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.DonViYeuCau).ToList();
+                    }
+                }
+                
+
+            }
+            else if(user.RoleId == 3)
+            {
+                if (index == 1)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+                }
+                else if (index == 2)
+                {
+                    result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+                }
+                else if (index == 3)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                                      .Include(e => e.NhanSu)
+                                      .Include(e => e.States)
+                                      .Include(e => e.User)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.DonViYeuCau).ToList();
+                }
+
+            }
+
+            return Ok(result);
+        }
+
+        public IActionResult GetYCDiaBan(int UnitId, int? NhanSuId)
+        {
+            var user = new UserClaim(HttpContext);
+            var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
+            List<YeuCau> result = new List<YeuCau>();
+
+            if (NhanSuId != 0)
+            {
+                var usertao = _context.NhanSu.Where(p => p.Id == NhanSuId).FirstOrDefault();
+                result = _context.YeuCau.Where(p => p.UnitId == UnitId && (p.NhanSuId == NhanSuId || p.NguoiTaoId == usertao.UserId)).Include(e => e.DichVu)
+                                      .Include(e => e.NhanSu)
+                                      .Include(e => e.States)
+                                      .Include(e => e.User)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.DonViYeuCau).ToList();
+            }
+            else
+            {
+                result = _context.YeuCau.Where(p => p.UnitId == UnitId).Include(e => e.DichVu)
+                                      .Include(e => e.NhanSu)
+                                      .Include(e => e.States)
+                                      .Include(e => e.User)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.DonViYeuCau).ToList();
+            }
+
+
+
+            return Ok(result);
+        }
 
         public class YCViewModel
         {
             public int UnitId { get; set; }
 
         }
+
+       
     }
 }

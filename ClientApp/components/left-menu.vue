@@ -83,7 +83,9 @@ export default {
   created() {
     if (typeof getUser() != "undefined") {
       this.name = getUser();
-      if (this.name != "admin@vnpt.vn") {
+      this.role = getRole();
+      //if (this.name != "admin@vnpt.vn") {
+      if (this.role == 3 || this.role == 2) {
         // this.routes = routes.filter(route => {
         //   return route.name != "Hethong";
         // });
@@ -92,6 +94,7 @@ export default {
           this.routes = routes.filter(route => {
             return per.includes(route.name);
           });
+          console.log(this.routes);
           this.routes.forEach(route => {
             if (route.children) {
               route.children = route.children.filter(route => {

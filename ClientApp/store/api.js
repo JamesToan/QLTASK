@@ -330,6 +330,8 @@ export function getThongKe(DichVuId) {
   });
 }
 
+
+
 // States
 export function getStates() {
  
@@ -521,6 +523,15 @@ export function getCurrentNS() {
   });
 }
 
+export function getNhanSuXuLy(DichVuId) {
+  const params = { DichVuId };
+  return request({
+    url: "api/NhanSu/selectNSbyDVId",
+    method: "post",
+    params: params
+  });
+}
+
 // YeuCau
 export function getYeuCau() {
 
@@ -658,6 +669,24 @@ export function getycbytime( time1, time2) {
   });
 }
 
+
+export function getycadvantage(index, time1, time2) {
+  const params = { index, time1, time2 };
+  return request({
+    url: "api/yeucau/GetValue",
+    method: "get",
+    params: params
+  });
+}
+
+export function getycdiaban(UnitId, NhanSuId) {
+  const params = { UnitId, NhanSuId};
+  return request({
+    url: "api/yeucau/GetYCDiaBan",
+    method: "get",
+    params: params
+  });
+}
 
 // Jira
 

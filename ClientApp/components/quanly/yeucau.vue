@@ -12,7 +12,7 @@
               <li class="breadcrumb-item active">Yêu cầu</li>
             </ol>
           </div>
-          <h4 class="page-title">Quản lý yêu cầu</h4>
+          <h4 class="page-title">{{title}}</h4>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
                       v-model="search"
                       placeholder="Tìm kiếm"
                       style="width: 240px; float: left; "></el-input>
-            <el-select style="width: 240px; float: left;"
+            <el-select style="width: 200px; float: left;"
                        v-model="StateIdFilter"
                        @change="changeStateIdFilter"
                        placeholder="Chọn trạng thái"
@@ -48,9 +48,9 @@
                          :value="item.Id">
               </el-option>
             </el-select>
-            <el-select style="width: 240px; float: left;margin-right:3px"
+            <el-select style="width: 200px; float: left;margin-right:3px"
                        v-model="DichVuIdFilter"
-                       @change="changeDichVuIdFilter"
+                       @change="changeDichVuIdFilter(DichVuIdFilter)"
                        placeholder="Chọn Dịch Vụ">
               <el-option v-for="item in ListDMDichVu"
                          :key="item.Id"
@@ -67,9 +67,6 @@
                     row-key="Id"
                     style="width: 100%">
 
-            <!-- <el-table-column width="50" label="" align="center">
-    <template></template>
-  </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
@@ -82,51 +79,64 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="250">
               <template slot-scope="scope">
-                <!--<text-highlight >
 
-
-      </text-highlight>-->
                 <span :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </span>
               </template>
             </el-table-column>
-            <!--<el-table-column prop="NoiDung"
-                   label="Nội Dung"
-                   min-width="250">
-    <template slot-scope="scope">
-      <text-highlight :queries="search" style="word-break: normal;" v-html="scope.row.NoiDung">
-      </text-highlight>
-    </template>
-  </el-table-column>-->
-            <!--<el-table-column prop="JiraDaGui"
-                   label="Task jira"
-                   width="150">
-    <template slot-scope="scope">
-
-      <el-link :href="scope.row.JiraDaGui" target="_blank">{{ formatJira(scope.row.JiraDaGui)}}</el-link>
-    </template>
-
-
-  </el-table-column>-->
-
 
             <el-table-column prop="NhanSu"
                              label="Người thực hiện"
                              width="180"
                              align="center"
-                             style="word-break: normal;">
+                             style="word-break: normal;"
+                             column-key="NhanSu"
+                             :filters="[{text: 'Huỳnh Quang Cường', value: 'Huỳnh Quang Cường'}, {text: 'Nguyễn Trần Thúy Vân', value: 'Nguyễn Trần Thúy Vân'}, {text: 'Trần Nguyễn Minh Luân', value: 'Trần Nguyễn Minh Luân'}, {text: 'Đoàn Công Bằng', value: 'Đoàn Công Bằng'}, {text: 'Lê Minh Toàn', value: 'Lê Minh Toàn'}, {text: 'Nguyễn Thị Thu Quyên', value: 'Nguyễn Thị Thu Quyên'}]"
+                             :filter-method="filterHandler"
+                             v-if="UserName == 'hqcuong'">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
 
               </template>
             </el-table-column>
+            <el-table-column prop="NhanSuId"
+                             label="Người thực hiện"
+                             width="180"
+                             align="center"
+                             style="word-break: normal;" v-if="UserName != 'hqcuong'">
+
+              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+                <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
+
+              </template>
+            </el-table-column>
+            <el-table-column prop="NguoiTaoId"
+                             label="Người tạo"
+                             width="180"
+                             align="center"
+                             style="word-break: normal;" v-if="UserName != 'hqcuong'">
+
+              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+                <span style="word-break: normal;"> {{ scope.row.NguoiTaoId ? scope.row.User.FullName : ""}}</span>
+
+              </template>
+            </el-table-column>
+            <el-table-column prop="NgayTao"
+                             label="Ngày tạo"
+                             width="140"
+                             align="center"
+                             sortable>
+              <template slot-scope="scope">
+                {{ formatDateTime(scope.row.NgayTao) }}
+              </template>
+            </el-table-column>
             <el-table-column prop="ThoiHan"
                              label="Deadline"
-                             width="130"
+                             width="120"
                              align="center"
                              sortable>
               <template slot-scope="scope">
@@ -157,10 +167,10 @@
               </template>
 
             </el-table-column>
-            <el-table-column prop="NgayXuLy" label="Ngày xử lý" width="130" v-if="isXacNhan">
+            <el-table-column prop="NgayXuLy" label="Ngày xử lý" width="140" v-if="isXacNhan">
 
               <template slot-scope="scope">
-                {{ formatDate(scope.row.NgayXuLy) }}
+                {{ formatDateTime(scope.row.NgayXuLy) }}
               </template>
 
             </el-table-column>
@@ -179,7 +189,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || scope.row.DichVuId == AdminDVId || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -487,17 +497,8 @@
         <el-form-item label="Số lần comment" prop="Comment">
 
           <el-tabs type="border-card">
-            <el-tab-pane label="Jira comment">
-              <div style="overflow-y:scroll; height:300px">
-                <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
-                  <li>
-                    <b>+</b> {{item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)}}
-                  </li>
-                </ul>
-              </div>
-            </el-tab-pane>
             <el-tab-pane label="Yêu cầu comment: ">
-              <div style="overflow-y:scroll; max-height:400px">
+              <div style="overflow-y:scroll; max-height:200px">
                 <el-form-item v-for="item in YeuCauComment">
                   <!--{{item.Comments + ' - ' + item.NgayComment}}-->
                   <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
@@ -513,6 +514,16 @@
 
 
             </el-tab-pane>
+            <el-tab-pane label="Jira comment">
+              <div style="overflow-y:scroll; height:300px">
+                <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
+                  <li>
+                    <b>+</b> {{item.body + ' - ' + item.author.displayName + ' - ' + formatDateTime(item.updated)}}
+                  </li>
+                </ul>
+              </div>
+            </el-tab-pane>
+
           </el-tabs>
 
 
@@ -576,6 +587,7 @@
                :visible.sync="dialogFormBHDisplay"
                top="55px"
                width="80%"
+               
                center>
       <el-form :model="formData2"
                :rules="formRules"
@@ -727,50 +739,63 @@
                :disabled="!allowEdit">
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
           <h4 style="margin-left:20px">Nội dung yêu cầu: </h4>
-          <el-form-item label="Dịch vụ:" prop="DichVuId">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="Dịch vụ:" prop="DichVuId">
 
-            {{formData3.DichVuId ? formData3.DichVu.TenDichVu : ""}}
-          </el-form-item>
+                {{formData3.DichVuId ? formData3.DichVu.TenDichVu : ""}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Loại dịch vụ:" prop="LoaiYeuCauId">
+
+                {{formData3.LoaiYeuCauId ? formData3.LoaiYeuCau.TenLoaiYeuCau : ""}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
+
+                {{formData3.NhanSuId ? formData3.NhanSu.TenNhanSu : ""}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="Người tạo: " prop="NguoiTaoId">
+
+                {{formData3.NguoiTaoId ? formData3.User.FullName : ""}}
+              </el-form-item>
+
+            </el-col>
+          </el-row>
+          
 
           <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
 
             {{formData3.TenYeuCau}}
           </el-form-item>
           <el-row>
-            <el-col :span="12">
-              <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
-
-                {{formData3.NhanSuId ? formData3.NhanSu.TenNhanSu : ""}}
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="Người tạo: " prop="NguoiTaoId">
-
-                {{formData3.NguoiTaoId ? formData3.User.FullName : ""}}
-              </el-form-item>
-            </el-col>
-
+            
+            
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
                 {{formatDate(formData3.NgayYeuCau)}}
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData3.ThoiHan)}}
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="Trạng thái: " prop="StateId">
 
                 {{formData3.StateId ? formData3.States.StateName : ""}}
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="Mã số thuế: " prop="MaSoThue">
 
                 {{formData3.MaSoThue}}
@@ -782,14 +807,32 @@
             </span>
             <!--{{formData3.NoiDung}}-->
           </el-form-item>
-          <el-form-item label="Jira: " prop="JiraDaGui">
+          <el-form-item label="Jira: " prop="JiraDaGui" >
 
             {{formData3.JiraDaGui}}
           </el-form-item>
 
           <el-form-item label="Số lần comment: " prop="Comment">
 
-            <el-tabs type="border-card">
+            <el-tabs type="border-card" style="width:90%">
+              <el-tab-pane label="Yêu Cầu Comment">
+                <div style="overflow-y:scroll; max-height:200px;">
+                  <el-form-item v-for="item in YeuCauComment">
+                    <!--{{item.Comments + ' - ' + item.NgayComment}}-->
+                    <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
+                  </el-form-item>
+                </div>
+                <el-form-item prop="CommentYeuCau">
+                  <!--<el-input type="text"
+      size="small" v-model="formData3.CommentYeuCau"></el-input>-->
+                  <ckeditor :editor="editor"
+                            v-model="formData3.CommentYeuCau"
+                            :config="editorConfig" v-if="isComment"></ckeditor>
+                  <el-button @click="handleAddComment" v-if="isComment">Save Comment</el-button>
+                </el-form-item>
+
+
+              </el-tab-pane>
               <el-tab-pane label="Jira Comment">
                 <div style="overflow-y:scroll; height:300px">
                   <ul style="list-style-type:none; margin-left:-30px; margin-bottom:10px" v-for="item in Comment">
@@ -799,24 +842,7 @@
                   </ul>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="Yêu Cầu Comment">
-                <div style="overflow-y:scroll; height:400px">
-                  <el-form-item v-for="item in YeuCauComment">
-                    <!--{{item.Comments + ' - ' + item.NgayComment}}-->
-                    <label>{{item.User.FullName +' : '}}</label> <span v-html="item.Comments + ' ' + formatDateTime(item.NgayComment)"></span>
-                  </el-form-item>
-                </div>
-                <el-form-item prop="CommentYeuCau">
-                  <!--<el-input type="text"
-                size="small" v-model="formData3.CommentYeuCau"></el-input>-->
-                  <ckeditor :editor="editor"
-                            v-model="formData3.CommentYeuCau"
-                            :config="editorConfig" v-if="isComment"></ckeditor>
-                  <el-button @click="handleAddComment" v-if="isComment">Save Comment</el-button>
-                </el-form-item>
 
-
-              </el-tab-pane>
             </el-tabs>
 
 
@@ -1058,6 +1084,7 @@ import {
   addYeuCauNew,
   currenQL,
   NSQL,
+  getNhanSuXuLy,
 } from "../../store/api";
 export default {
   data() {
@@ -1090,18 +1117,23 @@ export default {
       isTrangThai: true,
       isXacNhan:false,
       isLoaiYC:true,
+      isSort: false,
       search: "",
       isAccept: false,
       isChuyenNS :false,
       StateIdFilter: 5,
       DichVuIdFilter: 1,
       JiraDaGuiLink:"",
+      NhanSuXuLyId: 0,
       UserUnitId:0,
       YCUnit: 0,
       UserDV: 0,
       NhanSuId: 0,
       UserId: 0,
+      AdminDVId:0,
       NhanSu:"",
+      isCheckDV :false,
+      title:"Tất cả yêu cầu",
       formData: {
         Id: null,
         TenYeuCau: null,
@@ -1148,8 +1180,9 @@ export default {
         ThoiHanMongMuon: null,
         Priority: null,
         CommentYeuCau:null,
+
       },
-      formData2: {
+      formData2: {// Form add PBH
 
         TenYeuCau: null,
         DichVuId: null,
@@ -1162,9 +1195,9 @@ export default {
         MaSoThue: null,
         NguoiTaoId: null,
         LoaiYeuCauId: null,
-
+        NgayYeuCau:null,
       },
-      formData3: {
+      formData3: { // Form xem PBH
         Id: null,
         TenYeuCau: null,
         DichVuId: null,
@@ -1183,8 +1216,9 @@ export default {
         StateId: null,
         MaSoThue: null,
         NgayXuLy:null,
+        LoaiYeuCauId: null,
       },
-      formData4: {
+      formData4: {// Form xử lý PBH
         TenYeuCau: null,
         DichVuId: null,
         NguoiTaoId: null,
@@ -1199,6 +1233,7 @@ export default {
         MaSoThue:null,
         FileXuLy:null,
         NgayXuLy:null,
+        LoaiYeuCauId: null,
       },
       formRules: {
         TenYeuCau: [
@@ -1270,7 +1305,7 @@ export default {
         }
       },
       RoleId: getRole(),
-
+      UserName : getUser(),
       listData: [],
       YeuCauComment:[],
       ListDMTrangThai: [],
@@ -1299,6 +1334,7 @@ export default {
       ListNhansuQLDV:[],
       NhansuQLDV:[],
       ListLoaiYC :[],
+      ListNhanSuXuLy:[],
     };
   },
 
@@ -1316,7 +1352,7 @@ export default {
     },
     formatDateTime(date) {
       if (date) {
-        return moment(date).format("MM/DD/YYYY hh:mm");
+        return moment(date).format("DD/MM/YYYY-hh:mm");
       } else return null;
     },
     formatTenTapTin(val) {
@@ -1374,6 +1410,9 @@ export default {
             if (f2 == "NhanSu") {
               return result ? result.TenNhanSu : "";
             }
+             if (f2 == "User") {
+              return result ? result.FullName : "";
+            }
           } else {
             if (f.startsWith("Ngay")) {
               return this.formatDate(data[f]);
@@ -1383,6 +1422,12 @@ export default {
 
           if (f == "ThoiHan") {
             return this.formatDate(result);
+          }
+          if(f == "NgayTao"){
+            return this.formatDateTime(result);
+          }
+          if(f == "NgayXuLy"){
+            return this.formatDateTime(result);
           }
           if(f == "NoiDung"){
             return this.formatHtml(result)
@@ -1429,38 +1474,40 @@ export default {
 
       this.getListData();
     },
-    changeDichVuIdFilter() {
-
+    changeDichVuIdFilter(val) {
+      console.log(val);
       this.getListData();
     },
+    resetField(){
 
-    //xemtrangthaiJira(index, row) {
-    //  var jiralink = row.JiraDaGui;
-    //  var split = jiralink.split('/');
-    //  for (var i = 0; i < split.length; i++) {
-    //    this.JiraDaGuiLink = split[split.length-1];
-    //  }
+      this.formData2.TenYeuCau = null;
+      this.formData2.DichVuId = null;
+      this.formData2.NhanSuId = null;
+      this.formData2.ThoiHanMongMuon = null;
+      this.formData2.ThoiHan = null;
+      this.formData2.NgayYeuCau = null;
+      this.formData2.JiraDaGui = null;
+      this.formData2.FileUpload = null;
+      this.formData2.MaSoThue = null;
+      this.formData2.NguoiTaoId = null;
+      this.formData2.LoaiYeuCauId = null;
+      this.formData2.NoiDung = "";
 
-    //  console.log(split);
-    //  this.getDataTrangThai();
-    //  this.dialogFormJiraState = true;
-
-
-    //},
+    },
     handleXacNhan(){
       this.dialogXacNhan = true;
 
     },
     handleAdd() {
+
+      this.resetField();
+      this.isEditor = false;
       if (this.StateIdFilter || this.DichVuIdFilter) {
 
         if(this.UserUnitId ==1 ){
           if(this.UserDV == 6 || this.UserDV == 11){
-            if (this.$refs.formData2 !== undefined) {
-              this.$refs.formData2.resetFields();
 
-            }
-            this.formData2.NoiDung ="";
+
             this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
           }
@@ -1475,10 +1522,7 @@ export default {
 
         }
         else if (this.UserUnitId ==2){
-          if (this.$refs.formData2 !== undefined) {
-            this.$refs.formData2.resetFields();
-          }
-          this.formData2.NoiDung ="";
+
           this.isChuyenYc = false;
           this.isChangeNhanSu = false;
 
@@ -1486,10 +1530,7 @@ export default {
 
         }
         else if (this.UserUnitId !=2 && this.UserUnitId !=1) {
-            if (this.$refs.formData2 !== undefined) {
-              this.$refs.formData2.resetFields();
-            }
-            this.formData2.NoiDung ="";
+
             this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
         }
@@ -1505,7 +1546,7 @@ export default {
         this.fileDoc = [];
         this.fileImage = [];
         this.ListJira = [];
-        this.isEditor = false;
+
 
       } else {
         alert("Chọn trạng thái trước khi thêm mới!");
@@ -1694,9 +1735,13 @@ export default {
 
           }
 
-          if(row.StateId !=10 && row.NhanSuId == this.NhanSuId && row.DichVuId == 6){
+          if(row.StateId !=10 && (row.NhanSuId == this.NhanSuId || row.DichVuId == this.AdminDVId) && row.DichVuId == 6){
              this.isChuyenNS = true;
-          }else{
+          }
+          else if(row.DichVuId == 6){
+            this.isChuyenNS = true;
+          }
+          else{
             this.isChuyenNS = false;
           }
 
@@ -1778,7 +1823,19 @@ export default {
                   this.$refs.formData2.resetFields();
 
                   }
-                  this.formData2 = Object.assign({}, row);
+                  //this.formData2 = Object.assign({}, row);
+                  this.formData2.TenYeuCau = row.TenYeuCau;
+                  this.formData2.DichVuId = row.DichVuId;
+                  this.formData2.NhanSuId =  row.NhanSuId;
+                  this.formData2.ThoiHanMongMuon = row.ThoiHanMongMuon;
+                  this.formData2.ThoiHan = row.ThoiHan;
+                  this.formData2.JiraDaGui = row.JiraDaGui;
+                  this.formData2.FileUpload = row.FileUpload;
+                  this.formData2.MaSoThue = row.MaSoThue;
+                  this.formData2.NguoiTaoId = row.NguoiTaoId;
+                  this.formData2.LoaiYeuCauId = row.LoaiYeuCauId;
+                  this.formData2.NoiDung = row.NoiDung;
+                  this.formData2.NgayYeuCau = row.NgayYeuCau;
                   this.stateOld = this.formData2.StateId;
 
 
@@ -1854,15 +1911,21 @@ export default {
       }
       else if(this.UserUnitId != 1){
         if(row.StateId != 6){
-          if (this.$refs.formData2 !== undefined) {
-            this.$refs.formData2.resetFields();
 
-          }
-          this.formData2 = Object.assign({}, row);
-          this.stateOld = this.formData2.StateId;
+          //this.formData2 = Object.assign({}, row);
 
-
-
+          this.formData2.TenYeuCau = row.TenYeuCau;
+          this.formData2.DichVuId = row.DichVuId;
+          this.formData2.NhanSuId =  row.NhanSuId;
+          this.formData2.ThoiHanMongMuon = row.ThoiHanMongMuon;
+          this.formData2.ThoiHan = row.ThoiHan;
+          this.formData2.JiraDaGui = row.JiraDaGui;
+          this.formData2.FileUpload = row.FileUpload;
+          this.formData2.MaSoThue = row.MaSoThue;
+          this.formData2.NguoiTaoId = row.NguoiTaoId;
+          this.formData2.LoaiYeuCauId = row.LoaiYeuCauId;
+          this.formData2.NoiDung = row.NoiDung;
+          this.formData2.NgayYeuCau = row.NgayYeuCau;
           if(this.RoleId != 1 && row.StateId == 10){
             this.isChuyenYc = true;
 
@@ -1978,9 +2041,11 @@ export default {
           "Nội dung",
           "Ngày tạo",
           "Thời hạn",
+          "Ngày xư lý",
           "Task Jira",
           "Trạng thái",
           "Nhân sự",
+          "Người tạo",
           "Dịch vụ",
           "Đơn vị",
           "Mã số thuế",
@@ -1990,11 +2055,13 @@ export default {
           "Id",
           "TenYeuCau",
           "NoiDung",
-          "",
+          "NgayTao",
           "ThoiHan",
+          "NgayXuLy",
           "JiraDaGui",
           "States.StateName",
           "NhanSu.TenNhanSu",
+          "User.FullName",
           "DichVu.TenDichVu",
           "Unit.UnitName",
           "MaSoThue",
@@ -2037,18 +2104,19 @@ export default {
     resetFormXacNhan(){
       this.dialogXacNhan = false;
     },
+
     getListData() {
       this.loading = true;
-        getCurrentNS().then(data => {
-          if(data != null && data != ""){
-            this.UserDV = data.DichVuId;
-            this.UserId = data.UserId;
-            this.NhanSuId = data.NhanSuId;
-            this.NhanSu = data.TenNhanSu;
 
-          }
 
-       });
+
+        if(this.AdminDVId != 0){
+          this.isSort = true;
+        }
+        else{
+          this.isSort = false;
+        }
+
         currenQL().then(data =>{
           if(data != null && data != ""){
 
@@ -2080,6 +2148,17 @@ export default {
           this.loading = false;
         });
       }
+        getCurrentNS().then(data => {
+              if(data != null && data != ""){
+                this.UserDV = data.DichVuId;
+                this.UserId = data.UserId;
+                this.NhanSuId = data.NhanSuId;
+                this.NhanSu = data.TenNhanSu;
+                this.AdminDVId = data.AdminDichVuId;
+              }
+
+           });
+
       this.getDataTrangThai();
        getUserUnitId().then(data => {
           this.UserUnitId = data.UnitId;
@@ -2088,6 +2167,19 @@ export default {
 
 
     },
+    getNhanSu(){
+        getCurrentNS().then(data => {
+              if(data != null && data != ""){
+                this.UserDV = data.DichVuId;
+                this.UserId = data.UserId;
+                this.NhanSuId = data.NhanSuId;
+                this.NhanSu = data.TenNhanSu;
+                this.AdminDVId = data.AdminDichVuId;
+              }
+
+           });
+    },
+
     // get trạng thái
     getDataTrangThai() {
       this.loading = true;
@@ -2365,6 +2457,7 @@ export default {
                   }
               this.dialogFormBHDisplay= false;
               this.isLoaiYC = true;
+              this.formData2.LoaiYeuCauId = null;
               this.getListData();
               });
 
@@ -2387,6 +2480,7 @@ export default {
                   }
               this.dialogFormBHDisplay= false;
               this.isLoaiYC = true;
+              this.formData2.LoaiYeuCauId = null;
               this.getListData();
 
               });
@@ -2481,56 +2575,6 @@ export default {
       }
 
     },
-    handleEditComment(id, value){
-      if (this.$refs.formData2 !== undefined) {
-        this.$refs.formData2.resetFields();
-
-      }
-      this.formData2.CommentYeuCau = value;
-      this.formData2.Id = id;
-      this.dialogFormDisplayComment = true;
-      this.isEditor = true;
-    },
-    UpdateComment(){
-
-      updateComments(this.formData2.CommentYeuCau, this.formData2.Id).then(data => {
-        if(data != "" && data != null){
-          this.$message({
-                  type: "success",
-                  message: "Cập nhật thành công!"
-                  });
-          this.dialogFormDisplayComment = false;
-          this.getListComment(this.formData1.Id);
-
-        }
-        else{
-
-          this.$message({
-                  type: "warning",
-                  message: "Không thể cập nhật comment!"
-                  });
-        }
-      });
-
-    },
-    DeleteComment(val){
-      deleteComments(val).then(data => {
-            if(data == 1){
-              this.$message({
-               type: "success",
-                message: "Xóa thành công!"
-              });
-              this.getListComment(this.formData1.Id);
-            }
-            else{
-               this.$message({
-               type: "warning",
-                message: "Không thể xóa!"
-              });
-            }
-          });
-
-    },
     forwardYC(){
 
       forwardYeuCau(this.formData2.Id).then(data =>{
@@ -2618,6 +2662,10 @@ export default {
 
 
     },
+    filterHandler(value, row, column) {
+        const property = column.filteredValue;
+        return row.NhanSu.TenNhanSu === value;
+    },
     handleSizeChange(val) {
       this.pagination = val;
     },
@@ -2688,21 +2736,25 @@ export default {
       this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
       this.isXacNhan= false;
+      this.title="Chưa tiếp nhận";
    }
   else if(this.$route.params.StateId == 9){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
       this.isXacNhan= false;
+
   }
   else if(this.$route.params.StateId == 7){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
       this.isXacNhan= false;
+      this.title="Đang xử lý";
   }
    else if(this.$route.params.StateId == 6){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
       this.isXacNhan= true;
+      this.title="Đã hoàn thành";
   }
     getListDanhMucYeuCau().then(data => {
       if (data) {
@@ -2714,11 +2766,12 @@ export default {
         this.ListDMDonVi = data.DMDonVi;
         this.ListQLDV = data.DMQLDV;
         this.ListLoaiYC = data.DMLYC;
+
       }
     });
 
     this.getListData();
-
+    this.getNhanSu();
 
 
   }

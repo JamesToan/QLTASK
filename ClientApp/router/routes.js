@@ -22,39 +22,11 @@ import status from "components/danhmuc/status";
 import donviyeucau from "components/danhmuc/donviyeucau";
 import quanlydichvu from "components/danhmuc/quanlydichvu";
 //// quan ly
-import baocao from "components/quanly/baocao";
+import baocao from "components/thongke/baocao";
 import yeucau from "components/quanly/yeucau";
+import baocaodiaban from "components/thongke/baocaodiaban";
+import thongkecanhan from "components/thongke/thongkecanhan";
 
-
-//import dmChuyenMuc from "components/danhmuc/dmChuyenMuc";
-//import dmLinhVuc from "components/danhmuc/dmLinhVuc";
-//import dmLoaiVanBan from "components/danhmuc/dmLoaiVanBan";
-//import dmNganhNghe from "components/danhmuc/dmNganhNghe";
-//import dmLoaiHinh from "components/danhmuc/dmLoaiHinh";
-//import dmViTriCongViec from "components/danhmuc/dmViTriCongViec";
-//// import dmGioiTinh from "components/danhmuc/dmGioiTinh";
-//import dmNgoaiNgu from "components/danhmuc/dmNgoaiNgu";
-//import dmTinHoc from "components/danhmuc/dmTinHoc";
-//import dmVanBang from "components/danhmuc/dmVanBang";
-//import dmDaoTaoNghe from "components/danhmuc/dmDaoTaoNghe";
-////Quản lý
-//import newsMenu from "components/quanly/newsMenu";
-//import newsBanTin from "components/quanly/newsBanTin";
-//import newsHoiDap from "components/quanly/newsHoiDap";
-//import newsVanBan from "components/quanly/newsVanBan";
-//import newsBanner from "components/quanly/newsBanner";
-//import newsVideo from "components/quanly/newsVideo";
-//import hsTimViec from "components/quanly/hsTimViec";
-//import hsTuyenDung from "components/quanly/hsTuyenDung";
-//import qlDoanhNghiep from "components/quanly/qlDoanhNghiep";
-//import qlNguoiLaoDong from "components/quanly/qlNguoiLaoDong";
-//import qlSanViecLam from "components/quanly/qlSanViecLam";
-//import qlDangKyHocNghe from "components/quanly/qlDangKyHocNghe";
-//import qlDangKyViecLam from "components/quanly/qlDangKyViecLam";
-//import qlCauHinh from "components/quanly/qlCauHinh";
-//Thống kê
-// import tkThanhKiemTra from "components/thongke/tkThanhKiemTra";
-// import tkKiemDinh from "components/thongke/tkKiemDinh";
 
 export const routes = [
   {
@@ -198,7 +170,7 @@ export const routes = [
         params: { StateId: 10},
         component: yeucau,
         meta: {
-          display: "Yêu cầu chưa tiếp nhận",
+          display: "Chưa tiếp nhận",
           show: "true"
         }
       },
@@ -218,7 +190,7 @@ export const routes = [
         params: { StateId: 7 },
         component: yeucau,
         meta: {
-          display: "Yêu cầu đang xử lý",
+          display: "Đang xử lý",
           show: "true"
         }
       },
@@ -228,19 +200,19 @@ export const routes = [
         params: { StateId: 6 },
         component: yeucau,
         meta: {
-          display: "Yêu cầu đã hoàn thành",
+          display: "Đã hoàn thành",
           show: "true"
         }
       },
     ]
   },
   {
-    name: "Báo cáo",
-    path: "/admin/",
+    name: "Thống kê",
+    path: "/thongke",
     component: ParentCom,
-    icon: "fe-code",
+    icon: "fe-file",
     meta: {
-      display: "Báo cáo",
+      display: "Thống kê",
       show: "true"
     },
     children: [
@@ -249,7 +221,25 @@ export const routes = [
         path: "baocao",
         component: baocao,
         meta: {
-          display: "Báo cáo",
+          display: "Thống kê theo ngày",
+          show: "true"
+        }
+      },
+      {
+        name: "baocaodiaban",
+        path: "baocaodiaban",
+        component: baocaodiaban,
+        meta: {
+          display: "Thống kê theo địa bàn",
+          show: "true"
+        }
+      },
+      {
+        name: "thongkecanhan",
+        path: "thongkecanhan",
+        component: thongkecanhan,
+        meta: {
+          display: "Thống kê cá nhân",
           show: "true"
         }
       },

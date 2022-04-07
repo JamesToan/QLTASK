@@ -26,6 +26,8 @@ namespace coreWeb.Models.Entities
 
         public int? DichVuId { get; set; }
 
+        public int? AdminDichVuId { get; set; }
+
         public int? UserId { get; set; }
 
         [ForeignKey("NguoiTaoId")]
@@ -39,5 +41,8 @@ namespace coreWeb.Models.Entities
 
         [ForeignKey("UserId")]
         public User User { get; set; }
+
+        [ForeignKey("AdminDichVuId")]
+        public DichVu AdminDichVu { get; set; }
     }
 }

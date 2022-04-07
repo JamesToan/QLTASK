@@ -7,9 +7,9 @@
           <div class="page-title-right">
             <ol class="breadcrumb m-0">
               <li class="breadcrumb-item">
-                <a href="javascript: void(0);">Báo cáo</a>
+                <a href="javascript: void(0);">Thống kê</a>
               </li>
-              <li class="breadcrumb-item active">Báo cáo theo thời gian</li>
+              <li class="breadcrumb-item active">Thống kê theo thời gian</li>
             </ol>
           </div>
           <h4 class="page-title">Danh sách yêu cầu</h4>
@@ -28,6 +28,13 @@
                        class="filter-item"
                        @click="handleSearch"
                        v-if="allowEdit" style="margin-left:10px">Tìm</el-button>
+            <el-button type="primary"
+                       size="small"
+                       icon="el-icon-plus"
+                       class="filter-item"
+                       @click="handleSearchAdvantage"
+                       v-if="allowEdit" style="margin-left:10px">Tìm kiếm nâng cao</el-button>
+
             <el-button type="success"
                        size="small"
                        icon="el-icon-download"
@@ -38,15 +45,15 @@
                       v-model="search"
                       placeholder="Tìm kiếm"
                       style="width: 240px; float: left; "></el-input>
-            <el-date-picker v-model="value1" 
+            <el-date-picker v-model="value1"
                             type="datetime"
-                            placeholder="Select date and time"
-                            style="width: 240px; float: left;margin-left:5px">
+                            placeholder="Chọn ngày bắt đầu"
+                            style="width: 200px; float: left;margin-left:5px">
             </el-date-picker>
             <el-date-picker v-model="value2"
                             type="datetime"
-                            placeholder="Select date and time"
-                            style="width: 240px; float: left;">
+                            placeholder="Chọn ngày kết thúc"
+                            style="width: 200px; float: left;">
             </el-date-picker>
           </div>
           <el-table :data="renderData()"
@@ -58,8 +65,8 @@
                     style="width: 100%">
 
             <!-- <el-table-column width="50" label="" align="center">
-    <template></template>
-  </el-table-column> -->
+            <template></template>
+          </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
@@ -77,7 +84,7 @@
                 <!--<text-highlight >
 
 
-      </text-highlight>-->
+              </text-highlight>-->
                 <span :queries="search" style="word-break: normal;">
                   {{ scope.row.TenYeuCau }}
                 </span>
@@ -96,7 +103,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="NgayTao"
-                             label="Ngày Tạo"
+                             label="Ngày tạo"
                              width="130"
                              align="center"
                              sortable>
@@ -501,7 +508,58 @@
       </span>
     </el-dialog>
 
+    <el-dialog top="50px"
+               title="Tìm kiếm"
+               :visible.sync="dialogFormSearch"
+               width="55%">
+      <el-form :model="formData2"
+               :rules="formRules"
+               ref="formData2"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
+        <el-form-item label="Loại ngày cần tìm: " prop="index">
+          <el-select v-model="formData2.index"
+                     placeholder="Loại ngày"
+                     class="w-100">
+            <el-option v-for="item in ListIndex"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Ngày bắt đàu: " prop="time1">
+              <el-date-picker v-model="formData2.time1"
+                              type="datetime"
+                              placeholder="Chọn ngày bắt đầu"
+                              style="width: 240px; float: left;margin-left:5px">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Ngày kết thúc: " prop="time2">
+              <el-date-picker v-model="formData2.time2"
+                              type="datetime"
+                              placeholder="Chọn ngày kết thúc"
+                              style="width: 240px; float: left;">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
 
+        </el-row>
+        
+      </el-form>
+      <div style="text-align: center; margin-top:5px">
+        <el-button type="warning" size="small" @click="resetFormSearch">Bỏ</el-button>
+        <el-button type="success" size="small" @click="getValueSearch">Tìm</el-button>
+      </div>
+      
+
+    </el-dialog>
 
 
   </div>
@@ -511,24 +569,17 @@
   import moment from "moment";
   import { getRole, getUser, eGkxtz } from "../../store/common";
   import {
-    getYeuCau,
     getListDanhMucYeuCau,
     selectYeuCau,
-    updateYeuCau,
-    addYeuCau,
     getTrangThai,
     selectYeuCauAll,
     selectComments,
-    addComments,
-    updateComments,
-    deleteComments,
-    sendTeleAsync,
     getUserUnitId,
-    getYCUnitId,
     getCurrentNS,
     getycbytime,
     currenQL,
     NSQL,
+    getycadvantage,
   } from "../../store/api";
 import { log } from "util";
   export default {
@@ -545,12 +596,13 @@ import { log } from "util";
         dialogFormBHHandle: false,
         dialogFormBHView: false,
         dialogXacNhan: false,
+        dialogFormSearch: false,
         loading: false,
         isEditor: false,
         isXacThuc: false,
         allowEdit: true,
         isPermiss: true,
-        isView: false,
+        isAdvantage: false,
         isEdit: false,
         isChangeNhanSu: true,
         isComment: true,
@@ -564,7 +616,6 @@ import { log } from "util";
         isLoaiYC: true,
         search: "",
         isAccept: false,
-        isChuyenNS: false,
         StateIdFilter: 5,
         DichVuIdFilter: 1,
         JiraDaGuiLink: "",
@@ -576,6 +627,7 @@ import { log } from "util";
         NhanSu: "",
         value1: '',
         value2: '',
+       
         formData: {
           Id: null,
           TenYeuCau: null,
@@ -625,18 +677,9 @@ import { log } from "util";
         },
         formData2: {
 
-          TenYeuCau: null,
-          DichVuId: null,
-          NhanSuId: null,
-          ThoiHanMongMuon: null,
-          ThoiHan: null,
-          NoiDung: null,
-          JiraDaGui: null,
-          FileUpload: null,
-          MaSoThue: null,
-          NguoiTaoId: null,
-          LoaiYeuCauId: null,
-
+          index: null,
+          time1: null,
+          time2: null,
         },
         formData3: {
           Id: null,
@@ -751,13 +794,12 @@ import { log } from "util";
         total: 10,
         activePage: 1,
         dataFilter: null,
-        stateOld: [],
-        stateNew: [],
         UserProFile: [],
         QLDVList: [],
         ListNhansuQLDV: [],
         NhansuQLDV: [],
         ListLoaiYC: [],
+        ListIndex: [{ value: 1, label: "Ngày tạo" }, { value: 2, label: "Ngày deadline" }, { value: 3, label: "Ngày xử lý" } ],
       };
     },
 
@@ -1045,10 +1087,14 @@ import { log } from "util";
 
       },
       handleSearch() {
-        console.log(this.value1);
-        console.log(this.value2);
+       
         this.getListData();
+        this.isAdvantage = false;
 
+      },
+      handleSearchAdvantage() {
+        this.dialogFormSearch = true;
+        this.isAdvantage = true;
       },
       handleSuccess(response, file, ListJira) {
         this.fileDoc.push({ key: file.name, file: response.file });
@@ -1167,6 +1213,14 @@ import { log } from "util";
       resetFormXacNhan() {
         this.dialogXacNhan = false;
       },
+      resetFormSearch() {
+        this.dialogFormSearch = false;
+        this.isAdvantage = false;
+      },
+      getValueSearch() {
+        this.getListData();
+        this.isAdvantage = false;
+      },
       getListData() {
         this.loading = true;
         getCurrentNS().then(data => {
@@ -1194,33 +1248,30 @@ import { log } from "util";
         });
         //Quản lý
         this.loading = true;
-        if (this.value1 != "" && this.value2 != "") {
-          getycbytime(this.value1, this.value2).then(data => {
-            this.listData = data;
-            this.total = data.length;
+        if (this.isAdvantage == true) {
+          if (this.value3 != "" && this.value4 != "") {
+            getycadvantage(this.formData2.index, this.formData2.time1, this.formData2.time2).then(data => {
+              this.listData = data;
+              this.total = data.length;
 
-            this.loading = false;
-          });
+              this.loading = false;
+            });
+            this.dialogFormSearch = false;
+            this.isAdvantage = false;
+          }
         }
         else {
-          if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1) {
-            selectYeuCau(this.StateIdFilter, this.DichVuIdFilter).then(data => {
+          if (this.value1 != "" && this.value2 != "") {
+            getycbytime(this.value1, this.value2).then(data => {
               this.listData = data;
               this.total = data.length;
 
               this.loading = false;
             });
           }
-          else {
-            selectYeuCauAll(this.StateIdFilter, this.DichVuIdFilter).then(data => {
-              this.listData = data;
-              this.total = data.length;
-
-              this.loading = false;
-            });
-          }
-
         }
+        
+        
        
         this.getDataTrangThai();
         getUserUnitId().then(data => {
