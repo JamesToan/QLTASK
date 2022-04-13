@@ -96,7 +96,7 @@
                              column-key="NhanSu"
                              :filters="[{text: 'Huỳnh Quang Cường', value: 'Huỳnh Quang Cường'}, {text: 'Nguyễn Trần Thúy Vân', value: 'Nguyễn Trần Thúy Vân'}, {text: 'Trần Nguyễn Minh Luân', value: 'Trần Nguyễn Minh Luân'}, {text: 'Đoàn Công Bằng', value: 'Đoàn Công Bằng'}, {text: 'Lê Minh Toàn', value: 'Lê Minh Toàn'}, {text: 'Nguyễn Thị Thu Quyên', value: 'Nguyễn Thị Thu Quyên'}]"
                              :filter-method="filterHandler"
-                             v-if="UserName == 'hqcuong'">
+                             v-if="AdminDVId ==6">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
@@ -107,7 +107,7 @@
                              label="Người thực hiện"
                              width="180"
                              align="center"
-                             style="word-break: normal;" v-if="UserName != 'hqcuong'">
+                             style="word-break: normal;" v-if="!AdminDVId ==6">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
                 <span style="word-break: normal;"> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
@@ -189,7 +189,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || scope.row.DichVuId == AdminDVId || scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -205,7 +205,7 @@
                          style="width: 100%"
                          @size-change="handleSizeChange"
                          :current-page.sync="activePage"
-                         :page-sizes="[10, 20, 50, 100, 500]"
+                         :page-sizes="[10, 20, 50, 100, 500, 1000]"
                          layout="total,sizes,prev, pager, next"
                          :total="total">
           </el-pagination>
@@ -253,7 +253,8 @@
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
-                              value-format="yyyy-MM-dd">
+                              value-format="yyyy-MM-dd"
+                              :picker-options="pickerOptions">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -311,7 +312,8 @@
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
-                              value-format="yyyy-MM-dd">
+                              value-format="yyyy-MM-dd"
+                              :picker-options="pickerOptions">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -454,7 +456,7 @@
               {{formData1.NguoiTaoId ? formData1.User.FullName : ""}}
             </el-form-item>
           </el-col>
-          
+
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -534,17 +536,17 @@
         </el-form-item>
         <el-form-item label="Tập tin đính kèm: ">
           <!--<el-upload action="/api/TapTin/UploadDoc"
-             :limit="3"
-             :multiple="true"
-             :on-preview="handlePreview"
-             :file-list="fileList"
-             :on-success="handleSuccess"
-             :before-upload="beforeUpload"
-             accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
-             :auto-upload="true"
-             size="mini">
+                   :limit="3"
+                   :multiple="true"
+                   :on-preview="handlePreview"
+                   :file-list="fileList"
+                   :on-success="handleSuccess"
+                   :before-upload="beforeUpload"
+                   accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                   :auto-upload="true"
+                   size="mini">
 
-  </el-upload>-->
+        </el-upload>-->
           <div v-for="item in fileList">
             <a :href=item.url download>{{item.name}}</a>
           </div>
@@ -581,13 +583,12 @@
       <el-button @click="resetFormJira" size="small">Bỏ qua</el-button>
     </span>
   </el-dialog>-->
-    <!--     \\\\\\\\\\  PBH  \\\\\\\\\     -->
+    <!--     \\\\\\\\\\ Add PBH  \\\\\\\\\     -->
 
     <el-dialog title="Quản lý yêu cầu"
                :visible.sync="dialogFormBHDisplay"
                top="55px"
                width="80%"
-               
                center>
       <el-form :model="formData2"
                :rules="formRules"
@@ -618,7 +619,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau" >
+            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau">
               <el-select v-model="formData2.LoaiYeuCauId"
                          placeholder="Chọn loại yêu cầu"
                          class="w-100" :disabled="isLoaiYC">
@@ -643,12 +644,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          
+
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
-             
+
               <el-date-picker v-model="formData2.NgayYeuCau"
                               type="date"
                               placeholder="Chọn ngày"
@@ -667,11 +668,12 @@
                               format="dd/MM/yyyy"
                               size="small"
                               style="width: 100%"
-                              value-format="yyyy-MM-dd">
+                              value-format="yyyy-MM-dd"
+                              :picker-options="pickerOptions">
               </el-date-picker>
             </el-form-item>
           </el-col>
-          
+
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -724,6 +726,149 @@
     </el-dialog>
 
 
+    <!--     \\\\\\\\\\ Edit PBH  \\\\\\\\\     -->
+
+    <el-dialog title="Quản lý yêu cầu"
+               :visible.sync="dialogFormBHDisplayEdit"
+               top="55px"
+               width="80%"
+               center>
+      <el-form :model="formData5"
+               :rules="formRules"
+               ref="formData5"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
+
+
+        <el-form-item label="Dịch vụ: " prop="DichVuId">
+          <el-select v-model="formData5.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     @change="setNguoiThucHien(formData5.DichVuId)"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
+          <el-input v-model="formData5.TenYeuCau"
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau">
+              <el-select v-model="formData5.LoaiYeuCauId"
+                         placeholder="Chọn loại yêu cầu"
+                         class="w-100" :disabled="isLoaiYC">
+                <el-option v-for="item in ListLoaiYC"
+                           :key="item.Id"
+                           :label="item.TenLoaiYeuCau"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
+              <el-select v-model="formData5.NhanSuId"
+                         placeholder="Chọn nhân sự"
+                         class="w-100" :disabled="isChangeNhanSu">
+                <el-option v-for="item in ListDMNhanSu"
+                           :key="item.Id"
+                           :label="item.TenNhanSu"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
+
+              <el-date-picker v-model="formData5.NgayYeuCau"
+                              type="date"
+                              placeholder="Chọn ngày"
+                              format="dd/MM/yyyy"
+                              size="small"
+                              style="width: 100%"
+                              value-format="yyyy-MM-dd">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Hạn xử lý: " prop="ThoiHan">
+              <el-date-picker v-model="formData5.ThoiHan"
+                              type="date"
+                              placeholder="Chọn ngày"
+                              format="dd/MM/yyyy"
+                              size="small"
+                              style="width: 100%"
+                              value-format="yyyy-MM-dd"
+                              :picker-options="pickerOptions">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Mã số thuế: " prop="MaSoThue">
+              <el-input v-model="formData5.MaSoThue" type="text"
+                        size="small"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
+          <ckeditor :editor="editor"
+                    v-model="formData5.NoiDung"
+                    :config="editorConfig"
+                    :disabled="!allowEdit"></ckeditor>
+        </el-form-item>
+        <el-form-item label="Jira: " prop="JiraDaGui">
+          <el-input v-model="formData5.JiraDaGui"
+                    type="text"
+                    size="small"></el-input>
+
+        </el-form-item>
+
+        <el-form-item label="Tập tin đính kèm: ">
+          <el-upload action="/api/TapTin/UploadDoc"
+                     :limit="3"
+                     :multiple="true"
+                     :on-preview="handlePreview"
+                     :on-remove="handleRemove"
+                     :file-list="fileList"
+                     :on-success="handleSuccess"
+                     :before-upload="beforeUpload"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png,.zip,.rar,.p7b"
+                     :auto-upload="true"
+                     size="mini">
+            <el-button size="small" type="primary">Tải lên</el-button>
+          </el-upload>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer" v-if="allowEdit">
+        <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
+        <el-button type="primary" size="small" @click="updateDataBHNT">Cập nhật</el-button>
+        <el-button v-if="isViewBT" @click="AcceptYeuCau1" size="small" type="success">Tiếp nhận</el-button>
+
+        <!--<el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
+      <el-button type="success" size="small" @click="forwardYC" v-if="isChuyenYc">Chuyển yêu cầu</el-button>-->
+
+
+      </span>
+    </el-dialog>
+
+
     <!--         Xem Yêu Cầu        -->
     <el-dialog title="Xem nội dung yêu cầu"
                :visible.sync="dialogFormBHView"
@@ -740,6 +885,12 @@
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
           <h4 style="margin-left:20px">Nội dung yêu cầu: </h4>
           <el-row>
+            <el-col :span="5">
+              <el-form-item label="Yêu cầu Id:" prop="Id">
+
+                YC{{formData3.Id}}
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="Dịch vụ:" prop="DichVuId">
 
@@ -752,49 +903,53 @@
                 {{formData3.LoaiYeuCauId ? formData3.LoaiYeuCau.TenLoaiYeuCau : ""}}
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="7">
               <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
 
                 {{formData3.NhanSuId ? formData3.NhanSu.TenNhanSu : ""}}
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="Người tạo: " prop="NguoiTaoId">
 
-                {{formData3.NguoiTaoId ? formData3.User.FullName : ""}}
-              </el-form-item>
-
-            </el-col>
           </el-row>
-          
+
 
           <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
 
             {{formData3.TenYeuCau}}
           </el-form-item>
           <el-row>
-            
-            
+
+
           </el-row>
           <el-row>
+            <el-col :span="7">
+              <el-form-item label="Người tạo: " prop="NguoiTaoId">
+
+                {{formData3.NguoiTaoId ? formData3.User.FullName : ""}}
+              </el-form-item>
+
+            </el-col>
             <el-col :span="6">
               <el-form-item label="Ngày KH yêu cầu: " prop="NgayYeuCau">
 
                 {{formatDate(formData3.NgayYeuCau)}}
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
                 {{formatDate(formData3.ThoiHan)}}
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <el-form-item label="Trạng thái: " prop="StateId">
 
                 {{formData3.StateId ? formData3.States.StateName : ""}}
               </el-form-item>
             </el-col>
+
+          </el-row>
+          <el-row>
             <el-col :span="6">
               <el-form-item label="Mã số thuế: " prop="MaSoThue">
 
@@ -807,7 +962,7 @@
             </span>
             <!--{{formData3.NoiDung}}-->
           </el-form-item>
-          <el-form-item label="Jira: " prop="JiraDaGui" >
+          <el-form-item label="Jira: " prop="JiraDaGui">
 
             {{formData3.JiraDaGui}}
           </el-form-item>
@@ -824,7 +979,7 @@
                 </div>
                 <el-form-item prop="CommentYeuCau">
                   <!--<el-input type="text"
-      size="small" v-model="formData3.CommentYeuCau"></el-input>-->
+                size="small" v-model="formData3.CommentYeuCau"></el-input>-->
                   <ckeditor :editor="editor"
                             v-model="formData3.CommentYeuCau"
                             :config="editorConfig" v-if="isComment"></ckeditor>
@@ -853,17 +1008,17 @@
           </el-form-item>
           <el-form-item label="Tập tin đính kèm:">
             <!--<el-upload action="/api/TapTin/UploadDoc"
-                       :limit="4"
-                       :multiple="true"
-                       :on-preview="handlePreview"
-                       :on-remove="handleRemove"
-                       :file-list="fileList"
-                       :on-success="handleSuccess"
-                       :before-upload="beforeUpload"
-                       accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
-                       :auto-upload="true"
-                       size="mini">
-            </el-upload>-->
+                     :limit="4"
+                     :multiple="true"
+                     :on-preview="handlePreview"
+                     :on-remove="handleRemove"
+                     :file-list="fileList"
+                     :on-success="handleSuccess"
+                     :before-upload="beforeUpload"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png"
+                     :auto-upload="true"
+                     size="mini">
+          </el-upload>-->
             <div v-for="item in fileList">
               <a :href=item.url download>{{item.name}}</a>
             </div>
@@ -911,10 +1066,21 @@
                :disabled="!allowEdit">
         <div class="card" style="box-shadow: 0 0 25px #DCDCDC	; border-radius:0.5rem">
           <h4 style="margin-left:20px">Nội dung yêu cầu: </h4>
-          <el-form-item label="Dịch vụ:" prop="DichVuId">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="Dịch vụ:" prop="DichVuId">
 
-            {{formData4.DichVuId ? formData4.DichVu.TenDichVu : ""}}
-          </el-form-item>
+                {{formData4.DichVuId ? formData4.DichVu.TenDichVu : ""}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Yêu cầu Id:" prop="Id">
+
+                YC{{formData4.Id}}
+              </el-form-item>
+            </el-col>
+          </el-row>
+
           <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
 
             {{formData4.TenYeuCau}}
@@ -936,7 +1102,7 @@
                                :value="item.Id">
                     </el-option>
                   </el-select>
-                </span>               
+                </span>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -954,7 +1120,7 @@
                 {{formatDate(formData4.NgayYeuCau)}}
               </el-form-item>
             </el-col>
-            
+
             <el-col :span="12">
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
 
@@ -987,7 +1153,7 @@
           </el-form-item>
 
           <el-form-item label="Tập tin đính kèm: ">
-           
+
             <div v-for="item in fileList">
               <a :href=item.url download>{{item.name}}</a>
             </div>
@@ -1016,7 +1182,7 @@
                        size="mini">
               <el-button size="small" type="primary">Tải lên</el-button>
             </el-upload>
-           
+
           </el-form-item>
         </div>
 
@@ -1044,9 +1210,9 @@
           <el-button style="margin-right:5px" type="warning" size="small" @click="resetFormXacNhan">No</el-button>
           <el-button type="success" size="small" @click="xuLyYeuCau">Yes</el-button>
         </div>
-        
+
       </div>
-     
+
     </el-dialog>
   </div>
 </template>
@@ -1095,6 +1261,7 @@ export default {
       FileDowloadName:null,
       dialogFormDisplay: false,
       dialogFormBHDisplay: false,
+      dialogFormBHDisplayEdit:false,
       dialogFormBHEdit: false,
       dialogFormView: false,
       dialogFormBHHandle: false,
@@ -1133,6 +1300,12 @@ export default {
       AdminDVId:0,
       NhanSu:"",
       isCheckDV :false,
+      isCheckNS :false,
+      pickerOptions:{
+          disabledDate(time) {
+            return time.getTime() <= (Date.now()- 3600 * 1000 * 24);
+          }
+      },
       title:"Tất cả yêu cầu",
       formData: {
         Id: null,
@@ -1196,6 +1369,9 @@ export default {
         NguoiTaoId: null,
         LoaiYeuCauId: null,
         NgayYeuCau:null,
+        StateId: null,
+        MaSoThue: null,
+        
       },
       formData3: { // Form xem PBH
         Id: null,
@@ -1234,6 +1410,26 @@ export default {
         FileXuLy:null,
         NgayXuLy:null,
         LoaiYeuCauId: null,
+      },
+      formData5: {// Form edit PBH
+
+        TenYeuCau: null,
+        DichVuId: null,
+        NhanSuId: null,
+        ThoiHanMongMuon: null,
+        ThoiHan: null,
+        NoiDung: null,
+        JiraDaGui: null,
+        FileUpload: null,
+        MaSoThue: null,
+        NguoiTaoId: null,
+        LoaiYeuCauId: null,
+        NgayYeuCau:null,
+        StateId: null,
+        MaSoThue: null,
+        NgayTao :null,
+        NguoiTaoId:null,
+        UnitId:null,
       },
       formRules: {
         TenYeuCau: [
@@ -1371,6 +1567,10 @@ export default {
         return val.replace(/<[^>]*>?/gm, '');
 
       }
+
+    },
+    Datetimenow(){
+      this.DateTime = new  Date().toLocaleDateString();
 
     },
     formatJira(val) {
@@ -1572,8 +1772,16 @@ export default {
           this.isComment = false;
 
       }
+          var checkdv = false;
 
-      if(row.DichVuId == this.UserDV){
+          for( var i = 0; i < this.QLDVList.length; i++){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId ==6 || this.QLDVList[i].DichVuId ==11 )){
+                checkdv = true;
+            }
+          }
+
+
+      if(checkdv){
         if (this.$refs.formData3 !== undefined) {
         this.$refs.formData3.resetFields();
         }
@@ -1723,7 +1931,7 @@ export default {
       if(this.UserUnitId == 1 ){
           var bool = false;
 
-          if(row.StateId ==10 && row.NhanSuId == this.NhanSuId){
+          if(row.StateId ==10 && this.AdminDVId == row.DichVuId){
             this.isAccept = true;
           }
           if(row.StateId ==10 && row.NguoiTaoId == this.UserId){
@@ -1819,35 +2027,41 @@ export default {
                 this.dialogFormBHHandle = true;
             }
             else if(checkdv == true && row.NguoiTaoId == this.UserId && row.StateId == 10){
-                if (this.$refs.formData2 !== undefined) {
-                  this.$refs.formData2.resetFields();
+                if (this.$refs.formData5 !== undefined) {
+                  this.$refs.formData5.resetFields();
 
                   }
-                  //this.formData2 = Object.assign({}, row);
-                  this.formData2.TenYeuCau = row.TenYeuCau;
-                  this.formData2.DichVuId = row.DichVuId;
-                  this.formData2.NhanSuId =  row.NhanSuId;
-                  this.formData2.ThoiHanMongMuon = row.ThoiHanMongMuon;
-                  this.formData2.ThoiHan = row.ThoiHan;
-                  this.formData2.JiraDaGui = row.JiraDaGui;
-                  this.formData2.FileUpload = row.FileUpload;
-                  this.formData2.MaSoThue = row.MaSoThue;
-                  this.formData2.NguoiTaoId = row.NguoiTaoId;
-                  this.formData2.LoaiYeuCauId = row.LoaiYeuCauId;
-                  this.formData2.NoiDung = row.NoiDung;
-                  this.formData2.NgayYeuCau = row.NgayYeuCau;
-                  this.stateOld = this.formData2.StateId;
+
+                  this.formData5.TenYeuCau = row.TenYeuCau;
+                  this.formData5.DichVuId = row.DichVuId;
+                  this.formData5.NhanSuId =  row.NhanSuId;
+                  this.formData5.ThoiHanMongMuon = row.ThoiHanMongMuon;
+                  this.formData5.ThoiHan = row.ThoiHan;
+                  this.formData5.JiraDaGui = row.JiraDaGui;
+                  this.formData5.FileUpload = row.FileUpload;
+                  this.formData5.MaSoThue = row.MaSoThue;
+                  this.formData5.NguoiTaoId = row.NguoiTaoId;
+                  this.formData5.LoaiYeuCauId = row.LoaiYeuCauId;
+                  this.formData5.NoiDung = row.NoiDung;
+                  this.formData5.NgayYeuCau = row.NgayYeuCau;
+                  this.formData5.NgayTao = row.NgayTao;
+                  this.formData5.NguoiTaoId = row.NguoiTaoId;
+                  this.formData5.UnitId = row.UnitId;
+                  this.formData5.Id = row.Id;
+                  this.formData5.StateId = row.StateId;
+
+                  this.stateOld = this.formData5.StateId;
 
 
-                  if(this.formData2.DichVuId != null){
-                      var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData2.DichVuId);
+                  if(this.formData5.DichVuId != null){
+                      var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData5.DichVuId);
                       this.ListDMDonVi = dv.DonVi;
                   }
 
-                  if (this.formData2.FileUpload) {
+                  if (this.formData5.FileUpload) {
                     this.fileList = [];
                     this.fileDoc = [];
-                    var _arr = JSON.parse(this.formData2.FileUpload);
+                    var _arr = JSON.parse(this.formData5.FileUpload);
                     for (var i = 0; i < _arr.length; i++) {
                       var urlFile = "/uploads/" + _arr[i];
                       this.fileList.push({ name: _arr[i], url: urlFile });
@@ -1856,7 +2070,7 @@ export default {
                   }
                   this.isLoaiYC= false;
                   this.isEditor = false;
-                  this.dialogFormBHDisplay = true;
+                  this.dialogFormBHDisplayEdit = true;
             }
             else{
 
@@ -1914,28 +2128,33 @@ export default {
 
           //this.formData2 = Object.assign({}, row);
 
-          this.formData2.TenYeuCau = row.TenYeuCau;
-          this.formData2.DichVuId = row.DichVuId;
-          this.formData2.NhanSuId =  row.NhanSuId;
-          this.formData2.ThoiHanMongMuon = row.ThoiHanMongMuon;
-          this.formData2.ThoiHan = row.ThoiHan;
-          this.formData2.JiraDaGui = row.JiraDaGui;
-          this.formData2.FileUpload = row.FileUpload;
-          this.formData2.MaSoThue = row.MaSoThue;
-          this.formData2.NguoiTaoId = row.NguoiTaoId;
-          this.formData2.LoaiYeuCauId = row.LoaiYeuCauId;
-          this.formData2.NoiDung = row.NoiDung;
-          this.formData2.NgayYeuCau = row.NgayYeuCau;
+          this.formData5.TenYeuCau = row.TenYeuCau;
+          this.formData5.DichVuId = row.DichVuId;
+          this.formData5.NhanSuId =  row.NhanSuId;
+          this.formData5.ThoiHanMongMuon = row.ThoiHanMongMuon;
+          this.formData5.ThoiHan = row.ThoiHan;
+          this.formData5.JiraDaGui = row.JiraDaGui;
+          this.formData5.FileUpload = row.FileUpload;
+          this.formData5.MaSoThue = row.MaSoThue;
+          this.formData5.NguoiTaoId = row.NguoiTaoId;
+          this.formData5.LoaiYeuCauId = row.LoaiYeuCauId;
+          this.formData5.NoiDung = row.NoiDung;
+          this.formData5.NgayYeuCau = row.NgayYeuCau;
+          this.formData5.NgayTao = row.NgayTao;
+          this.formData5.NguoiTaoId = row.NguoiTaoId;
+          this.formData5.UnitId = row.UnitId;
+          this.formData5.Id = row.Id;
+           this.formData5.StateId = row.StateId;
           if(this.RoleId != 1 && row.StateId == 10){
             this.isChuyenYc = true;
 
           }
 
 
-          if (this.formData2.FileUpload) {
+          if (this.formData5.FileUpload) {
             this.fileList = [];
             this.fileDoc = [];
-            var _arr = JSON.parse(this.formData2.FileUpload);
+            var _arr = JSON.parse(this.formData5.FileUpload);
             for (var i = 0; i < _arr.length; i++) {
               var urlFile = "/uploads/" + _arr[i];
               this.fileList.push({ name: _arr[i], url: urlFile });
@@ -1944,7 +2163,7 @@ export default {
           }
           this.isLoaiYC= false;
           this.isEditor = true;
-          this.dialogFormBHDisplay = true;
+          this.dialogFormBHDisplayEdit = true;
         }
         else{
               this.$message({
@@ -2164,7 +2383,11 @@ export default {
           this.UserUnitId = data.UnitId;
 
        });
-
+      if(this.UserName == 'hqcuong' || this.UserName == 'tnmluan'|| this.UserName == 'dcbang'|| this.UserName == 'quyenntt.lan'|| this.UserName == 'nttvan'|| this.UserName == 'lmtoan'){
+        this.isCheckNS = true;
+      }else{
+        this.isCheckNS = false;
+      }
 
     },
     getNhanSu(){
@@ -2462,14 +2685,29 @@ export default {
               });
 
             }
-            else{
-              updateYeuCau(this.formData2).then(data => {
+            
+
+            
+
+        } else {
+          return false;
+        }
+      });
+    },
+    updateDataBHNT(){
+      this.$refs.formData5.validate(valid => {
+        if (valid) {
+
+            this.formData5.FileUpload = JSON.stringify(
+            this.fileDoc.map(ite => ite.file));
+            if(this.isEditor != 0){
+              updateYeuCau(this.formData5).then(data => {
                   if(data != null && data != ""){
                       this.$message({
                         type: "success",
                         message: "Cập nhật thành công!"
                       });
-
+                      
                   }
                   else{
                       this.$message({
@@ -2478,11 +2716,8 @@ export default {
                        });
 
                   }
-              this.dialogFormBHDisplay= false;
-              this.isLoaiYC = true;
-              this.formData2.LoaiYeuCauId = null;
+              this.dialogFormBHDisplayEdit= false;
               this.getListData();
-
               });
 
             }
@@ -2772,7 +3007,7 @@ export default {
 
     this.getListData();
     this.getNhanSu();
-
+    this.Datetimenow();
 
   }
 };

@@ -215,7 +215,16 @@ namespace coreWeb.Controllers.Api
                     }
                     else 
                     {
-                        objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 }).Single();
+                        if (nhansu.AdminDichVuId != null)
+                        {
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = (int)nhansu.AdminDichVuId }).Single();
+
+                        }
+                        else
+                        {
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 }).Single();
+
+                        }
 
                     }
                 }

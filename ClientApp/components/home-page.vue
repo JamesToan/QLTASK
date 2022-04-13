@@ -33,7 +33,7 @@
         <a href="/admin/yeucau">
           <div class="card-box table-responsive" style="height: 310px;background-color:dodgerblue; color:white">
 
-            <div class="header-title">
+            <div class="header-title ">
               Tổng số yêu cầu
             </div>
 
@@ -47,14 +47,14 @@
         
       </div>
       <div class="col-8">
-        <el-row class="row hidden-md-and-down">
+        <el-row class="row ">
           <div class="col-4">
             <a href="/admin/yeucau/6">
               <div class="card-box table-responsive" style="height: 145px;background-color:mediumseagreen; color:black">
-                <div class="header-title">
+                <div class="header-title header-tt">
                   Đã hoàn thành
                 </div>
-                <div align="center" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
                   {{ ThongKe.DaHT }}
                 </div>
               </div>
@@ -64,10 +64,10 @@
           <div class="col-4">
             <a href="/admin/yeucau/7">
               <div class="card-box table-responsive" style="height: 145px;background-color:orange; color:black">
-                <div class="header-title">
+                <div class="header-title header-tt">
                   Đang xử lý
                 </div>
-                <div align="center" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
                   {{ ThongKe.DangXL }}
                 </div>
               </div>
@@ -77,10 +77,10 @@
           <div class="col-4">
             <a href="/admin/yeucau/10">
               <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
-                <div class="header-title">
+                <div class="header-title header-tt">
                   Chưa tiếp nhận
                 </div>
-                <div align="center" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
                   {{ ThongKe.MoiTao }}
                 </div>
               </div>
@@ -88,7 +88,7 @@
             
           </div>
         </el-row>
-        <el-row class="row hidden-md-and-down">
+        <el-row class="row ">
           <!--<div class="col-4">
             <a href="/admin/yeucau/9">
               <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
@@ -102,16 +102,16 @@
           </div>-->
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;background-color:mediumseagreen; color:black">
-              <div class="header-title">Trong hạn</div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
+              <div class="header-title header-tt">Trong hạn</div>
+              <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.TrongHan }}
               </div>
             </div>
           </div>
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;background-color:orange; color:black">
-              <div class="header-title">Trễ hạn</div>
-              <div align="center" style="font-size: 26px; font-weight: bold">
+              <div class="header-title header-tt">Trễ hạn</div>
+              <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
                 {{ ThongKe.TreHan }}
               </div>
             </div>
@@ -368,4 +368,26 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+  @media (max-width:450px){
+    .card-box {
+      padding-top: 2rem !important ;
+      padding-left: 0.5rem !important;
+    }
+    .header-title{
+
+    }
+    .num_tt{
+      font-size: 18px !important;
+    }
+    .mt-5 {
+      font-size: 32px !important;
+    }
+    .header-tt {
+      font-size: 11px !important;
+    }
+  }
+
+
+</style>

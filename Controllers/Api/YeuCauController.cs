@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
+using coreWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -1135,9 +1136,16 @@ namespace coreWeb.Controllers.Api
         {
             try
             {
+                
                 var user = new UserClaim(HttpContext);
+                //var ngaytao = (DateTime)model.NgayTao;
+                //var formatnt = ngaytao.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                //DateTime myDate = DateTime.ParseExact(formatnt, "yyyy-MM-dd HH:mm:ss.fff",
+                //                       System.Globalization.CultureInfo.InvariantCulture);
+                //var yeucauId = _context.YeuCau.Where(p => p.NguoiTaoId == model.NguoiTaoId && p.UnitId == model.UnitId && (p.NgayTao== model.NgayTao)).FirstOrDefault();
                 if (user.RoleId == 1 || user.RoleId == 2)
                 {
+                    var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                     var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
                     DateTime thoihan = (DateTime)model.ThoiHan;
                     DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
@@ -1158,13 +1166,17 @@ namespace coreWeb.Controllers.Api
                         result.DonViYeuCauId = model.DonViYeuCauId;
                         result.FileXuLy = model.FileXuLy;
                         result.MaSoThue = model.MaSoThue;
-                        result.NgayCapNhat = DateTime.Now;
-                        result.NoiDungXuLy = model.NoiDungXuLy;
-                        result.LoaiYeuCauId = model.LoaiYeuCauId;
-                        if (model.StateId == 6)
+                        if (model.NguoiTaoId == userinfo.Id)
+                        {
+                            result.NgayCapNhat = DateTime.Now;
+                        }
+                        else if(model.NguoiTaoId != userinfo.Id)
                         {
                             result.NgayXuLy = DateTime.Now;
-                        }
+                        } 
+                        result.NoiDungXuLy = model.NoiDungXuLy;
+                        result.LoaiYeuCauId = model.LoaiYeuCauId;
+                       
                         
                         _context.Update(result);
                         _context.SaveChanges();
@@ -1198,14 +1210,18 @@ namespace coreWeb.Controllers.Api
                             result.DichVuId = model.DichVuId;
                             result.DonViYeuCauId = model.DonViYeuCauId;
                             result.MaSoThue = model.MaSoThue;
-                            result.NgayCapNhat = DateTime.Now;
-                            result.StateId = model.StateId;
-                            result.FileXuLy = model.FileXuLy;
-                            result.LoaiYeuCauId = model.LoaiYeuCauId;
-                            if (model.StateId == 6)
+                            if (model.NguoiTaoId == userinfo.Id)
+                            {
+                                result.NgayCapNhat = DateTime.Now;
+                            }
+                            else if (model.NguoiTaoId != userinfo.Id)
                             {
                                 result.NgayXuLy = DateTime.Now;
                             }
+                            result.StateId = model.StateId;
+                            result.FileXuLy = model.FileXuLy;
+                            result.LoaiYeuCauId = model.LoaiYeuCauId;
+                            
                         }
                         
                         
@@ -1646,21 +1662,35 @@ namespace coreWeb.Controllers.Api
             
             var text = "";
             DateTime thoihan = (DateTime)yeucau.ThoiHan;
-            if (yeucau.NoiDungXuLy != null && yeucau.StateId == 7)
+            
+            DateTime ngaytao = (DateTime)yeucau.NgayTao;
+            if (yeucau.NoiDungXuLy != null && yeucau.NoiDungXuLy != "" && yeucau.StateId == 7) // Thông báo khi nội dung xử lý khác null hoặc rỗng và đang xử lý
             {
                 var xuly = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n - Nội dung xử lý: <strong>" + xuly + "</strong>";
+                DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>  \n - Nội dung xử lý: <strong>" + xuly + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>";
 
             }
-            else if (yeucau.NoiDungXuLy == null)
+            else if (yeucau.NoiDungXuLy == null && yeucau.NoiDungXuLy == "" && yeucau.StateId == 7)// Thông báo khi nội dung xử lý bằng null hoặc rỗng và đang xử lý
             {
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong>\n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
+            }
+            else if (yeucau.StateId == 10)  // thông báo khi trạng thái là chưa tiếp nhận
+            {
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+
+            }
+            else if (yeucau.StateId == 6)  // thông báo khi trạng thái hoàn thành
+            {
+                var xuly1 = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
+                DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
 
             }
             else
             {
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("yyyy-MM-dd") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n- Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
             }
 
@@ -1668,7 +1698,7 @@ namespace coreWeb.Controllers.Api
 
 
             var client = new System.Net.Http.HttpClient();
-            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-687082532&text=" + text;
+            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
@@ -1677,18 +1707,21 @@ namespace coreWeb.Controllers.Api
                 RequestUri = new Uri(connectionUrl),
                 Method = HttpMethod.Get
             };
-            
+
             var response = await client.SendAsync(request);
             var dataResult = response.Content.ReadAsStringAsync().Result;
 
+            /// ----- Gửi tin nhắn group riêng
             var user = new UserClaim(HttpContext);
             var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
             var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
             HttpResponseMessage response2;
             string dataResult2;
+            HttpResponseMessage response3;
+            string dataResult3;
             if (unit.ChatId != null)
             {
-                var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id="+unit.ChatId+"&text=" + text;
+                var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unit.ChatId + "&text=" + text;
 
                 var request2 = new HttpRequestMessage()
                 {
@@ -1699,7 +1732,24 @@ namespace coreWeb.Controllers.Api
                 response2 = await client.SendAsync(request2);
                 dataResult2 = response2.Content.ReadAsStringAsync().Result;
             }
-            
+            var unitnguoitao = _context.Unit.Where(p => p.Id == userinfo.UnitId).FirstOrDefault();
+
+            if (unitnguoitao.ChatId != null && unit.ChatId != unitnguoitao.ChatId)
+            {
+                var connectionUrl3 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unitnguoitao.ChatId + "&text=" + text;
+
+                var request3 = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(connectionUrl3),
+                    Method = HttpMethod.Get
+                };
+
+                response3 = await client.SendAsync(request3);
+                dataResult3 = response3.Content.ReadAsStringAsync().Result;
+            }
+
+
+
 
             //JObject joResponse = JObject.Parse(dataResult);
             //System.Diagnostics.Debug.WriteLine(joResponse);
@@ -1956,10 +2006,37 @@ namespace coreWeb.Controllers.Api
             return Ok(result);
         }
 
-        public class YCViewModel
+        public ActionResult TraCuuDS(int? DonViId, int? DichVuId, string TuNgay, string DenNgay)
         {
-            public int UnitId { get; set; }
+            var objbhtn = new DanhSachThucHienYeuCauService(_context);
+            List<DanhSachThucHienYeuCau> ds = new List<DanhSachThucHienYeuCau>();
+            if (DonViId ==null)
+            {
+                ds = objbhtn.danhSach(-1, (int)DichVuId, TuNgay, DenNgay);
+            }
+            else
+            {
+               ds = objbhtn.danhSach((int)DonViId, (int)DichVuId, TuNgay, DenNgay);
+            }
+            
 
+            return Ok(ds);
+        }
+        public ActionResult TraCuuDSUnit(int? DonViId, int? DichVuId, string TuNgay, string DenNgay)
+        {
+            var objbhtn = new DanhSachThucHienYeuCauDonViService(_context);
+            List<DanhSachThucHienYeuCauDonVi> ds = new List<DanhSachThucHienYeuCauDonVi>();
+            if (DonViId == null)
+            {
+                ds = objbhtn.danhSachDonVi(-1, (int)DichVuId, TuNgay, DenNgay);
+            }
+            else
+            {
+                ds = objbhtn.danhSachDonVi((int)DonViId, (int)DichVuId, TuNgay, DenNgay);
+            }
+
+
+            return Ok(ds);
         }
 
        

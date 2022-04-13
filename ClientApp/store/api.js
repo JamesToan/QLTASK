@@ -688,6 +688,24 @@ export function getycdiaban(UnitId, NhanSuId) {
   });
 }
 
+export function getDSYCNhanSu(DonViId, DichVuId, TuNgay, DenNgay) {
+  const params = { DonViId, DichVuId, TuNgay, DenNgay};
+  return request({
+    url: "api/yeucau/TraCuuDS",
+    method: "get",
+    params: params
+  });
+}
+
+export function getDSYCDonVi(DonViId, DichVuId, TuNgay, DenNgay) {
+  const params = { DonViId, DichVuId, TuNgay, DenNgay };
+  return request({
+    url: "api/yeucau/TraCuuDSUnit",
+    method: "get",
+    params: params
+  });
+}
+
 // Jira
 
 export function getJira() {

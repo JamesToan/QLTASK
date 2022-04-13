@@ -40,7 +40,7 @@ namespace coreWeb.Models.Entities
         [MaxLength]
         public string NoiDungXuLy { get; set; }
 
-        public DateTime? NgayTao { get; set; }
+        public DateTime NgayTao { get; set; }
 
         public DateTime? NgayCapNhat { get; set; }
 

@@ -9,7 +9,7 @@
               <li class="breadcrumb-item">
                 <a href="javascript: void(0);">Thống kê</a>
               </li>
-              <li class="breadcrumb-item active">Thống kê cá nhân</li>
+              <li class="breadcrumb-item active">Thống kê theo địa bàn</li>
             </ol>
           </div>
           <h4 class="page-title">Thống kê cá nhân</h4>
@@ -78,14 +78,14 @@
             </el-table-column>
 
 
-            <el-table-column prop="TenNhanSu"
-                             label="Người thực hiện"
+            <el-table-column prop="UnitName"
+                             label="Tên địa bàn"
                              width="245"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.TenNhanSu}}</span>
+                <span style="word-break: normal;">{{scope.row.UnitName}}</span>
 
               </template>
             </el-table-column>
@@ -239,18 +239,10 @@
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import {
     getListDanhMucYeuCau,
-    selectYeuCau,
-    getTrangThai,
-    selectYeuCauAll,
-    selectComments,
     getUserUnitId,
     getCurrentNS,
-    getycbytime,
-    currenQL,
-    NSQL,
-    getycdiaban,
     getListUnitAll,
-    getDSYCNhanSu,
+    getDSYCDonVi,
   } from "../../store/api";
   import { log } from "util";
   import { compileFunction } from "vm";
@@ -777,7 +769,7 @@
         this.loading = true;
         var tungay = this.formatDate(this.TuNgayS);
         var denngay = this.formatDate(this.DenNgayS);
-        getDSYCNhanSu(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
+        getDSYCDonVi(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
           this.listData = data;
           this.total = data.length;
 
@@ -852,7 +844,7 @@
       renderData() {
         var _data = this.listData.filter(post => {
           var id = "YC" + post.Id;
-          return post.TenNhanSu.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase());
+          return post.UnitName.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase());
 
         });
         this.total = _data.length;

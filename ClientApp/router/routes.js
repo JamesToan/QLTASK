@@ -26,7 +26,7 @@ import baocao from "components/thongke/baocao";
 import yeucau from "components/quanly/yeucau";
 import baocaodiaban from "components/thongke/baocaodiaban";
 import thongkecanhan from "components/thongke/thongkecanhan";
-
+import thongkediaban from "components/thongke/thongkediaban";
 
 export const routes = [
   {
@@ -240,6 +240,15 @@ export const routes = [
         component: thongkecanhan,
         meta: {
           display: "Thống kê cá nhân",
+          show: "true"
+        }
+      },
+      {
+        name: "thongkediaban",
+        path: "thongkediaban",
+        component: thongkediaban,
+        meta: {
+          display: "Thống kê địa bàn",
           show: "true"
         }
       },
