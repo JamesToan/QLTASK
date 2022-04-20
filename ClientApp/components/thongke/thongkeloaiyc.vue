@@ -9,10 +9,10 @@
               <li class="breadcrumb-item">
                 <a href="javascript: void(0);">Thống kê</a>
               </li>
-              <li class="breadcrumb-item active">Thống kê cá nhân</li>
+              <li class="breadcrumb-item active">Thống kê theo loại yêu cầu</li>
             </ol>
           </div>
-          <h4 class="page-title">Thống kê cá nhân</h4>
+          <h4 class="page-title">Thống kê loại yêu cầu</h4>
         </div>
       </div>
     </div>
@@ -40,15 +40,7 @@
                         :searchable="true"
                         :options="ListDiaBan"
                         style="width: 160px; float: left;text-transform:none;margin-left:5px; " />
-            <el-select style="width: 160px; float: left;margin-right:3px"
-                       v-model="DichVuIdS"
-                       placeholder="Chọn Dịch Vụ">
-              <el-option v-for="item in ListDMDichVu"
-                         :key="item.Id"
-                         :label="item.TenDichVu"
-                         :value="item.Id">
-              </el-option>
-            </el-select>
+            
             <el-date-picker v-model="TuNgayS"
                             type="datetime"
                             placeholder="Chọn ngày bắt đầu"
@@ -78,74 +70,85 @@
             </el-table-column>
 
 
-            <el-table-column prop="TenNhanSu"
-                             label="Người thực hiện"
+            <el-table-column prop="UnitName"
+                             label="Tên địa bàn"
                              width="245"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.TenNhanSu}}</span>
+                <span style="word-break: normal;">{{scope.row.UnitName}}</span>
 
               </template>
             </el-table-column>
-            <el-table-column prop="TongYeuCau"
+            <el-table-column prop="TongLoaiHD"
                              label="Tổng yêu cầu"
                              width="200"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.SoLuongTong}}</span>
+                <span style="word-break: normal;">{{scope.row.TongLoaiHD}}</span>
 
               </template>
             </el-table-column>
-            <el-table-column prop="SoLuongCTH"
-                             label="Chưa tiếp nhận"
+            <el-table-column prop="TaoMoiHT"
+                             label="Tạo mới hệ thống"
+                             width="200"
+                             align="center"
+                             style="word-break: normal;">
+
+              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+                <span style="word-break: normal;">{{scope.row.TaoMoiHT}}</span>
+
+              </template>
+            </el-table-column>
+            <el-table-column prop="HoTroKT"
+                             label="Hỗ trợ kĩ thuật"
                              width="180"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.SoLuongCTH}}</span>
+                <span style="word-break: normal;">{{scope.row.HoTroKT}}</span>
 
               </template>
             </el-table-column>
-            <el-table-column prop="SoLuongDTH"
-                             label="Đang xử lý"
+            <el-table-column prop="ThayDoiHT"
+                             label="Thay đổi hệ thống"
                              width="180"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.SoLuongDTH}}</span>
+                <span style="word-break: normal;">{{scope.row.ThayDoiHT}}</span>
 
               </template>
             </el-table-column>
-            <el-table-column prop="SoLuongHT"
-                             label="Đã hoàn thành"
+            <el-table-column prop="SuCoVH"
+                             label="Sự cố vận hành"
                              width="180"
                              align="center"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
-                <span style="word-break: normal;">{{scope.row.SoLuongHT}}</span>
+                <span style="word-break: normal;">{{scope.row.SuCoVH}}</span>
 
               </template>
             </el-table-column>
             <!--<el-table-column align="center" label="" fixed="right" width="190">
-              <template slot="header" slot-scope="scope">
+    <template slot="header" slot-scope="scope">
 
-              </template>
-              <template slot-scope="scope">
-                <el-button v-if="" @click="handleView(scope.$index, scope.row)"
-                           type="info"
-                           title="Xem"
-                           icon="el-icon-view"
-                           size="mini"></el-button>
+    </template>
+    <template slot-scope="scope">
+      <el-button v-if="" @click="handleView(scope.$index, scope.row)"
+                 type="info"
+                 title="Xem"
+                 icon="el-icon-view"
+                 size="mini"></el-button>
 
-              </template>
-            </el-table-column>-->
+    </template>
+  </el-table-column>-->
           </el-table>
           <el-pagination class="pt-2 pl-0"
                          :page-size="pagination"
@@ -239,18 +242,11 @@
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import {
     getListDanhMucYeuCau,
-    selectYeuCau,
-    getTrangThai,
-    selectYeuCauAll,
-    selectComments,
     getUserUnitId,
     getCurrentNS,
-    getycbytime,
-    currenQL,
-    NSQL,
-    getycdiaban,
     getListUnitAll,
-    getDSYCNhanSu,
+    getDSYCDonVi,
+    getDSLoaiYC,
   } from "../../store/api";
   import { log } from "util";
   import { compileFunction } from "vm";
@@ -460,7 +456,7 @@
         fileDoc1: [],
         fileImage: [],
         pagination: 20,
-        total:20,
+        total: 20,
         activePage: 1,
         dataFilter: null,
         UserProFile: [],
@@ -605,7 +601,7 @@
           }
         }
 
-        console.log(this.ListNhanSuDiaBan);
+        
 
       },
       changeStateIdFilter() {
@@ -688,25 +684,26 @@
       handleExport() {
         import("../../vendor/Export2Excel").then(excel => {
           const tHeader = [
-            "Tên nhân sự",
-            "Số lượng tổng",
-            "Chưa tiếp nhận",
-            "Đang xử lý",
-            "Đã hoàn thành",
-           
+            "Tên địa bàn",
+            "Tổng yêu cầu",
+            "Tạo mới hệ thống",
+            "Hỗ trợ kĩ thuật",
+            "Thay đổi hệ thống",
+            "Sự cố vận hành",
           ];
           const filterVal = [
-            "TenNhanSu",
-            "SoLuongTong",
-            "SoLuongCTH",
-            "SoLuongDTH",
-            "SoLuongHT",
+            "UnitName",
+            "TongLoaiHD",
+            "TaoMoiHT",
+            "HoTroKT",
+            "ThayDoiHT",
+            "SuCoVH",
            
 
           ];
           const data = this.formatJson(filterVal, this.listData);
 
-          var filename = "DSYeuCau_" + moment().format("YYYYMMDD_hhmmss");
+          var filename = "DSLoaiYeuCauTheoDiaBan_" + moment().format("YYYYMMDD_hhmmss");
           excel.export_json_to_excel({
             header: tHeader,
             data,
@@ -765,7 +762,7 @@
         this.loading = true;
         var tungay = this.formatDate(this.TuNgayS);
         var denngay = this.formatDate(this.DenNgayS);
-        getDSYCNhanSu(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
+        getDSLoaiYC(this.UnitIdS,  tungay, denngay).then(data => {
           this.listData = data;
           this.total = data.length;
 
@@ -840,7 +837,7 @@
       renderData() {
         var _data = this.listData.filter(post => {
           var id = "YC" + post.Id;
-          return post.TenNhanSu.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase());
+          return post.UnitName.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase());
 
         });
         this.total = _data.length;

@@ -12,7 +12,7 @@
               <li class="breadcrumb-item active">Thống kê theo địa bàn</li>
             </ol>
           </div>
-          <h4 class="page-title">Thống kê cá nhân</h4>
+          <h4 class="page-title">Thống kê theo địa bàn</h4>
         </div>
       </div>
     </div>
@@ -153,7 +153,7 @@
                          style="width: 100%"
                          @size-change="handleSizeChange"
                          :current-page.sync="activePage"
-                         :page-sizes="[10, 20, 50, 100, 500]"
+                         :page-sizes="[20, 50, 100, 500]"
                          layout="total,sizes,prev, pager, next"
                          :total="total">
           </el-pagination>
@@ -451,8 +451,8 @@
         fileList1: [],
         fileDoc1: [],
         fileImage: [],
-        pagination: 10,
-        total: 10,
+        pagination: 20,
+        total: 20,
         activePage: 1,
         dataFilter: null,
         UserProFile: [],
@@ -464,8 +464,8 @@
         ListNhanSuDiaBan: [],
         UnitIdS: null,
         DichVuIdS: 6,
-        TuNgayS: "",
-        DenNgayS: "",
+        TuNgayS:  Date.now(),
+        DenNgayS: Date.now(),
       };
     },
 
@@ -680,32 +680,20 @@
       handleExport() {
         import("../../vendor/Export2Excel").then(excel => {
           const tHeader = [
-            "Mã yêu cầu",
-            "Tên yêu cầu",
-            "Nội dung",
-            "Ngày tạo",
-            "Thời hạn",
-            "Task Jira",
-            "Trạng thái",
-            "Nhân sự",
-            "Dịch vụ",
-            "Đơn vị",
-            "Mã số thuế",
-            "Thời hạn KH mong muốn"
+            "Tên địa bàn",
+            "Số lượng tổng",
+            "Chưa tiếp nhận",
+            "Đang xử lý",
+            "Đã hoàn thành",
+           
           ];
           const filterVal = [
-            "Id",
-            "TenYeuCau",
-            "NoiDung",
-            "",
-            "ThoiHan",
-            "JiraDaGui",
-            "States.StateName",
-            "NhanSu.TenNhanSu",
-            "DichVu.TenDichVu",
-            "Unit.UnitName",
-            "MaSoThue",
-            "ThoiHanMongMuon",
+            "UnitName",
+            "SoLuongTong",
+            "SoLuongCTH",
+            "SoLuongDTH",
+            "SoLuongHT",
+          
 
           ];
           const data = this.formatJson(filterVal, this.listData);

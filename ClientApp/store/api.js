@@ -542,8 +542,8 @@ export function getYeuCau() {
   });
 }
 
-export function selectYeuCau(StateId, DichVuId) {
-  const params = { StateId, DichVuId };
+export function selectYeuCau(StateId, DichVuId, LoaiYCId) {
+  const params = { StateId, DichVuId, LoaiYCId};
   return request({
     url: "api/yeucau/Select",
     method: "get",
@@ -701,6 +701,15 @@ export function getDSYCDonVi(DonViId, DichVuId, TuNgay, DenNgay) {
   const params = { DonViId, DichVuId, TuNgay, DenNgay };
   return request({
     url: "api/yeucau/TraCuuDSUnit",
+    method: "get",
+    params: params
+  });
+}
+
+export function getDSLoaiYC(DonViId, TuNgay, DenNgay) {
+  const params = { DonViId, TuNgay, DenNgay };
+  return request({
+    url: "api/yeucau/TraCuuLoaiYC",
     method: "get",
     params: params
   });

@@ -50,12 +50,30 @@
         <el-row class="row ">
           <div class="col-4">
             <a href="/admin/yeucau/6">
-              <div class="card-box table-responsive" style="height: 145px;background-color:mediumseagreen; color:black">
-                <div class="header-title header-tt">
+              <div class="card-box table-responsive" style="height: 310px;background-color:mediumseagreen; color:black">
+                <div class="header-title header-tt" >
                   Đã hoàn thành
                 </div>
-                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
                   {{ ThongKe.DaHT }}
+                </div>
+                <div class="row">
+                  <div class="sub-tk" align="center">
+                    <div class="header-title-tk">
+                      Đúng hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.DungHanHT }}
+                    </div>
+                  </div>
+                  <div class=" sub-tk"  align="center">
+                    <div class="header-title-tk">
+                      Trễ hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.TreHanHT }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </a>
@@ -63,12 +81,30 @@
           </div>
           <div class="col-4">
             <a href="/admin/yeucau/7">
-              <div class="card-box table-responsive" style="height: 145px;background-color:orange; color:black">
-                <div class="header-title header-tt">
+              <div class="card-box table-responsive" style="height: 310px;background-color:orange; color:black">
+                <div class="header-title header-tt" >
                   Đang xử lý
                 </div>
-                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
                   {{ ThongKe.DangXL }}
+                </div>
+                <div class="row">
+                  <div class="sub-tk" align="center">
+                    <div class="header-title-tk">
+                      Trong hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.TrongHanXL }}
+                    </div>
+                  </div>
+                  <div class="sub-tk" align="center">
+                    <div class="header-title-tk">
+                      Trễ hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.TreHanXL }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </a>
@@ -76,30 +112,38 @@
           </div>
           <div class="col-4">
             <a href="/admin/yeucau/10">
-              <div class="card-box table-responsive" style="height: 145px;background-color:lightblue; color:black">
-                <div class="header-title header-tt">
+              <div class="card-box table-responsive" style="height: 310px;background-color:lightblue; color:black">
+                <div class="header-title header-tt" >
                   Chưa tiếp nhận
                 </div>
-                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold">
+                <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
                   {{ ThongKe.MoiTao }}
+                </div>
+                <div class="row">
+                  <div class="sub-tk" align="center">
+                    <div class="header-title-tk">
+                      Trong hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.TrongHanCTN }}
+                    </div>
+                  </div>
+                  <div class=" sub-tk" align="center">
+                    <div class="header-title-tk">
+                      Quá hạn
+                    </div>
+                    <div class="num_tk">
+                      {{ ThongKe.TreHanCTN }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </a>
             
           </div>
         </el-row>
-        <el-row class="row ">
-          <!--<div class="col-4">
-            <a href="/admin/yeucau/9">
-              <div class="card-box table-responsive" style="height: 140px;background-color:lightblue; color:black">
-                <div class="header-title">Chưa xử lý</div>
-                <div align="center" style="font-size: 26px; font-weight: bold">
-                  {{ ThongKe.ChuaXL }}
-                </div>
-              </div>
-            </a>
-            
-          </div>-->
+        <!--<el-row class="row ">
+          
           <div class="col-4">
             <div class="card-box table-responsive" style="height: 140px;background-color:mediumseagreen; color:black">
               <div class="header-title header-tt">Trong hạn</div>
@@ -117,7 +161,7 @@
             </div>
           </div>
 
-        </el-row>
+        </el-row>-->
 
       </div>
     </el-row>
@@ -370,13 +414,14 @@ export default {
 
 <style>
 
-  @media (max-width:450px){
+  @media (max-width:480px){
     .card-box {
       padding-top: 2rem !important ;
-      padding-left: 0.5rem !important;
+      padding-left: 1rem !important;
     }
     .header-title{
-
+      margin-top:0px !important;
+      margin-bottom: 0px !important;
     }
     .num_tt{
       font-size: 18px !important;
@@ -387,7 +432,71 @@ export default {
     .header-tt {
       font-size: 11px !important;
     }
+    .sub-tk {
+      padding: 0px !important;
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+    .header-title-tk {
+      font-size: 10px !important;
+    }
+  }
+  @media (max-width:650px)and (min-width: 481px) {
+    .mt-5 {
+      font-size: 40px !important;
+    }
+
+    .header-title {
+      margin-top: 30px;
+    }
+
+    .sub-tk {
+      padding: 0px !important;
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+
+    .num_tk {
+      margin-bottom: 5px;
+    }
+
+    .header-tt {
+      margin-top: 0px !important;
+    }
+
+    .card-box {
+      padding: 1rem;
+    }
+    .header-title-tk{
+      font-size:12px !important;
+    }
   }
 
-
+  .header-tt {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    text-align: center;
+  }
+  .header-title-tk {
+    margin: 0 0 7px 0;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .num_tk {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .sub-tk {
+    padding: 0px !important;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 </style>

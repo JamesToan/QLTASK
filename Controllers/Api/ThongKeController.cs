@@ -29,19 +29,40 @@ namespace coreWeb.Controllers
             try
             {
                 var user = new UserClaim(HttpContext);
+                int sum = 0;
+                int sumMoiTao = 0;
+                int sumDaHT = 0;
+                int sumDangXL = 0;
+                int sumTrongHan = 0;
+                int sumTreHan = 0;
+                int sumTrehanHT = 0;
+                int sumDunghanHT = 0;
+                int sumTronghanXL = 0;
+                int sumTrehanXL = 0;
+                int sumTronghanCTN = 0;
+                int sumTrehanCTN = 0;
                 if (user.RoleId == 1)
                 {
                     if (DichVuId != null)
                     {
-                        var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
-                        var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId).Count();
-                        var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
-                        var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId).Count();
-                        var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId).Count();
+                        sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
+                        sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId).Count();
+                        sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
+                        sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId).Count();
 
-                        var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
 
-                        var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+                        sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                        sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+                        sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                        sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+                        sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                        sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+
+                        sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                        sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
 
 
                         var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
@@ -55,7 +76,14 @@ namespace coreWeb.Controllers
                             MoiTao = sumMoiTao,
                             DaHT = sumDaHT,
                             DangXL = sumDangXL,
-                            //ChuaXL = sumChuaXL,
+
+                            DungHanHT = sumDunghanHT,
+                            TreHanHT = sumTrehanHT,
+                            TrongHanXL = sumTronghanXL,
+                            TreHanXL = sumTrehanXL,
+                            TrongHanCTN = sumTronghanCTN,
+                            TreHanCTN = sumTrehanCTN,
+
                             TrongHan = sumTrongHan,
                             TreHan = sumTreHan,
                             Chart = chart.ToList(),
@@ -65,14 +93,23 @@ namespace coreWeb.Controllers
                     }
                     else
                     {
-                        var sum = _context.YeuCau.Count();
-                        var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận").Count();
-                        var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
-                        var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
-                        var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý").Count();
+                        sum = _context.YeuCau.Count();
+                        sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận").Count();
+                        sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
+                        sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
 
-                        var sumTrongHan = _context.YeuCau.Where(p => p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null).Count();
-                        var sumTreHan = _context.YeuCau.Where(p => p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null).Count();
+                        sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                        sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+                        sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                        sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+                        sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                        sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+
+                        sumTrongHan = _context.YeuCau.Where(p => p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null).Count();
+                        sumTreHan = _context.YeuCau.Where(p => p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null).Count();
 
 
                         var chart = _context.YeuCau.Where(e => e.StateId != 5)
@@ -86,7 +123,15 @@ namespace coreWeb.Controllers
                             MoiTao = sumMoiTao,
                             DaHT = sumDaHT,
                             DangXL = sumDangXL,
-                            ChuaXL = sumChuaXL,
+
+
+                            DungHanHT = sumDunghanHT,
+                            TreHanHT = sumTrehanHT,
+                            TrongHanXL = sumTronghanXL,
+                            TreHanXL = sumTrehanXL,
+                            TrongHanCTN = sumTronghanCTN,
+                            TreHanCTN = sumTrehanCTN,
+
                             TrongHan = sumTrongHan,
                             TreHan = sumTreHan,
                             Chart = chart.ToList(),
@@ -102,14 +147,22 @@ namespace coreWeb.Controllers
                     {
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
@@ -123,7 +176,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -133,14 +193,22 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận").Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý").Count();
+                            sum = _context.YeuCau.Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận").Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành").Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý").Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null)).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null)).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
+
+                            sumTrongHan = _context.YeuCau.Where(p => p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null)).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5)
@@ -154,7 +222,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -167,14 +242,23 @@ namespace coreWeb.Controllers
                     {
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                           
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId && e.UnitId != 1)
@@ -188,7 +272,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -198,14 +289,23 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Where(p => p.UnitId != 1).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId != 1).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId != 1).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId != 1).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId != 1).Count();
+                            sum = _context.YeuCau.Where(p => p.UnitId != 1).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId != 1).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId != 1).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId != 1).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.UnitId != 1).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+                            //var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.UnitId != 1)
@@ -219,7 +319,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -232,14 +339,22 @@ namespace coreWeb.Controllers
                     {
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan && p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId == userInfo.UnitId).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId)
@@ -253,7 +368,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -263,14 +385,22 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Where(p => p.UnitId == userInfo.UnitId).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId == userInfo.UnitId).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId == userInfo.UnitId).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId == userInfo.UnitId).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId == userInfo.UnitId).Count();
+                            sum = _context.YeuCau.Where(p => p.UnitId == userInfo.UnitId).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId == userInfo.UnitId).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId == userInfo.UnitId).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId == userInfo.UnitId).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy >= p.ThoiHan && p.NgayXuLy == null) && p.UnitId == userInfo.UnitId).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId == userInfo.UnitId).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId == userInfo.UnitId).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId == userInfo.UnitId).Count();
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy >= p.ThoiHan && p.NgayXuLy == null) && p.UnitId == userInfo.UnitId).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId == userInfo.UnitId).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.UnitId == userInfo.UnitId)
@@ -284,7 +414,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -295,22 +432,32 @@ namespace coreWeb.Controllers
                     }
 
                 }
-                else
+                else // Roleid  =  3 
                 {
                     var userInfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                     var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-                    if (userInfo.UnitId == 1)
+                    
+                    if (userInfo.UnitId == 1) // TTCNTT
                     {
+                        
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.NhanSuId == nhansu.Id).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.NhanSuId == nhansu.Id).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+
+                            //sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            //sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
 
 
                             var chart = _context.YeuCau.Where(e => (e.StateId != 5 && e.DichVuId == DichVuId) && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
@@ -324,7 +471,13 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+                                //ChuaXL = sumChuaXL,
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -334,17 +487,49 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Where(p => p.NhanSuId == nhansu.Id).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                            
+                            if (nhansu.AdminDichVuId != null)
+                            {
+                                sum = _context.YeuCau.Where(p => p.NhanSuId == nhansu.Id ||  p.DichVuId == nhansu.AdminDichVuId).Count();
+                                sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                //var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                                sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                                sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
 
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+                                sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
 
-                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
+                                //sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                //sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                            }
+                            else
+                            {
+                                sum = _context.YeuCau.Where(p => p.NhanSuId == nhansu.Id).Count();
+                                sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                //var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id)).Count();
+
+                                sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+
+                                sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+
+                                sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+
+                                //sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+                                //sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && ((p.NhanSuId == nhansu.Id || p.NguoiTaoId == userInfo.Id) || p.DichVuId == nhansu.AdminDichVuId)).Count();
+
+                            }
+
+                            var chart = _context.YeuCau.Where(e => e.StateId != 5 && ((e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id) || e.DichVuId == nhansu.AdminDichVuId))
                             .Include(hs => hs.States)
 
                             .GroupBy(hs => hs.StateId)
@@ -355,7 +540,13 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+                                //ChuaXL = sumChuaXL,
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -368,14 +559,23 @@ namespace coreWeb.Controllers
                     {
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.UnitId != 1).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId != 1 && p.DichVuId == DichVuId).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.UnitId != 1).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.UnitId != 1).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId && e.UnitId != 1)
@@ -389,7 +589,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -399,14 +606,23 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Where(p => p.UnitId != 1 && p.DichVuId != 7 && p.DichVuId != 8).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId != 1).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId != 1).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId != 1).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.UnitId != 1).Count();
+                            sum = _context.YeuCau.Where(p => p.UnitId != 1).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.UnitId != 1).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.UnitId != 1).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.UnitId != 1).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
+
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.UnitId != 1).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.UnitId != 1).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.UnitId != 1)
@@ -420,7 +636,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -428,20 +651,28 @@ namespace coreWeb.Controllers
                             };
                             return Ok(result);
                         }
-
                     }
                     else
                     {
                         if (DichVuId != null)
                         {
-                            var sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sum = _context.YeuCau.Where(p => p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.DichVuId == DichVuId && p.NguoiTaoId == userInfo.Id).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && e.DichVuId == DichVuId && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
@@ -455,7 +686,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),
@@ -465,14 +703,23 @@ namespace coreWeb.Controllers
                         }
                         else
                         {
-                            var sum = _context.YeuCau.Where(p => p.NguoiTaoId == userInfo.Id).Count();
-                            var sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumChuaXL = _context.YeuCau.Where(p => p.States.StateName == "Chưa xử lý" && p.NguoiTaoId == userInfo.Id).Count();
+                            sum = _context.YeuCau.Where(p => p.NguoiTaoId == userInfo.Id).Count();
+                            sumMoiTao = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDaHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDangXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && p.NguoiTaoId == userInfo.Id).Count();
 
-                            var sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.NguoiTaoId == userInfo.Id).Count();
-                            var sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.NguoiTaoId == userInfo.Id).Count();
+                            sumDunghanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanHT = _context.YeuCau.Where(p => p.States.StateName == "Đã hoàn thành" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.NguoiTaoId == userInfo.Id).Count();
+
+                            sumTronghanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanXL = _context.YeuCau.Where(p => p.States.StateName == "Đang xử lý" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.NguoiTaoId == userInfo.Id).Count();
+
+                            sumTronghanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTrehanCTN = _context.YeuCau.Where(p => p.States.StateName == "Chưa tiếp nhận" && (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.NguoiTaoId == userInfo.Id).Count();
+
+
+                            sumTrongHan = _context.YeuCau.Where(p => (p.NgayXuLy <= p.ThoiHan || p.NgayXuLy == null) && p.NguoiTaoId == userInfo.Id).Count();
+                            sumTreHan = _context.YeuCau.Where(p => (p.NgayXuLy > p.ThoiHan && p.NgayXuLy != null) && p.NguoiTaoId == userInfo.Id).Count();
 
 
                             var chart = _context.YeuCau.Where(e => e.StateId != 5 && (e.NhanSuId == nhansu.Id || e.NguoiTaoId == userInfo.Id))
@@ -486,7 +733,14 @@ namespace coreWeb.Controllers
                                 MoiTao = sumMoiTao,
                                 DaHT = sumDaHT,
                                 DangXL = sumDangXL,
-                                ChuaXL = sumChuaXL,
+
+                                DungHanHT = sumDunghanHT,
+                                TreHanHT = sumTrehanHT,
+                                TrongHanXL = sumTronghanXL,
+                                TreHanXL = sumTrehanXL,
+                                TrongHanCTN = sumTronghanCTN,
+                                TreHanCTN = sumTrehanCTN,
+
                                 TrongHan = sumTrongHan,
                                 TreHan = sumTreHan,
                                 Chart = chart.ToList(),

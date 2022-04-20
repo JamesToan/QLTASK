@@ -12,7 +12,7 @@
               <li class="breadcrumb-item active">Thống kê theo địa bàn</li>
             </ol>
           </div>
-          <h4 class="page-title">Danh sách yêu cầu</h4>
+          <h4 class="page-title">Thống kê theo địa bàn</h4>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="240">
               <template slot-scope="scope">
                 <!--<text-highlight >
 
@@ -165,7 +165,7 @@
           <el-pagination class="pt-2 pl-0"
                          :page-size="pagination"
                          background
-                         style="width: 100%"
+                         style="width: 40%"
                          @size-change="handleSizeChange"
                          :current-page.sync="activePage"
                          :page-sizes="[10, 20, 50, 100, 500]"

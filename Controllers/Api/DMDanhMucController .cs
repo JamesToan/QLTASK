@@ -30,7 +30,7 @@ namespace coreWeb.Controllers
                 var user = new UserClaim(HttpContext);
                 var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                 List<NhanSu> DMNhanSu;
-                List<User> DMUser;
+                List<UserViewModel> DMUser;
                 if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
                 {
 
@@ -39,11 +39,11 @@ namespace coreWeb.Controllers
 
                     if (user.RoleId == 1)
                     {
-                        DMUser = _context.User.ToList();
+                        DMUser = _context.User.Select(e => new UserViewModel { UserId = e.Id, FullName = e.FullName }).ToList();
                     }
                     else
                     {
-                        DMUser = _context.User.Where(p => p.UnitId == userinfo.UnitId).ToList();
+                        DMUser = _context.User.Where(p => p.UnitId == userinfo.UnitId).Select(e => new UserViewModel { UserId =e.Id , FullName =e.FullName}).ToList();
                     }
                     var DMQLDV = _context.QuanLyDichVu.ToList();
                     var DMTinhTrang = _context.Status.ToList();
@@ -83,8 +83,15 @@ namespace coreWeb.Controllers
                 return NotFound(ex.Message);
             }
         }
+        public class UserViewModel
+        {
+            
+            public int UserId { get; set; }
+            
+            public string FullName { get; set; }
+            
+        }
 
-        
     }
 
 

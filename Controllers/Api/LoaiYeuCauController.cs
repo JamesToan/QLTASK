@@ -95,6 +95,7 @@ namespace coreWeb.Controllers.Api
                     {
                         result.TenLoaiYeuCau = model.TenLoaiYeuCau;
                         result.isActive = model.isActive;
+                        result.Order = model.Order;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);

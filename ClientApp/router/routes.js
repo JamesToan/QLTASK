@@ -27,6 +27,8 @@ import yeucau from "components/quanly/yeucau";
 import baocaodiaban from "components/thongke/baocaodiaban";
 import thongkecanhan from "components/thongke/thongkecanhan";
 import thongkediaban from "components/thongke/thongkediaban";
+import thongkeloaiyc from "components/thongke/thongkeloaiyc";
+
 
 export const routes = [
   {
@@ -207,8 +209,8 @@ export const routes = [
     ]
   },
   {
-    name: "Thống kê",
-    path: "/thongke",
+    name: "thongke",
+    path: "/amin/",
     component: ParentCom,
     icon: "fe-file",
     meta: {
@@ -248,7 +250,16 @@ export const routes = [
         path: "thongkediaban",
         component: thongkediaban,
         meta: {
-          display: "Thống kê địa bàn",
+          display: "Thống kê địa bàn", 
+          show: "true"
+        }
+      },
+      {
+        name: "thongkeloaiyc",
+        path: "thongkeloaiyc",
+        component: thongkeloaiyc,
+        meta: {
+          display: "Thống kê loại yêu cầu",
           show: "true"
         }
       },

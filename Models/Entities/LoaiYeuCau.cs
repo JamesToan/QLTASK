@@ -15,5 +15,7 @@ namespace coreWeb.Models.Entities
         public string TenLoaiYeuCau { get; set; }
 
         public bool? isActive { get; set; }
+
+        public int Order { get; set; }
     }
 }

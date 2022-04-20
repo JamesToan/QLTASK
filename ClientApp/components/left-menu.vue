@@ -55,7 +55,7 @@ import {
   getRole,
   removeToken
 } from "../store/common";
-import { getListPerRoleActive } from "../store/api";
+import { getListPerRoleActive,  } from "../store/api";
 import store from "../store";
 import { routes } from "../router/routes";
 export default {
@@ -84,16 +84,18 @@ export default {
     if (typeof getUser() != "undefined") {
       this.name = getUser();
       this.role = getRole();
-      //if (this.name != "admin@vnpt.vn") {
-      if (this.role == 3 || this.role == 2) {
+      if (this.name != "admin@vnpt.vn") {
+      //if (this.role == 3 || this.role == 2) {
         // this.routes = routes.filter(route => {
         //   return route.name != "Hethong";
         // });
         getListPerRoleActive(getRole()).then(data => {
           var per = data.map(r => r.Permission.Route);
+          
           this.routes = routes.filter(route => {
             return per.includes(route.name);
           });
+          console.log(data);
           console.log(this.routes);
           this.routes.forEach(route => {
             if (route.children) {

@@ -79,7 +79,7 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu">
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="240">
               <template slot-scope="scope">
                 <!--<text-highlight >
 
@@ -625,8 +625,9 @@ import { log } from "util";
         NhanSuId: 0,
         UserId: 0,
         NhanSu: "",
-        value1: '',
-        value2: '',
+
+        value1: Date.now(),
+        value2: Date.now(),
        
         formData: {
           Id: null,
@@ -818,6 +819,11 @@ import { log } from "util";
       formatDateTime(date) {
         if (date) {
           return moment(date).format("MM/DD/YYYY hh:mm");
+        } else return null;
+      },
+      formatDateTimefull(date) {
+        if (date) {
+          return moment(date).format("YYYY-MM-DD HH:mm:ss");
         } else return null;
       },
       formatTenTapTin(val) {
@@ -1261,8 +1267,10 @@ import { log } from "util";
           }
         }
         else {
+          var tungay = this.formatDateTimefull(this.value1);
+          var denngay = this.formatDateTimefull(this.value2);
           if (this.value1 != "" && this.value2 != "") {
-            getycbytime(this.value1, this.value2).then(data => {
+            getycbytime(tungay, denngay).then(data => {
               this.listData = data;
               this.total = data.length;
 
