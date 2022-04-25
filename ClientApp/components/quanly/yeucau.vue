@@ -2596,7 +2596,7 @@ export default {
                   });
 
 
-                   sendTeleAsync(this.formData.Id);
+                   sendTeleAsync(data);
 
                   this.getListData();
               }
