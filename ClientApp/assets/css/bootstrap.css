@@ -4059,7 +4059,8 @@ input[type="button"].btn-block {
   text-decoration: none; }
 
 .breadcrumb-item.active {
-  color: #adb5bd; }
+    color: black !important;
+}
 
 .pagination {
   display: -webkit-box;

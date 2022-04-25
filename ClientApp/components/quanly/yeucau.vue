@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-12">
         <div class="card-box table-responsive">
-          <div class=" pb-3" style="margin-bottom: 10px; float: left">
+          <div class=" pb-3" style="margin-bottom: 10px; float: left; color: black;">
             <span>Dịch vụ:</span>
             <el-select style="width: 200px;margin-right:3px"
                        v-model="DichVuIdFilter"
@@ -137,26 +137,26 @@
                              align="center"
                              style="word-break: normal;"
                              column-key="NhanSu"
-                             :filters="[{text: 'Huỳnh Quang Cường', value: 'Huỳnh Quang Cường'}, {text: 'Nguyễn Trần Thúy Vân', value: 'Nguyễn Trần Thúy Vân'}, {text: 'Trần Nguyễn Minh Luân', value: 'Trần Nguyễn Minh Luân'}, {text: 'Đoàn Công Bằng', value: 'Đoàn Công Bằng'}, {text: 'Lê Minh Toàn', value: 'Lê Minh Toàn'}, {text: 'Nguyễn Thị Thu Quyên', value: 'Nguyễn Thị Thu Quyên'}]"
+                             :filters=TenFilter
                              :filter-method="filterHandler"
-                             v-if="AdminDVId ==6">
+                             >
 
               <template slot-scope="scope"  >
                 <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
 
               </template>
             </el-table-column>
-            <el-table-column prop="NhanSuId"
+            <!--<el-table-column prop="NhanSuId"
                              label="Người thực hiện"
                              width="180"
                              align="center"
-                             style="word-break: normal;" v-if="!AdminDVId ==6">
+                             style="word-break: normal;" v-if="UserUnitId ==1 || UserUnitId = 2">
 
               <template slot-scope="scope"  >
                 <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
 
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="NguoiTaoId"
                              label="Người tạo"
                              width="180"
@@ -307,7 +307,38 @@
           </el-col>
 
         </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Dịch vụ" prop="DichVuId">
+              <el-select v-model="formData.DichVuId"
+                         placeholder="Chọn dịch vụ: "
+                         @change="changeDichVu(formData.DichVuId);"
+                         class="w-100" filterable>
+                <el-option v-for="item in ListDMDichVu"
+                           :key="item.Id"
+                           :label="item.TenDichVu"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Đơn vị" prop="DonViYeuCauId">
+              <el-select v-model="formData.DonViYeuCauId"
+                         placeholder="Chọn đơn vị: "
+                         class="w-100"
+                         clearable
+                         filterable>
+                <el-option v-for="item in ListDMDonVi"
+                           :key="item.Id"
+                           :label="item.TenDonViYeuCau"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
 
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="Trạng thái: " prop="StateId">
@@ -323,10 +354,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            
             <el-form-item label="Nhân sự: " prop="NhanSuId">
               <el-select v-model="formData.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100" filterable>
+                         class="w-100">
                 <el-option v-for="item in ListDMNhanSu"
                            :key="item.Id"
                            :label="item.TenNhanSu"
@@ -365,38 +397,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="Dịch vụ" prop="DichVuId">
-              <el-select v-model="formData.DichVuId"
-                         placeholder="Chọn dịch vụ: "
-                         @change="changeDichVu(formData.DichVuId)"
-                         class="w-100" filterable>
-                <el-option v-for="item in ListDMDichVu"
-                           :key="item.Id"
-                           :label="item.TenDichVu"
-                           :value="item.Id">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="Đơn vị" prop="DonViYeuCauId">
-              <el-select v-model="formData.DonViYeuCauId"
-                         placeholder="Chọn đơn vị: "
-                         class="w-100"
-                         clearable
-                         filterable>
-                <el-option v-for="item in ListDMDonVi"
-                           :key="item.Id"
-                           :label="item.TenDonViYeuCau"
-                           :value="item.Id">
-                </el-option>
-              </el-select>
-            </el-form-item>
 
-          </el-col>
-        </el-row>
         <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
           <ckeditor :editor="editor"
                     v-model="formData.NoiDung"
@@ -688,8 +689,8 @@
             <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100" :disabled="isChangeNhanSu">
-                <el-option v-for="item in ListDMNhanSu"
+                         class="w-100" >
+                <el-option v-for="item in ListNhansuQLDV"
                            :key="item.Id"
                            :label="item.TenNhanSu"
                            :value="item.Id">
@@ -1304,6 +1305,7 @@ import {
   currenQL,
   NSQL,
   getNhanSuXuLy,
+  NSQLTen,
 } from "../../store/api";
 export default {
   data() {
@@ -1515,7 +1517,13 @@ export default {
             trigger: "blur"
           }
         ],
-
+        NhanSuId:[
+          {
+            required: true,
+            message: "Vui lòng chọn nhân sự",
+            trigger: "blur"
+          }
+        ],
         StateId: [
           {
             required: true,
@@ -1586,6 +1594,7 @@ export default {
       NhansuQLDV:[],
       ListLoaiYC :[],
       ListNhanSuXuLy:[],
+      TenFilter:[],
     };
   },
 
@@ -1698,13 +1707,16 @@ export default {
       );
     },
     setNguoiThucHien(val){
+        this.ListNhansuQLDV=[];
+        this.formData2.NhanSuId='';
+          this.formData.NhanSuId='';
         var dv = this.ListDMDichVu.find(obj => obj.Id == val);
 
 
         var qldv = this.ListQLDV.find(obj => obj.DichVuId == dv.Id && obj.UnitId == this.UserUnitId);
         if(qldv){
           this.formData2.NhanSuId = qldv.NhanSuId;
-
+          this.formData.NhanSuId  = qldv.NhanSuId;
         }
         if(val == 6){
           this.isLoaiYC = false;
@@ -1712,18 +1724,39 @@ export default {
         else if(val != 6){
           this.isLoaiYC = true;
           this.formData2.LoaiYeuCauId = null;
+          this.formData.LoaiYeuCauId = null;
         }
+        for(var i=0; i<this.NhansuQLDV.length ; i++){
+                  if(this.NhansuQLDV[i].DichVuId == val){
+                    //console.log(this.NhansuQLDV[i]);
+                    for(var k=0; k<this.ListDMNhanSu.length ; k++){
+                      if(this.NhansuQLDV[i].NhanSuId == this.ListDMNhanSu[k].Id ){
+
+                          this.ListNhansuQLDV.push(this.ListDMNhanSu[k]);
+                      }
+                    }
+
+                  }
+
+                }
     },
     changeDichVu(val) {
       //console.log(val)
-      var dv = this.ListDMDichVu.find(obj => obj.Id == val);
-      if (dv) {
+      //this.ListNhansuQLDV=[];
+
+
+       var dv = this.ListDMDichVu.find(obj => obj.Id == val);
+
+
+   if (dv) {
         this.ListDMDonVi = dv.DonVi;
 
       } else {
         this.DonVi = [];
       }
+
       delete this.formData.DonViYeuCauId;
+
     },
     changeStateIdFilter() {
 
@@ -2424,6 +2457,14 @@ export default {
 
           }
         });
+
+        NSQLTen().then(data=>{
+          if(data){
+           this.TenFilter = data;
+
+          }
+        });
+
         //Quản lý
         this.loading = true;
       if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1 || this.LoaiYeuCauIdFilter != 5) {
@@ -2458,11 +2499,7 @@ export default {
           this.UserUnitId = data.UnitId;
 
        });
-      if(this.UserName == 'hqcuong' || this.UserName == 'tnmluan'|| this.UserName == 'dcbang'|| this.UserName == 'quyenntt.lan'|| this.UserName == 'nttvan'|| this.UserName == 'lmtoan'){
-        this.isCheckNS = true;
-      }else{
-        this.isCheckNS = false;
-      }
+      
 
     },
     getNhanSu(){
@@ -2552,19 +2589,29 @@ export default {
           );
           if (this.isEditor == 0) {
             addYeuCau(this.formData).then(data => {
+              if(data != null && data != ""){
+                  this.$message({
+                  type: "success",
+                  message: "Cập nhật thành công!"
+                  });
 
-              this.$message({
-                type: "success",
-                message: "Thêm mới thành công!"
+
+                   sendTeleAsync(this.formData.Id);
+
+                  this.getListData();
+              }
+              else{
+                 this.$message({
+                type: "warning",
+                message: "Không thể cập nhật!"
               });
-              sendTeleAsync(data);
-              this.getListData();
+             }
             });
           } else {
             //delete this.formData.LinhVuc;
             updateYeuCau(this.formData).then(data => {
 
-              if(data != ""){
+              if(data != null && data != ""){
                   this.$message({
                   type: "success",
                   message: "Cập nhật thành công!"
@@ -3004,8 +3051,8 @@ export default {
 
 
     },
-    filterHandler(value, row, column) {
-        const property = column.filteredValue;
+    filterHandler(value, row) {
+
         return row.NhanSu.TenNhanSu === value;
     },
     handleSizeChange(val) {
@@ -3065,7 +3112,9 @@ export default {
     renderData() {
       var _data = this.listData.filter(post => {
         var id= "YC" + post.Id;
-        return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase());
+        var mst = ""+post.MaSoThue+"";
+        return post.TenYeuCau.toLowerCase().includes(this.search.toLowerCase()) || id.toLowerCase().includes(this.search.toLowerCase())||
+                       mst.toLowerCase().includes(this.search.toLowerCase());
 
       });
       this.total = _data.length;
@@ -3122,7 +3171,7 @@ export default {
     this.getListData();
     this.getNhanSu();
     this.Datetimenow();
-
+  console.log(this.TenFilter);
   }
 };
 </script>

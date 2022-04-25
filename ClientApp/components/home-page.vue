@@ -38,8 +38,8 @@
             </div>
 
             <div align="center"
-                 style="font-size: 64px; font-weight: bold"
-                 class="mt-5">
+                 style=" font-weight: bold"
+                 class="mt-5 tk-tong">
               {{ ThongKe.Tong }}
             </div>
           </div>
@@ -237,15 +237,31 @@ export default {
           type: "column"
         },
         title: {
-          text: "Thống kê số yêu cầu theo trạng thái"
+          text: "Thống kê số yêu cầu theo trạng thái",
+          style: {
+            color: '#000000',
+           
+            
+          }
         },
         xAxis: {
-          type: "category"
+          type: "category",
+          labels: {
+            style: {
+              color: '#000000'
+            }
+          }
+        
         },
         yAxis: {
           title: {
-            text: "Số lượng"
-          }
+            text: "Số lượng",
+            style: {
+              color: '#000000',
+              fontSize:"15px"
+            }
+          },
+          
         },
         legend: {
           enabled: false
@@ -255,8 +271,16 @@ export default {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: "{point.y:1f}"
+              format: "{point.y:1f}",
+              style: {
+                color: '#000000',
+                fontSize: "12px ! important",
+
+              }
             }
+          },
+          column: {
+            colorByPoint: true
           }
         },
 
@@ -265,13 +289,20 @@ export default {
           pointFormat:
             '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:1f}</b> <br/>'
         },
+        colors: [
+          '#3cb371',
+          '#FFA500',
+          '#ADD8E6'
+        ],
         series: [
           {
             name: "Việc làm",
-            colorByPoint: true,
+           
             data: []
-          }
+          },
+         
         ]
+
       },
       //options1: {
       //  credits: false,
@@ -438,9 +469,14 @@ export default {
       -ms-flex: 0 0 100% !important;
       flex: 0 0 100% !important;
       max-width: 100% !important;
+      margin-left:4px;
     }
     .header-title-tk {
       font-size: 10px !important;
+    }
+    .num_tk {
+      margin-bottom: 5px;
+      font-size: 15px !important;
     }
   }
   @media (max-width:650px)and (min-width: 481px) {
@@ -462,10 +498,12 @@ export default {
 
     .num_tk {
       margin-bottom: 5px;
+      font-size: 15px !important;
     }
 
     .header-tt {
       margin-top: 0px !important;
+
     }
 
     .card-box {
@@ -475,7 +513,73 @@ export default {
       font-size:12px !important;
     }
   }
+  @media(max-width:1345px) and (min-width: 1288px) {
+    .header-title-tk {
+      font-size: 13px !important;
+    }
 
+    .header-tt {
+      font-size: 13px !important;
+    }
+  }
+  @media(max-width:1288px) and (min-width: 1178px) {
+    .header-title-tk {
+      font-size: 11px !important;
+    }
+   
+  }
+  @media(max-width:1178px) and (min-width: 1066px) {
+    .header-title-tk {
+      font-size: 9px !important;
+    }
+    .header-tt {
+      font-size: 10px !important;
+    }
+  }  
+
+  @media(max-width:1066px) and (min-width: 865px) {
+    .header-title-tk {
+      font-size: 8px !important;
+    }
+
+    .header-tt {
+      font-size: 10px !important;
+    }
+  }
+
+  @media(max-width:865px) and (min-width: 790px) {
+    .header-title-tk {
+      font-size: 7px !important;
+    }
+
+    .header-tt {
+      font-size: 9px !important;
+    }
+    .tk-tong {
+      font-size: 40px !important;
+    }
+    .num_tk {
+      font-size: 15px !important;
+    }
+  }
+  @media(max-width:790px) and (min-width: 650px) {
+    .header-title-tk {
+      font-size: 6px !important;
+    }
+
+    .header-tt {
+      font-size: 8px !important;
+    }
+
+    .tk-tong {
+      font-size: 40px !important;
+    }
+
+    .num_tk {
+      font-size: 15px !important;
+    }
+  }
+  
   .header-tt {
     margin-bottom: 30px;
     margin-top: 30px;
@@ -484,7 +588,7 @@ export default {
   .header-title-tk {
     margin: 0 0 7px 0;
     text-transform: uppercase;
-    letter-spacing: .02em;
+    //letter-spacing: .02em;
     font-size: 14px;
     font-weight: 700;
   }
@@ -493,10 +597,14 @@ export default {
     font-weight: 600;
   }
   .sub-tk {
-    padding: 0px !important;
+    padding: 4px !important;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 50%;
     flex: 0 0 50%;
     max-width: 50%;
+    border: 0.1px solid;
+  }
+  .tk-tong{
+    font-size:60px;
   }
 </style>

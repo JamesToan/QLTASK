@@ -186,11 +186,25 @@ namespace coreWeb.Controllers.Api
             return Ok(quanly);
         }
 
+        public IActionResult getdsnhansuqldv()
+        {
+            var user = new UserClaim(HttpContext);
+            var quanly = _context.QuanLyDichVu.Select(e => new NhanSuQLDV { text = e.NhanSu.TenNhanSu, value = e.NhanSu.TenNhanSu }).Distinct().ToList();
+
+            return Ok(quanly);
+        }
+
         public class QLDVViewModel
         {
             public int DichVuId { get; set; }
             public int NhanSuId { get; set; }
            
+        }
+
+        public class NhanSuQLDV 
+        {
+            public string text { get; set; }
+            public string value { get; set; }
         }
 
     }

@@ -929,6 +929,15 @@ export function NSQL() {
   });
 }
 
+export function NSQLTen() {
+  //const params = { qlId };
+  return request({
+    url: "api/quanlydichvu/getdsnhansuqldv",
+    method: "get",
+
+  });
+}
+
 //  ----- Loại yêu cầu -------//
 export function getLoaiYeuCau() {
 

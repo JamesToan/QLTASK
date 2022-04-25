@@ -47,6 +47,7 @@
                       style="width: 240px; float: left; "></el-input>
             <el-date-picker v-model="value1"
                             type="datetime"
+                            
                             placeholder="Chọn ngày bắt đầu"
                             style="width: 200px; float: left;margin-left:5px">
             </el-date-picker>
@@ -625,8 +626,8 @@ import { log } from "util";
         NhanSuId: 0,
         UserId: 0,
         NhanSu: "",
-
-        value1: Date.now(),
+        
+        value1: new Date().setHours(0,0,0),
         value2: Date.now(),
        
         formData: {
@@ -824,6 +825,11 @@ import { log } from "util";
       formatDateTimefull(date) {
         if (date) {
           return moment(date).format("YYYY-MM-DD HH:mm:ss");
+        } else return null;
+      },
+      formatDateTimestart(date) {
+        if (date) {
+          return moment(date).format("YYYY-MM-DD 00:00:00");
         } else return null;
       },
       formatTenTapTin(val) {

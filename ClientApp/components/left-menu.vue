@@ -95,8 +95,8 @@ export default {
           this.routes = routes.filter(route => {
             return per.includes(route.name);
           });
-          console.log(data);
-          console.log(this.routes);
+          //console.log(data);
+          //console.log(this.routes);
           this.routes.forEach(route => {
             if (route.children) {
               route.children = route.children.filter(route => {

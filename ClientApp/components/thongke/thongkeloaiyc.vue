@@ -42,12 +42,12 @@
                         style="width: 160px; float: left;text-transform:none;margin-left:5px; " />
             
             <el-date-picker v-model="TuNgayS"
-                            type="datetime"
+                            type="date"
                             placeholder="Chọn ngày bắt đầu"
                             style="width: 200px; float: left;margin-left:5px">
             </el-date-picker>
             <el-date-picker v-model="DenNgayS"
-                            type="datetime"
+                            type="date"
                             placeholder="Chọn ngày kết thúc"
                             style="width: 200px; float: left;">
             </el-date-picker>
@@ -468,7 +468,7 @@
         ListNhanSuDiaBan: [],
         UnitIdS: null,
         DichVuIdS: 6,
-        TuNgayS: Date.now(),
+        TuNgayS: new Date(),
         DenNgayS: Date.now(),
       };
     },

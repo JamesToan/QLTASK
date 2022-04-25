@@ -5508,9 +5508,9 @@ input[type=submit].btn-block {
     text-decoration: none
 }
 
-.breadcrumb-item.active {
-    color: #6c757d
-}
+    .breadcrumb-item.active {
+        color: black !important
+    }
 
 .pagination {
     display: -ms-flexbox;

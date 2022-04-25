@@ -547,7 +547,7 @@ namespace coreWeb.Controllers.Api
                 var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                 var nhansu = _context.NhanSu.Where(p => p.UserId == userinfo.Id).FirstOrDefault();
                 bool isXacThuc = false;
-                var yeucau = _context.YeuCau.ToList();
+                var yeucau = _context.YeuCau.Where(p=>p.DichVuId==6).ToList();
                 foreach (var item in yeucau)
                 {
                     if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
@@ -1217,7 +1217,7 @@ namespace coreWeb.Controllers.Api
 
             var client = new System.Net.Http.HttpClient();
             var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
-           // var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
             var request = new HttpRequestMessage()
@@ -1312,7 +1312,7 @@ namespace coreWeb.Controllers.Api
             }
             else if (user.RoleId == 3)
             {
-                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId || p.DichVuId == nhansu.AdminDichVuId)).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
@@ -1499,25 +1499,30 @@ namespace coreWeb.Controllers.Api
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
             List<YeuCau> result = new List<YeuCau>();
 
-            if (NhanSuId != 0)
+            if (userinfo.UnitId != 1 && userinfo.UnitId != 2)
             {
-                var usertao = _context.NhanSu.Where(p => p.Id == NhanSuId).FirstOrDefault();
-                result = _context.YeuCau.Where(p => p.UnitId == UnitId && (p.NhanSuId == NhanSuId || p.NguoiTaoId == usertao.UserId)).Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
-                                      .Include(e => e.DonViYeuCau).ToList();
+                if (UnitId != 1 && UnitId != 2)
+                {
+                    
+                    result = _context.YeuCau.Where(p => p.UnitId == UnitId).Include(e => e.DichVu)
+                                          .Include(e => e.NhanSu)
+                                          .Include(e => e.States)
+                                          .Include(e => e.User)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.DonViYeuCau).ToList();
+                }
+               
             }
             else
             {
                 result = _context.YeuCau.Where(p => p.UnitId == UnitId).Include(e => e.DichVu)
-                                      .Include(e => e.NhanSu)
-                                      .Include(e => e.States)
-                                      .Include(e => e.User)
-                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
-                                      .Include(e => e.DonViYeuCau).ToList();
+                                          .Include(e => e.NhanSu)
+                                          .Include(e => e.States)
+                                          .Include(e => e.User)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.DonViYeuCau).ToList();
             }
+            
 
 
 
