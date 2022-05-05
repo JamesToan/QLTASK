@@ -373,7 +373,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else
                 {
-                    result = _context.YeuCau.Where(e => e.StateId != 6)
+                    result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9)
                        .Include(e => e.DichVu)
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
@@ -404,7 +404,7 @@ namespace coreWeb.Controllers.Api
                     List<YeuCau> result = new List<YeuCau>();
                     if (user.RoleId == 2)
                     {
-                        result = _context.YeuCau.Where(e => e.StateId != 6 )
+                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9)
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
@@ -417,7 +417,7 @@ namespace coreWeb.Controllers.Api
                     else
                     {
                         // select cho nhân sự cntt có admin dịch vụ id có thể xem hết yêu cầu chưa hoàn thành
-                        result = _context.YeuCau.Where(e => e.StateId != 6 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId))
+                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId))
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
@@ -441,7 +441,7 @@ namespace coreWeb.Controllers.Api
                 } 
                 else if (userinfo.UnitId == 2)  // P KHTCDN  
                 {
-                    var result = _context.YeuCau.Where(e => e.StateId != 6 && e.UnitId != 1)
+                    var result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && e.UnitId != 1)
                                 .Include(e => e.DichVu)
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
@@ -479,7 +479,7 @@ namespace coreWeb.Controllers.Api
                         }
                         else
                         {
-                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.UnitId == userinfo.UnitId)
+                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && e.UnitId == userinfo.UnitId)
                                  .Include(e => e.DichVu)
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
@@ -506,7 +506,7 @@ namespace coreWeb.Controllers.Api
                         }
                         else
                         {
-                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                            result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
                                  .Include(e => e.DichVu)
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
@@ -548,15 +548,15 @@ namespace coreWeb.Controllers.Api
                 var nhansu = _context.NhanSu.Where(p => p.UserId == userinfo.Id).FirstOrDefault();
                 bool isXacThuc = false;
                 var yeucau = _context.YeuCau.Where(p=>p.DichVuId==6).ToList();
-                foreach (var item in yeucau)
-                {
-                    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
-                    {
-                        isXacThuc = true;
-                    }
-                }
+                //foreach (var item in yeucau)
+                //{
+                //    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
+                //    {
+                //        isXacThuc = true;
+                //    }
+                //}
 
-                if (user != null && isXacThuc == false)
+                if (user != null )
                 {
                     DateTime thoihan = (DateTime) model.ThoiHan;
                     DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
@@ -572,13 +572,13 @@ namespace coreWeb.Controllers.Api
                         _context.YeuCau.Add(model);
 
                         _context.SaveChanges();
-                        foreach (var item in yeucau)
-                        {
-                            if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
-                            {
-                                isXacThuc = true;
-                            }
-                        }
+                        //foreach (var item in yeucau)
+                        //{
+                        //    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
+                        //    {
+                        //        isXacThuc = true;
+                        //    }
+                        //}
                         var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
                         if (model.JiraDaGui != null)
                         {
@@ -942,7 +942,7 @@ namespace coreWeb.Controllers.Api
                     {
 
 
-                        result.StateId = 10;
+                        result.StateId = 9;
 
 
                         _context.Update(result);

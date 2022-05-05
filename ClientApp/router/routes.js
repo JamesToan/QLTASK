@@ -176,16 +176,7 @@ export const routes = [
           show: "true"
         }
       },
-      //{
-      //  name: "yeucau2",
-      //  path: "yeucau/:StateId",
-      //  params: { StateId: 9 },
-      //  component: yeucau,
-      //  meta: {
-      //    display: "Yêu cầu chưa xử lý",
-      //    show: "true"
-      //  }
-      //},
+     
       {
         name: "yeucau3",
         path: "yeucau/:StateId",
@@ -203,6 +194,16 @@ export const routes = [
         component: yeucau,
         meta: {
           display: "Đã hoàn thành",
+          show: "true"
+        }
+      },
+       {
+        name: "yeucau2",
+        path: "yeucau/:StateId",
+        params: { StateId: 9 },
+        component: yeucau,
+        meta: {
+          display: "Không xử lý",
           show: "true"
         }
       },

@@ -34,26 +34,25 @@
 
             </el-select>
             <!--<span v-if="isTrangThai">
-    Trạng thái:
-  </span>
-  <el-select style="width: 200px;"
-             v-model="StateIdFilter"
-             @change="changeStateIdFilter"
-             placeholder="Chọn trạng thái"
-             v-if="isTrangThai">
-    <el-option v-for="item in ListDMTrangThai"
-               :key="item.Id"
-               :label="item.StateName"
-               :value="item.Id">
-    </el-option>
-  </el-select>-->
+            Trạng thái:
+          </span>
+          <el-select style="width: 200px;"
+                     v-model="StateIdFilter"
+                     @change="changeStateIdFilter"
+                     placeholder="Chọn trạng thái"
+                     v-if="isTrangThai">
+            <el-option v-for="item in ListDMTrangThai"
+                       :key="item.Id"
+                       :label="item.StateName"
+                       :value="item.Id">
+            </el-option>
+          </el-select>-->
             <span v-if="">
               Loại yêu cầu:
             </span>
             <el-select v-model="LoaiYeuCauIdFilter"
                        placeholder="Chọn loại yêu cầu"
                        @change="changeLoaiYeuCauFilter"
-                       
                        style="width: 200px;margin-right:3px">
               <el-option v-for="item in ListLoaiYC"
                          :key="item.Id"
@@ -61,7 +60,7 @@
                          :value="item.Id">
               </el-option>
             </el-select>
-           
+
           </div>
           <div class="header-title pb-3" style="margin-bottom: 10px; float: right">
 
@@ -81,26 +80,26 @@
                       placeholder="Tìm kiếm"
                       style="width: 200px; float: left; margin-right: 5px"></el-input>
             <!--<el-select style="width: 200px; float: left;"
-                       v-model="StateIdFilter"
-                       @change="changeStateIdFilter"
-                       placeholder="Chọn trạng thái"
-                       v-if="isTrangThai">
-              <el-option v-for="item in ListDMTrangThai"
-                         :key="item.Id"
-                         :label="item.StateName"
-                         :value="item.Id">
-              </el-option>
-            </el-select>-->
+                     v-model="StateIdFilter"
+                     @change="changeStateIdFilter"
+                     placeholder="Chọn trạng thái"
+                     v-if="isTrangThai">
+            <el-option v-for="item in ListDMTrangThai"
+                       :key="item.Id"
+                       :label="item.StateName"
+                       :value="item.Id">
+            </el-option>
+          </el-select>-->
             <!--<el-select style="width: 200px; float: left;margin-right:3px"
-                       v-model="DichVuIdFilter"
-                       @change="changeDichVuIdFilter(DichVuIdFilter)"
-                       placeholder="Chọn Dịch Vụ">
-              <el-option v-for="item in ListDMDichVu"
-                         :key="item.Id"
-                         :label="item.TenDichVu"
-                         :value="item.Id">
-              </el-option>
-            </el-select>-->
+                     v-model="DichVuIdFilter"
+                     @change="changeDichVuIdFilter(DichVuIdFilter)"
+                     placeholder="Chọn Dịch Vụ">
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>-->
           </div>
           <el-table :data="renderData()"
                     border
@@ -117,17 +116,19 @@
             </el-table-column>
             <el-table-column prop="Id" label="Mã" width="80" sortable>
               <template slot-scope="scope">
-                <text-highlight :queries="search"  :style=changecolor(scope.row.LoaiYeuCauId)>
+                <text-highlight :queries="search" :style=changecolor(scope.row.LoaiYeuCauId)>
                   YC{{ scope.row.Id }}
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="250">
-              <template slot-scope="scope">
-
-                <span :queries="search"  :style=changecolor(scope.row.LoaiYeuCauId)>
-                  {{ scope.row.TenYeuCau }}
-                </span>
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="250" >
+              <template slot-scope="scope" >
+                <div style="text-align:justify">
+                  <span :queries="search" :style=changecolor(scope.row.LoaiYeuCauId)>
+                    {{ scope.row.TenYeuCau }}
+                  </span>
+                </div>
+                
               </template>
             </el-table-column>
 
@@ -138,32 +139,31 @@
                              style="word-break: normal;"
                              column-key="NhanSu"
                              :filters=TenFilter
-                             :filter-method="filterHandler"
-                             >
+                             :filter-method="filterHandler">
 
-              <template slot-scope="scope"  >
+              <template slot-scope="scope">
                 <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
 
               </template>
             </el-table-column>
             <!--<el-table-column prop="NhanSuId"
-                             label="Người thực hiện"
-                             width="180"
-                             align="center"
-                             style="word-break: normal;" v-if="UserUnitId ==1 || UserUnitId = 2">
+                           label="Người thực hiện"
+                           width="180"
+                           align="center"
+                           style="word-break: normal;" v-if="UserUnitId ==1 || UserUnitId = 2">
 
-              <template slot-scope="scope"  >
-                <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
+            <template slot-scope="scope"  >
+              <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
 
-              </template>
-            </el-table-column>-->
+            </template>
+          </el-table-column>-->
             <el-table-column prop="NguoiTaoId"
                              label="Người tạo"
                              width="180"
                              align="center"
                              style="word-break: normal;" v-if="UserName != 'hqcuong'">
 
-              <template slot-scope="scope" >
+              <template slot-scope="scope">
                 <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NguoiTaoId ? scope.row.User.FullName : ""}}</span>
 
               </template>
@@ -173,11 +173,11 @@
                              width="140"
                              align="center"
                              sortable>
-              <template slot-scope="scope"  >
+              <template slot-scope="scope">
                 <span :style=changecolor(scope.row.LoaiYeuCauId)>
                   {{ formatDateTime(scope.row.NgayTao) }}
                 </span>
-                
+
               </template>
             </el-table-column>
             <el-table-column prop="ThoiHan"
@@ -185,9 +185,9 @@
                              width="120"
                              align="center"
                              sortable>
-              <template slot-scope="scope"  >
+              <template slot-scope="scope">
                 <span :style=changecolor(scope.row.LoaiYeuCauId)>{{ formatDate(scope.row.ThoiHan) }}</span>
-                
+
               </template>
             </el-table-column>
             <el-table-column prop="StateId"
@@ -236,7 +236,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2 & scope.row.StateId != 9"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -354,7 +354,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            
+
             <el-form-item label="Nhân sự: " prop="NhanSuId">
               <el-select v-model="formData.NhanSuId"
                          placeholder="Chọn nhân sự"
@@ -689,7 +689,7 @@
             <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100" >
+                         class="w-100">
                 <el-option v-for="item in ListNhansuQLDV"
                            :key="item.Id"
                            :label="item.TenNhanSu"
@@ -769,7 +769,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
-        <el-button type="primary" size="small" @click="addDataBH" >Cập nhật</el-button>
+        <el-button type="primary" size="small" @click.once="addDataBH" :key="buttonKey">Cập nhật</el-button>
         <el-button v-if="isViewBT" @click="AcceptYeuCau1" size="small" type="success">Tiếp nhận</el-button>
 
         <!--<el-button type="success" size="small" @click="addForward" v-if="!isChuyenYc">Cập nhật và chuyển</el-button>
@@ -1244,11 +1244,11 @@
 
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
+
         <el-button @click="resetFormBHHandle" size="small">Bỏ qua</el-button>
         <el-button v-if="isAccept || isChuyenNS" @click="capnhatYeuCau" size="small" type="primary">Chuyển yêu cầu</el-button>
         <el-button v-if="!isAccept" @click="capnhatYeuCau" size="small" type="primary">Cập nhật</el-button>
-
-
+        <el-button v-if="isAccept" @click="handleDenies" size="small" type="warning">Từ chối</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
         <el-button type="success" size="small" @click="handleXacNhan" v-else>Hoàn thành</el-button>
 
@@ -1263,6 +1263,20 @@
         <div style="margin-top:20px">
           <el-button style="margin-right:5px" type="warning" size="small" @click="resetFormXacNhan">No</el-button>
           <el-button type="success" size="small" @click="xuLyYeuCau">Yes</el-button>
+        </div>
+
+      </div>
+
+    </el-dialog>
+    <el-dialog top="50px"
+               title="Từ Chối"
+               :visible.sync="dialogTuChoi"
+               width="30%">
+      <div style="text-align: center">
+        <h3>Bạn xác nhận từ chối?</h3>
+        <div style="margin-top:20px">
+          <el-button style="margin-right:5px" type="warning" size="small" @click="resetFormTuChoi">No</el-button>
+          <el-button type="success" size="small" @click="deniesYC">Yes</el-button>
         </div>
 
       </div>
@@ -1321,6 +1335,7 @@ export default {
       dialogFormView: false,
       dialogFormBHHandle: false,
       dialogFormBHView: false,
+      dialogTuChoi:false,
       dialogXacNhan: false,
       loading: false,
       isEditor: false,
@@ -1356,6 +1371,7 @@ export default {
       NhanSu:"",
       isCheckDV :false,
       isCheckNS :false,
+      buttonKey: 1,
       LoaiYeuCauIdFilter:5,
       pickerOptions:{
           disabledDate(time) {
@@ -1790,15 +1806,18 @@ export default {
       this.dialogXacNhan = true;
 
     },
+    enableClickOnce() {
+      this.buttonKey++;
+    },
     handleAdd() {
-
+      this.enableClickOnce();
       this.resetField();
       this.isEditor = false;
 
       if (this.StateIdFilter || this.DichVuIdFilter) {
 
         if(this.UserUnitId ==1 ){
-          if(this.UserDV == 6 || this.UserDV == 11){
+          if(this.UserDV == 6 || this.UserDV == 11|| this.UserDV == 15){
 
 
             this.isChuyenYc = false;
@@ -1868,7 +1887,7 @@ export default {
           var checkdv = false;
 
           for( var i = 0; i < this.QLDVList.length; i++){
-            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId ==6 || this.QLDVList[i].DichVuId ==11 )){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId ==6 || this.QLDVList[i].DichVuId ==11 || this.QLDVList[i].DichVuId ==15)){
                 checkdv = true;
             }
           }
@@ -2024,7 +2043,7 @@ export default {
       if(this.UserUnitId == 1 ){
           var bool = false;
 
-          if(row.StateId ==10 && this.AdminDVId == row.DichVuId){
+          if(row.StateId ==10 && (this.AdminDVId == row.DichVuId)){
             this.isAccept = true;
           }
           if(row.StateId ==10 && row.NguoiTaoId == this.UserId){
@@ -2036,7 +2055,7 @@ export default {
 
           }
 
-          if(row.StateId !=10 && (row.NhanSuId == this.NhanSuId || row.DichVuId == this.AdminDVId) && row.DichVuId == 6){
+          if(row.StateId !=10 && (row.NhanSuId == this.NhanSuId || row.DichVuId == this.AdminDVId) && (row.DichVuId == 6 || row.DichVuId == 15)){
              this.isChuyenNS = true;
           }
           else if(row.DichVuId == 6){
@@ -2049,8 +2068,11 @@ export default {
           var checkdv = false;
 
           for( var i = 0; i < this.QLDVList.length; i++){
-            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId ==6 || this.QLDVList[i].DichVuId ==11 )){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId == 6 || this.QLDVList[i].DichVuId ==11 || this.QLDVList[i].DichVuId ==15)){
                 checkdv = true;
+            }
+            if(this.QLDVList[i].DichVuId == row.DichVuId && row.StateId ==10){
+              this.isAccept = true;
             }
           }
 
@@ -2499,7 +2521,7 @@ export default {
           this.UserUnitId = data.UnitId;
 
        });
-      
+
 
     },
     getNhanSu(){
@@ -3026,7 +3048,13 @@ export default {
 
 
     },
-
+    resetFormTuChoi(){
+      this.dialogTuChoi= false;
+      return true;
+    },
+    handleDenies(){
+      this.dialogTuChoi= true;
+    },
     deniesYC(){
 
       deniesYeuCau(this.formData4.Id).then(data =>{
@@ -3045,6 +3073,7 @@ export default {
               });
             }
          this.dialogFormBHHandle= false;
+          this.dialogTuChoi= false;
          this.getListData();
 
       });
@@ -3069,6 +3098,10 @@ export default {
       }
       else if (val == 7) {
         var text = "color:dodgerblue;font-weight: bold;";
+        return text
+      }
+      else if (val == 9) {
+        var text = "color:red;font-weight: bold;";
         return text
       }
     },
@@ -3140,7 +3173,7 @@ export default {
      this.StateIdFilter = parseInt(this.$route.params.StateId);
       this.isTrangThai = false;
       this.isXacNhan= false;
-
+       this.title="Không xử lý";
   }
   else if(this.$route.params.StateId == 7){
      this.StateIdFilter = parseInt(this.$route.params.StateId);
