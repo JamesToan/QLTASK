@@ -12,5 +12,6 @@ namespace coreWeb.Models.Entities
         public int SoLuongCTH { get; set; }
         public int SoLuongDTH { get; set; }
         public int SoLuongHT { get; set; }
+        public int SoLuongKXL { get; set; }
     }
 }

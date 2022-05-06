@@ -133,19 +133,30 @@
 
               </template>
             </el-table-column>
+            <el-table-column prop="SoLuongHT"
+                             label="Không xử lý"
+                             width="180"
+                             align="center"
+                             style="word-break: normal;">
+
+              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+                <span style="word-break: normal;">{{scope.row.SoLuongKXL}}</span>
+
+              </template>
+            </el-table-column>
             <!--<el-table-column align="center" label="" fixed="right" width="190">
-              <template slot="header" slot-scope="scope">
+    <template slot="header" slot-scope="scope">
 
-              </template>
-              <template slot-scope="scope">
-                <el-button v-if="" @click="handleView(scope.$index, scope.row)"
-                           type="info"
-                           title="Xem"
-                           icon="el-icon-view"
-                           size="mini"></el-button>
+    </template>
+    <template slot-scope="scope">
+      <el-button v-if="" @click="handleView(scope.$index, scope.row)"
+                 type="info"
+                 title="Xem"
+                 icon="el-icon-view"
+                 size="mini"></el-button>
 
-              </template>
-            </el-table-column>-->
+    </template>
+  </el-table-column>-->
           </el-table>
           <el-pagination class="pt-2 pl-0"
                          :page-size="pagination"
