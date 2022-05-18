@@ -548,15 +548,15 @@ namespace coreWeb.Controllers.Api
                 var nhansu = _context.NhanSu.Where(p => p.UserId == userinfo.Id).FirstOrDefault();
                 bool isXacThuc = false;
                 var yeucau = _context.YeuCau.Where(p=>p.DichVuId==6).ToList();
-                //foreach (var item in yeucau)
-                //{
-                //    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
-                //    {
-                //        isXacThuc = true;
-                //    }
-                //}
+                foreach (var item in yeucau)
+                {
+                    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
+                    {
+                        isXacThuc = true;
+                    }
+                }
 
-                if (user != null )
+                if (user != null && isXacThuc == false)
                 {
                     DateTime thoihan = (DateTime) model.ThoiHan;
                     DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
@@ -572,13 +572,13 @@ namespace coreWeb.Controllers.Api
                         _context.YeuCau.Add(model);
 
                         _context.SaveChanges();
-                        //foreach (var item in yeucau)
-                        //{
-                        //    if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
-                        //    {
-                        //        isXacThuc = true;
-                        //    }
-                        //}
+                        foreach (var item in yeucau)
+                        {
+                            if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
+                            {
+                                isXacThuc = true;
+                            }
+                        }
                         var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
                         if (model.JiraDaGui != null)
                         {
@@ -644,14 +644,13 @@ namespace coreWeb.Controllers.Api
                 {
                     var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
                     var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
-                    DateTime thoihan = (DateTime)model.ThoiHan;
-                    DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
+                  
                     if (result != null) //update
                     {
                         
                         result.TenYeuCau = model.TenYeuCau;
                         result.NoiDung = model.NoiDung;
-                        result.ThoiHan = time;
+                        result.ThoiHan = model.ThoiHan;
                         result.JiraDaGui = model.JiraDaGui;
                         result.NguoiGiamSatId = model.NguoiGiamSatId;
                         result.ThoiHanMongMuon = model.ThoiHanMongMuon;
@@ -688,15 +687,14 @@ namespace coreWeb.Controllers.Api
                 {
                     var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
                     var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-                    DateTime thoihan = (DateTime)model.ThoiHan;
-                    DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
+                    
                     if (result != null ) //update
                     {
                         if (userinfo.UnitId == 1 || userinfo.Id == result.NguoiTaoId)
                         {
                             result.TenYeuCau = model.TenYeuCau;
                             result.NoiDung = model.NoiDung;
-                            result.ThoiHan = time;
+                            result.ThoiHan = model.ThoiHan;
                             result.JiraDaGui = model.JiraDaGui;
                             result.NhanSuId = model.NhanSuId;
                             result.NguoiGiamSatId = model.NguoiGiamSatId;
@@ -1216,8 +1214,8 @@ namespace coreWeb.Controllers.Api
 
 
             var client = new System.Net.Http.HttpClient();
-            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
-            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
+            var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
             var request = new HttpRequestMessage()
@@ -1230,41 +1228,41 @@ namespace coreWeb.Controllers.Api
             var dataResult = response.Content.ReadAsStringAsync().Result;
 
             /// ----- Gửi tin nhắn group riêng
-            var user = new UserClaim(HttpContext);
-            var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-            var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
-            HttpResponseMessage response2;
-            string dataResult2;
-            HttpResponseMessage response3;
-            string dataResult3;
-            if (unit.ChatId != null)
-            {
-                var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unit.ChatId + "&text=" + text;
+            //var user = new UserClaim(HttpContext);
+            //var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            //var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
+            //HttpResponseMessage response2;
+            //string dataResult2;
+            //HttpResponseMessage response3;
+            //string dataResult3;
+            //if (unit.ChatId != null)
+            //{
+            //    var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unit.ChatId + "&text=" + text;
 
-                var request2 = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(connectionUrl2),
-                    Method = HttpMethod.Get
-                };
+            //    var request2 = new HttpRequestMessage()
+            //    {
+            //        RequestUri = new Uri(connectionUrl2),
+            //        Method = HttpMethod.Get
+            //    };
 
-                response2 = await client.SendAsync(request2);
-                dataResult2 = response2.Content.ReadAsStringAsync().Result;
-            }
-            var unitnguoitao = _context.Unit.Where(p => p.Id == userinfo.UnitId).FirstOrDefault();
+            //    response2 = await client.SendAsync(request2);
+            //    dataResult2 = response2.Content.ReadAsStringAsync().Result;
+            //}
+            //var unitnguoitao = _context.Unit.Where(p => p.Id == userinfo.UnitId).FirstOrDefault();
 
-            if (unitnguoitao.ChatId != null && unit.ChatId != unitnguoitao.ChatId)
-            {
-                var connectionUrl3 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unitnguoitao.ChatId + "&text=" + text;
+            //if (unitnguoitao.ChatId != null && unit.ChatId != unitnguoitao.ChatId)
+            //{
+            //    var connectionUrl3 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unitnguoitao.ChatId + "&text=" + text;
 
-                var request3 = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(connectionUrl3),
-                    Method = HttpMethod.Get
-                };
+            //    var request3 = new HttpRequestMessage()
+            //    {
+            //        RequestUri = new Uri(connectionUrl3),
+            //        Method = HttpMethod.Get
+            //    };
 
-                response3 = await client.SendAsync(request3);
-                dataResult3 = response3.Content.ReadAsStringAsync().Result;
-            }
+            //    response3 = await client.SendAsync(request3);
+            //    dataResult3 = response3.Content.ReadAsStringAsync().Result;
+            //}
 
 
 

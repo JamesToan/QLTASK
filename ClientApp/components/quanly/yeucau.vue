@@ -107,7 +107,8 @@
                     v-loading="loading"
                     default-expand-all
                     row-key="Id"
-                    style="width: 100%">
+                    style="width: 100%"
+                    max-height="620">
 
             <el-table-column width="70" label="STT" align="center">
               <template slot-scope="scope">
@@ -142,7 +143,10 @@
                              :filter-method="filterHandler">
 
               <template slot-scope="scope">
-                <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
+                <div style="text-align:justify">
+                  <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
+                </div>
+                
 
               </template>
             </el-table-column>
@@ -164,7 +168,10 @@
                              style="word-break: normal;" v-if="UserName != 'hqcuong'">
 
               <template slot-scope="scope">
-                <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NguoiTaoId ? scope.row.User.FullName : ""}}</span>
+                <div style="text-align:justify">
+                  <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NguoiTaoId ? scope.row.User.FullName : ""}}</span>
+                </div>
+                
 
               </template>
             </el-table-column>
@@ -2202,13 +2209,34 @@ export default {
                     this.isEdit = true;
               }
 
-              if (this.$refs.formData !== undefined) {
-                this.$refs.formData.resetFields();
 
+              if(row.NoiDungXuLy == null){
+                this.formData.NoiDungXuLy = "";
               }
-              this.formData = Object.assign({}, row);
+              else{
+                  this.formData.NoiDungXuLy = row.NoiDungXuLy;
+              }
+              //this.formData = Object.assign({}, row);
               this.stateOld = this.formData.StateId;
 
+              this.formData.TenYeuCau = row.TenYeuCau;
+              this.formData.DichVuId = row.DichVuId;
+              this.formData.NhanSuId =  row.NhanSuId;
+              this.formData.ThoiHanMongMuon = row.ThoiHanMongMuon;
+              this.formData.ThoiHan = row.ThoiHan;
+              this.formData.JiraDaGui = row.JiraDaGui;
+              this.formData.FileUpload = row.FileUpload;
+              this.formData.MaSoThue = row.MaSoThue;
+              this.formData.NguoiTaoId = row.NguoiTaoId;
+              this.formData.LoaiYeuCauId = row.LoaiYeuCauId;
+              this.formData.NoiDung = row.NoiDung;
+              this.formData.NgayYeuCau = row.NgayYeuCau;
+              this.formData.NgayTao = row.NgayTao;
+              this.formData.NguoiTaoId = row.NguoiTaoId;
+              this.formData.UnitId = row.UnitId;
+
+              this.formData.Id = row.Id;
+              this.formData.StateId = row.StateId;
 
               if(this.formData.DichVuId != null){
                   var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData.DichVuId);

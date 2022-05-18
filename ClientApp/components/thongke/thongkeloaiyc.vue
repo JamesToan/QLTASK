@@ -58,7 +58,10 @@
                     v-loading="loading"
                     default-expand-all
                     row-key="Id"
-                    style="width: 100%">
+                    style="width: 100%"
+                    :summary-method="getSummaries"
+                    show-summary
+                    >
 
             <!-- <el-table-column width="50" label="" align="center">
     <template></template>
@@ -72,8 +75,8 @@
 
             <el-table-column prop="UnitName"
                              label="Tên địa bàn"
-                             width="245"
-                             align="center"
+                             width="230"
+                             align="justify"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
@@ -83,55 +86,55 @@
             </el-table-column>
             <el-table-column prop="TongLoaiHD"
                              label="Tổng yêu cầu"
-                             width="200"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.TongLoaiHD}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="TaoMoiHT"
                              label="Tạo mới hệ thống"
-                             width="200"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.TaoMoiHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="HoTroKT"
                              label="Hỗ trợ kĩ thuật"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.HoTroKT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="ThayDoiHT"
                              label="Thay đổi hệ thống"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.ThayDoiHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SuCoVH"
                              label="Sự cố vận hành"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SuCoVH}}</span>
 
               </template>
@@ -613,7 +616,31 @@
         this.getListData();
       },
 
+      getSummaries(param) {
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = 'Total';
+            return;
+          }
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] =values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+          } else {
+            sums[index] = '';
+          }
+        });
 
+        return sums;
+      },
      
       handleSearch() {
 

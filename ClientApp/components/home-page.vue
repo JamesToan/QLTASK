@@ -40,7 +40,7 @@
             <div align="center"
                  style=" font-weight: bold"
                  class="mt-5 tk-tong">
-              {{ ThongKe.Tong }}
+              {{ formatnumber(ThongKe.Tong) }}
             </div>
           </div>
         </a>
@@ -55,7 +55,7 @@
                   Đã hoàn thành
                 </div>
                 <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
-                  {{ ThongKe.DaHT }}
+                  {{ formatnumber(ThongKe.DaHT) }}
                 </div>
                 <div class="row">
                   <div class="sub-tk" align="center">
@@ -63,7 +63,7 @@
                       Đúng hạn
                     </div>
                     <div class="num_tk">
-                      {{ ThongKe.DungHanHT }}
+                      {{ formatnumber(ThongKe.DungHanHT) }}
                     </div>
                   </div>
                   <div class=" sub-tk"  align="center">
@@ -71,7 +71,7 @@
                       Trễ hạn
                     </div>
                     <div class="num_tk">
-                      {{ ThongKe.TreHanHT }}
+                      {{ formatnumber(ThongKe.TreHanHT) }}
                     </div>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
                   Đang xử lý
                 </div>
                 <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
-                  {{ ThongKe.DangXL }}
+                  {{ formatnumber(ThongKe.DangXL) }}
                 </div>
                 <div class="row">
                   <div class="sub-tk" align="center">
@@ -94,7 +94,7 @@
                       Trong hạn
                     </div>
                     <div class="num_tk">
-                      {{ ThongKe.TrongHanXL }}
+                      {{ formatnumber(ThongKe.TrongHanXL) }}
                     </div>
                   </div>
                   <div class="sub-tk" align="center">
@@ -117,7 +117,7 @@
                   Chưa tiếp nhận
                 </div>
                 <div align="center" class="num_tt" style="font-size: 26px; font-weight: bold; margin-bottom:30px">
-                  {{ ThongKe.MoiTao }}
+                  {{ formatnumber(ThongKe.MoiTao) }}
                 </div>
                 <div class="row">
                   <div class="sub-tk" align="center">
@@ -125,7 +125,7 @@
                       Trong hạn
                     </div>
                     <div class="num_tk">
-                      {{ ThongKe.TrongHanCTN }}
+                      {{ formatnumber(ThongKe.TrongHanCTN) }}
                     </div>
                   </div>
                   <div class=" sub-tk" align="center">
@@ -271,7 +271,7 @@ export default {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: "{point.y:1f}",
+              format: "{point.y:,1f}",
               style: {
                 color: '#000000',
                 fontSize: "12px ! important",
@@ -396,6 +396,12 @@ export default {
           }
         }
       });
+    },
+
+    formatnumber(val) {
+      if (val) {
+        return val.toLocaleString();
+      } else return null;
     },
     changeDichVuIdFilter() {
       

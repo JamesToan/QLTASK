@@ -80,8 +80,8 @@
 
             <el-table-column prop="TenNhanSu"
                              label="Người thực hiện"
-                             width="245"
-                             align="center"
+                             width="220"
+                             align="justify"
                              style="word-break: normal;">
 
               <template slot-scope="scope" style="word-break: normal; max-width:180px">
@@ -91,55 +91,55 @@
             </el-table-column>
             <el-table-column prop="TongYeuCau"
                              label="Tổng yêu cầu"
-                             width="200"
+                             width="180"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SoLuongTong}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongCTH"
                              label="Chưa tiếp nhận"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SoLuongCTH}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongDTH"
                              label="Đang xử lý"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SoLuongDTH}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongHT"
                              label="Đã hoàn thành"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SoLuongHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongHT"
                              label="Không xử lý"
-                             width="180"
+                             width="150"
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:180px">
+              <template slot-scope="scope" style="word-break: normal; max-width:150px">
                 <span style="word-break: normal;">{{scope.row.SoLuongKTH}}</span>
 
               </template>
@@ -482,7 +482,7 @@
         ListDiaBan: [],
         ListNhanSuDiaBan: [],
         UnitIdS: null,
-        DichVuIdS: 6,
+        DichVuIdS: 1,
         TuNgayS: new Date(),
         DenNgayS: Date.now(),
       };
