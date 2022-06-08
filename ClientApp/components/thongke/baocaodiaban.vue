@@ -28,12 +28,12 @@
                        class="filter-item"
                        @click="handleSearch"
                        v-if="allowEdit" style="margin-left:5px">Tìm</el-button>
-            <el-button type="primary"
+            <!--<el-button type="primary"
                        size="small"
                        icon="el-icon-plus"
                        class="filter-item"
                        @click="handleSearchAdvantage"
-                       v-if="allowEdit" style="margin-left:5px">Tìm kiếm nâng cao</el-button>
+                       v-if="allowEdit" style="margin-left:5px">Tìm kiếm nâng cao</el-button>-->
 
             <el-button type="success"
                        size="small"

@@ -531,6 +531,38 @@
             </el-option>
           </el-select>
         </el-form-item>
+        
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="Dịch vụ: " prop="index">
+              <el-select v-model="DichVuIdFilter"
+                         placeholder="Chọn Dịch Vụ"
+                         style="width: 240px; float: left;margin-left:5px">
+                <el-option v-for="item in ListDMDichVu"
+                           :key="item.Id"
+                           :label="item.TenDichVu"
+                           :value="item.Id">
+                </el-option>
+
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="Trạng thái: " prop="index">
+              <el-select style="width: 240px; float: left;"
+                         v-model="StateIdFilter"
+                         
+                         placeholder="Chọn trạng thái"
+                         v-if="isTrangThai">
+                <el-option v-for="item in ListDMTrangThai"
+                           :key="item.Id"
+                           :label="item.StateName"
+                           :value="item.Id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="Ngày bắt đàu: " prop="time1">
@@ -552,7 +584,7 @@
           </el-col>
 
         </el-row>
-        
+
       </el-form>
       <div style="text-align: center; margin-top:5px">
         <el-button type="warning" size="small" @click="resetFormSearch">Bỏ</el-button>
@@ -1262,7 +1294,7 @@ import { log } from "util";
         this.loading = true;
         if (this.isAdvantage == true) {
           if (this.value3 != "" && this.value4 != "") {
-            getycadvantage(this.formData2.index, this.formData2.time1, this.formData2.time2).then(data => {
+            getycadvantage(this.formData2.index, this.formData2.time1, this.formData2.time2, this.DichVuIdFilter, this.StateIdFilter).then(data => {
               this.listData = data;
               this.total = data.length;
 

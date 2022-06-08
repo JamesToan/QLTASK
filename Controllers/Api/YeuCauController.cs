@@ -1214,8 +1214,8 @@ namespace coreWeb.Controllers.Api
 
 
             var client = new System.Net.Http.HttpClient();
-            //var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
-            var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
+            var connectionUrl = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=-1001221153606&text=" + text;
+            //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendMessage?parse_mode=HTML&chat_id=-728524367&text=" + text;
             //var connectionUrl = "https://api.telegram.org/bot5177700420:AAFx_iGsLrekLA2Xjw3aBspdYf0xcPsS3uA/sendContact?chat_id=-728524367&phone_number=+84856699248&first_name=aaaaa";
 
             var request = new HttpRequestMessage()
@@ -1228,41 +1228,41 @@ namespace coreWeb.Controllers.Api
             var dataResult = response.Content.ReadAsStringAsync().Result;
 
             /// ----- Gửi tin nhắn group riêng
-            //var user = new UserClaim(HttpContext);
-            //var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-            //var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
-            //HttpResponseMessage response2;
-            //string dataResult2;
-            //HttpResponseMessage response3;
-            //string dataResult3;
-            //if (unit.ChatId != null)
-            //{
-            //    var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unit.ChatId + "&text=" + text;
+            var user = new UserClaim(HttpContext);
+            var userinfo1 = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            var unit = _context.Unit.Where(p => p.Id == userinfo1.UnitId).FirstOrDefault();
+            HttpResponseMessage response2;
+            string dataResult2;
+            HttpResponseMessage response3;
+            string dataResult3;
+            if (unit.ChatId != null)
+            {
+                var connectionUrl2 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unit.ChatId + "&text=" + text;
 
-            //    var request2 = new HttpRequestMessage()
-            //    {
-            //        RequestUri = new Uri(connectionUrl2),
-            //        Method = HttpMethod.Get
-            //    };
+                var request2 = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(connectionUrl2),
+                    Method = HttpMethod.Get
+                };
 
-            //    response2 = await client.SendAsync(request2);
-            //    dataResult2 = response2.Content.ReadAsStringAsync().Result;
-            //}
-            //var unitnguoitao = _context.Unit.Where(p => p.Id == userinfo.UnitId).FirstOrDefault();
+                response2 = await client.SendAsync(request2);
+                dataResult2 = response2.Content.ReadAsStringAsync().Result;
+            }
+            var unitnguoitao = _context.Unit.Where(p => p.Id == userinfo.UnitId).FirstOrDefault();
 
-            //if (unitnguoitao.ChatId != null && unit.ChatId != unitnguoitao.ChatId)
-            //{
-            //    var connectionUrl3 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unitnguoitao.ChatId + "&text=" + text;
+            if (unitnguoitao.ChatId != null && unit.ChatId != unitnguoitao.ChatId)
+            {
+                var connectionUrl3 = "https://api.telegram.org/bot5219391619:AAHl8WwY_8A4WDAzdWljY-xQA-XIcdEWaY0/sendMessage?parse_mode=HTML&chat_id=" + unitnguoitao.ChatId + "&text=" + text;
 
-            //    var request3 = new HttpRequestMessage()
-            //    {
-            //        RequestUri = new Uri(connectionUrl3),
-            //        Method = HttpMethod.Get
-            //    };
+                var request3 = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(connectionUrl3),
+                    Method = HttpMethod.Get
+                };
 
-            //    response3 = await client.SendAsync(request3);
-            //    dataResult3 = response3.Content.ReadAsStringAsync().Result;
-            //}
+                response3 = await client.SendAsync(request3);
+                dataResult3 = response3.Content.ReadAsStringAsync().Result;
+            }
 
 
 
@@ -1301,12 +1301,34 @@ namespace coreWeb.Controllers.Api
             }
             else if (user.RoleId == 2)
             {
-                result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                if (userinfo.UnitId != 1 && userinfo.UnitId != 2)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
                                        .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                        .Include(e => e.DonViYeuCau).ToList();
+                }
+                else if(userinfo.UnitId == 2)
+                {
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                                      .Include(e => e.NhanSu)
+                                      .Include(e => e.States)
+                                      .Include(e => e.User)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.DonViYeuCau).ToList();
+                }
+                else
+                {
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2).Include(e => e.DichVu)
+                                       .Include(e => e.NhanSu)
+                                       .Include(e => e.States)
+                                       .Include(e => e.User)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.DonViYeuCau).ToList();
+                }
+                
             }
             else if (user.RoleId == 3)
             {
@@ -1323,7 +1345,7 @@ namespace coreWeb.Controllers.Api
             return Ok(result);
         }
 
-        public IActionResult GetValue(int index , DateTime time1 , DateTime time2)
+        public IActionResult GetValue(int index , DateTime time1 , DateTime time2, int DichVuID, int StateID)
         {
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
@@ -1333,7 +1355,7 @@ namespace coreWeb.Controllers.Api
             {
                 if (index == 1)
                 {
-                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => (p.NgayTao >= time1 && p.NgayTao <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
@@ -1342,7 +1364,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else if (index == 2)
                 {
-                    result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => (p.ThoiHan >= time1 && p.ThoiHan <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
@@ -1351,7 +1373,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else if (index == 3)
                 {
-                    result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => (p.NgayXuLy >= time1 && p.NgayXuLy <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
@@ -1366,7 +1388,7 @@ namespace coreWeb.Controllers.Api
                 {
                     if (index == 1)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 ).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.NgayTao >= time1 && p.NgayTao <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1375,7 +1397,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 2)
                     {
-                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 ).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.ThoiHan >= time1 && p.ThoiHan <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1384,7 +1406,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 3)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 ).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.NgayXuLy >= time1 && p.NgayXuLy <= time2) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
@@ -1396,7 +1418,7 @@ namespace coreWeb.Controllers.Api
                 {
                     if (index == 1)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.NgayTao >= time1 && p.NgayTao <= time2) && p.UnitId != 1 && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1405,7 +1427,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 2)
                     {
-                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.ThoiHan >= time1 && p.ThoiHan <= time2) && p.UnitId != 1 && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1414,7 +1436,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 3)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && p.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.NgayXuLy >= time1 && p.NgayXuLy <= time2) && p.UnitId != 1 && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
@@ -1426,7 +1448,7 @@ namespace coreWeb.Controllers.Api
                 {
                     if (index == 1)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && p.UnitId == userinfo.UnitId && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1435,7 +1457,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 2)
                     {
-                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && p.UnitId == userinfo.UnitId && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
@@ -1444,7 +1466,7 @@ namespace coreWeb.Controllers.Api
                     }
                     else if (index == 3)
                     {
-                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && p.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && p.UnitId == userinfo.UnitId && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
@@ -1459,7 +1481,7 @@ namespace coreWeb.Controllers.Api
             {
                 if (index == 1)
                 {
-                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => p.NgayTao >= time1 && p.NgayTao <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId || p.DichVuId == nhansu.AdminDichVuId) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
@@ -1468,7 +1490,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else if (index == 2)
                 {
-                    result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => p.ThoiHan >= time1 && p.ThoiHan <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId || p.DichVuId == nhansu.AdminDichVuId) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
@@ -1477,7 +1499,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else if (index == 3)
                 {
-                    result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId)).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(p => p.NgayXuLy >= time1 && p.NgayXuLy <= time2 && (p.NhanSuId == nhansu.Id || p.NguoiTaoId == user.UserId || p.DichVuId == nhansu.AdminDichVuId) && (p.DichVuId == DichVuID || DichVuID == 1) && (p.StateId == StateID || StateID == 5)).Include(e => e.DichVu)
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)

@@ -86,55 +86,55 @@
             </el-table-column>
             <el-table-column prop="TongLoaiHD"
                              label="Tổng yêu cầu"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.TongLoaiHD}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="TaoMoiHT"
                              label="Tạo mới hệ thống"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.TaoMoiHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="HoTroKT"
                              label="Hỗ trợ kĩ thuật"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.HoTroKT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="ThayDoiHT"
                              label="Thay đổi hệ thống"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.ThayDoiHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SuCoVH"
                              label="Sự cố vận hành"
-                             width="150"
+                            
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SuCoVH}}</span>
 
               </template>
@@ -621,7 +621,7 @@
         const sums = [];
         columns.forEach((column, index) => {
           if (index === 0) {
-            sums[index] = 'Total';
+            sums[index] = 'Tổng';
             return;
           }
           const values = data.map(item => Number(item[column.property]));
@@ -930,5 +930,8 @@
 
   .vue-treeselect__control {
     height: 34px !important;
+  }
+  .el-table__footer-wrapper tbody td.el-table__cell {
+    color: black !important;
   }
 </style>

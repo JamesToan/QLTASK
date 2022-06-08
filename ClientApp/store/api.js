@@ -670,8 +670,8 @@ export function getycbytime( time1, time2) {
 }
 
 
-export function getycadvantage(index, time1, time2) {
-  const params = { index, time1, time2 };
+export function getycadvantage(index, time1, time2, DichVuID, StateID) {
+  const params = { index, time1, time2, DichVuID, StateID };
   return request({
     url: "api/yeucau/GetValue",
     method: "get",

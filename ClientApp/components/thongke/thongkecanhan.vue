@@ -91,55 +91,55 @@
             </el-table-column>
             <el-table-column prop="TongYeuCau"
                              label="Tổng yêu cầu"
-                             width="180"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SoLuongTong}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongCTH"
                              label="Chưa tiếp nhận"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SoLuongCTH}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongDTH"
                              label="Đang xử lý"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SoLuongDTH}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongHT"
                              label="Đã hoàn thành"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SoLuongHT}}</span>
 
               </template>
             </el-table-column>
             <el-table-column prop="SoLuongHT"
                              label="Không xử lý"
-                             width="150"
+                             
                              align="center"
                              style="word-break: normal;">
 
-              <template slot-scope="scope" style="word-break: normal; max-width:150px">
+              <template slot-scope="scope" style="word-break: normal;">
                 <span style="word-break: normal;">{{scope.row.SoLuongKTH}}</span>
 
               </template>

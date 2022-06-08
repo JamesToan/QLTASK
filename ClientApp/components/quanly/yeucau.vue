@@ -1576,6 +1576,13 @@ export default {
             trigger: "blur"
           }
         ],
+        MaSoThue: [
+          {
+            required: true,
+            message: "Vui lòng nhập dữ liệu",
+            trigger: "blur"
+          }
+        ],
       },
       editor: ClassicEditor,
       editorConfig: {
