@@ -399,9 +399,9 @@ export default {
     },
 
     formatnumber(val) {
-      if (val) {
+      if (val > 0) {
         return val.toLocaleString();
-      } else return null;
+      } else return 0;
     },
     changeDichVuIdFilter() {
       

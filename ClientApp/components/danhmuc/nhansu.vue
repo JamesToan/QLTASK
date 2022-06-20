@@ -228,13 +228,13 @@ import {
             trigger: "blur"
           }
         ],
-        UserId: [
-          {
-            required: true,
-            message: "Vui lòng chọn user",
-            trigger: "blur"
-          }
-        ],
+        //UserId: [
+        //  {
+        //    required: true,
+        //    message: "Vui lòng chọn user",
+        //    trigger: "blur"
+        //  }
+        //],
         
       },
       listData: [],
@@ -256,11 +256,10 @@ import {
 
   methods: {
     handleAdd() {
-      if (this.$refs.formData !== undefined) {
-        this.$refs.formData.resetFields();
-      }
+      
       this.formData = {
-        IsActive: true
+        IsActive: true,
+        
       };
 
       this.isEditor = false;
@@ -270,7 +269,9 @@ import {
       if (this.$refs.formData !== undefined) {
         this.$refs.formData.resetFields();
       }
-      this.formData = Object.assign({}, row);
+      this.formData.UserId = row.UserId;
+      this.formData.TenNhanSu = row.TenNhanSu;
+      this.formData.DichVuId = row.DichVuId;
       this.formData.UnitId = row.UnitId;
       this.isEditor = true;
       this.dialogFormDisplay = true;
