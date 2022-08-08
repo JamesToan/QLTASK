@@ -1186,8 +1186,16 @@
 
             <el-col :span="12">
               <el-form-item label="Hạn xử lý: " prop="ThoiHan">
-
-                {{formatDate(formData4.ThoiHan)}}
+                <el-date-picker v-model="formData4.ThoiHan"
+                                type="date"
+                                placeholder="Chọn ngày"
+                                format="dd/MM/yyyy"
+                                size="small"
+                                style="width: 100%"
+                                value-format="yyyy-MM-dd"
+                                :picker-options="pickerOptions">
+                </el-date-picker>
+                
               </el-form-item>
             </el-col>
 
