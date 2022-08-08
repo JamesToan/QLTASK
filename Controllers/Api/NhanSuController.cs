@@ -102,7 +102,7 @@ namespace coreWeb.Controllers.Api
                 {
                     model.NguoiTaoId = user.UserId;
                     model.NgayTao = DateTime.Now;
-                    
+                    model.isActive = true;
                     _context.Add(model);
                     _context.SaveChanges();
                     return Ok(model.Id);
@@ -135,6 +135,7 @@ namespace coreWeb.Controllers.Api
                         result.DichVuId = model.DichVuId;
                         result.UserId = model.UserId;
                         result.AdminDichVuId = model.AdminDichVuId;
+                        result.isActive = model.isActive;
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);

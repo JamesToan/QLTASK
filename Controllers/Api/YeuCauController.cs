@@ -55,7 +55,7 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-            
+            var qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p =>p.DichVuId).Distinct().ToList();
             if (user.RoleId == 1)
             {
                 List<YeuCau> result = new List<YeuCau>();
@@ -266,7 +266,7 @@ namespace coreWeb.Controllers.Api
                     {
                         result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1)
                                                                 && ((p.StateId == StateId || StateId == 5) && p.StateId !=6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
-                                                                && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId))
+                                                                && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
                                                                 .Include(e => e.DichVu)
                                                                 .Include(e => e.NhanSu)
                                                                 .Include(e => e.States)
@@ -278,7 +278,7 @@ namespace coreWeb.Controllers.Api
                     else
                     {
                         result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1) && (p.StateId == 6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
-                                                                && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId))
+                                                                && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId) ))
                                                                 .Include(e => e.DichVu)
                                                                 .Include(e => e.NhanSu)
                                                                 .Include(e => e.States)
@@ -355,7 +355,7 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-            
+            var qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
             if (user.RoleId == 1 ) // ---------------   Admin   -------
             {
                 List<YeuCau> result = new List<YeuCau>();
@@ -402,7 +402,7 @@ namespace coreWeb.Controllers.Api
                 {
                     
                     List<YeuCau> result = new List<YeuCau>();
-                    if (user.RoleId == 2)
+                    if (user.RoleId == 2)  //------ QL --------///
                     {
                         result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9)
                                .Include(e => e.DichVu)
@@ -414,10 +414,10 @@ namespace coreWeb.Controllers.Api
                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                .ToList();
                     }
-                    else
+                    else //------ NV --------///
                     {
                         // select cho nhân sự cntt có admin dịch vụ id có thể xem hết yêu cầu chưa hoàn thành
-                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId))
+                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId || qldv.Contains(e.DichVuId)))
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)

@@ -21,35 +21,29 @@
       <div class="col-12">
         <div class="card-box table-responsive">
           <div class="header-title" style="margin-bottom: 10px; float: right">
-            <el-input
-              clearable
-              v-model="search"
-              placeholder="Tìm kiếm"
-              style="width: 240px; float: right;"
-            ></el-input>
+            <el-input clearable
+                      v-model="search"
+                      placeholder="Tìm kiếm"
+                      style="width: 240px; float: right;"></el-input>
           </div>
-          <el-table
-            :data="renderData()"
-            border
-            v-loading="loading"
-            default-expand-all
-            row-key="Id"
-            style="width: 100%"
-          >
+          <el-table :data="renderData()"
+                    border
+                    v-loading="loading"
+                    default-expand-all
+                    row-key="Id"
+                    style="width: 100%">
             <!-- <el-table-column width="50" label="" align="center">
-              <template></template>
-            </el-table-column> -->
+            <template></template>
+          </el-table-column> -->
             <el-table-column width="50" label="STT" align="center">
               <template slot-scope="scope">
                 {{ renderIndex(scope.$index) }}
               </template>
             </el-table-column>
-            <el-table-column
-              prop="TenNhanSu"
-              label="Tên Nhân Sự"
-              sortable
-              min-width="225"
-            >
+            <el-table-column prop="TenNhanSu"
+                             label="Tên Nhân Sự"
+                             sortable
+                             min-width="225">
               <template slot-scope="scope">
                 <text-highlight :queries="search" style="word-break: normal;">
                   {{ scope.row.TenNhanSu }}
@@ -57,66 +51,107 @@
               </template>
             </el-table-column>
             <!--<el-table-column
-              prop="LoaiChuyenMuc"
-              label="Loại Chuyên mục"
-              sortable
-              min-width="225"
-            >
-              <template slot-scope="scope">
-                <text-highlight :queries="search" style="word-break: normal;">
-                  {{ scope.row.LoaiChuyenMuc }}
-                </text-highlight>
-              </template>
-            </el-table-column>-->
+            prop="LoaiChuyenMuc"
+            label="Loại Chuyên mục"
+            sortable
+            min-width="225"
+          >
+            <template slot-scope="scope">
+              <text-highlight :queries="search" style="word-break: normal;">
+                {{ scope.row.LoaiChuyenMuc }}
+              </text-highlight>
+            </template>
+          </el-table-column>-->
             <el-table-column align="center" label="" width="125">
               <template slot="header">
-                <el-button
-                  type="primary"
-                  size="small"
-                  icon="el-icon-plus"
-                  class="filter-item"
-                  @click="handleAdd"
-                  >Thêm mới</el-button
-                >
+                <el-button type="primary"
+                           size="small"
+                           icon="el-icon-plus"
+                           class="filter-item"
+                           @click="handleAdd">Thêm mới</el-button>
               </template>
               <template slot-scope="scope">
-                <el-button
-                  @click="handleEdit(scope.$index, scope.row)"
-                  type="primary"
-                  title="Cập nhật"
-                  icon="el-icon-edit"
-                  size="mini"
-                ></el-button>
-                <el-button
-                  @click="handleDelete(scope.row)"
-                  type="danger"
-                  icon="el-icon-delete"
-                  title="Xóa"
-                  size="mini"
-                ></el-button>
+                <el-button @click="handleEdit(scope.$index, scope.row)"
+                           type="primary"
+                           title="Cập nhật"
+                           icon="el-icon-edit"
+                           size="mini"></el-button>
+                <el-button @click="handleDelete(scope.row)"
+                           type="danger"
+                           icon="el-icon-delete"
+                           title="Xóa"
+                           size="mini"></el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            class="pt-2 pl-0"
-            :page-size="pagination"
-            background
-            style="width: 100%"
-            @size-change="handleSizeChange"
-            :current-page.sync="activePage"
-            :page-sizes="[10, 20, 50, 100, 500]"
-            layout="total,sizes,prev, pager, next"
-            :total="total"
-          >
+          <el-pagination class="pt-2 pl-0"
+                         :page-size="pagination"
+                         background
+                         style="width: 100%"
+                         @size-change="handleSizeChange"
+                         :current-page.sync="activePage"
+                         :page-sizes="[10, 20, 50, 100, 500]"
+                         layout="total,sizes,prev, pager, next"
+                         :total="total">
           </el-pagination>
         </div>
       </div>
     </div>
-    <el-dialog
-      title="Cập nhật Nhân Sự"
-      :visible.sync="dialogFormDisplay"
-      top="15px"
-    >
+    <el-dialog title="Thêm Nhân Sự"
+               :visible.sync="dialogFormDisplayAdd"
+               top="15px">
+      <el-form :model="formData1"
+               :rules="formRules"
+               ref="formData1"
+               label-width="150px">
+
+        <el-form-item label="Tên Nhân Sự" prop="TenNhanSu">
+          <el-input v-model="formData1.TenNhanSu"
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Đơn vị" prop="UnitId" size="small">
+          <treeselect v-model="formData1.UnitId"
+                      :multiple="false"
+                      placeholder="Chọn đơn vị"
+                      :searchable="false"
+                      :options="ListDonVi" />
+        </el-form-item>
+        <el-form-item label="Dịch vụ" prop="DichVuId">
+          <el-select v-model="formData1.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="User" prop="UserId">
+          <el-select v-model="formData1.UserId"
+                     placeholder="Chọn user"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMUser"
+                       :key="item.Id"
+                       :label="item.FullName"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetForm1" size="small">Bỏ qua</el-button>
+        <el-button type="primary" size="small" @click="addData">Cập nhật</el-button>
+      </span>
+    </el-dialog>
+
+    <!--///////////////////////////////////////////-->
+    <el-dialog title="Cập nhật Nhân Sự"
+               :visible.sync="dialogFormDisplay"
+               top="15px">
       <el-form :model="formData"
                :rules="formRules"
                ref="formData"
@@ -154,32 +189,15 @@
                        :key="item.Id"
                        :label="item.FullName"
                        :value="item.Id">
+
             </el-option>
+
           </el-select>
         </el-form-item>
-        <!--<el-form-item label="Loại Chuyên mục" prop="LoaiChuyenMuc">
-    <el-input
-      v-model="formData.LoaiChuyenMuc"
-      type="text"
-      size="small"
-    ></el-input>
-  </el-form-item>-->
-        <!--<el-form-item label="Thứ tự" prop="ThuTu">
-    <el-input
-      v-model="formData.ThuTu"
-      type="number"
-      size="small"
-    ></el-input>
-  </el-form-item>
-  <el-form-item label="Hiệu lực">
-    <el-switch v-model="formData.HieuLuc" size="small"></el-switch>
-  </el-form-item>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm" size="small">Bỏ qua</el-button>
-        <el-button type="primary" size="small" @click="updateData"
-          >Cập nhật</el-button
-        >
+        <el-button type="primary" size="small" @click="updateData">Cập nhật</el-button>
       </span>
     </el-dialog>
   </div>
@@ -196,12 +214,14 @@ import {
   selectNhanSu,
   getListUnitAll,
   getListDanhMucYeuCau,
+  getListUser,
 } from "../../store/api";
   export default {
   components: { Treeselect },
   data() {
     return {
       dialogFormDisplay: false,
+      dialogFormDisplayAdd: false,
       loading: false,
       isEditor: false,
       search: "",
@@ -212,6 +232,14 @@ import {
         UnitId: null,
         DichVuId: null,
         UserId : null,
+      },
+      formData1: {
+        TenNhanSu: null,
+        ThuTu: null,
+        HieuLuc: null,
+        UnitId: null,
+        DichVuId: null,
+        UserId: null,
       },
       formRules: {
         TenNhanSu: [
@@ -256,19 +284,15 @@ import {
 
   methods: {
     handleAdd() {
-      
-      this.formData = {
-        IsActive: true,
-        
-      };
-
+      this.formData1.UserId = null;
+      this.formData1.TenNhanSu = null;
+      this.formData1.DichVuId = null;
+      this.formData1.UnitId = null;
       this.isEditor = false;
-      this.dialogFormDisplay = true;
+      this.dialogFormDisplayAdd = true;
     },
     handleEdit(index, row) {
-      if (this.$refs.formData !== undefined) {
-        this.$refs.formData.resetFields();
-      }
+     
       this.formData.UserId = row.UserId;
       this.formData.TenNhanSu = row.TenNhanSu;
       this.formData.DichVuId = row.DichVuId;
@@ -297,12 +321,32 @@ import {
       this.dialogFormDisplay = false;
       return true;
     },
+    resetForm1() {
+      this.dialogFormDisplayAdd = false;
+      return true;
+    },
     getListData() {
       this.loading = true;
       selectNhanSu().then(data => {
         this.listData = data;
         this.total = data.length;
         this.loading = false;
+      });
+    },
+    addData() {
+      this.$refs.formData1.validate(valid => {
+        if (valid) {
+          if (this.isEditor == 0) {
+            addNhanSu(this.formData1).then(data => {
+              //console.log(data);
+              this.getListData();
+            });
+          } 
+          this.dialogFormDisplayAdd = false;
+          
+        } else {
+          return false;
+        }
       });
     },
 
@@ -361,7 +405,14 @@ import {
       if (data) {
         
         this.ListDMDichVu = data.DMDichVu;
-        this.ListDMUser = data.DMUser;
+        
+      }
+    });
+    getListUser().then(data => {
+      if (data) {
+
+        this.ListDMUser = data;
+
       }
     });
   }

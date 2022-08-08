@@ -16,6 +16,9 @@ using AutoAPI;
 
 using coreWeb.Models;
 
+using Hangfire;
+using Hangfire.SqlServer;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -40,7 +43,8 @@ namespace coreWeb
         {
             var connection = Configuration.GetValue<string>("Config:DB");
             MyOption.MyConnection = connection;
-
+            services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            services.AddHangfireServer();
             services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(connection));
             //services.AddDbContext<vnPlayDbContext>(options => options.UseSqlServer(connection));
             services.AddHttpContextAccessor();
@@ -104,7 +108,7 @@ namespace coreWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBackgroundJobClient backgroundJobs)
         {
             if (env.IsDevelopment())
             {
@@ -126,6 +130,8 @@ namespace coreWeb
             app.UseAuthentication(); //Using token
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseHangfireDashboard();
+            
             app.UseSession();
             app.UseAutoAPI();
             app.UseMvc(routes =>

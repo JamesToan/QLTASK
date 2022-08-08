@@ -16,7 +16,7 @@ namespace coreWeb.Models.Entities
         [MaxLength(150)]
         public string TenNhanSu { get; set; }
 
-        public int NguoiTaoId { get; set; }
+        public int? NguoiTaoId { get; set; }
 
         public DateTime? NgayTao { get; set; }
 
@@ -29,6 +29,8 @@ namespace coreWeb.Models.Entities
         public int? AdminDichVuId { get; set; }
 
         public int? UserId { get; set; }
+
+        public bool isActive { get; set; }
 
         [ForeignKey("NguoiTaoId")]
         public User Users { get; set; }

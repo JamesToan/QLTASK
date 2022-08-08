@@ -319,7 +319,7 @@
             <el-form-item label="Dịch vụ" prop="DichVuId">
               <el-select v-model="formData.DichVuId"
                          placeholder="Chọn dịch vụ: "
-                         @change="changeDichVu(formData.DichVuId);"
+                         @change="changeDichVu(formData.DichVuId)"
                          class="w-100" filterable>
                 <el-option v-for="item in ListDMDichVu"
                            :key="item.Id"
@@ -365,8 +365,9 @@
             <el-form-item label="Nhân sự: " prop="NhanSuId">
               <el-select v-model="formData.NhanSuId"
                          placeholder="Chọn nhân sự"
-                         class="w-100">
-                <el-option v-for="item in ListDMNhanSu"
+                         class="w-100"
+                         filterable>
+                <el-option v-for="item in ListDMNhanSuCNTT"
                            :key="item.Id"
                            :label="item.TenNhanSu"
                            :value="item.Id">
@@ -696,6 +697,7 @@
             <el-form-item label="Nhân sự thực hiện: " prop="NhanSuId">
               <el-select v-model="formData2.NhanSuId"
                          placeholder="Chọn nhân sự"
+                         filterable
                          class="w-100">
                 <el-option v-for="item in ListNhansuQLDV"
                            :key="item.Id"
@@ -1599,6 +1601,7 @@ export default {
       YeuCauComment:[],
       ListDMTrangThai: [],
       ListDMNhanSu: [],
+      ListDMNhanSuCNTT: [],
       ListDMDichVu: [],
       ListDMJira: [],
       ListDMTinhTrang: [],
@@ -1778,14 +1781,14 @@ export default {
        var dv = this.ListDMDichVu.find(obj => obj.Id == val);
 
 
-   if (dv) {
-        this.ListDMDonVi = dv.DonVi;
+       if (dv) {
+            this.ListDMDonVi = dv.DonVi;
 
-      } else {
-        this.DonVi = [];
-      }
+          } else {
+            this.DonVi = [];
+          }
 
-      delete this.formData.DonViYeuCauId;
+          delete this.formData.DonViYeuCauId;
 
     },
     changeStateIdFilter() {
@@ -3232,7 +3235,7 @@ export default {
         this.ListDMDonVi = data.DMDonVi;
         this.ListQLDV = data.DMQLDV;
         this.ListLoaiYC = data.DMLYC;
-
+        this.ListDMNhanSuCNTT = data.DMNhanSuCNTT;
       }
     });
 
