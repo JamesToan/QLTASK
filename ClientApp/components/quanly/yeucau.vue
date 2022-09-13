@@ -2411,6 +2411,7 @@ export default {
 
     },
 
+
     beforeUpload(file) {
       const isPdf = file.type === "application/pdf";
       const isDoc = file.type === "application/msword";
