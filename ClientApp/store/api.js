@@ -697,6 +697,15 @@ export function getDSYCNhanSu(DonViId, DichVuId, TuNgay, DenNgay) {
   });
 }
 
+export function getDSYCNhanSuNgayTao(DonViId, DichVuId, TuNgay, DenNgay) {
+  const params = { DonViId, DichVuId, TuNgay, DenNgay };
+  return request({
+    url: "api/yeucau/TraCuuDSNgayTao",
+    method: "get",
+    params: params
+  });
+}
+
 export function getDSYCDonVi(DonViId, DichVuId, TuNgay, DenNgay) {
   const params = { DonViId, DichVuId, TuNgay, DenNgay };
   return request({
@@ -758,6 +767,15 @@ export function deleteJira(id) {
     url: "api/jira/delete",
     method: "post",
     params: params
+  });
+}
+
+
+// ------ Save comment
+export function saveComment() {
+  return request({
+    url: "api/yeucau/callSaveCommentJira",
+    method: "get"
   });
 }
 
@@ -982,3 +1000,6 @@ export function deleteLoaiYeuCau(id) {
     params: params
   });
 }
+
+
+

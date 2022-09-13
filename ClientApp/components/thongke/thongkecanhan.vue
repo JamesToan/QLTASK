@@ -49,6 +49,15 @@
                          :value="item.Id">
               </el-option>
             </el-select>
+            <el-select style="width: 160px; float: left;margin-right:3px"
+                       v-model="LoaiNgay"
+                       placeholder="Chọn Loại Ngày">
+              <el-option v-for="item in ListLoaiNgay"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
             <el-date-picker v-model="TuNgayS"
                             type="date"
                             placeholder="Chọn ngày bắt đầu"
@@ -262,6 +271,8 @@
     getycdiaban,
     getListUnitAll,
     getDSYCNhanSu,
+    getDSYCNhanSuNgayTao,
+
   } from "../../store/api";
   import { log } from "util";
   import { compileFunction } from "vm";
@@ -308,6 +319,7 @@
         UserDV: 0,
         NhanSuId: 0,
         UserId: 0,
+        LoaiNgay:1,
         NhanSu: "",
         formData: {
           Id: null,
@@ -485,6 +497,14 @@
         DichVuIdS: 1,
         TuNgayS: new Date(),
         DenNgayS: Date.now(),
+        ListLoaiNgay: [{
+          value: 1,
+          label: 'Ngày xử lý'
+        }, {
+            value: 2,
+            label: 'Ngày tạo'
+          },
+        ]
       };
     },
 
@@ -776,14 +796,29 @@
         this.loading = true;
         var tungay = this.formatDate(this.TuNgayS);
         var denngay = this.formatDate(this.DenNgayS);
-        getDSYCNhanSu(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
-          this.listData = data;
-          this.total = data.length;
+        //getDSYCNhanSu(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
+        //  this.listData = data;
+        //  this.total = data.length;
 
-          this.loading = false;
-        });
+        //  this.loading = false;
+        //});
 
+        if (this.LoaiNgay == 1) {
+          getDSYCNhanSu(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
+            this.listData = data;
+            this.total = data.length;
 
+            this.loading = false;
+          });
+        }
+        else if (this.LoaiNgay == 2) {
+          getDSYCNhanSuNgayTao(this.UnitIdS, this.DichVuIdS, tungay, denngay).then(data => {
+            this.listData = data;
+            this.total = data.length;
+
+            this.loading = false;
+          });
+        }
        
         getUserUnitId().then(data => {
           this.UserUnitId = data.UnitId;

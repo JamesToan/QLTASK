@@ -23,6 +23,9 @@ namespace coreWeb.Models.Entities
 
         public bool? IsActive { get; set; }
 
+        [MaxLength]
+        public string Comment { get; set; }
+
         [ForeignKey("YeuCauId")]
         public YeuCau YeuCau { get; set; }
     }

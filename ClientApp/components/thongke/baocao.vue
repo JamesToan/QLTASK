@@ -920,7 +920,10 @@ import { log } from "util";
                 return result ? result.TenNhanSu : "";
               }
             } else {
-              if (f.startsWith("Ngay")) {
+              if (f.startsWith("NgayTao")) {
+                return this.formatDate(data[f]);
+              }
+              if (f.startsWith("NgayXuLy")) {
                 return this.formatDate(data[f]);
               }
               result = data[f];
@@ -1198,9 +1201,12 @@ import { log } from "util";
             "Nội dung",
             "Ngày tạo",
             "Thời hạn",
+            "Ngày xử lý",
             "Task Jira",
+            "Comment Jira",
             "Trạng thái",
             "Nhân sự",
+            "Mã nhân viên",
             "Dịch vụ",
             "Đơn vị",
             "Mã số thuế",
@@ -1210,11 +1216,14 @@ import { log } from "util";
             "Id",
             "TenYeuCau",
             "NoiDung",
-            "",
+            "NgayTao",
             "ThoiHan",
+            "NgayXuLy",
             "JiraDaGui",
+            "CommentJira",
             "States.StateName",
             "NhanSu.TenNhanSu",
+            "NhanSuId",
             "DichVu.TenDichVu",
             "Unit.UnitName",
             "MaSoThue",

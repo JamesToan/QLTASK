@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using coreWeb.Models.Entities;
 
 using coreWeb.Services;
-
+using Hangfire.Dashboard;
 
 namespace coreWeb.Models
 {
@@ -49,6 +49,20 @@ namespace coreWeb.Models
             {
                 context.Result = new StatusCodeResult((int)System.Net.HttpStatusCode.Forbidden);
                 return;
+            }
+        }
+
+        public class MyAuthorizationFilter : IDashboardAuthorizationFilter
+        {
+            public bool Authorize(DashboardContext context)
+            {
+                var httpContext = context.GetHttpContext();
+                var cookies = httpContext.Request.Cookies;
+                if (cookies["UToken"] != null && cookies["UUser"] =="admin@vnpt.vn")
+                {
+                    return true;
+                }
+                return false;
             }
         }
     }

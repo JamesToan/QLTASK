@@ -60,13 +60,14 @@ namespace coreWeb.Models.Entities
 
         public DateTime? ThoiHanMongMuon { get; set; }
 
+        public string CommentJira { get; set; }
+
         [ForeignKey("StateId")]
         public States States { get; set; }
 
         [ForeignKey("NhanSuId")]
         public NhanSu NhanSu { get; set; }
-
-       
+        
         [ForeignKey("DichVuId")]
         public DichVu DichVu { get; set; }
 

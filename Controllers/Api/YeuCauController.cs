@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using coreWeb.Models;
 using coreWeb.Models.Entities;
 using coreWeb.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -55,7 +56,7 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-            var qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p =>p.DichVuId).Distinct().ToList();
+            
             if (user.RoleId == 1)
             {
                 List<YeuCau> result = new List<YeuCau>();
@@ -95,10 +96,12 @@ namespace coreWeb.Controllers.Api
             }
             else if (user.RoleId == 2) // quản lý
             {
-
+                
                 QuanLyDichVu quanlydv = new QuanLyDichVu();
+                List<int?> qldv = new List<int?>();
                 if (nhansu != null)
                 {
+                    qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
                     quanlydv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id && p.DichVuId == nhansu.DichVuId).FirstOrDefault();
                 }
                 if (userinfo.UnitId == 2) // KHTCDN
@@ -218,9 +221,12 @@ namespace coreWeb.Controllers.Api
             }
             else if(user.RoleId == 3) // role nhân viên
             {
+                
                 QuanLyDichVu quanlydv = new QuanLyDichVu();
+                List<int?> qldv = new List<int?>();
                 if (nhansu != null)
                 {
+                    qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
                     quanlydv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id && p.DichVuId == nhansu.DichVuId).FirstOrDefault();
                 }
                 if (userinfo.UnitId == 2) // phòng KHTCDN
@@ -261,11 +267,16 @@ namespace coreWeb.Controllers.Api
                 }
                 else if (userinfo.UnitId == 1) // TT CNTT
                 {
+                    if (nhansu != null)
+                    {
+                        qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
+                        quanlydv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id && p.DichVuId == nhansu.DichVuId).FirstOrDefault();
+                    }
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId != 6)
+                    if (StateId != 6 && StateId != 9)
                     {
                         result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1)
-                                                                && ((p.StateId == StateId || StateId == 5) && p.StateId !=6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
+                                                                && ((p.StateId == StateId || StateId == 5) && p.StateId !=6 && p.StateId != 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
                                                                 && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
                                                                 .Include(e => e.DichVu)
                                                                 .Include(e => e.NhanSu)
@@ -274,6 +285,19 @@ namespace coreWeb.Controllers.Api
                                                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
                                                                 .Include(e => e.DonViYeuCau)
                                                                  .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
+                    }
+                    else if (StateId == 9)
+                    {
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1)
+                                                               && ( StateId == 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
+                                                               && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
+                                                               .Include(e => e.DichVu)
+                                                               .Include(e => e.NhanSu)
+                                                               .Include(e => e.States)
+                                                               .Include(e => e.User)
+                                                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                               .Include(e => e.DonViYeuCau)
+                                                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
                     else
                     {
@@ -355,7 +379,10 @@ namespace coreWeb.Controllers.Api
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
             var nhansu = _context.NhanSu.Where(p => p.UserId == user.UserId).FirstOrDefault();
-            var qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
+            
+               
+           
+            
             if (user.RoleId == 1 ) // ---------------   Admin   -------
             {
                 List<YeuCau> result = new List<YeuCau>();
@@ -397,7 +424,12 @@ namespace coreWeb.Controllers.Api
             }
             else if (user.RoleId == 3 || user.RoleId == 2) //------ QL - NV --------///
             {
-               
+                List<int?> qldv = new List<int?>();
+                if (nhansu != null)
+                {
+                    qldv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id).Select(p => p.DichVuId).Distinct().ToList();
+                    
+                }
                 if (userinfo.UnitId == 1) //------   TT CNTT
                 {
                     
@@ -417,7 +449,7 @@ namespace coreWeb.Controllers.Api
                     else //------ NV --------///
                     {
                         // select cho nhân sự cntt có admin dịch vụ id có thể xem hết yêu cầu chưa hoàn thành
-                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId )|| e.DichVuId == nhansu.AdminDichVuId || qldv.Contains(e.DichVuId)))
+                        result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && ((e.NhanSuId == nhansu.Id|| e.NguoiTaoId == user.UserId || e.DichVuId == nhansu.AdminDichVuId || qldv.Contains(e.DichVuId))))
                                .Include(e => e.DichVu)
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
@@ -664,6 +696,7 @@ namespace coreWeb.Controllers.Api
                         result.MaSoThue = model.MaSoThue;
                         if (model.NguoiTaoId == userinfo.Id)
                         {
+                            result.NgayXuLy = DateTime.Now;
                             result.NgayCapNhat = DateTime.Now;
                         }
                         else if(model.NguoiTaoId != userinfo.Id)
@@ -707,6 +740,7 @@ namespace coreWeb.Controllers.Api
                             result.MaSoThue = model.MaSoThue;
                             if (model.NguoiTaoId == userinfo.Id)
                             {
+                                result.NgayXuLy = DateTime.Now;
                                 result.NgayCapNhat = DateTime.Now;
                             }
                             else if (model.NguoiTaoId != userinfo.Id)
@@ -1565,6 +1599,24 @@ namespace coreWeb.Controllers.Api
 
             return Ok(ds);
         }
+
+        public ActionResult TraCuuDSNgayTao(int? DonViId, int? DichVuId, string TuNgay, string DenNgay)
+        {
+            var objbhtn = new ThongKeCaNhanNgayTaoService(_context);
+            List<DanhSachThucHienYeuCau> ds = new List<DanhSachThucHienYeuCau>();
+            if (DonViId == null)
+            {
+                ds = objbhtn.danhSach(-1, (int)DichVuId, TuNgay, DenNgay);
+            }
+            else
+            {
+                ds = objbhtn.danhSach((int)DonViId, (int)DichVuId, TuNgay, DenNgay);
+            }
+
+
+            return Ok(ds);
+        }
+
         public ActionResult TraCuuDSUnit(int? DonViId, int? DichVuId, string TuNgay, string DenNgay)
         {
             var objbhtn = new DanhSachThucHienYeuCauDonViService(_context);
@@ -1598,6 +1650,108 @@ namespace coreWeb.Controllers.Api
 
             return Ok(ds);
         }
-       
+
+        public async Task<ActionResult> SaveCommentJira()
+        {
+
+            DateTime date1 = new DateTime(2022, 8, 25, 0, 0, 0);
+            //DateTime date2 = new DateTime(2022, 6, 30, 23, 0, 0);
+            var jiraacount = _context.User.Where(p => p.Id == 1080).Select(p => new { p.Id, p.JiraAcount, p.JiraPass }).FirstOrDefault();
+            var listyeucau = _context.YeuCau.Where(p => p.StateId != 9 && p.JiraDaGui != null && p.NgayTao > date1 && p.StateId != 6).ToList();
+            var comment = "";
+
+            foreach (var item in listyeucau)
+            {
+                if (item.JiraDaGui != null)
+                {
+                    var jiralink = item.JiraDaGui;
+                    var split = jiralink.Split('/');
+                    var majira = "";
+
+                    for (var i = 0; i < split.Length; i++)
+                    {
+                        majira = split[split.Length - 1];
+                    }
+
+                    object userInfos = new { Username = jiraacount.JiraAcount, Password = jiraacount.JiraPass };
+                    var byteArray = Encoding.ASCII.GetBytes($"{jiraacount.JiraAcount}:{jiraacount.JiraPass}");
+                    string encodeString = "Basic " + Convert.ToBase64String(byteArray);
+                    var client = new System.Net.Http.HttpClient();
+                    var jsonObj = JsonConvert.SerializeObject(userInfos);
+                    var connectionUrl = "https://cntt.vnpt.vn/rest/api/2/issue/" + majira;
+                    StringContent content = new StringContent(jsonObj.ToString(), Encoding.UTF8, "application/json");
+                    var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(connectionUrl),
+                        Method = HttpMethod.Get
+                    };
+                    request.Headers.Add("Authorization", encodeString);
+                    var response = await client.SendAsync(request);
+                    if (response.StatusCode.ToString() != "Forbidden")
+                    {
+                        var dataResult = response.Content.ReadAsStringAsync().Result;
+                        JObject joResponse = JObject.Parse(dataResult);
+                        if (joResponse["fields"] != null)
+                        {
+                            JObject jObjectnew = (JObject)joResponse["fields"]["comment"];
+                            JArray userResponseArray = (JArray)jObjectnew["comments"];
+                            JObject jObjectnew1 = (JObject)joResponse["fields"]["status"];
+                            string status = jObjectnew1["name"].Value<string>();
+                            if (status != "Resolved" && status != "Cancelled" && status != "Closed" && status != "Deployed")
+                            {
+                                foreach (JObject ja in userResponseArray.Children<JObject>())
+                                {
+                                    foreach (JProperty val in ja.Properties())
+                                    {
+                                        if (val.Name == "body")
+                                        {
+                                            comment += (string)val.Value;
+                                        }
+                                        if (val.Name == "updateAuthor")
+                                        {
+                                            var userName = val.Value["displayName"];
+                                            comment += " - " + userName.ToString();
+                                        }
+                                        if (val.Name == "updated")
+                                        {
+                                            var time = val.Value;
+                                            var date = time.ToString();
+                                            DateTime enteredDate = DateTime.Parse(date);
+                                            var format = enteredDate.ToString("dd/MM/yyyy");
+                                            comment += " - " + (string)time.ToString() + "; ";
+                                        }
+
+                                    }
+
+                                }
+
+                                item.CommentJira = comment;
+                                _context.Update(item);
+                                _context.SaveChanges();
+                                comment = "";
+                            }
+                            
+
+                        }
+                    }
+                    
+
+                }
+            }
+
+            return Ok();
+        }
+
+
+        public ActionResult callSaveCommentJira()
+        {
+            var JobName = "SaveComment";
+            // first job
+            RecurringJob.AddOrUpdate(
+                JobName,
+                () => SaveCommentJira(),
+                "0 */12 * * *", TimeZoneInfo.Local);
+            return Ok();
+        }
     }
 }

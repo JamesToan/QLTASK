@@ -22,6 +22,8 @@ using Hangfire.SqlServer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using Hangfire.Dashboard;
+using static coreWeb.Models.DbAuthorizeAttribute;
 
 namespace coreWeb
 {
@@ -43,7 +45,19 @@ namespace coreWeb
         {
             var connection = Configuration.GetValue<string>("Config:DB");
             MyOption.MyConnection = connection;
-            services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            //services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(connection, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+            }));
             services.AddHangfireServer();
             services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(connection));
             //services.AddDbContext<vnPlayDbContext>(options => options.UseSqlServer(connection));
@@ -130,8 +144,14 @@ namespace coreWeb
             app.UseAuthentication(); //Using token
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseHangfireDashboard();
-            
+            //app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions()
+            {
+                IsReadOnlyFunc = (DashboardContext context) => false,
+                DisplayStorageConnectionString = false,
+                Authorization = new[] {new MyAuthorizationFilter()}
+            });
+
             app.UseSession();
             app.UseAutoAPI();
             app.UseMvc(routes =>

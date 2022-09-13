@@ -75,31 +75,39 @@
                        icon="el-icon-download"
                        class="filter-item"
                        @click="handleExport">Xuất</el-button>
+
+            <el-button type="success"
+                       size="small"
+                       icon="el-icon-download"
+                       class="filter-item"
+                       @click="saveComment"
+                       v-if="RoleId==1">Test</el-button>
+
             <el-input clearable
                       v-model="search"
                       placeholder="Tìm kiếm"
                       style="width: 200px; float: left; margin-right: 5px"></el-input>
             <!--<el-select style="width: 200px; float: left;"
-                     v-model="StateIdFilter"
-                     @change="changeStateIdFilter"
-                     placeholder="Chọn trạng thái"
-                     v-if="isTrangThai">
-            <el-option v-for="item in ListDMTrangThai"
-                       :key="item.Id"
-                       :label="item.StateName"
-                       :value="item.Id">
-            </el-option>
-          </el-select>-->
+             v-model="StateIdFilter"
+             @change="changeStateIdFilter"
+             placeholder="Chọn trạng thái"
+             v-if="isTrangThai">
+    <el-option v-for="item in ListDMTrangThai"
+               :key="item.Id"
+               :label="item.StateName"
+               :value="item.Id">
+    </el-option>
+  </el-select>-->
             <!--<el-select style="width: 200px; float: left;margin-right:3px"
-                     v-model="DichVuIdFilter"
-                     @change="changeDichVuIdFilter(DichVuIdFilter)"
-                     placeholder="Chọn Dịch Vụ">
-            <el-option v-for="item in ListDMDichVu"
-                       :key="item.Id"
-                       :label="item.TenDichVu"
-                       :value="item.Id">
-            </el-option>
-          </el-select>-->
+             v-model="DichVuIdFilter"
+             @change="changeDichVuIdFilter(DichVuIdFilter)"
+             placeholder="Chọn Dịch Vụ">
+    <el-option v-for="item in ListDMDichVu"
+               :key="item.Id"
+               :label="item.TenDichVu"
+               :value="item.Id">
+    </el-option>
+  </el-select>-->
           </div>
           <el-table :data="renderData()"
                     border
@@ -243,7 +251,7 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2 & scope.row.StateId != 9"></el-button>
+                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == 4 && scope.row.StateId != 6)|| (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)||(scope.row.DichVuId == 15 || scope.row.DichVuId == 6 || scope.row.DichVuId == 19 || scope.row.DichVuId == 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2 & scope.row.StateId != 9"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
@@ -1337,6 +1345,7 @@ import {
   NSQL,
   getNhanSuXuLy,
   NSQLTen,
+  saveComment,
 } from "../../store/api";
 export default {
   data() {
@@ -2080,7 +2089,7 @@ export default {
 
           }
 
-          if(row.StateId !=10 && (row.NhanSuId == this.NhanSuId || row.DichVuId == this.AdminDVId) && (row.DichVuId == 6 || row.DichVuId == 15)){
+          if(row.StateId !=10 && (row.NhanSuId == this.NhanSuId || row.DichVuId == this.AdminDVId) && (row.DichVuId == 6 || row.DichVuId == 15 || row.DichVuId == 19)){
              this.isChuyenNS = true;
           }
           else if(row.DichVuId == 6){
@@ -2093,7 +2102,7 @@ export default {
           var checkdv = false;
 
           for( var i = 0; i < this.QLDVList.length; i++){
-            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId == 6 || this.QLDVList[i].DichVuId ==11 || this.QLDVList[i].DichVuId ==15)){
+            if(this.QLDVList[i].DichVuId == row.DichVuId && (this.QLDVList[i].DichVuId == 6 || this.QLDVList[i].DichVuId ==11 || this.QLDVList[i].DichVuId ==15|| this.QLDVList[i].DichVuId ==19)){
                 checkdv = true;
             }
             if(this.QLDVList[i].DichVuId == row.DichVuId && row.StateId ==10){
@@ -2436,8 +2445,10 @@ export default {
           "Thời hạn",
           "Ngày xư lý",
           "Task Jira",
+          "Comment Jira",
           "Trạng thái",
           "Nhân sự",
+          "Mã nhân viên",
           "Người tạo",
           "Dịch vụ",
           "Đơn vị",
@@ -2452,8 +2463,10 @@ export default {
           "ThoiHan",
           "NgayXuLy",
           "JiraDaGui",
+          "CommentJira",
           "States.StateName",
           "NhanSu.TenNhanSu",
+          "NhanSuId",
           "User.FullName",
           "DichVu.TenDichVu",
           "Unit.UnitName",
@@ -3125,6 +3138,10 @@ export default {
       });
 
 
+    },
+
+    saveComment(){
+      saveComment();
     },
     filterHandler(value, row) {
 
