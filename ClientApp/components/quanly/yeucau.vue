@@ -88,26 +88,26 @@
                       placeholder="Tìm kiếm"
                       style="width: 200px; float: left; margin-right: 5px"></el-input>
             <!--<el-select style="width: 200px; float: left;"
-             v-model="StateIdFilter"
-             @change="changeStateIdFilter"
-             placeholder="Chọn trạng thái"
-             v-if="isTrangThai">
-    <el-option v-for="item in ListDMTrangThai"
-               :key="item.Id"
-               :label="item.StateName"
-               :value="item.Id">
-    </el-option>
-  </el-select>-->
+                     v-model="StateIdFilter"
+                     @change="changeStateIdFilter"
+                     placeholder="Chọn trạng thái"
+                     v-if="isTrangThai">
+            <el-option v-for="item in ListDMTrangThai"
+                       :key="item.Id"
+                       :label="item.StateName"
+                       :value="item.Id">
+            </el-option>
+          </el-select>-->
             <!--<el-select style="width: 200px; float: left;margin-right:3px"
-             v-model="DichVuIdFilter"
-             @change="changeDichVuIdFilter(DichVuIdFilter)"
-             placeholder="Chọn Dịch Vụ">
-    <el-option v-for="item in ListDMDichVu"
-               :key="item.Id"
-               :label="item.TenDichVu"
-               :value="item.Id">
-    </el-option>
-  </el-select>-->
+                     v-model="DichVuIdFilter"
+                     @change="changeDichVuIdFilter(DichVuIdFilter)"
+                     placeholder="Chọn Dịch Vụ">
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>-->
           </div>
           <el-table :data="renderData()"
                     border
@@ -130,14 +130,14 @@
                 </text-highlight>
               </template>
             </el-table-column>
-            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="250" >
-              <template slot-scope="scope" >
+            <el-table-column prop="TenYeuCau" label="Yêu cầu" min-width="250">
+              <template slot-scope="scope">
                 <div style="text-align:justify">
                   <span :queries="search" :style=changecolor(scope.row.LoaiYeuCauId)>
                     {{ scope.row.TenYeuCau }}
                   </span>
                 </div>
-                
+
               </template>
             </el-table-column>
 
@@ -154,7 +154,7 @@
                 <div style="text-align:justify">
                   <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NhanSuId ? scope.row.NhanSu.TenNhanSu : ""}}</span>
                 </div>
-                
+
 
               </template>
             </el-table-column>
@@ -179,7 +179,7 @@
                 <div style="text-align:justify">
                   <span :style=changecolor(scope.row.LoaiYeuCauId)> {{ scope.row.NguoiTaoId ? scope.row.User.FullName : ""}}</span>
                 </div>
-                
+
 
               </template>
             </el-table-column>
@@ -251,13 +251,13 @@
                            :title="allowEdit ? 'Cập nhật' : 'Xem chi tiết'"
                            :icon="allowEdit ? 'el-icon-edit' : 'el-icon-view'"
                            size="mini"
-                           v-if=" (RoleId==1 || (RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1)|| (RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) || (scope.row.DichVuId == 4 && scope.row.StateId != 6)|| (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6)||(scope.row.DichVuId == 15 || scope.row.DichVuId == 6 || scope.row.DichVuId == 19 || scope.row.DichVuId == 6)|| scope.row.StateId == 10 || scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6 )&& UserUnitId != 2 & scope.row.StateId != 9"></el-button>
+                           v-if="RoleId==1 || ((RoleId==2 && scope.row.StateId != 6 && UserUnitId == 1) && scope.row.StateId != 9) || ((RoleId==3 && scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) && scope.row.StateId != 9) || (RoleId==3 && scope.row.NhanSuId == NhanSuId && scope.row.StateId != 6&& scope.row.StateId != 9 ) || (scope.row.DichVuId == AdminDVId && scope.row.StateId != 6 && scope.row.StateId != 9)|| ((scope.row.DichVuId == 15 || scope.row.DichVuId == 6 || scope.row.DichVuId == 19) && UserUnitId == 1)"></el-button>
                 <el-button @click="handleDelete(scope.row)"
                            type="danger"
                            icon="el-icon-delete"
                            title="Xóa"
                            size="mini"
-                           v-if="(scope.row.StateId==10 || RoleId==1 || scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) && UserUnitId != 2"></el-button>
+                           v-if="(scope.row.StateId == 10 && scope.row.NguoiTaoId == UserId || RoleId==1 || scope.row.NguoiTaoId == UserId && scope.row.StateId != 6) && UserUnitId != 2"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -1203,7 +1203,7 @@
                                 value-format="yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                 </el-date-picker>
-                
+
               </el-form-item>
             </el-col>
 
@@ -1307,6 +1307,74 @@
       </div>
 
     </el-dialog>
+
+    <!--     \\\\\\\\\\ Add Khách Hàng  \\\\\\\\\     -->
+
+    <el-dialog title="Quản lý yêu cầu"
+               :visible.sync="dialogFormKhachHang"
+               top="55px"
+               width="80%"
+               center>
+      <el-form :model="formData6"
+               :rules="formRules"
+               ref="formData6"
+               label-width="140px"
+               class="m-auto"
+               size="small"
+               :disabled="!allowEdit">
+
+
+        <el-form-item label="Dịch vụ: " prop="DichVuId">
+          <el-select v-model="formData6.DichVuId"
+                     placeholder="Chọn dịch vụ"
+                     @change="setNguoiThucHien(formData6.DichVuId)"
+                     class="w-100" filterable>
+            <el-option v-for="item in ListDMDichVu"
+                       :key="item.Id"
+                       :label="item.TenDichVu"
+                       :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Tiêu đề yêu cầu: " prop="TenYeuCau">
+          <el-input v-model="formData6.TenYeuCau"
+                    type="text"
+                    size="small"></el-input>
+        </el-form-item>
+        
+        <el-form-item label="Nội dung yêu cầu: " prop="NoiDung">
+          <ckeditor :editor="editor"
+                    v-model="formData6.NoiDung"
+                    :config="editorConfig"
+                    :disabled="!allowEdit"></ckeditor>
+        </el-form-item>
+       
+        <el-form-item label="Tập tin đính kèm: ">
+          <el-upload action="/api/TapTin/UploadDoc"
+                     :limit="3"
+                     :multiple="true"
+                     :on-preview="handlePreview"
+                     :on-remove="handleRemove"
+                     :file-list="fileList"
+                     :on-success="handleSuccess"
+                     :before-upload="beforeUpload"
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,image/jpeg,image/gif,image/png,.zip,.rar,.p7b"
+                     :auto-upload="true"
+                     size="mini">
+            <el-button size="small" type="primary">Tải lên</el-button>
+          </el-upload>
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer" v-if="allowEdit">
+        <el-button @click="resetFormBH" size="small">Bỏ qua</el-button>
+        <el-button type="primary" size="small" @click.once="addDataBH" :key="buttonKey">Cập nhật</el-button>
+        <el-button v-if="isViewBT" @click="AcceptYeuCau1" size="small" type="success">Tiếp nhận</el-button>
+
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -1399,6 +1467,7 @@ export default {
       isCheckNS :false,
       buttonKey: 1,
       LoaiYeuCauIdFilter:5,
+      dialogFormKhachHang:false,
       pickerOptions:{
           disabledDate(time) {
             return time.getTime() <= (Date.now()- 3600 * 1000 * 24);
@@ -1529,6 +1598,16 @@ export default {
         NgayTao :null,
         NguoiTaoId:null,
         UnitId:null,
+      },
+      formData6:{
+        TenYeuCau: null,
+        DichVuId: null,
+        NoiDung: null,
+        NguoiTaoId: null,
+        UnitId:null,
+        NgayTao :null,
+        NhanSuId: null,
+        FileUpload: null,
       },
       formRules: {
         TenYeuCau: [
@@ -1875,7 +1954,15 @@ export default {
           this.dialogFormBHDisplay = true;
 
         }
-        else if (this.UserUnitId !=2 && this.UserUnitId !=1) {
+        else if (this.UserUnitId ==16){
+
+          this.isChuyenYc = false;
+          this.isChangeNhanSu = false;
+
+          this.dialogFormKhachHang = true;
+
+        }
+        else if (this.UserUnitId !=2 && this.UserUnitId !=1 && this.UserUnitId <16) {
 
             this.isChuyenYc = false;
             this.dialogFormBHDisplay = true;
@@ -2074,7 +2161,7 @@ export default {
 
       this.ListNhansuQLDV= [];
       this.isChuyenYc = false;
-      if(this.UserUnitId == 1 ){
+      if(this.UserUnitId == 1 || this.UserUnitId == 2 ){
           var bool = false;
 
           if(row.StateId ==10 && (this.AdminDVId == row.DichVuId)){
@@ -2296,13 +2383,8 @@ export default {
 
 
       }
-      else if(this.UserUnitId == 2){
-            this.$message({
-               type: "warning",
-                message: "Không thể cập nhật!"
-            });
-      }
-      else if(this.UserUnitId != 1){
+
+      else if(this.UserUnitId != 1 && this.UserUnitId != 2){
         if(row.StateId != 6){
 
           //this.formData2 = Object.assign({}, row);

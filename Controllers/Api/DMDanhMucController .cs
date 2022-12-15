@@ -38,7 +38,7 @@ namespace coreWeb.Controllers
 
 
                     DMNhanSu = _context.NhanSu.Where(p => p.isActive == true).ToList();
-                    DMNhanSuCNTT = _context.NhanSu.Where(p => p.isActive == true && p.Id != 7 & p.UnitId == 1).ToList();
+                    DMNhanSuCNTT = _context.NhanSu.Where(p => p.isActive == true && p.Id != 7 & p.UnitId == 1 || p.UnitId == 2).ToList();
                    
                     var DMQLDV = _context.QuanLyDichVu.ToList();
                     var DMTinhTrang = _context.Status.ToList();

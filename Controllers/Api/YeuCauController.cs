@@ -723,7 +723,7 @@ namespace coreWeb.Controllers.Api
                     
                     if (result != null ) //update
                     {
-                        if (userinfo.UnitId == 1 || userinfo.Id == result.NguoiTaoId)
+                        if (userinfo.UnitId == 1 || userinfo.Id == result.NguoiTaoId || userinfo.UnitId == 2)
                         {
                             result.TenYeuCau = model.TenYeuCau;
                             result.NoiDung = model.NoiDung;
