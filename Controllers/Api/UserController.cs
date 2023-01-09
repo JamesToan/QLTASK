@@ -164,7 +164,8 @@ namespace coreWeb.Controllers
                            select new
                            {
                                p.UserName,
-                               p.RoleId
+                               p.RoleId,
+                               p.UnitId
                            }).FirstOrDefault();
             if (objUser != null)
             {
@@ -190,6 +191,8 @@ namespace coreWeb.Controllers
                                p.FullName,
                                p.Phone,
                                p.UnitId,
+                               p.JiraAcount,
+                               p.JiraPass,
                            }).FirstOrDefault();
             if (objUser != null)
             {

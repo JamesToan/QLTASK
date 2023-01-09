@@ -13,6 +13,7 @@ namespace coreWeb.Models.Entities
         public DichVu()
         {
             this.DonVi = new List<DonViYeuCau>();
+            this.LoaiYeuCauNew = new List<LoaiYeuCauNew>();
         }
 
         [Key]
@@ -24,5 +25,7 @@ namespace coreWeb.Models.Entities
         public bool? IsActive { get; set; }
 
         public List<DonViYeuCau> DonVi { get; set; }
+
+        public List<LoaiYeuCauNew>  LoaiYeuCauNew { get; set; }
     }
 }

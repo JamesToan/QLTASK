@@ -192,7 +192,7 @@ namespace coreWeb.Controllers.Api
                 {
                     if (nhansu.DichVuId != null)
                     {
-                        objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 };
+                        objUser = new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 , UnitId = (int)nhansu.UnitId};
                     }
                 }
                 
@@ -205,12 +205,12 @@ namespace coreWeb.Controllers.Api
                     {
                         if (nhansu.AdminDichVuId != null) // Lấy thông tin nhân sự quản lý dịch vụ
                         {
-                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = (int)nhansu.AdminDichVuId }).Single();
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = (int)nhansu.AdminDichVuId , UnitId = (int)nhansu.UnitId }).Single();
 
                         }
                         else
                         {
-                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 }).Single();
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = (int)p.DichVuId, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 , UnitId = (int)nhansu.UnitId }).Single();
 
                         }
                     }
@@ -218,12 +218,12 @@ namespace coreWeb.Controllers.Api
                     {
                         if (nhansu.AdminDichVuId != null)
                         {
-                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = (int)nhansu.AdminDichVuId }).Single();
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = (int)nhansu.AdminDichVuId, UnitId = (int)nhansu.UnitId }).Single();
 
                         }
                         else
                         {
-                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 }).FirstOrDefault();
+                            objUser = _context.NhanSu.Where(p => p.UserId == user.UserId).Select(p => new NhanSuViewModel { DichVuId = 0, UserId = user.UserId, NhanSuId = nhansu.Id, TenNhanSu = nhansu.TenNhanSu, AdminDichVuId = 0 , UnitId = (int)nhansu.UnitId }).FirstOrDefault();
 
                         }
 
@@ -257,6 +257,7 @@ namespace coreWeb.Controllers.Api
             public int NhanSuId { get; set; }
             public string TenNhanSu { get; set; }
             public int AdminDichVuId { get; set; }
+            public int UnitId { get; set; }
         }
 
     }

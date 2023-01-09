@@ -24,13 +24,13 @@ namespace coreWeb.Controllers
 
         [HttpGet]
         //[DbAuthorize]
-        public IActionResult List(int RoleId)
+        public IActionResult List()
         {
             //var user = new UserClaim(HttpContext);
             //var obj = _userService.GetListUser();
 
             var obj = _context.PermissionRole.Include(p => p.Permission)
-                      .Where(x => x.RoleId == RoleId)
+                      
                       .ToList();
 
             if (obj != null)
@@ -46,21 +46,40 @@ namespace coreWeb.Controllers
         //[DbAuthorize]
         public IActionResult ListActive(int RoleId)
         {
-            //var user = new UserClaim(HttpContext);
+            var user = new UserClaim(HttpContext);
             //var obj = _userService.GetListUser();
-
-            var obj = _context.PermissionRole.Include(p => p.Permission)
+            var usernit = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+            if (usernit.UnitId == 1 || usernit.UnitId ==2 )
+            {
+                var obj = _context.PermissionRole.Include(p => p.Permission)
                       .Where(x => x.RoleId == RoleId && x.IsActive)
                       .ToList();
 
-            if (obj != null)
-            {
-                return Ok(obj);
+                if (obj != null)
+                {
+                    return Ok(obj);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
             else
             {
-                return NoContent();
+                var obj = _context.PermissionRole.Include(p => p.Permission)
+                      .Where(x => x.RoleId == RoleId && x.IsActive && x.PermissionId != 76 && x.PermissionId != 78 && x.PermissionId != 31)
+                      .ToList();
+
+                if (obj != null)
+                {
+                    return Ok(obj);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
+            
         }
         [HttpPost]
         //[DbAuthorize]

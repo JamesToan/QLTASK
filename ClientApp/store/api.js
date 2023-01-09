@@ -116,17 +116,12 @@ export function changePass(PasswordOld, PasswordNew) {
     data
   });
 }
-export function updateProfile(FullName, Phone, JiraAcount, JiraPass) {
-  const data = {
-    FullName,
-    Phone,
-    JiraAcount,
-    JiraPass
-  };
+export function updateProfile(data) {
+  
   return request({
     url: "api/user/UpdateProfile",
     method: "post",
-    data
+    data : data
   });
 }
 
@@ -542,8 +537,8 @@ export function getYeuCau() {
   });
 }
 
-export function selectYeuCau(StateId, DichVuId, LoaiYCId) {
-  const params = { StateId, DichVuId, LoaiYCId};
+export function selectYeuCau(StateId, DichVuId, LoaiYCId, KhachHang) {
+  const params = { StateId, DichVuId, LoaiYCId, KhachHang};
   return request({
     url: "api/yeucau/Select",
     method: "get",
@@ -1001,5 +996,96 @@ export function deleteLoaiYeuCau(id) {
   });
 }
 
+//  ----- Dịch vụ theo đơn vị -------//
+
+export function selectdichvuunit() {
+ 
+  return request({
+    url: "api/dichvutheounit/select",
+    method: "post",
+    
+  });
+}
+
+export function selectdichvuunitall() {
+
+  return request({
+    url: "api/dichvutheounit/selectall",
+    method: "post",
+
+  });
+}
 
 
+export function addDichvuunit(data) {
+  //const data = { };
+  return request({
+    url: "api/dichvutheounit/add",
+    method: "post",
+    data: data
+  });
+}
+
+export function updateDichvuunit(data) {
+
+  return request({
+    url: "api/dichvutheounit/update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteDichvuunit(id) {
+  const params = { id };
+  return request({
+    url: "api/dichvutheounit/delete",
+    method: "post",
+    params: params
+  });
+}
+
+//  ----- Loại dịch vụ yêu cầu -------//
+export function selectloaiyc() {
+
+  return request({
+    url: "api/loaiyeucaunew/select",
+    method: "get",
+
+  });
+}
+
+export function getloaiycbyid(id) {
+  const params = { id };
+  return request({
+    url: "api/loaiyeucaunew/Getlistbyid",
+    method: "post",
+    params: params
+  });
+}
+
+export function Addloaiyc(data) {
+  
+  return request({
+    url: "api/loaiyeucaunew/Add",
+    method: "post",
+    data: data
+  });
+}
+
+export function Updateloaiyc(data) {
+
+  return request({
+    url: "api/loaiyeucaunew/Update",
+    method: "post",
+    data: data
+  });
+}
+
+export function deleteloaiyc(id) {
+  const params = { id };
+  return request({
+    url: "api/loaiyeucaunew/Delete",
+    method: "post",
+    params: params
+  });
+}

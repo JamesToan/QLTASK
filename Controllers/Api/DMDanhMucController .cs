@@ -33,7 +33,7 @@ namespace coreWeb.Controllers
                 List<NhanSu> DMNhanSuCNTT;
                
                 
-                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3)
+                if (user.RoleId == 1 || user.RoleId == 2 || user.RoleId == 3 || user.RoleId == 4)
                 {
 
 
@@ -45,7 +45,7 @@ namespace coreWeb.Controllers
                     var DMDiaBan = _context.Unit.ToList();
                     var DMTrangThai = _context.States.OrderByDescending(e => e.Id).ToList();
                     var DMDonVi = _context.DonViYeuCau.ToList();
-                    var DMDichVu = _context.DichVu.Where(dm => dm.IsActive == true).Include(e => e.DonVi).OrderBy(e => e.Id).ToList();
+                    var DMDichVu = _context.DichVu.Where(dm => dm.IsActive == true).Include(e => e.LoaiYeuCauNew).Include(e => e.DonVi).OrderBy(e => e.Id).ToList();
                     var DMJira = _context.Jira.Where(dm => dm.IsActive == true).ToList();
                     var DMLYC = _context.LoaiYeuCau.ToList();
                     

@@ -20,36 +20,37 @@
     <div class="row">
       <div class="col-12">
         <div class="card-box table-responsive text-center">
-          <el-form :model="formData"
+          <el-form :model="formData1"
                    :rules="Rules"
-                   ref="formData"
+                   ref="formData1"
                    label-width="120px"
                    class="m-auto"
                    style="width: 620px"
                    size="small">
-            <el-form-item label="Email" prop="UserName">
-              <el-input v-model="formData.UserName"
+            <el-form-item label="UserName" prop="UserName">
+              <el-input v-model="formData1.UserName"
                         type="text"
                         size="small"
                         readonly></el-input>
             </el-form-item>
-            <el-form-item label="Họ tên" prop="HoTen">
-              <el-input v-model="formData.HoTen"
+            <el-form-item label="Họ tên" prop="FullName">
+              <el-input v-model="formData1.FullName"
                         type="text"
                         size="small"></el-input>
             </el-form-item>
-            <el-form-item label="Số điện thoại" prop="SoDienThoai">
-              <el-input v-model="formData.SoDienThoai"
+            <el-form-item label="Số điện thoại" prop="Phone">
+              <el-input v-model="formData1.Phone"
                         type="text"
                         size="small"></el-input>
             </el-form-item>
             <el-form-item label="Tên đăng nhập jira" prop="JiraAcount">
-              <el-input v-model="formData.JiraAcount"
-                        type="text"
-                        size="small"></el-input>
+              <el-input v-model="formData1.JiraAcount"
+                        type="text" 
+                        size="small"
+                        ></el-input>
             </el-form-item>
             <el-form-item label="Mật khẩu jira" prop="JiraPass">
-              <el-input v-model="formData.JiraPass"
+              <el-input v-model="formData1.JiraPass"
                         type="password"
                         size="small" show-password></el-input>
             </el-form-item>
@@ -57,7 +58,7 @@
             <el-form-item label="Số CMND/CCCD"
                           prop="SoDinhDanh"
                           v-if="RoleId == 3">
-              <el-input v-model="formData.SoDinhDanh"
+              <el-input v-model="formData1.SoDinhDanh"
                         type="text"
                         size="small"></el-input>
             </el-form-item>
@@ -80,7 +81,7 @@
 import { getRole, getUser } from "../../store/common";
 import {
   requestGetProfile,
-  updateProfile, 
+  updateProfile,
 } from "../../store/api";
 export default {
   data() {
@@ -89,10 +90,10 @@ export default {
       loading: false,
       isEditor: 0,
       search: null,
-      formData: {
+      formData1: {
         UserName: null,
-        HoTen: null,
-        SoDienThoai: null,
+        FullName: null,
+        Phone: null,
         Email: null,
         GioiTinhId: 1,
         JiraAcount: null,
@@ -153,9 +154,9 @@ export default {
     },
     
     updateData() {
-      this.$refs.formData.validate(valid => {
+      this.$refs.formData1.validate(valid => {
         if (valid) {
-          updateProfile(this.formData.HoTen, this.formData.SoDienThoai,this.formData.JiraAcount, this.formData.JiraPass).then(
+          updateProfile(this.formData1).then(
             data => {
               if (data == 1) {
                 
@@ -181,22 +182,15 @@ export default {
   },
 
   created() {
-    getListDanhMucSVL().then(data => {
-      if (data) {
-        this.ListDMTinh = data.DMTinh;
-        this.ListDMHuyen = data.DMHuyen;
-        this.ListDMGioiTinh = data.DMGioiTinh;
-        this.ListDMNganhKinhTe = data.DMNganhKinhTe;
-        this.ListDMLoaiHinh = data.DMLoaiHinh;
-      }
-    });
+    this.formData1.JiraAcount = "";
+    this.formData1.JiraPass = "";
     requestGetProfile(getUser()).then(data => {
       if (data) {
-        this.formData.UserName = getUser();
-        this.formData.HoTen = data.FullName;
-        this.formData.SoDienThoai = data.Phone;
-        this.formData.JiraAcount = data.JiraAcount;
-        this.formData.JiraPass = data.JiraPass;
+        this.formData1.UserName = getUser();
+        this.formData1.FullName = data.FullName;
+        this.formData1.Phone = data.Phone;
+        this.formData1.JiraAcount = data.JiraAcount;
+        this.formData1.JiraPass = data.JiraPass;
       }
     });
     

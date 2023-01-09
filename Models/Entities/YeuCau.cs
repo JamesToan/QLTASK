@@ -62,6 +62,8 @@ namespace coreWeb.Models.Entities
 
         public string CommentJira { get; set; }
 
+        public bool? KhachHang { get; set; }
+
         [ForeignKey("StateId")]
         public States States { get; set; }
 
@@ -82,5 +84,8 @@ namespace coreWeb.Models.Entities
 
         [ForeignKey("LoaiYeuCauId")]
         public LoaiYeuCau LoaiYeuCau { get; set; }
+
+        [ForeignKey("LoaiYeuCauId")]
+        public LoaiYeuCauNew LoaiYeuCauNew { get; set; }
     }
 }

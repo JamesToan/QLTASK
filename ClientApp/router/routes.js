@@ -21,6 +21,8 @@ import state from "components/danhmuc/state";
 import status from "components/danhmuc/status";
 import donviyeucau from "components/danhmuc/donviyeucau";
 import quanlydichvu from "components/danhmuc/quanlydichvu";
+import dichvutheounit from "components/danhmuc/dichvutheounit";
+import loaiyeucaunew from "components/danhmuc/loaiyeucaunew";
 //// quan ly
 import baocao from "components/thongke/baocao";
 import yeucau from "components/quanly/yeucau";
@@ -99,6 +101,7 @@ export const routes = [
       show: "true"
     },
     children: [
+      
       {
         name: "dichvu",
         path: "dichvu",
@@ -144,9 +147,26 @@ export const routes = [
           show: "true"
         }
       },
-      
+      {
+        name: "dichvutheounit",
+        path: "dichvutheounit",
+        component: dichvutheounit,
+        meta: {
+          display: "Dịch vụ theo đơn vị",
+          show: "true"
+        }
+      },
+      {
+        name: "loaiyeucaunew",
+        path: "loaiyeucaunew",
+        component: loaiyeucaunew,
+        meta: {
+          display: "Loại yêu cầu",
+          show: "true"
+        }
+      },
     ]
-  },
+  }, 
   {
     name: "QuanLy",
     path: "/admin/",
@@ -204,6 +224,16 @@ export const routes = [
         component: yeucau,
         meta: {
           display: "Không xử lý",
+          show: "true"
+        }
+      },
+      {
+        name: "yeucau5",
+        path: "yeucau/:KhachHang",
+        params: { KhachHang: true },
+        component: yeucau,
+        meta: {
+          display: "Yêu cầu khách hàng",
           show: "true"
         }
       },

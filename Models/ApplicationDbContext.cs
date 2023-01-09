@@ -48,5 +48,9 @@ namespace coreWeb.Models
 
         //Quanlydichvu
         public DbSet<LoaiYeuCau> LoaiYeuCau { get; set; }
+
+        public DbSet<DichVuTheoUnit> DichVuTheoUnit { get; set; }
+
+        public DbSet<LoaiYeuCauNew> LoaiYeuCauNew { get; set; }
     }
 }

@@ -40,6 +40,8 @@ router.beforeEach((to, from, next) => {
         if (data !== undefined) {
           store.commit("SET_NAME", data.UserName);
           store.commit("SET_ROLE", data.RoleId);
+          //store.commit("SET_UNIT", data.UnitId);
+          //setUnit(data.UnitId);
           setRole(data.RoleId);
           document.title = mainTitle + " - " + to.meta.display;
           next();

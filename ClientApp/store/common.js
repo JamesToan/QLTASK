@@ -4,6 +4,7 @@ const UserKey = 'UUser'
 const Remain = 'URemain'
 const Code = 'Code'
 const RoleKey = 'URole'
+const Unit = 'UUnit'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -68,6 +69,18 @@ export function setCode(code) {
     expires: 7
   })
 }
+
+export function getUnit() {
+  return Cookies.get(Unit)
+}
+
+export function setUnit(unit) {
+  return Cookies.set(Unit, unit, {
+    expires: 7
+  })
+}
+
+
 export function removeCode() {
   return Cookies.remove(Code)
 }

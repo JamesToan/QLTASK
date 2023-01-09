@@ -36,7 +36,7 @@ namespace coreWeb.Controllers.Api
                 .Include(e => e.DichVu)
                 .Include(e => e.NhanSu)
                 .Include(e => e.States)
-                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                 .Include(e => e.DonViYeuCau)
                 //.Include(e => e.Status)
                 .Include(e => e.User).FirstOrDefault();
@@ -51,7 +51,7 @@ namespace coreWeb.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Select(int? StateId, int? DichVuId, int? LoaiYCId)
+        public IActionResult Select(int? StateId, int? DichVuId, int? LoaiYCId, bool? KhachHang)
         {
             var user = new UserClaim(HttpContext);
             var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
@@ -60,24 +60,35 @@ namespace coreWeb.Controllers.Api
             if (user.RoleId == 1)
             {
                 List<YeuCau> result = new List<YeuCau>();
-                if (StateId != 6 )
+                if (StateId != 6 && KhachHang != true)
                 {
-                    result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId ==5) ).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) ).Include(e => e.DichVu)
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                .Include(e => e.DonViYeuCau)
+                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                .ToList();
+                }
+                else if (StateId != 6 && KhachHang == true)
+                {
+                    result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.KhachHang == true).Include(e => e.DichVu)
+                                .Include(e => e.NhanSu)
+                                .Include(e => e.States)
+                                .Include(e => e.User)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                 .ToList();
                 }
                 else
                 {
-                    result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)).Include(e => e.DichVu)
+                    result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)).Include(e => e.DichVu)
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                 .ToList();
@@ -107,24 +118,35 @@ namespace coreWeb.Controllers.Api
                 if (userinfo.UnitId == 2) // KHTCDN
                 {
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId !=6)
+                    if (StateId !=6 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId!=6 )&& (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && e.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId!=6 )&& (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.UnitId != 1 && (e.KhachHang == null && e.KhachHang == false)).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                .Include(e => e.DonViYeuCau)
+                                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                                .ToList();
+                    }
+                    else if (StateId != 6 && KhachHang == true)
+                    {
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.UnitId != 1 && e.KhachHang == true).Include(e => e.DichVu)
+                                                .Include(e => e.NhanSu)
+                                                .Include(e => e.States)
+                                                .Include(e => e.User)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
                     }
                     else
                     {
-                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && e.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.UnitId != 1 && e.KhachHang == null).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
@@ -144,24 +166,36 @@ namespace coreWeb.Controllers.Api
                 else if (userinfo.UnitId == 1) //  CNTT
                 {
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId !=6)
+                    if (StateId !=6 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5)&& e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5)&& e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
                     }
+                    else if (KhachHang == true)
+                    {
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null)
+                                                               && (StateId != 9) && (StateId != 6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && p.KhachHang == true)
+                                                               .Include(e => e.DichVu)
+                                                               .Include(e => e.NhanSu)
+                                                               .Include(e => e.States)
+                                                               .Include(e => e.User)
+                                                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                               .Include(e => e.DonViYeuCau)
+                                                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
+                    }
                     else
                     {
-                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
@@ -183,22 +217,22 @@ namespace coreWeb.Controllers.Api
                     List<YeuCau> result = new List<YeuCau>();
                     if (StateId != 6)
                     {
-                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && e.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.UnitId == userinfo.UnitId && e.KhachHang == null).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
                     }
                     else
                     {
-                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && e.UnitId == userinfo.UnitId).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.UnitId == userinfo.UnitId && e.KhachHang == null).Include(e => e.DichVu)
                                                 .Include(e => e.NhanSu)
                                                 .Include(e => e.States)
                                                 .Include(e => e.User)
-                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                 .Include(e => e.DonViYeuCau)
                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                 .ToList();
@@ -232,25 +266,36 @@ namespace coreWeb.Controllers.Api
                 if (userinfo.UnitId == 2) // phòng KHTCDN
                 {
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId != 6)
+                    if (StateId != 6 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1) && ((p.StateId == StateId || StateId == 5) && p.StateId !=6)
-                                                                && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && p.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null) && ((p.StateId == StateId || StateId == 5) && p.StateId !=6)
+                                                                && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && p.UnitId != 1 && p.KhachHang == null).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
+                    else if (StateId == 5 && KhachHang == true)
+                    {
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null) && ((p.StateId == StateId || StateId == 5) && p.StateId != 6) && p.KhachHang == true
+                                                                 && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && p.UnitId != 1 && p.KhachHang == null).Include(e => e.DichVu)
+                                        .Include(e => e.NhanSu)
+                                        .Include(e => e.States)
+                                        .Include(e => e.User)
+                                        .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                        .Include(e => e.DonViYeuCau)
+                                        .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
+                    }
                     else
                     {
-                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1) && (p.StateId == 6)
-                                                                && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5) && p.UnitId != 1).Include(e => e.DichVu)
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null) && (p.StateId == 6)
+                                                                && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && p.UnitId != 1 && p.KhachHang == null).Include(e => e.DichVu)
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau)
                                        .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
@@ -273,41 +318,54 @@ namespace coreWeb.Controllers.Api
                         quanlydv = _context.QuanLyDichVu.Where(p => p.NhanSuId == nhansu.Id && p.DichVuId == nhansu.DichVuId).FirstOrDefault();
                     }
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId != 6 && StateId != 9)
+                    if (StateId != 6 && StateId != 9 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1)
-                                                                && ((p.StateId == StateId || StateId == 5) && p.StateId !=6 && p.StateId != 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null)
+                                                                && ((p.StateId == StateId || StateId == 5) && p.StateId !=6 && p.StateId != 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
                                                                 && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
                                                                 .Include(e => e.DichVu)
                                                                 .Include(e => e.NhanSu)
                                                                 .Include(e => e.States)
                                                                 .Include(e => e.User)
-                                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                                 .Include(e => e.DonViYeuCau)
                                                                  .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
-                    else if (StateId == 9)
+                    else if (StateId == 9 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1)
-                                                               && ( StateId == 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null)
+                                                               && ( StateId == 9) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && (p.KhachHang == false && p.KhachHang == null)
                                                                && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
                                                                .Include(e => e.DichVu)
                                                                .Include(e => e.NhanSu)
                                                                .Include(e => e.States)
                                                                .Include(e => e.User)
-                                                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                               .Include(e => e.DonViYeuCau)
+                                                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
+                    }
+                    else if (StateId == 5 && KhachHang == true )
+                    {
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null)
+                                                               && (StateId != 9) && (StateId != 6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && p.KhachHang == true
+                                                               && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId)))
+                                                               .Include(e => e.DichVu)
+                                                               .Include(e => e.NhanSu)
+                                                               .Include(e => e.States)
+                                                               .Include(e => e.User)
+                                                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                                .Include(e => e.DonViYeuCau)
                                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
                     else
                     {
-                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == 1) && (p.StateId == 6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
+                        result = _context.YeuCau.Where(p => (p.DichVuId == DichVuId || DichVuId == null) && (p.StateId == 6) && (p.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
                                                                 && (p.NguoiTaoId == nhansu.UserId || p.NhanSuId == nhansu.Id || p.DichVuId == nhansu.AdminDichVuId || qldv.Contains(p.DichVuId) ))
                                                                 .Include(e => e.DichVu)
                                                                 .Include(e => e.NhanSu)
                                                                 .Include(e => e.States)
                                                                 .Include(e => e.User)
-                                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                                 .Include(e => e.DonViYeuCau)
                                                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan).ToList();
                     }
@@ -328,28 +386,41 @@ namespace coreWeb.Controllers.Api
                 else // các phòng khác
                 {
                     List<YeuCau> result = new List<YeuCau>();
-                    if (StateId !=6)
+                    if (StateId !=6 && KhachHang != true)
                     {
-                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
-                                                            && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId !=6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
+                                                            && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id && e.KhachHang == null)
                                                           .Include(e => e.DichVu)
                                                           .Include(e => e.NhanSu)
                                                           .Include(e => e.States)
                                                           .Include(e => e.User)
-                                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                          .Include(e => e.DonViYeuCau)
+                                                          .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                                          .ToList();
+                    }
+                    else if (StateId == 5 && KhachHang == true)
+                    {
+                        result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null) && e.KhachHang != null
+                                                            && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id )
+                                                          .Include(e => e.DichVu)
+                                                          .Include(e => e.NhanSu)
+                                                          .Include(e => e.States)
+                                                          .Include(e => e.User)
+                                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                           .Include(e => e.DonViYeuCau)
                                                           .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                           .ToList();
                     }
                     else
                     {
-                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == 1) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == 5)
-                                                              && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                        result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
+                                                              && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id && e.KhachHang == null)
                                                               .Include(e => e.DichVu)
                                                               .Include(e => e.NhanSu)
                                                               .Include(e => e.States)
                                                               .Include(e => e.User)
-                                                              .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                                              .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                                               .Include(e => e.DonViYeuCau)
                                                               .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                                               .ToList();
@@ -365,6 +436,45 @@ namespace coreWeb.Controllers.Api
                     }
 
                     
+                }
+            }
+            else if (user.RoleId == 4)
+            {
+                List<YeuCau> result = new List<YeuCau>();
+                if (StateId != 6)
+                {
+                    result = _context.YeuCau.Where(e => ((e.StateId == StateId || StateId == 5) && e.StateId != 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
+                                                        && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                                                      .Include(e => e.DichVu)
+                                                      .Include(e => e.NhanSu)
+                                                      .Include(e => e.States)
+                                                      .Include(e => e.User)
+                                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                      .Include(e => e.DonViYeuCau)
+                                                      .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                                      .ToList();
+                }
+                else
+                {
+                    result = _context.YeuCau.Where(e => (e.StateId == 6) && (e.DichVuId == DichVuId || DichVuId == null) && (e.LoaiYeuCauId == LoaiYCId || LoaiYCId == null)
+                                                          && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id)
+                                                          .Include(e => e.DichVu)
+                                                          .Include(e => e.NhanSu)
+                                                          .Include(e => e.States)
+                                                          .Include(e => e.User)
+                                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                                          .Include(e => e.DonViYeuCau)
+                                                          .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                                          .ToList();
+                }
+
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
                 }
             }
             else
@@ -393,7 +503,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                        .Include(e => e.DonViYeuCau)
                        .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                        .ToList();
@@ -405,7 +515,7 @@ namespace coreWeb.Controllers.Api
                        .Include(e => e.NhanSu)
                        .Include(e => e.States)
                        .Include(e => e.User)
-                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                        .Include(e => e.DonViYeuCau)
                        .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                        .ToList();
@@ -441,7 +551,7 @@ namespace coreWeb.Controllers.Api
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
                                .Include(e => e.User)
-                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                .Include(e => e.DonViYeuCau)
                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                .ToList();
@@ -454,7 +564,7 @@ namespace coreWeb.Controllers.Api
                                .Include(e => e.NhanSu)
                                .Include(e => e.States)
                                .Include(e => e.User)
-                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                               .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                .Include(e => e.DonViYeuCau)
                                .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e=>e.ThoiHan)
                                .ToList();
@@ -478,7 +588,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                 .ToList();
@@ -504,7 +614,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                 .ToList();
@@ -516,7 +626,7 @@ namespace coreWeb.Controllers.Api
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
                                  .Include(e => e.User)
-                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                  .Include(e => e.DonViYeuCau)
                                  .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                  .ToList();
@@ -531,7 +641,7 @@ namespace coreWeb.Controllers.Api
                                 .Include(e => e.NhanSu)
                                 .Include(e => e.States)
                                 .Include(e => e.User)
-                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                 .Include(e => e.DonViYeuCau)
                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                 .ToList();
@@ -543,7 +653,7 @@ namespace coreWeb.Controllers.Api
                                  .Include(e => e.NhanSu)
                                  .Include(e => e.States)
                                  .Include(e => e.User)
-                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                  .Include(e => e.DonViYeuCau)
                                  .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
                                  .ToList();
@@ -563,6 +673,27 @@ namespace coreWeb.Controllers.Api
 
 
 
+            }
+            else if (user.RoleId == 4)
+            {
+                List<YeuCau> result = new List<YeuCau>();
+                result = _context.YeuCau.Where(e => e.StateId != 6 && e.StateId != 9 && e.UnitId == userinfo.UnitId && e.NguoiTaoId == userinfo.Id).Include(e => e.DichVu)
+                                 .Include(e => e.NhanSu)
+                                 .Include(e => e.States)
+                                 .Include(e => e.User)
+                                 .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
+                                 .Include(e => e.DonViYeuCau)
+                                 .OrderBy(p => p.LoaiYeuCau.Order).ThenBy(e => e.ThoiHan)
+                                 .ToList();
+
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
+                }
             }
             else
             {
@@ -590,17 +721,17 @@ namespace coreWeb.Controllers.Api
 
                 if (user != null && isXacThuc == false)
                 {
-                    DateTime thoihan = (DateTime) model.ThoiHan;
-                    DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
-                    if (userinfo.UnitId != 1)
+                    if (user.RoleId == 4 )
                     {
+                        QuanLyDichVu quanlydv = new QuanLyDichVu();
+                        quanlydv = _context.QuanLyDichVu.Where(p =>p.DichVuId == model.DichVuId).FirstOrDefault();
+                        model.NhanSuId = quanlydv.NhanSuId;
                         model.NguoiTaoId = user.UserId;
                         model.NgayTao = DateTime.Now;
                         model.UnitId = userinfo.UnitId;
-                        model.MaSoThue = model.MaSoThue;
-                        model.ThoiHan = time;
+                        model.DonViYeuCauId = userinfo.UnitId;
                         model.StateId = 10;
-
+                        model.KhachHang = true;
                         _context.YeuCau.Add(model);
 
                         _context.SaveChanges();
@@ -611,42 +742,70 @@ namespace coreWeb.Controllers.Api
                                 isXacThuc = true;
                             }
                         }
-                        var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
-                        if (model.JiraDaGui != null)
-                        {
-                            Jira jr = new Jira();
-                            jr.LinkJira = model.JiraDaGui;
-                            jr.YeuCauId = idyeucau;
-                            _context.Jira.Add(jr);
-                            _context.SaveChanges();
-                        }
                         
                         return Ok(model.Id);
                     }
                     else
                     {
-                        model.NguoiTaoId = user.UserId;
-                        model.NgayTao = DateTime.Now;
-                        model.UnitId = userinfo.UnitId;
-                        model.StateId = 10;
-                        model.ThoiHan = time;
-                        model.MaSoThue = model.MaSoThue;
-                        _context.Add(model);
-                        _context.SaveChanges();
-
-                        var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
-                        if (model.JiraDaGui != null)
+                        DateTime thoihan = (DateTime)model.ThoiHan;
+                        DateTime time = thoihan.AddHours(23).AddMinutes(59).AddSeconds(59);
+                        if (userinfo.UnitId != 1)
                         {
-                            Jira jr = new Jira();
-                            jr.LinkJira = model.JiraDaGui;
-                            jr.YeuCauId = idyeucau;
-                            _context.Jira.Add(jr);
+                            model.NguoiTaoId = user.UserId;
+                            model.NgayTao = DateTime.Now;
+                            model.UnitId = userinfo.UnitId;
+                            model.MaSoThue = model.MaSoThue;
+                            model.ThoiHan = time;
+                            model.StateId = 10;
+
+                            _context.YeuCau.Add(model);
+
                             _context.SaveChanges();
+                            foreach (var item in yeucau)
+                            {
+                                if (item.TenYeuCau == model.TenYeuCau && item.UnitId == userinfo.UnitId)
+                                {
+                                    isXacThuc = true;
+                                }
+                            }
+                            var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
+                            if (model.JiraDaGui != null)
+                            {
+                                Jira jr = new Jira();
+                                jr.LinkJira = model.JiraDaGui;
+                                jr.YeuCauId = idyeucau;
+                                _context.Jira.Add(jr);
+                                _context.SaveChanges();
+                            }
+
+                            return Ok(model.Id);
                         }
+                        else
+                        {
+                            model.NguoiTaoId = user.UserId;
+                            model.NgayTao = DateTime.Now;
+                            model.UnitId = userinfo.UnitId;
+                            model.StateId = 10;
+                            model.ThoiHan = time;
+                            model.MaSoThue = model.MaSoThue;
+                            _context.Add(model);
+                            _context.SaveChanges();
+
+                            var idyeucau = _context.YeuCau.Select(x => x.Id).LastOrDefault();
+                            if (model.JiraDaGui != null)
+                            {
+                                Jira jr = new Jira();
+                                jr.LinkJira = model.JiraDaGui;
+                                jr.YeuCauId = idyeucau;
+                                _context.Jira.Add(jr);
+                                _context.SaveChanges();
+                            }
 
 
-                        return Ok(model.Id);
+                            return Ok(model.Id);
+                        }
                     }
+                    
                     
                 }
                 else
@@ -754,6 +913,40 @@ namespace coreWeb.Controllers.Api
                         }
                         
                         
+                        _context.Update(result);
+                        _context.SaveChanges();
+                        return Ok(result.Id);
+                    }
+                    else
+                    {
+                        return NoContent();
+                    }
+                }
+                else if (user.RoleId == 4)
+                {
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == model.Id);
+                    var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+
+                    if (result != null) //update
+                    {
+                        result.TenYeuCau = model.TenYeuCau;
+                        result.NoiDung = model.NoiDung;
+                        result.NhanSuId = model.NhanSuId;
+                        result.FileUpload = model.FileUpload;
+                        result.NgayYeuCau = model.NgayYeuCau;
+                        
+                        result.DichVuId = model.DichVuId;
+                        result.DonViYeuCauId = model.DonViYeuCauId;
+
+                        if (model.NguoiTaoId == userinfo.Id)
+                        {
+                            result.NgayCapNhat = DateTime.Now;
+                        }
+
+                        
+                        result.FileXuLy = model.FileXuLy;
+                        result.LoaiYeuCauId = model.LoaiYeuCauId;
+
                         _context.Update(result);
                         _context.SaveChanges();
                         return Ok(result.Id);
@@ -1074,7 +1267,7 @@ namespace coreWeb.Controllers.Api
                 }
                 else
                 {
-                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == id);
+                    var result = _context.YeuCau.SingleOrDefault(e => e.Id == id && e.StateId == 10);
                     var jira = _context.Jira.Where(p => p.LinkJira == result.JiraDaGui).FirstOrDefault();
                     var comment = _context.Comment.Where(p => p.YeuCauId == result.Id).ToList();
                     if (result != null) //update
@@ -1139,10 +1332,20 @@ namespace coreWeb.Controllers.Api
             //IRestResponse response = client.Execute(request);
 
             //Console.WriteLine(split);
-           
+            User userinfo ;
+            object userInfos;
             var user = new UserClaim(HttpContext);
-            var userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
-            object userInfos = new { Username = userinfo.JiraAcount, Password = userinfo.JiraPass };
+            if (user.RoleId == 1)
+            {
+                userinfo = _context.User.Where(p => p.Id == 1080).FirstOrDefault();
+               userInfos = new { Username = userinfo.JiraAcount, Password = userinfo.JiraPass };
+            }
+            else
+            {
+                userinfo = _context.User.Where(p => p.Id == user.UserId).FirstOrDefault();
+                userInfos = new { Username = userinfo.JiraAcount, Password = userinfo.JiraPass };
+            }
+            
             var byteArray = Encoding.ASCII.GetBytes($"{userinfo.JiraAcount}:{userinfo.JiraPass}");
             string encodeString = "Basic " + Convert.ToBase64String(byteArray);
             var client = new System.Net.Http.HttpClient();
@@ -1192,55 +1395,104 @@ namespace coreWeb.Controllers.Api
             var nhansu = _context.NhanSu.Where(p => p.Id == yeucau.NhanSuId).FirstOrDefault();
             
             var text = "";
-            DateTime thoihan = (DateTime)yeucau.ThoiHan;
+            
+            
             
             DateTime ngaytao = (DateTime)yeucau.NgayTao;
             if (yeucau.NoiDungXuLy != null && yeucau.NoiDungXuLy != "" && yeucau.StateId == 7) // Thông báo khi nội dung xử lý khác null hoặc rỗng và đang xử lý
             {
-               
-                if (yeucau.NoiDungXuLy != null && yeucau.NgayXuLy != null)
+                if (yeucau.ThoiHan != null)
                 {
-                    var xuly = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
-                    DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
-                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>  \n - Nội dung xử lý: <strong>" + xuly + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>";
+                    DateTime thoihan = (DateTime)yeucau.ThoiHan;
+                    if (yeucau.NoiDungXuLy != null && yeucau.NgayXuLy != null)
+                    {
+                        var xuly = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
+                        DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
+                        text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>  \n - Nội dung xử lý: <strong>" + xuly + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>";
 
+                    }
+                    else
+                    {
+                        text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong>";
+
+                    }
                 }
                 else
                 {
-                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong>";
-
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong>  \n- Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong>";
                 }
+               
 
             }
             else if (yeucau.NoiDungXuLy == null && yeucau.NoiDungXuLy == "" && yeucau.StateId == 7)// Thông báo khi nội dung xử lý bằng null hoặc rỗng và đang xử lý
             {
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong>\n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
-
-            }
-            else if (yeucau.StateId == 10)  // thông báo khi trạng thái là chưa tiếp nhận
-            {
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
-
-            }
-            else if (yeucau.StateId == 6)  // thông báo khi trạng thái hoàn thành
-            {
-                if (yeucau.NoiDungXuLy != null && yeucau.NgayXuLy != null)
+                if (yeucau.ThoiHan != null)
                 {
-                    var xuly1 = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
-                    DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
-                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+                    DateTime thoihan = (DateTime)yeucau.ThoiHan;
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong>\n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
                 }
                 else
                 {
-                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong>\n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
 
                 }
 
             }
+            else if (yeucau.StateId == 10)  // thông báo khi trạng thái là chưa tiếp nhận
+            {
+                if (yeucau.ThoiHan != null)
+                {
+                    DateTime thoihan = (DateTime)yeucau.ThoiHan;
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+
+                }
+                else
+                {
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") +  "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+
+                }
+
+            }
+            else if (yeucau.StateId == 6)  // thông báo khi trạng thái hoàn thành
+            {
+                if (yeucau.ThoiHan != null)
+                {
+                    DateTime thoihan = (DateTime)yeucau.ThoiHan;
+                    if (yeucau.NoiDungXuLy != null && yeucau.NgayXuLy != null)
+                    {
+                        var xuly1 = yeucau.NoiDungXuLy.Replace("<p>", "").Replace("</p>", " ");
+                        DateTime ngayxuly = (DateTime)yeucau.NgayXuLy;
+                        text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Ngày xử lý: <strong>" + ngayxuly.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+
+                    }
+                    else
+                    {
+                        text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+
+                    }
+                }
+                else
+                {
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n - Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") +  "</strong>\n - Trạng thái: <strong>" + state.StateName + "</strong> ";
+
+                }
+
+
+            }
             else
             {
-                text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n- Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+                if (yeucau.ThoiHan != null)
+                {
+                    DateTime thoihan = (DateTime)yeucau.ThoiHan;
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n- Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Hạn xử lý: <strong>" + thoihan.ToString("dd/MM/yyyy HH:mm:ss") + "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+
+                }
+                else
+                {
+                    text = "<strong>🔔 Thông báo</strong> \n - Mã yêu cầu: <strong>YC" + yeucau.Id + "</strong> \n - Yêu cầu: <strong>" + yeucau.TenYeuCau + "</strong> \n - Người tạo: <strong>" + userinfo.FullName + "</strong> \n - Người xử lý: <strong>" + nhansu.TenNhanSu + "</strong> \n- Ngày tạo: <strong>" + ngaytao.ToString("dd/MM/yyyy HH:mm:ss") +  "</strong> \n - Trạng thái: <strong>" + state.StateName + "</strong>  \n";
+
+                }
 
             }
 
@@ -1330,7 +1582,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
             }
             else if (user.RoleId == 2)
@@ -1341,7 +1593,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 else if(userinfo.UnitId == 2)
@@ -1350,7 +1602,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                       .Include(e => e.DonViYeuCau).ToList();
                 }
                 else
@@ -1359,7 +1611,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 
@@ -1370,7 +1622,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
             }
         
@@ -1393,7 +1645,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 else if (index == 2)
@@ -1402,7 +1654,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 else if (index == 3)
@@ -1411,7 +1663,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                       .Include(e => e.DonViYeuCau).ToList();
                 }
 
@@ -1426,7 +1678,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 2)
@@ -1435,7 +1687,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 3)
@@ -1444,7 +1696,7 @@ namespace coreWeb.Controllers.Api
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                           .Include(e => e.DonViYeuCau).ToList();
                     }
                 }
@@ -1456,7 +1708,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 2)
@@ -1465,7 +1717,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 3)
@@ -1474,7 +1726,7 @@ namespace coreWeb.Controllers.Api
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                           .Include(e => e.DonViYeuCau).ToList();
                     }
                 }
@@ -1486,7 +1738,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 2)
@@ -1495,7 +1747,7 @@ namespace coreWeb.Controllers.Api
                                            .Include(e => e.NhanSu)
                                            .Include(e => e.States)
                                            .Include(e => e.User)
-                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                           .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                            .Include(e => e.DonViYeuCau).ToList();
                     }
                     else if (index == 3)
@@ -1504,7 +1756,7 @@ namespace coreWeb.Controllers.Api
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                           .Include(e => e.DonViYeuCau).ToList();
                     }
                 }
@@ -1519,7 +1771,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 else if (index == 2)
@@ -1528,7 +1780,7 @@ namespace coreWeb.Controllers.Api
                                        .Include(e => e.NhanSu)
                                        .Include(e => e.States)
                                        .Include(e => e.User)
-                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                       .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                        .Include(e => e.DonViYeuCau).ToList();
                 }
                 else if (index == 3)
@@ -1537,7 +1789,7 @@ namespace coreWeb.Controllers.Api
                                       .Include(e => e.NhanSu)
                                       .Include(e => e.States)
                                       .Include(e => e.User)
-                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                      .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                       .Include(e => e.DonViYeuCau).ToList();
                 }
 
@@ -1562,7 +1814,7 @@ namespace coreWeb.Controllers.Api
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                           .Include(e => e.DonViYeuCau).ToList();
                 }
                
@@ -1573,7 +1825,7 @@ namespace coreWeb.Controllers.Api
                                           .Include(e => e.NhanSu)
                                           .Include(e => e.States)
                                           .Include(e => e.User)
-                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau)
+                                          .Include(e => e.Unit).Include(e => e.LoaiYeuCau).Include(e => e.LoaiYeuCauNew)
                                           .Include(e => e.DonViYeuCau).ToList();
             }
             
@@ -1654,15 +1906,16 @@ namespace coreWeb.Controllers.Api
         public async Task<ActionResult> SaveCommentJira()
         {
 
-            DateTime date1 = new DateTime(2022, 8, 25, 0, 0, 0);
-            //DateTime date2 = new DateTime(2022, 6, 30, 23, 0, 0);
+            //DateTime date1 = new DateTime(2023, 01, 01, 0, 0, 0);
+            //DateTime date2 = new DateTime(2022, 12, 31, 23, 0, 0);
+            DateTime date1 = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek - 6);
             var jiraacount = _context.User.Where(p => p.Id == 1080).Select(p => new { p.Id, p.JiraAcount, p.JiraPass }).FirstOrDefault();
-            var listyeucau = _context.YeuCau.Where(p => p.StateId != 9 && p.JiraDaGui != null && p.NgayTao > date1 && p.StateId != 6).ToList();
+            var listyeucau = _context.YeuCau.Where(p => p.StateId != 9 && p.JiraDaGui != null && p.NgayTao > date1 ).ToList();
             var comment = "";
 
             foreach (var item in listyeucau)
             {
-                if (item.JiraDaGui != null)
+                if (item.JiraDaGui != null && item.JiraDaGui != "")
                 {
                     var jiralink = item.JiraDaGui;
                     var split = jiralink.Split('/');
@@ -1697,40 +1950,70 @@ namespace coreWeb.Controllers.Api
                             JArray userResponseArray = (JArray)jObjectnew["comments"];
                             JObject jObjectnew1 = (JObject)joResponse["fields"]["status"];
                             string status = jObjectnew1["name"].Value<string>();
-                            if (status != "Resolved" && status != "Cancelled" && status != "Closed" && status != "Deployed")
-                            {
-                                foreach (JObject ja in userResponseArray.Children<JObject>())
-                                {
-                                    foreach (JProperty val in ja.Properties())
-                                    {
-                                        if (val.Name == "body")
-                                        {
-                                            comment += (string)val.Value;
-                                        }
-                                        if (val.Name == "updateAuthor")
-                                        {
-                                            var userName = val.Value["displayName"];
-                                            comment += " - " + userName.ToString();
-                                        }
-                                        if (val.Name == "updated")
-                                        {
-                                            var time = val.Value;
-                                            var date = time.ToString();
-                                            DateTime enteredDate = DateTime.Parse(date);
-                                            var format = enteredDate.ToString("dd/MM/yyyy");
-                                            comment += " - " + (string)time.ToString() + "; ";
-                                        }
+                            //if (status != "Resolved" && status != "Cancelled" && status != "Closed" && status != "Deployed")
+                            //{
+                            //    foreach (JObject ja in userResponseArray.Children<JObject>())
+                            //    {
+                            //        foreach (JProperty val in ja.Properties())
+                            //        {
+                            //            if (val.Name == "body")
+                            //            {
+                            //                comment += (string)val.Value;
+                            //            }
+                            //            if (val.Name == "updateAuthor")
+                            //            {
+                            //                var userName = val.Value["displayName"];
+                            //                comment += " - " + userName.ToString();
+                            //            }
+                            //            if (val.Name == "updated")
+                            //            {
+                            //                var time = val.Value;
+                            //                var date = time.ToString();
+                            //                DateTime enteredDate = DateTime.Parse(date);
+                            //                var format = enteredDate.ToString("dd/MM/yyyy");
+                            //                comment += " - " + (string)time.ToString() + "; ";
+                            //            }
 
+                            //        }
+
+                            //    }
+
+                            //    item.CommentJira = comment;
+                            //    _context.Update(item);
+                            //    _context.SaveChanges();
+                            //    comment = "";
+                            //}
+                            foreach (JObject ja in userResponseArray.Children<JObject>())
+                            {
+                                foreach (JProperty val in ja.Properties())
+                                {
+                                    if (val.Name == "body")
+                                    {
+                                        comment += (string)val.Value;
+                                    }
+                                    if (val.Name == "updateAuthor")
+                                    {
+                                        var userName = val.Value["displayName"];
+                                        comment += " - " + userName.ToString();
+                                    }
+                                    if (val.Name == "updated")
+                                    {
+                                        var time = val.Value;
+                                        var date = time.ToString();
+                                        DateTime enteredDate = DateTime.Parse(date);
+                                        var format = enteredDate.ToString("dd/MM/yyyy");
+                                        comment += " - " + (string)time.ToString() + "; ";
                                     }
 
                                 }
 
-                                item.CommentJira = comment;
-                                _context.Update(item);
-                                _context.SaveChanges();
-                                comment = "";
                             }
-                            
+
+                            item.CommentJira = comment;
+                            _context.Update(item);
+                            _context.SaveChanges();
+                            comment = "";
+
 
                         }
                     }
