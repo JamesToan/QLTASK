@@ -602,9 +602,13 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Loại yêu cầu: " prop="StateId" >
+            <el-form-item label="Loại yêu cầu: " prop="StateId" v-if="formData1.LoaiYeuCauId > 6">
 
               {{formData1.LoaiYeuCauId ? formData1.LoaiYeuCauNew.TenLYC : ""}}
+            </el-form-item>
+            <el-form-item label="Loại yêu cầu: " prop="StateId" v-if="formData1.LoaiYeuCauId < 6">
+
+              {{formData1.LoaiYeuCauId ? formData1.LoaiYeuCau.TenLoaiYeuCau : ""}}
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -1661,7 +1665,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="allowEdit">
         <el-button @click="resetFormKH" size="small">Bỏ qua</el-button>
-        <el-button v-if="isAccept || isChuyenNS" @click="capnhatYeuCau" size="small" type="primary">Chuyển yêu cầu</el-button>
+        <el-button v-if="isAccept || isChuyenNS" @click="capnhatYeuCauKH" size="small" type="primary">Chuyển yêu cầu</el-button>
         <el-button v-if="!isAccept" type="primary" size="small" @click="capnhatYeuCauKH">Cập nhật</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau3" size="small" type="success">Tiếp nhận</el-button>
         <el-button v-if="!isAccept" type="success" size="small" @click="handleXacNhan1">Hoàn thành</el-button>
@@ -2616,7 +2620,7 @@ export default {
 						this.$refs.formData1.resetFields();
 						}
 						this.formData1 = Object.assign({}, row);
-
+           
 						if (row.JiraDaGui != null) {
 						  var jiralink = row.JiraDaGui;
 						  var split = jiralink.split('/');
