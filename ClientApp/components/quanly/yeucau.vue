@@ -544,7 +544,7 @@
           </el-col>
 
         </el-row>
-        
+
         <el-row>
           <el-col :span="12">
             <el-form-item label="Trạng thái: " prop="StateId">
@@ -593,11 +593,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Đơn vị: " prop="DonViYeuCauId">
+            <el-form-item label="Đơn vị: " prop="DonViYeuCauId" v-if="formData1.UnitId !=16">
 
               {{formData1.DonViYeuCauId ? formData1.DonViYeuCau.TenDonViYeuCau : ""}}
             </el-form-item>
+            <el-form-item label="Đơn vị: " prop="DonViYeuCauId" v-if="formData1.UnitId ==16">
 
+              {{formData1.DonViYeuCauId ? formData1.User.FullName : ""}}
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -689,8 +692,15 @@
             <a :href=item.url download>{{item.name}}</a>
           </div>
         </el-form-item>
-      </el-form>
+        <el-form-item label="Kết quả xử lý:" prop="NoiDungXuLy" style="margin-right:10px">
+          <ckeditor :editor="editor"
+                    v-model="formData1.NoiDungXuLy"
+                    :config="editorConfig"
+                    :disabled="!isAccept"></ckeditor>
 
+        </el-form-item>
+      </el-form>
+     
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetFormView" size="small">Bỏ qua</el-button>
         <el-button v-if="isAccept" @click="AcceptYeuCau" size="small" type="success">Tiếp nhận</el-button>
@@ -757,7 +767,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau">
+            <el-form-item label="Loại yêu cầu : " prop="LoaiYeuCauId">
               <el-select v-model="formData2.LoaiYeuCauId"
                          placeholder="Chọn loại yêu cầu"
                          class="w-100" :disabled="isLoaiYC">
@@ -901,7 +911,7 @@
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="Loại yêu cầu : " prop="NgayYeuCau">
+            <el-form-item label="Loại yêu cầu : " prop="LoaiYeuCauId">
               <el-select v-model="formData5.LoaiYeuCauId"
                          placeholder="Chọn loại yêu cầu"
                          class="w-100" :disabled="isLoaiYC">
@@ -1199,7 +1209,7 @@
                width="75%"
                center>
       <el-form :model="formData4"
-               :rules="formRules"
+               :rules="formRule1"
                ref="formData4"
                label-width="140px"
                class="m-auto"
@@ -1380,6 +1390,7 @@
 
     </el-dialog>
 
+    <!-- Từ Chối -->
     <el-dialog top="50px"
                title="Từ Chối"
                :visible.sync="dialogTuChoi"
@@ -1910,6 +1921,7 @@ export default {
         StatusId: null,
         StateId: null,
         NhanSuId: null,
+        NoiDungXuLy: null,
         DonViYeuCauId: null,
         DichVuId: null,
         NgayYeuCau: null,
@@ -2620,7 +2632,7 @@ export default {
 						this.$refs.formData1.resetFields();
 						}
 						this.formData1 = Object.assign({}, row);
-           
+
 						if (row.JiraDaGui != null) {
 						  var jiralink = row.JiraDaGui;
 						  var split = jiralink.split('/');
@@ -2712,6 +2724,7 @@ export default {
                 this.formData9.NoiDung = row.NoiDung;
                 this.formData9.FileXuLy = row.FileXuLy;
                 this.formData9.StateId =  row.StateId;
+                this.formData9.NoiDungXuLy= row.NoiDungXuLy;
                 this.formData9.LoaiYeuCauId = row.LoaiYeuCauId;
                 if(this.formData9.DichVuId != null){
                     var dv = this.ListDMDichVu.find(obj => obj.Id == this.formData9.DichVuId);
@@ -3473,7 +3486,7 @@ export default {
 
         //Quản lý
         this.loading = true;
-      if (this.StateIdFilter != 5 || this.DichVuIdFilter != 1 || this.LoaiYeuCauIdFilter != 5 || this.KhachHangFilter == true) {
+      if (this.StateIdFilter != 5 || (this.DichVuIdFilter != 1 && this.DichVuIdFilter != null) || (this.LoaiYeuCauIdFilter != 5 && this.LoaiYeuCauIdFilter != null)|| this.KhachHangFilter == true) {
         selectYeuCau(this.StateIdFilter, this.DichVuIdFilter, this.LoaiYeuCauIdFilter, this.KhachHangFilter).then(data => {
           this.listData = data;
           this.total = data.length;

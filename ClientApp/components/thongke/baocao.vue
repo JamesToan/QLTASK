@@ -135,7 +135,7 @@
 
             <el-table-column prop="Status" label="Tình trạng" width="100" v-if="!isXacNhan">
 
-              <template slot-scope="scope">
+              <template slot-scope="scope" v-if="scope.row.ThoiHan != null">
                 <span v-if="new Date(scope.row.ThoiHan) < Date.now() && scope.row.StateId != 6" style="color:darkorange">
                   Trễ hạn
                 </span>
